@@ -18,10 +18,14 @@ return new class extends Migration
             $table->integer('jumlah')->nullable(false);
             $table->integer('total_bayar')->nullable(false);
             $table->foreignId('idMetodePembayaran')->nullable()->references('idMetodePembayaran')->on('metodepembayaran')->onDelete('cascade');
-            $table->date('tanggal')->nullable(false);
+            $table->string('bukti', 255)->nullable();
+            $table->date('tanggal')->nullable(false); 
             $table->date('tgl_terima');
             $table->enum('pengantaran', ['Ambil Sendiri', 'Diantar'])->nullable(false);
-            $table->enum('status', ['Lunas', 'Belum Lunas'])->nullable(false);
+            $table->enum('status_pengantaran', ['Menunggu', 'Sudah diantar', 'Ambil Sendiri', 'Selesai'])->nullable();
+            $table->string('pesan', 255)->nullable();
+            $table->enum('status', ['Belum Lunas', 'Verifikasi', 'Lunas'])->nullable(false);
+            $table->integer('dibayar')->nullable();
         });
     }
 

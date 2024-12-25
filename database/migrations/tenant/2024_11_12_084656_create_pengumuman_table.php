@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('Users_id')->constrained('users')->onDelete('cascade');
             $table->string('pesan', 255)->nullable(false);
             $table->date('tanggal')->nullable(false);
-            $table->enum('status', ['Terkirim', 'Terbaca'])->nullable(false);
             $table->date('tgl_expired');
         });
     }

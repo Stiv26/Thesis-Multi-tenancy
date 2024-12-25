@@ -23,6 +23,7 @@ class PenghuniController extends Controller
             ->join('kontrak as k', 'k.users_id', '=', 'u.id')
             ->select('*')
             ->where('k.status', '=', 'aktif')
+            ->orwhere('k.status', '=', 'pembayaran perdana')
             ->get();
 
         return view('Pengelola.Penghuni', compact('data'));
@@ -37,11 +38,14 @@ class PenghuniController extends Controller
             ->where('u.id', '=', $id)
             ->first();
 
-        $dataDiriList = DB::table('datadiri as dd')
-            ->join('listdatadiri as l', 'l.idListDataDiri', '=', 'dd.idListDataDiri')
-            ->select('*')
-            ->where('dd.users_id', '=', $id)
-            ->get();
+        $dataDiriList = [];
+        if (Schema::hasTable('listdatadiri')) {
+            $dataDiriList = DB::table('datadiri as dd')
+                ->join('listdatadiri as l', 'l.idListDataDiri', '=', 'dd.idListDataDiri')
+                ->select('*')
+                ->where('dd.users_id', '=', $id)
+                ->get();
+        }
 
         return response()->json([
             'data' => $data,
@@ -54,7 +58,10 @@ class PenghuniController extends Controller
         $listKamar = DB::table('kamar as k')
             ->leftJoin('kontrak as kon', function ($join) {
                 $join->on('k.idKamar', '=', 'kon.idKamar')
-                    ->where('kon.status', '=', 'aktif');
+                    ->where(function ($query) {
+                        $query->where('kon.status', '=', 'aktif')
+                            ->orWhere('kon.status', '=', 'pembayaran perdana');
+                    });
             })
             ->select('k.*')
             ->where(function ($query) {
@@ -97,7 +104,7 @@ class PenghuniController extends Controller
         DB::table('listdatadiri')->insert([
             'data_diri' => $request->dataDiri,
         ]);
-
+ 
         return redirect()->back()->with('success', 'Data Diri berhasil ditambahkan.');
     }
 
@@ -110,14 +117,70 @@ class PenghuniController extends Controller
         return redirect()->back()->with('success', 'Biaya berhasil ditambahkan.');
     }
 
+    public function destroyBiaya($id)
+    {
+        DB::table('biaya')->where('idBiaya', $id)->delete();
+
+        return response()->json(['message' => 'Biaya berhasil dihapus']);
+    }
+
+    public function destroyDataDiri($id)
+    {
+        DB::table('listDataDiri')->where('idListDataDiri', $id)->delete();
+
+        return response()->json(['message' => 'Data Diri berhasil dihapus']);
+    }
+
+    public function aturanDenda(Request $request)
+    {
+        $exists = DB::table('denda')->where('idDenda', $request->idDenda)->exists();
+
+        if ($exists) {
+            // Jika idDenda sudah ada, lakukan update
+            DB::table('denda')
+                ->where('idDenda', $request->idDenda)
+                ->update([
+                    'jenis_denda' => $request->jenis_denda,
+                    'angka' => $request->angka,
+                    'angka_mingguan' => $request->angka_mingguan,
+                    'angka_harian' => $request->angka_harian,
+                ]);
+        } 
+        else {
+            // Jika idDenda belum ada, lakukan insert
+            DB::table('denda')->insert([
+                'idDenda' => $request->idDenda,
+                'jenis_denda' => $request->jenis_denda,
+                'angka' => $request->angka,
+                'angka_mingguan' => $request->angka_mingguan,
+                'angka_harian' => $request->angka_harian,
+            ]);
+        }
+    
+        return redirect()->back()->with('Data berhasil ditambahkan');
+    }
+
+    public function detailAturanDenda($id)
+    {
+        $data = DB::table('denda')
+            ->where('idDenda', $id)
+            ->first();
+
+            if ($data) {
+                return response()->json(['data' => $data]);
+            } else {
+                return response()->json(['data' => null], 404); // Jika tidak ada data, kembalikan null
+            }
+    }
+
+
+
     public function storeKontrak(Request $request)
     {
         $uuid = Str::uuid();
         $tempId = crc32($uuid->toString()) & 0xffffffff;
 
         DB::beginTransaction();
-
-        try {
             // Insert data ke tabel users
             DB::table('users')->insert([
                 'id' => $tempId,
@@ -134,17 +197,25 @@ class PenghuniController extends Controller
                 'idKontrak' => $tempId,
                 'idKamar' => $request->kamar,
                 'Users_id' => $tempId,
-                'harga' => 999,
+                'harga' => $request->harga,
                 'rentang' => $request->kontrak,
-                'waktu' => $request->tinggal,
+                'waktu' => $request->waktu,
                 'tgl_masuk' => $request->masuk,
                 'tgl_tagihan' => $request->tagihan,
                 'tgl_denda' => $request->denda,
-                'tgl_keluar' => $request->keluar,
                 'deposit' => $request->deposit,
                 'keterangan' => $request->keterangan,
-                'status' => 'aktif',
+                'status' => 'Pembayaran Perdana',
             ]);
+
+            // Insert data ke tabel pengaturan (jika ada)
+            if ($request->waktu_tagihan != 0) {
+                DB::table('pengaturan')->insert([
+                    'idKontrak' => $tempId,
+                    'waktu_tagihan' => $request->waktu_tagihan,
+                    'waktu_denda' => $request->waktu_denda,
+                ]);
+            }
 
             // Insert data ke tabel biayaKontrak (jika ada)
             if ($request->has('idBiaya')) {
@@ -168,13 +239,8 @@ class PenghuniController extends Controller
             }
 
             // Commit transaksi jika semua berhasil
-            DB::commit();
+        DB::commit();
 
-            return redirect()->route('penghuni.index')->with('success', 'Kontrak berhasil ditambahkan.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return redirect()->back()->withErrors('Gagal menambahkan kontrak: ' . $e->getMessage());
-        }
+        return redirect()->route('penghuni.index')->with('success', 'Kontrak berhasil ditambahkan.');
     }
 }

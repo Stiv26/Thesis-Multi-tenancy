@@ -14,11 +14,15 @@ return new class extends Migration
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->id('idPembayaran');
             $table->foreignId('idKontrak')->references('idKontrak')->on('kontrak')->onDelete('cascade');
-            $table->date('tanggal');
+            $table->date('tgl_tagihan')->nullable(false);
+            $table->date('tgl_denda')->nullable(false);
+            $table->date('tanggal')->nullable();
             $table->integer('total_bayar')->nullable(false);
+            $table->enum('status', ['Belum Lunas', 'Verifikasi', 'Lunas'])->nullable(false);
             $table->foreignId('idMetodePembayaran')->nullable()->references('idMetodePembayaran')->on('metodepembayaran')->onDelete('cascade');
-            $table->enum('status', ['Belum Lunas', 'Lunas'])->nullable(false);
+            $table->string('bukti', 255)->nullable();
             $table->string('keterangan', 255)->nullable();
+            $table->integer('dibayar')->nullable();
         });
     }
 

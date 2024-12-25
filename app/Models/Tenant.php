@@ -11,7 +11,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
 {
     use HasDatabase, HasDomains;
 
-    protected $casts = [
-        'custom_migrations' => 'array',
-    ];    
+    // protected $casts = [
+    //     'custom_migrations' => 'array',
+    // ];    
 }

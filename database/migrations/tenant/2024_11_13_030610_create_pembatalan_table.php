@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('idKontrak')->references('idKontrak')->on('kontrak')->onDelete('cascade');
             $table->enum('deposit', ['Kembalikan', 'Potong'])->nullable(false);
             $table->integer('pengembalian_deposit')->nullable(false);
+            $table->date('tanggal')->nullable(false);
             $table->string('alasan', 255)->nullable();
         });
     }

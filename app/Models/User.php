@@ -11,6 +11,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+    
     protected $table = "users";
 
     /**
@@ -24,6 +25,11 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+
+    public function renters()
+    {
+        return $this->hasMany(Renter::class, 'users_id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

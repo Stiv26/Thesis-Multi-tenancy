@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('metodepembayaran', function (Blueprint $table) {
             $table->id('idMetodePembayaran');
+            $table->string('nomor_tujuan', 255)->nullable(false);
             $table->string('metode', 255)->nullable(false);
         });
     }

@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('pemeliharaan', function (Blueprint $table) {
             $table->id('idPemeliharaan');
-            $table->foreignId('idKamar')->references('idKamar')->on('kamar')->onDelete('cascade');
-            $table->foreignId('idFasilitas')->references('idFasilitas')->on('fasilitas')->onDelete('cascade');
+            $table->foreignId('idKontrak')->references('idKontrak')->on('kontrak')->onDelete('cascade');
+            $table->string('fasilitas')->nullable(false);
             $table->string('pesan', 225)->nullable(false);
             $table->date('tanggal')->nullable(false);
-            $table->date('tgl_pemeliharaan')->nullable();
-            $table->enum('status', ['Permintaan', 'Penjadwalan', 'Tolak', 'Selesai'])->nullable(false);
+            $table->datetime('tgl_pemeliharaan')->nullable();
+            $table->enum('status', ['Permintaan', 'Penjadwalan', 'Pengerjaan', 'Tolak', 'Selesai'])->nullable(false);
         });
     }    
 

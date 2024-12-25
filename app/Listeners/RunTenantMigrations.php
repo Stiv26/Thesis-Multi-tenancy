@@ -23,10 +23,20 @@ class RunTenantMigrations
             '--force' => true,
         ]);
 
+        // Jalankan seeder role
+        Artisan::call('db:seed', [
+            '--database' => 'tenant',
+            '--class' => 'RoleSeeder',
+            '--force' => true,
+        ]);        
+
+
         // Jalankan migrasi custom
         foreach ($tenant->custom_tables as $customTable) {
             $customPath = "/database/migrations/tenant/$customTable";
+            
             if (is_dir(base_path($customPath))) {
+                
                 Artisan::call('migrate', [
                     '--database' => 'tenant',
                     '--path' => $customPath,

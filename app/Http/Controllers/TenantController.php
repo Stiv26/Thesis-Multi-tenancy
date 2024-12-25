@@ -6,6 +6,9 @@ use App\Models\Tenant;
 use Illuminate\Http\Request;
 use App\Events\TenantCreated;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Renter;
 
 class TenantController extends Controller
 {
@@ -18,18 +21,38 @@ class TenantController extends Controller
 
         // Buat domain berdasarkan ID tenant
         $domain = $request->id . '.localhost';
-
+        
         // Buat tenant baru
         $tenant = Tenant::create([
             'id' => $request->id,
             'custom_tables' => $request->custom_tables ?? [], // Simpan tabel custom
         ]);
 
-        // Tambahkan domain
+        // Tambahkan domain dari stancyl
         $tenant->domains()->create(['domain' => $domain]);
+
+        Renter::create([
+            'no_telp' => $request->telpon,
+            'password' => $request->password,
+            'email' => $request->email,
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'keterangan' => $request->keterangan,
+            'domains_id' => $tenant->domains()->first()->id,
+            'users_id' => Auth::id(), 
+        ]);
 
         // Panggil event untuk memigrasi tenant
         event(new TenantCreated($tenant));
+
+        DB::table('users')->insert([
+            'no_telp' => $request->telpon,
+            'password' => $request->password, 
+            'email' => $request->email,
+            'nama' => $request->nama,
+            'status' => 'Aktif',
+            'idRole' => 1,
+        ]);
 
         return redirect()->back()->with('success', "Tenant '{$request->id}' berhasil dibuat dengan domain: {$domain}");
     }

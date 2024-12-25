@@ -53,10 +53,15 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('no_telp', $request->no_telp)->first();
+        $user = User::where('no_telp', $request->no_telp)->where('status', 'Aktif')->first();
 
         if ($user && $user->password === $request->password) {
+            if ($user->status === 'Nonaktif') {
+                return back()->withErrors(['no_telp' => 'Akun Anda telah dinonaktifkan. Silakan hubungi pengelola kos untuk membuat kontrak.']);
+            }
+
             Auth::login($user);
+            
             $redirectRoute = $this->determineRedirectRoute();
             return redirect()->route($redirectRoute)->with('success', 'Login berhasil!');
         }
@@ -78,12 +83,29 @@ class LoginController extends Controller
 
     protected function determineRedirectRoute()
     {
-        // Cek apakah saat ini adalah central domain atau tenant domain
-        if (in_array(request()->getHost(), config('tenancy.central_domains'))) {
-            return 'dashboard';  // Redirect ke dashboard untuk central domain
+        // Check if the user is authenticated
+        $user = Auth::user();
+
+        if (!$user) {
+            // If no user is authenticated, return the login route (for safety)
+            return 'login';
         }
 
-        // Jika domainnya adalah tenant domain
-        return 'kos.index';  // Redirect ke kos.index untuk tenant domain
+        // Check the user's role
+        if ($user->idRole == 1) { // Assuming 1 is the role ID for "Pengelola"
+            // Redirect "Pengelola" to /kos
+            return 'kos.index';
+        } 
+        elseif ($user->idRole == 2) { // Assuming 2 is the role ID for "Penghuni"
+            // Redirect "Penghuni" to /info/kamar
+            return 'penghuni.kamar';  // Make sure this route exists
+        }
+        elseif ($user->idRole == 3) { 
+            
+            return 'art.kamar';  
+        }
+
+        // Default redirection in case role doesn't match
+        return 'dashboard';  // Or any default route
     }
 }

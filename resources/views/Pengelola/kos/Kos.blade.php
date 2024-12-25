@@ -18,6 +18,9 @@
                     <a href="#fasilitas" id="btnFasilitas" onclick="switchPage('fasilitas')"
                         class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">
                         Fasilitas</a>
+                    <a href="#sop" id="btnSop" onclick="switchPage('sop')"
+                        class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">
+                        SOP Kos</a>
                 </nav>
             </div>
 
@@ -26,14 +29,18 @@
                     const kontrakSection = document.getElementById('kontrak');
                     const kamarSection = document.getElementById('kamar');
                     const fasilitasSection = document.getElementById('fasilitas');
+                    const sopSection = document.getElementById('sop');
+
                     const btnKontrak = document.getElementById('btnKontrak');
                     const btnKamar = document.getElementById('btnKamar');
                     const btnFasilitas = document.getElementById('btnFasilitas');
+                    const btnSop = document.getElementById('btnSop');
 
                     // Menghilangkan semua section
                     kontrakSection.classList.add('hidden');
                     kamarSection.classList.add('hidden');
                     fasilitasSection.classList.add('hidden');
+                    sopSection.classList.add('hidden');
 
                     // Menghilangkan aktifasi dari button
                     btnKontrak.classList.remove('bg-indigo-600', 'text-white');
@@ -42,7 +49,9 @@
                     btnKamar.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
                     btnFasilitas.classList.remove('bg-indigo-600', 'text-white');
                     btnFasilitas.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
-
+                    btnSop.classList.remove('bg-indigo-600', 'text-white');
+                    btnSop.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                  
                     if (page === 'kontrak') {
                         kontrakSection.classList.remove('hidden');
                         btnKontrak.classList.add('bg-indigo-600', 'text-white');
@@ -55,7 +64,11 @@
                         fasilitasSection.classList.remove('hidden');
                         btnFasilitas.classList.add('bg-indigo-600', 'text-white');
                         btnFasilitas.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
-                    }
+                    } else if (page === 'sop') {
+                        sopSection.classList.remove('hidden');
+                        btnSop.classList.add('bg-indigo-600', 'text-white');
+                        btnSop.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                    } 
 
                     // Memberikan sedikit delay sebelum scroll
                     setTimeout(function() {
@@ -65,7 +78,7 @@
             </script>
         </section>
  
-        {{-- PAGE KONTRAK --}}
+        {{-- PAGE KONTRAK --}} 
         <section id="kontrak" class="block">
             <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat Detail</p>
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -176,14 +189,6 @@
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                         readonly>
                                 </div>
-                                {{-- tgl keluar --}}
-                                <div class="flex items-center space-x-4">
-                                    <label for="keluar" class="w-32 text-md font-medium text-gray-700">
-                                        Tanggal Keluar:</label>
-                                    <input id="modal-keluar" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
                                 {{-- deposit --}}
                                 <div class="flex items-center space-x-4">
                                     <label for="deposit" class="w-32 text-md font-medium text-gray-700">
@@ -191,13 +196,14 @@
                                     <input id="modal-deposit" type="text" value=""
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                         readonly>
-                                </div>
+                                </div> 
+                                
                                 {{-- biaya kontrak --}}
                                 <div class="flex items-center space-x-4">
                                     <label for="deposit" class="w-32 text-md font-medium text-gray-700">
                                         Biaya Kontrak:</label>
                                     {{-- AJAX --}}
-                                    <div id="biaya-container"></div>
+                                    <div id="biaya-container"></div> 
                                 </div>
                                 {{-- keterangan --}}
                                 <div class="flex items-center space-x-4">
@@ -236,6 +242,7 @@
         {{-- PAGE KAMAR --}}
         <section id="kamar" class="hidden">
             <section>
+
                 <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat Detail</p>
                 {{-- LIST --}}
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -305,6 +312,22 @@
                                     </div>
 
                                     <div class="flex items-center space-x-4">
+                                        <label for="harga_mingguan" class="w-32 text-md font-medium text-gray-700">
+                                            Harga (Per-Minggu):</label>
+                                        <input id="modal-harga_mingguan" type="text" value=""
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                            readonly>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
+                                        <label for="harga_harian" class="w-32 text-md font-medium text-gray-700">
+                                            Harga (Per-Harian):</label>
+                                        <input id="modal-harga_harian" type="text" value=""
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                            readonly>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
                                         <label for="keterangan_kamar" class="w-32 text-md font-medium text-gray-700">
                                             Keterangan:</label>
                                         <textarea id="modal-keterangan_kamar" type="text" value="" rows="2"
@@ -349,7 +372,7 @@
 
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 {{-- Nomor Kamar --}}
-                                <div class="sm:col-span-1">
+                                <div class="sm:col-span-3">
                                     <label for="kamar"
                                         class="block text-sm font-medium leading-6 text-gray-900">Nomor Kamar</label>
                                     <div class="mt-2">
@@ -359,15 +382,16 @@
                                     </div>
                                 </div>
                                 {{-- Harga --}}
-                                <div class="sm:col-span-2">
+                                <div class="sm:col-span-3 sm:col-start-1">
                                     <label for="harga"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Harga</label>
+                                        class="block text-sm font-medium leading-6 text-gray-900">Harga (Per-Bulan)</label>
                                     <div class="mt-2">
                                         <input type="number" name="harga" id="harga"
                                             class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             required>
                                     </div>
                                 </div>
+
                                 {{-- Keterangan --}}
                                 <div class="sm:col-span-3 sm:col-start-1">
                                     <label for="keterangan"
@@ -377,7 +401,29 @@
                                             class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             required></textarea>
                                     </div>
-                                    <p class="mt-3 text-sm leading-6 text-gray-600">Bagian ini bersifat optional</p>
+                                </div>
+                                
+                                {{-- Harga Mingguan --}}
+                                <div class="sm:col-span-3 sm:col-start-1">
+                                    <p class="mt-3 text-sm leading-6 text-gray-600">Bagian ini digunakan untuk harga mingguan dan harian</p>
+
+                                    <label for="harga"
+                                        class="block text-sm font-medium leading-6 text-gray-900">Harga (Per-Minggu)</label>
+                                    <div class="mt-2">
+                                        <input type="number" name="harga_mingguan" id="harga_mingguan"
+                                            class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            required>
+                                    </div>
+                                </div>
+                                {{-- Harga Harian --}}
+                                <div class="sm:col-span-3 sm:col-start-1">
+                                    <label for="harga"
+                                        class="block text-sm font-medium leading-6 text-gray-900">Harga (Per-Hari)</label>
+                                    <div class="mt-2">
+                                        <input type="number" name="harga_harian" id="harga_harian"
+                                            class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            required>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -396,6 +442,7 @@
 
         {{-- PAGE FASILITAS --}}
         <section id="fasilitas" class="hidden">
+            {{-- MAIN --}}
             <section>
                 <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat Detail</p>
                 {{-- LIST --}}
@@ -558,6 +605,57 @@
                 </form>
             </section>
         </section>
+        
+        {{-- PAGE SOP --}}
+        <section id="sop" class="hidden">
+            <h2 class="pl-4 text-xl font-semibold text-gray-800 mb-3">SOP Kos {{ tenancy()->tenant->id }}</h2>
+            <ol class="list-decimal pl-5">
+                @foreach ($peraturan as $item)
+                    <div class="flex justify-between">
+                        <li class="text-md py-1 px-3">{{ $item->aturan }}</li>
+                        <a href="#" data-id="{{ $item->idPeraturan }}" id="hapus-peraturan" class="text-red-600 text-sm py-1 px-3">Hapus</a>
+                    </div>
+                @endforeach
+            </ol>
+
+            <a href="#" data-toggle="modal" data-target="#ModalSop" class="mt-3 text-sm leading-6 text-gray-600 ml-4">
+                <span aria-hidden="true">+</span> Tambah Aturan Baru</a>
+
+            {{-- MODAL TAMBAH ATURAN --}}
+            <div class="modal fade p-4" id="ModalSop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                    <form action="{{ route('aturan.store') }}" method="POST" class="modal-content rounded-lg shadow-lg bg-white">
+                        @csrf
+                        {{-- Header modal --}}
+                        <div class="modal-header border-b border-gray-200 py-4 px-6">
+                            <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Tambah Aturan Kos</h3>
+                            <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        {{-- Content modal --}}
+                        <div class="modal-body p-6 space-y-2">
+                            <div class="flex items-center space-x-4">
+                                <label for="tambah-aturan" class="w-32 text-md font-medium text-gray-700">Aturan:</label>
+                                <input required id="tambah-aturan" name="aturan" type="text" value=""
+                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                            </div>
+                        </div>
+                        {{-- Footer --}}
+                        <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                            <button type="submit" class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                Tambah
+                            </button>                                                               
+                            <button type="button" class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600" data-dismiss="modal">
+                                Tutup
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
 
     </main>
 </x-layout>
@@ -576,12 +674,15 @@
                     $('#modal-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-nama').val(data.data.nama);
                     $('#modal-harga').val(data.data.harga);
-                    $('#modal-rentang').val(data.data.waktu + ' ' + data.data.rentang);
+                    $('#modal-rentang').val(data.data.rentang);
                     $('#modal-masuk').val(data.data.tgl_masuk);
                     $('#modal-tagihan').val(data.data.tgl_tagihan);
                     $('#modal-denda').val(data.data.tgl_denda);
-                    $('#modal-keluar').val(data.data.tgl_keluar);
                     $('#modal-deposit').val(data.data.deposit);
+                    $('#modal-waktu').val(data.data.waktu);
+
+                    $('#modal-tanggal-tagihan').val(data.pengaturan.waktu_tagihan);
+                    $('#modal-tanggal-denda').val(data.pengaturan.waktu_denda);
 
                     $('#biaya-container').empty();
 
@@ -604,6 +705,7 @@
     });
 </script>
 
+
 {{-- AJAX KAMAR --}}
 <script>
     $(document).ready(function() {
@@ -617,6 +719,8 @@
                 success: function(data) {
                     $('#modal-no_kamar').val('Kamar ' + data.idKamar);
                     $('#modal-harga_kamar').val(data.harga);
+                    $('#modal-harga_mingguan').val(data.harga_mingguan);
+                    $('#modal-harga_harian').val(data.harga_harian);
                     $('#modal-keterangan_kamar').val(data.keterangan);
 
                     $('#edit-kamar-btn').attr('href', '/kos/edit-kamar/' + id);
@@ -687,5 +791,29 @@
                 });
             }
         });
+    });
+</script>
+
+{{-- AJAX SOP --}}
+<script>
+    $('#hapus-peraturan').on('click', function() {
+        var idPeraturan = $(this).data('id');  // Ambil ID peraturan dari data-id
+
+        if (confirm('Apakah Anda yakin ingin menghapus peraturan ini?')) {
+            $.ajax({
+                url: '/kos/hapus-sop/' + idPeraturan, // Sesuaikan URL untuk menghapus peraturan
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'  // Token CSRF untuk keamanan
+                },
+                success: function(response) {
+                    alert(response.message);  // Menampilkan pesan sukses
+                    location.reload();  // Reload halaman untuk memperbarui data
+                },
+                error: function(xhr) {
+                    alert('Gagal menghapus peraturan. Silakan coba lagi.');  // Menampilkan pesan error
+                }
+            });
+        }
     });
 </script>

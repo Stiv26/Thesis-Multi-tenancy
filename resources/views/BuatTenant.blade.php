@@ -18,21 +18,21 @@
                             <div class="sm:col-span-4">
                                 <label for="nama" class="block text-sm font-medium leading-6 text-gray-900">Nama Penyewa</label>
                                 <div class="mt-2">
-                                    <input type="text" name="nama" id="nama" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <input required type="text" name="nama" id="nama" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
 
                             <div class="sm:col-span-4">
                                 <label for="telpon" class="block text-sm font-medium leading-6 text-gray-900">Nomor Telepon</label>
                                 <div class="mt-2">
-                                    <input type="text" name="telpon" id="telpon" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <input required type="text" name="telpon" id="telpon" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
                     
                             <div class="sm:col-span-4">
                                 <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Kata Sandi</label>
                                 <div class="mt-2">
-                                    <input type="text" name="password" id="password" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <input required type="password" name="password" id="password" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                         <div class="sm:col-span-4">
                             <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
                             <div class="mt-2">
-                                <input id="email" name="email" type="email" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <input required id="email" name="email" type="text" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             </div>
                         </div>
 
@@ -65,7 +65,7 @@
                         <div class="sm:col-span-4">
                             <label for="alamat" class="block text-sm font-medium leading-6 text-gray-900">Alamat</label>
                             <div class="mt-2">
-                                <input id="alamat" name="alamat" type="text" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <input required id="alamat" name="alamat" type="text" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             </div>
                         </div>
 
@@ -85,7 +85,7 @@
                     <div class="container mx-auto">
                         <div class="flex flex-wrap -m-4">
                             <!-- DATA DIRI -->
-                            <label for="card1" class="w-1/4 p-4 cursor-pointer group">
+                            <label for="card1" class="w-1/3 p-4 cursor-pointer group">
                                 <input type="checkbox" id="card1" name="custom_tables[]" value="addDataDiri" class="hidden peer">
 
                                 <div class="border border-gray-200 rounded-lg p-6 peer-checked:border-indigo-500 peer-checked:bg-indigo-100">
@@ -99,7 +99,7 @@
                                 </div>
                             </label>
                             {{-- BIAYA FASILITAS --}}
-                            <label for="card3" class="w-1/4 p-4 cursor-pointer group">
+                            <label for="card3" class="w-1/3 p-4 cursor-pointer group">
                                 <input type="checkbox" id="card3" name="custom_tables[]" value="addBiaya" class="hidden peer">
 
                                 <div class="border border-gray-200 rounded-lg p-6 peer-checked:border-indigo-500 peer-checked:bg-indigo-100">
@@ -113,7 +113,7 @@
                                 </div>
                             </label>
                             {{-- LAYANAN TAMBAHAN --}}
-                            <label for="card2" class="w-1/4 p-4 cursor-pointer group">
+                            <label for="card2" class="w-1/3 p-4 cursor-pointer group">
                                 <input type="checkbox" id="card2" name="custom_tables[]" value="addLayananTambahan" class="hidden peer">
 
                                 <div class="border border-gray-200 rounded-lg p-6 peer-checked:border-indigo-500 peer-checked:bg-indigo-100">
@@ -127,7 +127,7 @@
                                 </div>
                             </label>
                             {{-- PEMELIHARAAN --}}
-                            <label for="card4" class="w-1/4 p-4 cursor-pointer group">
+                            <label for="card4" class="w-1/3 p-4 cursor-pointer group">
                                 <input type="checkbox" id="card4" name="custom_tables[]" value="addPemeliharaan" class="hidden peer">
 
                                 <div class="border border-gray-200 rounded-lg p-6 peer-checked:border-indigo-500 peer-checked:bg-indigo-100">
@@ -137,6 +137,34 @@
                                         </svg>
                                     </div>
                                     <h2 class="text-lg font-medium text-gray-900 peer-checked:text-indigo-600">Pemeliharaan</h2>
+                                    <p class="text-base peer-checked:text-indigo-600">A brief description of the card.</p>
+                                </div>
+                            </label>
+                            {{-- KARYAWAN --}}
+                            <label for="card5" class="w-1/3 p-4 cursor-pointer group">
+                                <input type="checkbox" id="card5" name="custom_tables[]" value="addKaryawan" class="hidden peer">
+
+                                <div class="border border-gray-200 rounded-lg p-6 peer-checked:border-indigo-500 peer-checked:bg-indigo-100">
+                                    <div class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 peer-checked:bg-indigo-500 peer-checked:text-white mb-4">
+                                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                        </svg>
+                                    </div>
+                                    <h2 class="text-lg font-medium text-gray-900 peer-checked:text-indigo-600">Karyawan</h2>
+                                    <p class="text-base peer-checked:text-indigo-600">A brief description of the card.</p>
+                                </div>
+                            </label>
+                            {{-- DENDA --}}
+                            <label for="card6" class="w-1/3 p-4 cursor-pointer group">
+                                <input type="checkbox" id="card6" name="custom_tables[]" value="addDenda" class="hidden peer">
+
+                                <div class="border border-gray-200 rounded-lg p-6 peer-checked:border-indigo-500 peer-checked:bg-indigo-100">
+                                    <div class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 peer-checked:bg-indigo-500 peer-checked:text-white mb-4">
+                                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                        </svg>
+                                    </div>
+                                    <h2 class="text-lg font-medium text-gray-900 peer-checked:text-indigo-600">Denda</h2>
                                     <p class="text-base peer-checked:text-indigo-600">A brief description of the card.</p>
                                 </div>
                             </label>

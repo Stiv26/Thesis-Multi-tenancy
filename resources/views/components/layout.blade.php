@@ -21,7 +21,7 @@
     <title>
         @if(tenancy()->initialized)
         {{-- Navbar untuk tenant --}}
-            SuperKos
+            {{ tenancy()->tenant->id }} | SuperKos
         @else
         {{-- Navbar untuk central --}}
             Admin SuperKos
@@ -48,7 +48,7 @@
                         {{ tenancy()->tenant->id }}
                     @else
                     {{-- Navbar untuk central --}}
-                        SuperKos
+                        Admin SuperKos
                     @endif
                 </h1>
             </div>

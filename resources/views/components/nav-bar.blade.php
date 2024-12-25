@@ -11,7 +11,6 @@
                         {{-- Mengirim data ke nav-link + request untuk mengcheck apakah sedang pada halaman --}}
                         <x-nav-link href="/dashboard" :active="request()->is('dashboard')">Dashboard</x-nav-link>
                         <x-nav-link href="/buat-tenant" :active="request()->is('buat-tenant')">Buat Tenant</x-nav-link>
-                        <x-nav-link href="/tenant" :active="request()->is('tenant')">Tenant</x-nav-link>
                     </div>
                 </div>
             </div>
@@ -85,8 +84,6 @@
                 aria-current="page">Dashboard</a>
             <a href="/buat-tenant"
                 class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Buat Tenant</a>
-            <a href="/tenant"
-                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Tenant</a>
         </div>
         <div class="border-t border-gray-700 pb-3 pt-4">
             <div class="flex items-center px-2">

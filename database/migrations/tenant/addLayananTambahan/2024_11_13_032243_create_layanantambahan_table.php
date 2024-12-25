@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_item', 255)->nullable(false);
             $table->integer('harga')->nullable(false);
             $table->integer('stok')->nullable(false);
+            $table->integer('stok_berjalan')->nullable();
             $table->text('keterangan')->nullable();
         });
     }

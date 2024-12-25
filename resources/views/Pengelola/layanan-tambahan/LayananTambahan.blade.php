@@ -10,20 +10,545 @@
             <div class="flex items-center justify-between px-3 py-3 rounded-lg">
                 <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                     <!-- Tab navigasi -->
+                    <a href="#pesanan" id="btnPesanan" onclick="switchPage('pesanan')"
+                        class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20">
+                        Pesanan</a>
                     <a href="#list" id="btnList" onclick="switchPage('list')"
-                        class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20">Layanan
-                        Tambahan</a>
+                        class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">
+                        Layanan Tambahan</a>
                     <a href="#riwayat" id="btnRiwayat" onclick="switchPage('riwayat')"
-                        class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">Riwayat
-                        Pembelian</a>
+                        class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">
+                        Riwayat Pembelian</a>
                 </nav>
+            </div>
+
+            {{-- JS --}}
+            <script>
+                function switchPage(page) {
+                    const pesananSection = document.getElementById('pesanan');
+                    const listSection = document.getElementById('list');
+                    const riwayatSection = document.getElementById('riwayat');
+                    const btnPesanan = document.getElementById('btnPesanan');
+                    const btnList = document.getElementById('btnList');
+                    const btnRiwayat = document.getElementById('btnRiwayat');
+            
+                    // Sembunyikan semua section
+                    pesananSection.classList.add('hidden');
+                    listSection.classList.add('hidden');
+                    riwayatSection.classList.add('hidden');
+            
+                    // Atur ulang semua tombol
+                    btnPesanan.classList.remove('bg-indigo-600', 'text-white');
+                    btnPesanan.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                    btnList.classList.remove('bg-indigo-600', 'text-white');
+                    btnList.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                    btnRiwayat.classList.remove('bg-indigo-600', 'text-white');
+                    btnRiwayat.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+            
+                    // Tampilkan section yang dipilih
+                    if (page === 'pesanan') {
+                        pesananSection.classList.remove('hidden');
+                        btnPesanan.classList.add('bg-indigo-600', 'text-white');
+                        btnPesanan.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                    } else if (page === 'list') {
+                        listSection.classList.remove('hidden');
+                        btnList.classList.add('bg-indigo-600', 'text-white');
+                        btnList.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                    } else if (page === 'riwayat') {
+                        riwayatSection.classList.remove('hidden');
+                        btnRiwayat.classList.add('bg-indigo-600', 'text-white');
+                        btnRiwayat.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                    }
+            
+                    // Scroll ke atas
+                    setTimeout(() => window.scrollTo(0, 0), 50);
+                }
+            </script>
+            
+        </section>
+
+        {{-- PAGE PESANAN --}}
+        <section id="pesanan" class="block">
+            {{-- VERIFIKASI --}}
+            <div id="verifikasi">
+                <p class="text-sm text-gray-500 mb-3 px-3">Click Verifikasi apabila pembayaran</p>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <table class="min-w-full table-auto">
+                        <thead class=" bg-gray-100">
+                            <tr class="text-sm text-gray-600">
+                                <th class="py-3 px-4">Kamar</th>
+                                <th class="py-3 px-4">Nama item</th>
+                                <th class="py-3 px-4">Jumlah</th>
+                                <th class="py-3 px-4">Total Bayar</th>
+                                <th class="py-3 px-4">Status</th>
+                                <th class="text-right py-2 px-4">Verifikasi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm text-gray-800">
+                            @forelse ($verifikasi as $item)
+                                <tr class="border-t hover:bg-gray-50 transition duration-200">
+                                    <td class="py-3 px-4">Kamar {{ $item->idKamar }}</td>
+                                    <td class="py-3 px-4">{{ $item->nama_item }}</td>
+                                    <td class="py-3 px-4">{{ $item->jumlah }}</td>
+                                    <td class="py-3 px-4">{{ $item->total_bayar }}</td>
+                                    <td class="py-3 px-4">{{ $item->status_pembayaran }}</td>
+                                    <td class="text-right py-3 px-4">
+                                        <a href="#" data-id="{{ $item->idTransaksi }}" data-toggle="modal"
+                                            data-target="#ModalVerifikasiTransaksi"
+                                            class="verifikasi-pembayaran text-indigo-500 hover:text-indigo-700 transition">
+                                            Lihat Bukti <span aria-hidden="true">→</span></a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="py-3 px-4 text-center text-gray-500">Belum ada pesanan.</td>
+                                </tr>
+                            @endforelse 
+                        </tbody>
+                    </table>
+
+                    {{-- MODAL DATA --}}
+                    <div class="modal fade p-4" id="ModalVerifikasiTransaksi" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                            <div class="modal-content rounded-lg shadow-lg bg-white"> 
+                                <form action="{{ route('transaksi.verifikasiPembayaran') }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    {{-- header --}}
+                                    <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Verifikasi Pembayaran</h3>
+                                        <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
+                                            aria-hidden="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    {{-- content --}}
+                                    <div class="modal-body p-6 space-y-2">
+                                        <!-- AJAX -->
+                                        <div class="flex items-center space-x-4">
+                                            <label for="kamar" class="w-32 text-md font-medium text-gray-700">
+                                                Kamar:</label>
+                                            <input id="modal-bukti-kamar" type="text" value="" name="idKamar"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                disabled>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="nama" class="w-32 text-md font-medium text-gray-700">
+                                                Nama Pembeli:</label>
+                                            <input id="modal-bukti-nama" type="text" value="" name="nama"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                disabled>
+                                        </div>
+                                        
+                                        <div class="text-center">
+                                            <p class="text-gray-500 text-sm">Pembelian Layanan Tambahan</p>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="nama" class="w-32 text-md font-medium text-gray-700">
+                                                Nama Barang:</label>
+                                            <input id="modal-bukti-item" type="text" value="" name="nama_item"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="jumlah" class="w-32 text-md font-medium text-gray-700">
+                                                Jumlah:</label>
+                                            <input id="modal-bukti-jumlah" type="text" value="" name="jumlah"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+        
+                                        <div class="flex items-center space-x-4">
+                                            <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
+                                                Tanggal:</label>
+                                            <input id="modal-bukti-tanggal" type="text" value="" name="tanggal"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+        
+                                        <div class="flex items-center space-x-4">
+                                            <label for="total_bayar" class="w-32 text-md font-medium text-gray-700">
+                                                Total Bayar:</label>
+                                            <input id="modal-bukti-total_bayar" type="text" value="" name="total_bayar"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+        
+                                        <div class="flex items-center space-x-4">
+                                            <label for="status" class="w-32 text-md font-medium text-gray-700">
+                                                Status:</label>
+                                            <input id="modal-bukti-status" type="text" value="" name="status"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="pengantaran" class="w-32 text-md font-medium text-gray-700">
+                                                Pengantaran:</label>
+                                            <input id="modal-bukti-pengantaran" type="text" value="" name="pengantaran"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="pengambilan" class="w-32 text-md font-medium text-gray-700">
+                                                Tanggal Ambil:</label>
+                                            <input id="modal-bukti-pengambilan" type="text" value="" name="pengambilan"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+        
+                                        <div class="flex items-center space-x-4">
+                                            <label for="pesan" class="w-32 text-md font-medium text-gray-700">
+                                                Pesan:</label>
+                                            <textarea id="modal-bukti-pesan" type="text" value="" rows="2" name="status"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
+                                        </div>
+
+                                        <input type="hidden" id="modal-bukti-idTransaksi" name="idTransaksi">
+
+                                    </div> 
+                                    {{-- SUBMIT --}}
+                                    <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                        <button type="button" name="action" value="tolak" data-toggle="modal" data-target="#ModalTolakPembayaran" data-dismiss="modal" 
+                                            class="verifikasi-pembayaran rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600">
+                                            Pembayaran Salah
+                                        </button>
+                                        <button type="submit" name="action" value="verifikasi"
+                                            class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                            Verifikasi
+                                        </button>
+                                    </div>                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- MODAL REVISI --}}
+                    <div class="modal fade p-4" id="ModalTolakPembayaran" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                            <div class="modal-content rounded-lg shadow-lg bg-white"> 
+                                <form action="{{ route('transaksi.verifikasiPembayaran') }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    {{-- header --}}
+                                    <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Revisi Pembayaran</h3>
+                                        <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
+                                            aria-hidden="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    {{-- content --}}
+                                    <div class="modal-body p-6 space-y-2">
+                                        <!-- AJAX -->
+                                        <div class="flex items-center space-x-4">
+                                            <label for="nama" class="w-32 text-md font-medium text-gray-700">
+                                                Nama Pembeli:</label>
+                                            <input id="modal-revisi-nama" type="text" value="" name="nama"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                disabled>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="belanja" class="w-32 text-md font-medium text-gray-700">
+                                                Belanja:</label>
+                                            <input id="modal-revisi-belanja" type="text" value="" name="belanja"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                disabled>
+                                        </div>
+                                        
+                                        <div class="text-center">
+                                            <p class="text-gray-500 text-sm">Masukan Nominal Pembayaran Yang Harus dibayar</p>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="harga" class="w-32 text-md font-medium text-gray-700">
+                                                Nominal Pembayaran:</label>
+                                            <input id="modal-revisi-nominal" type="text" value="" name="nominal"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                        </div>      
+
+                                        {{-- pesan --}}
+                                        <div class="flex items-center space-x-4 mt-4">
+                                            <label for="pesan" class="w-32 text-md font-medium text-gray-700">
+                                                Pesan:</label>
+                                            <textarea id="modal-revisi-pesan" type="text" value="" rows="2" name="pesan"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"></textarea>
+                                        </div>
+
+                                        <input type="hidden" id="modal-revisi-idTransaksi" name="idTransaksi">
+                                        <input type="hidden" id="modal-revisi-idKontrak" name="idKontrak">
+                                        <input type="hidden" id="modal-revisi-idLayanan" name="idLayanan">
+                                        <input type="hidden" id="modal-revisi-jumlah" name="jumlah">
+                                        <input type="hidden" id="modal-revisi-total_bayar" name="total_bayar">
+                                        <input type="hidden" id="modal-revisi-tanggal" name="tanggal">
+                                        <input type="hidden" id="modal-revisi-tgl_terima" name="tgl_terima">
+                                        <input type="hidden" id="modal-revisi-pengantaran" name="pengantaran">
+                                        <input type="hidden" id="modal-revisi-status_pengantaran" name="status_pengantaran">
+
+                                    </div> 
+                                    {{-- SUBMIT --}}
+                                    <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                        <button type="button" data-dismiss="modal" 
+                                            class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                            Tutup
+                                        </button>
+                                        <button type="submit" name="action" value="tolak"
+                                            class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                            Revisi Pembayaran
+                                        </button>
+                                    </div>                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>  
+
+            {{-- PENGANTARAN --}}
+            @if ($pesanan->isNotEmpty())
+                <div id="pengantaran" class="mt-5">
+                    <p class="text-sm text-gray-500 mb-3 px-3">CLick Pengantaran Barang Apabila Pesanan Sudah diantar</p>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <table class="min-w-full table-auto">
+                            <thead class=" bg-gray-100">
+                                <tr class="text-sm text-gray-600">
+                                    <th class="py-3 px-4">Kamar</th>
+                                    <th class="py-3 px-4">Nama item</th>
+                                    <th class="py-3 px-4">Jumlah</th>
+                                    <th class="py-3 px-4">Tanggal Pengantaran</th>
+                                    <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4">Pesan</th>
+                                    <th class="text-right py-2 px-4">Lakukan Pengantaran</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-gray-800">
+                                @forelse ($pesanan as $item)
+                                    <tr class="border-t hover:bg-gray-50 transition duration-200">
+                                        <td class="py-3 px-4">Kamar {{ $item->idKamar }}</td>
+                                        <td class="py-3 px-4">{{ $item->nama_item }}</td>
+                                        <td class="py-3 px-4">{{ $item->jumlah }}</td>
+                                        <td class="py-3 px-4">{{ $item->tgl_terima }}</td>
+                                        <td class="py-3 px-4">{{ $item->status_pengantaran }}</td>
+                                        <td class="py-3 px-4">{{ $item->pesan }}</td>
+                                        <td class="text-right py-3 px-4">
+                                            <form action="{{ route('pengantaran.layanan', $item->idTransaksi) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="text-indigo-500 hover:text-indigo-700 transition">
+                                                    Pesanan Selesai <span aria-hidden="true">→</span>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="py-3 px-4 text-center text-gray-500">Belum ada pesanan yang perlu di antar.</td>
+                                    </tr>
+                                @endforelse 
+                            </tbody>
+                        </table>
+                    </div>
+                </div> 
+            @endif
+
+            {{-- PESANAN --}}
+            <div id="pesanan" class="mt-5">
+                <p class="text-sm text-gray-500 mb-3 px-3">Click untuk mengubah barang sudah diterima</p>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <table class="min-w-full table-auto">
+                        <thead class=" bg-gray-100">
+                            <tr class="text-sm text-gray-600">
+                                <th class="py-3 px-4">Kamar</th>
+                                <th class="py-3 px-4">Nama item</th>
+                                <th class="py-3 px-4">Jumlah</th>
+                                <th class="py-3 px-4">Tanggal Pengantaran</th>
+                                <th class="py-3 px-4">Status Pengantaran</th>
+                                <th class="py-3 px-4">Status</th>
+                                <th class="text-right py-2 px-4">Pesanan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm text-gray-800">
+                            @forelse ($update as $item)
+                                <tr class="border-t hover:bg-gray-50 transition duration-200">
+                                    <td class="py-3 px-4">Kamar {{ $item->idKamar }}</td>
+                                    <td class="py-3 px-4">{{ $item->nama_item }}</td>
+                                    <td class="py-3 px-4">{{ $item->jumlah }}</td>
+                                    <td class="py-3 px-4">{{ $item->tgl_terima }}</td>
+                                    <td class="py-3 px-4">{{ $item->status_pengantaran }}</td>
+                                    <td class="py-3 px-4">{{ $item->status_pembayaran }}</td>
+                                    <td class="text-right py-3 px-4">
+                                        <a href="#" data-id="{{ $item->idTransaksi }}" data-toggle="modal"
+                                            data-target="#ModalSelesaikan"
+                                            class="selesaikan-pesanan text-indigo-500 hover:text-indigo-700 transition">
+                                            Lihat Detail <span aria-hidden="true">→</span></a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="py-3 px-4 text-center text-gray-500">Belum ada pesanan yang diteirma.</td>
+                                </tr>
+                            @endforelse 
+                        </tbody>
+
+                        {{-- MODAL DATA --}}
+                        <div class="modal fade p-4" id="ModalSelesaikan" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                            <div class="modal-content rounded-lg shadow-lg bg-white">
+                                {{-- HEADER --}}
+                                <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                    <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail
+                                        Pembelian
+                                    </h3>
+                                    <button type="button" class="text-gray-400 hover:text-gray-600"
+                                        data-dismiss="modal" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                {{-- CONTENT --}}
+                                <form action="{{ route('transaksi.selesaikanPesanan') }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <!-- AJAX -->
+                                    <div class="modal-body p-6 space-y-2">
+                                        <div class="flex items-center space-x-4">
+                                            <label for="kamar" class="w-32 text-md font-medium text-gray-700">
+                                                Kamar:</label>
+                                            <input id="modal-selesaikan-kamar" type="text" value="" name="idKamar"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="pembeli" class="w-32 text-md font-medium text-gray-700">
+                                                Pembeli:</label>
+                                            <input id="modal-selesaikan-pembeli" typ
+                                            e="text" value="" name="pembeli"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <p class="text-gray-500 text-sm">Pembelian Layanan Tambahan</p>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="nama" class="w-32 text-md font-medium text-gray-700">
+                                                Nama Barang:</label>
+                                            <input id="modal-selesaikan-nama" type="text" value="" name="item"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="jumlah" class="w-32 text-md font-medium text-gray-700">
+                                                Jumlah:</label>
+                                            <input id="modal-selesaikan-jumlah" type="text" value="" name="jumlah"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+                                        
+                                        <div class="flex items-center space-x-4">
+                                            <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
+                                                Tanggal:</label>
+                                            <input id="modal-selesaikan-tanggal" type="text" value="" name="tanggal"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="harga" class="w-32 text-md font-medium text-gray-700">
+                                                Total Harga:</label>
+                                            <input id="modal-selesaikan-total" type="text" value="" name="total_bayar"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="tgl_terima"
+                                                class="w-32 text-md font-medium text-gray-700">
+                                                Tanggal Terima:</label>
+                                            <input id="modal-selesaikan-tgl_terima" type="text" value="" name="tgl_terima"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="status_pengantaran"
+                                                class="w-32 text-md font-medium text-gray-700">
+                                                Pengantaran:</label>
+                                            <input id="modal-selesaikan-status_pengantaran" type="text" value="" name="selesaikan"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="status" class="w-32 text-md font-medium text-gray-700">
+                                                Status:</label>
+                                            <input id="modal-selesaikan-status" type="text" value="" name="status"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="pesan" class="w-32 text-md font-medium text-gray-700">
+                                                Pesan:</label>
+                                            <textarea id="modal-selesaikan-pesan" type="text" value="" rows="2" name="pesan"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
+                                        </div>
+
+                                        {{-- input hidden --}}
+                                        <input type="hidden" name="idTransaksi" id="modal-selesaikan-idTransaksi">
+                                        <input type="hidden" name="idLayanan" id="modal-selesaikan-idLayanan">
+                                        <input type="hidden" name="stok" id="modal-selesaikan-stok">
+
+                                    </div>
+                                    {{-- FOOTER --}}
+                                    <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                        <button type="submit"
+                                            class=" rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                            Pesanan diterima
+                                        </button>
+                                        <button type="button"
+                                            class=" rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                                            data-dismiss="modal">
+                                            Tutup
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    </table>
+                </div>
             </div>
         </section>
 
         <!-- PAGE LAYANAN TAMBAHAN -->
-        <section id="list" class="block">
+        <section id="list" class="hidden">
             {{-- LIST LAYANAN --}}
-            <section>
+            <section class="mt-5">
                 <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat Detail</p>
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
                     <table class="min-w-full table-auto">
@@ -198,17 +723,17 @@
                             <th class="py-3 px-4">Total Bayar</th>
                             <th class="py-3 px-4">Tanggal</th>
                             <th class="py-3 px-4">Lihat Detail</th>
-                        </tr>
+                        </tr> 
                     </thead>
                     <tbody class="text-sm text-gray-800">
                         @forelse ($riwayatTransaksi as $item)
                             <tr class="border-t hover:bg-gray-50 transition duration-200">
                                 <td class="py-3 px-4">{{ $item->nama_item }}</td>
                                 <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
-                                <td class="py-3 px-4">{{ $item->total_bayar }}</td>
+                                <td class="py-3 px-4">{{ $item->dibayar }}</td>
                                 <td class="py-3 px-4">{{ $item->tanggal }}</td>
                                 <td class="py-3 px-4">
-                                    <a href="#" data-id="{{ $item->idLayananTambahan }}" data-toggle="modal"
+                                    <a href="#" data-id="{{ $item->idTransaksi }}" data-toggle="modal"
                                         data-target="#ModalTransaksi"
                                         class="lihat-detail-transaksi text-indigo-500 hover:text-indigo-700 transition">
                                         Lihat Detail <span aria-hidden="true">→</span></a>
@@ -221,6 +746,7 @@
                         @endforelse 
                     </tbody>
                 </table>
+
                 {{-- MODAL DATA --}}
                 <div class="modal fade p-4" id="ModalTransaksi" tabindex="-1" role="dialog"
                     aria-labelledby="myModalLabel" aria-hidden="true">
@@ -263,15 +789,7 @@
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                         readonly>
                                 </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="harga" class="w-32 text-md font-medium text-gray-700">
-                                        Harga:</label>
-                                    <input id="modal-detail-harga" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
+                                
                                 <div class="flex items-center space-x-4">
                                     <label for="jumlah" class="w-32 text-md font-medium text-gray-700">
                                         Jumlah:</label>
@@ -281,9 +799,17 @@
                                 </div>
 
                                 <div class="flex items-center space-x-4">
-                                    <label for="metode" class="w-32 text-md font-medium text-gray-700">
-                                        Metode Pembayaran:</label>
-                                    <input id="modal-detail-metode" type="text" value=""
+                                    <label for="tgl_terima" class="w-32 text-md font-medium text-gray-700">
+                                        Tanggal Terima:</label>
+                                    <input id="modal-detail-tgl_terima" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <label for="pengantaran" class="w-32 text-md font-medium text-gray-700">
+                                        Pengantaran:</label>
+                                    <input id="modal-detail-pengantaran" type="text" value=""
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                         readonly>
                                 </div>
@@ -297,9 +823,17 @@
                                 </div>
 
                                 <div class="flex items-center space-x-4">
-                                    <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
-                                        Keterangan:</label>
-                                    <textarea id="modal-detail-keterangan" type="text" value="" rows="2"
+                                    <label for="status" class="w-32 text-md font-medium text-gray-700">
+                                        Status:</label>
+                                    <input id="modal-detail-status" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <label for="pesan" class="w-32 text-md font-medium text-gray-700">
+                                        Pesan:</label>
+                                    <textarea id="modal-detail-pesan" type="text" value="" rows="2"
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
                                 </div>
 
@@ -319,40 +853,76 @@
     </main>
 </x-layout>
 
-{{-- JS --}}
-<script>
-    function switchPage(page) {
-        var listSection = document.getElementById('list');
-        var riwayatSection = document.getElementById('riwayat');
-        var btnList = document.getElementById('btnList');
-        var btnRiwayat = document.getElementById('btnRiwayat');
 
-        listSection.classList.add('hidden');
-        riwayatSection.classList.add('hidden');
 
-        btnList.classList.remove('bg-indigo-600', 'text-white');
-        btnList.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
-        btnRiwayat.classList.remove('bg-indigo-600', 'text-white');
-        btnRiwayat.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
-
-        if (page === 'list') {
-            listSection.classList.remove('hidden');
-            btnList.classList.add('bg-indigo-600', 'text-white');
-            btnList.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
-        } else if (page === 'riwayat') {
-            riwayatSection.classList.remove('hidden');
-            btnRiwayat.classList.add('bg-indigo-600', 'text-white');
-            btnRiwayat.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
-        }
-
-        setTimeout(function() {
-            window.scrollTo(0, 0);
-        }, 50);
-    }
-</script>
-
+{{-- DETAIL AJAX --}}
 <script>
     $(document).ready(function() {
+        $('.selesaikan-pesanan').on('click', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+
+            $.ajax({
+                url: '/selesaikan-pesanan/' + id,
+                type: 'GET',
+                success: function(data) {
+                    $('#modal-selesaikan-kamar').val('Kamar ' + data.data.idKamar);
+                    $('#modal-selesaikan-pembeli').val(data.data.nama);
+                    $('#modal-selesaikan-nama').val(data.data.nama_item);
+                    $('#modal-selesaikan-jumlah').val(data.data.jumlah);
+                    $('#modal-selesaikan-tanggal').val(data.data.tanggal);
+                    $('#modal-selesaikan-total').val(data.data.total_bayar);
+                    $('#modal-selesaikan-tgl_terima').val(data.data.tgl_terima);
+                    $('#modal-selesaikan-status_pengantaran').val(data.data.status_pengantaran);
+                    $('#modal-selesaikan-status').val(data.data.status_pembayaran);
+                    $('#modal-selesaikan-pesan').val(data.data.pesan);
+
+                    $('#modal-selesaikan-idTransaksi').val(data.data.idTransaksi);
+                    $('#modal-selesaikan-idLayanan').val(data.data.idLayananTambahan);
+                    $('#modal-selesaikan-stok').val(data.data.stok);
+                }
+            });
+        });
+
+        $('.verifikasi-pembayaran').on('click', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+
+            $.ajax({
+                url: '/layanan-tambahan/verifikasi/' + id,
+                type: 'GET',
+                success: function(data) {
+                    // ACTION SUCCESS
+                    $('#modal-bukti-kamar').val('Kamar ' + data.data.idKamar);
+                    $('#modal-bukti-nama').val(data.data.nama);
+                    $('#modal-bukti-item').val(data.data.nama_item);
+                    $('#modal-bukti-jumlah').val(data.data.jumlah);
+                    $('#modal-bukti-tanggal').val(data.data.tanggal);
+                    $('#modal-bukti-total_bayar').val(data.data.total_bayar);
+                    $('#modal-bukti-status').val(data.data.status_pembayaran);
+                    $('#modal-bukti-pengantaran').val(data.data.pengantaran);
+                    $('#modal-bukti-pengambilan').val(data.data.tgl_terima);
+                    $('#modal-bukti-pesan').val(data.data.pesan);
+                    $('#modal-bukti-idTransaksi').val(data.data.idTransaksi);
+
+                    // ACTION BATAL
+                    $('#modal-revisi-kamar').val('Kamar ' + data.data.idKamar);
+                    $('#modal-revisi-nama').val(data.data.nama);
+                    $('#modal-revisi-belanja').val(data.data.jumlah + ' ' + data.data.nama_item);
+
+                    $('#modal-revisi-idTransaksi').val(data.data.idTransaksi);
+                    $('#modal-revisi-idKontrak').val(data.data.idKontrak);
+                    $('#modal-revisi-idLayanan').val(data.data.idLayananTambahan);
+                    $('#modal-revisi-jumlah').val(data.data.jumlah);
+                    $('#modal-revisi-total_bayar').val(data.data.total_bayar);
+                    $('#modal-revisi-tanggal').val(data.data.tanggal);
+                    $('#modal-revisi-tgl_terima').val(data.data.tgl_terima);
+                    $('#modal-revisi-pengantaran').val(data.data.pengantaran);
+                    $('#modal-revisi-status_pengantaran').val(data.data.status_pengantaran);
+                }
+            });
+        });
+
         $('.lihat-detail-layanan').on('click', function(e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -403,11 +973,12 @@
                     $('#modal-detail-pembeli').val(data.idKamar);
                     $('#modal-detail-nama').val(data.nama_item);
                     $('#modal-detail-tanggal').val(data.tanggal);
-                    $('#modal-detail-harga').val(data.harga);
                     $('#modal-detail-jumlah').val(data.jumlah);
-                    $('#modal-detail-metode').val(data.metode);
-                    $('#modal-detail-total').val(data.total_bayar);
-                    $('#modal-detail-keterangan').val();
+                    $('#modal-detail-tgl_terima').val(data.tgl_terima);
+                    $('#modal-detail-pengantaran').val(data.pengantaran);
+                    $('#modal-detail-total').val(data.dibayar);
+                    $('#modal-detail-status').val(data.status_pembelian);
+                    $('#modal-detail-pesan').val(data.pesan);
                 }
             });
         });

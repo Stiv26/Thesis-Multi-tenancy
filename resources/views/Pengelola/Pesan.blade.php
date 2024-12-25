@@ -38,7 +38,7 @@
                                 <td class="py-3 px-4">{{ $item->tanggal }}</td>
                                 <td class="py-3 px-4">{{ $item->pesan }}</td>
                                 <td class="py-3 px-4">
-                                    <a href="#" data-id="{{ $item->idNotifikasi }}" data-toggle="modal" data-target="#ModalPesan" class="lihat-detail-pesan text-indigo-500 hover:text-indigo-700 transition">
+                                    <a href="#" data-id="{{ $item->idNotifikasi }}" class="lihat-detail-pesan text-indigo-500 hover:text-indigo-700 transition">
                                         Tandai Sudah Terbaca <span aria-hidden="true">→</span></a>
                                 </td>
                             </tr>
@@ -55,7 +55,7 @@
         {{-- PAGE PENGUMUMAN --}}
         <section id="pengumuman" class="hidden">
             <!-- Form pengumuman -->
-            <form id="pengumumanForm" method="POST" action="{{ route('pesan.store') }}">
+            <form id="pengumumanForm" method="POST" action="{{ route('pengumuman.store') }}">
                 @csrf
                 <!-- Bagian Keterangan -->
                 <div class="border-b border-gray-900/10 pb-10">
@@ -92,13 +92,34 @@
                                         <h3 class="text-lg font-semibold text-gray-900" id="modal-title">Konfirmasi Pengumuman</h3>
                                         <p class="mt-2 text-sm text-gray-500">Masukan tanggal expired pengumuman?</p>
                                         <input name="tgl_expired" id="tgl_expired" type="date" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+
+                                        {{-- Nonaktifkan tanggal --}}
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', () => {
+                                                const tglExpiredInput = document.getElementById('tgl_expired');
+                                        
+                                                // Ambil tanggal hari ini
+                                                const today = new Date();
+                                        
+                                                // Tambahkan 1 hari untuk mendapatkan besok
+                                                const tomorrow = new Date(today);
+                                                tomorrow.setDate(today.getDate() + 2);
+                                        
+                                                // Format tanggal ke format YYYY-MM-DD
+                                                const minDate = tomorrow.toISOString().split('T')[0];
+                                        
+                                                // Tetapkan atribut min pada input
+                                                tglExpiredInput.setAttribute('min', minDate);
+                                            });
+                                        </script>
+                                        
                                     </div>
                                 </div>
         
                                 <!-- Footer: Tombol Aksi -->
                                 <div class="mt-6 flex justify-end space-x-4">
                                     <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Batal</button>
-                                    <button type="button" onclick="document.getElementById('pengumumanForm').submit();" class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition">Kirim</button>
+                                    <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition">Kirim</button>
                                 </div>
                             </div>
                         </div>
@@ -147,6 +168,7 @@
         }, 50);
     }
 </script>
+{{-- UPDATE PESAN --}}
 <script>
     $(document).on('click', '.lihat-detail-pesan', function(e) {
         e.preventDefault();

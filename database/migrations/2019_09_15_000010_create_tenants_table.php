@@ -17,7 +17,7 @@ class CreateTenantsTable extends Migration
     {
         Schema::create('tenants', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->json('custom_migrations')->nullable(); // Simpan pilihan checkbox
+            $table->json('custom_tables')->nullable(); // Simpan pilihan checkbox
 
             // your custom columns may go here
 

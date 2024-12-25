@@ -17,8 +17,8 @@ class PemeliharaanController extends Controller
     public function pemeliharaan()
     {
         $data = DB::table('pemeliharaan as p')
-            ->join('fasilitas as f', 'f.idfasilitas', '=', 'p.idfasilitas')
-            ->select('*')
+            ->join('kontrak as k', 'k.idKontrak', '=', 'p.idkontrak')
+            ->select('*', 'p.status as status_pemeliharaan')
             ->where('p.status', '!=', 'Selesai')
             ->where('p.status', '!=', 'Tolak')
             ->get();
@@ -29,7 +29,7 @@ class PemeliharaanController extends Controller
     public function detailPemeliharaan($id)
     {
         $data = DB::table('pemeliharaan as p')
-            ->join('fasilitas as f', 'f.idfasilitas', '=', 'p.idfasilitas')
+            ->join('kontrak as k', 'k.idKontrak', '=', 'p.idkontrak')
             ->select('*', 'p.status as status_pemeliharaan')
             ->where('p.status', '!=', 'Selesai')
             ->where('p.status', '!=', 'Tolak')
@@ -41,11 +41,6 @@ class PemeliharaanController extends Controller
 
     public function updatePemeliharaan(Request $request, $id)
     {
-        $request->validate([
-            'status' => 'required|string',
-            'tgl_pemeliharaan' => 'nullable|date',
-        ]);
-    
         DB::table('pemeliharaan')
             ->where('idPemeliharaan', $id)
             ->update([
@@ -56,22 +51,21 @@ class PemeliharaanController extends Controller
         return response()->json(['message' => 'Pemeliharaan berhasil diperbarui!'], 200);
     }
     
-    
     public function riwayatPemeliharaan()
     {
         $data = DB::table('pemeliharaan as p')
-            ->join('fasilitas as f', 'f.idfasilitas', '=', 'p.idfasilitas')
-            ->select('*')
+            ->join('kontrak as k', 'k.idKontrak', '=', 'p.idkontrak')
+            ->select('*', 'p.status as status_pemeliharaan')
             ->where('p.status', '=', 'Selesai')
             ->get();
     
         return view('pengelola.pemeliharaan', compact('data'));
-    } 
+    }
 
     public function detailRiwayat($id)
     {
         $data = DB::table('pemeliharaan as p')
-            ->join('fasilitas as f', 'f.idfasilitas', '=', 'p.idfasilitas')
+            ->join('kontrak as k', 'k.idKontrak', '=', 'p.idkontrak')
             ->select('*', 'p.status as status_pemeliharaan')
             ->where('p.status', '=', 'Selesai')
             ->where('p.idPemeliharaan', '=', $id)

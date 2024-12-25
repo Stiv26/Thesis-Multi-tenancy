@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PesanController extends Controller
 {
@@ -40,10 +41,9 @@ class PesanController extends Controller
     public function storePengumuman(Request $request)
     {
         DB::table('pengumuman')->insert([
-            'Users_id' => 1,
+            'Users_id' => Auth::user()->id,
             'pesan' => $request->pesan,
             'tanggal' => now(),
-            'status'=> 'Terkirim',
             'tgl_expired' => $request->tgl_expired,
         ]);
 
