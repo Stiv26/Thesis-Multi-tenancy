@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class PembayaranController extends Controller
 {
@@ -119,10 +120,16 @@ class PembayaranController extends Controller
             ->where('bk.idKontrak', '=', $id)
             ->get();
 
+        $metode = DB::table('metodepembayaran')
+            ->select('*')
+            ->where('users_id', '=', Auth::user()->id)
+            ->get();
+
         return response()->json([
             'data' => $data,
             'pengaturan' => $pengaturan,
-            'biayaKontrak' => $biayaKontrak
+            'biayaKontrak' => $biayaKontrak,
+            'metode' => $metode
         ]);
     }  
 

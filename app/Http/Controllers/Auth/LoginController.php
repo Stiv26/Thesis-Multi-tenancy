@@ -55,11 +55,12 @@ class LoginController extends Controller
 
         $user = User::where('no_telp', $request->no_telp)->where('status', 'Aktif')->first();
 
-        if ($user && $user->password === $request->password) {
-            if ($user->status === 'Nonaktif') {
-                return back()->withErrors(['no_telp' => 'Akun Anda telah dinonaktifkan. Silakan hubungi pengelola kos untuk membuat kontrak.']);
-            }
+        // Cek apakah user ditemukan
+        if (!$user) {
+            return back()->withErrors(['no_telp' => 'Akun tidak ditemukan atau tidak aktif.']);
+        }
 
+        if ($user && $user->password === $request->password) {
             Auth::login($user);
             
             $redirectRoute = $this->determineRedirectRoute();

@@ -291,6 +291,29 @@
                                 </div>
                             </div>
 
+                            <div class="sm:col-span-2 sm:col-start-1">
+                                <label for="bank" class="block text-sm font-medium leading-6 text-gray-900">Bank
+                                    Utama</label>
+                                <div class="mt-2">
+                                    <select id="bank" name="bank" required
+                                        class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <option value="BCA">BCA (BANK CENTRAL ASIA)</option>
+                                        <option value="BRI">BRI (BANK RAKYAT INDONESIA)</option>
+                                        <option value="Mandiri">Bank Mandiri</option>
+                                        <option value="BNI">BNI (BANK NEGARA INDONESIA)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-2">
+                                <label for="rekening" class="block text-sm font-medium leading-6 text-gray-900">Nomor
+                                    Rekening</label>
+                                <div class="mt-2">
+                                    <input required id="rekening" name="rekening" type="text"
+                                        class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                </div>
+                            </div>
+
                             {{-- rentang kontrak --}}
                             <div class="sm:col-span-2 sm:col-start-1">
                                 <label for="kontrak"
@@ -691,6 +714,22 @@
                                 </div>
 
                                 <div class="flex items-center space-x-4">
+                                    <label for="email" class="w-32 text-md font-medium text-gray-700">
+                                        Email:</label>
+                                    <input id="modal-email" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <label for="rekening" class="w-32 text-md font-medium text-gray-700">
+                                        Rekening:</label>
+                                    <input id="modal-rekening" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
                                     <label for="status" class="w-32 text-md font-medium text-gray-700">
                                         Status:</label>
                                     <input id="modal-status" type="text" value=""
@@ -877,6 +916,8 @@
                     $('#modal-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-nama').val(data.data.nama);
                     $('#modal-telp').val(data.data.no_telp);
+                    $('#modal-email').val(data.data.email);
+                    $('#modal-rekening').val(data.data.metode + ' - ' + data.data.nomor_tujuan);
                     $('#modal-status').val(data.data.status);
 
                     // menambahkan data diri kedalaam modal

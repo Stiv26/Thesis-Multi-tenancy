@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pengelola;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class KaryawanController extends Controller
 {
@@ -101,6 +102,7 @@ class KaryawanController extends Controller
     public function detailKaryawan($id)
     {
         $data = DB::table('users as u')
+            ->join('metodePembayaran as m', 'm.users_id', '=', 'u.id')
             ->select('*')
             ->where('u.id', $id)
             ->first();
@@ -110,14 +112,26 @@ class KaryawanController extends Controller
 
     public function storeKaryawan(Request $request)
     {
-        DB::table('users')->insert([
-            'no_telp' => $request['no_telp'],
-            'password' => $request['password'],
-            'email' => $request['email'],
-            'nama' => $request['nama'],
-            'status' => 'Aktif',    
-            'idRole' => 3,        
-        ]);
+        $uuid = Str::uuid();
+        $tempId = crc32($uuid->toString()) & 0xffffffff;
+
+        DB::beginTransaction();
+            DB::table('users')->insert([
+                'id' => $tempId,
+                'no_telp' => $request['no_telp'],
+                'password' => $request['password'],
+                'email' => $request['email'],
+                'nama' => $request['nama'],
+                'status' => 'Aktif',    
+                'idRole' => 3,        
+            ]);
+
+            DB::table('metodepembayaran')->insert([
+                'metode' => $request['bank'],
+                'nomor_tujuan' => $request['rekening'],
+                'users_id' => $tempId,    
+            ]);
+        DB::commit();
 
         return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil ditambahkan.');
     }

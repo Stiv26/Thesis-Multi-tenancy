@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
@@ -15,18 +15,22 @@ use App\Http\Controllers\Pengelola\PesanController;
 use App\Http\Controllers\Pengelola\KaryawanController;
 use App\Http\Controllers\Pengelola\PemeliharaanController;
 use App\Http\Controllers\Pengelola\LayananTambahanController;
+use App\Http\Controllers\Pengelola\ProfilPengelolaController;
 // PENGHUNI
 use App\Http\Controllers\Penghuni\KamarController;
 use App\Http\Controllers\Penghuni\TagihanController;
 use App\Http\Controllers\Penghuni\PelaporanController;
 use App\Http\Controllers\Penghuni\PembelianLayananController;
 use App\Http\Controllers\Penghuni\PerbaikanController;
+use App\Http\Controllers\Penghuni\ProfilPenghuniController;
 // ART
 use App\Http\Controllers\PengelolaART\KamarKosController;
 use App\Http\Controllers\PengelolaART\LaporanKosController;
 use App\Http\Controllers\PengelolaART\PemeliharaanKosController;
 use App\Http\Controllers\PengelolaART\PengantaranKosController;
 use App\Http\Controllers\PengelolaART\PesanKosController;
+use App\Http\Controllers\PengelolaART\ProfilARTController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +64,9 @@ Route::middleware([
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 
+    Route::get('/lupa-password', [AuthController::class, 'showResetPasswordForm'])->name('password.request');
+    Route::post('/lupa-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
     Route::middleware('auth')->group(function () {
         Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -67,6 +74,15 @@ Route::middleware([
         | PENGELOLA AKSES ROUTES
         |--------------------------------------------------------------------------*/
         Route::middleware(['check-role:Pengelola'])->group(function () {
+            // PROFILE  
+            Route::get('/profil', [ProfilPengelolaController::class, 'profil'])->name('login.index');
+            Route::put('/update-profil', [ProfilPengelolaController::class, 'updateProfil'])->name('update.profilPengelola');
+
+            Route::post('/metode-pembayaran/store', [ProfilPengelolaController::class, 'storeMetode'])->name('metode.store');
+            Route::delete('/metode-pembayaran/{id}', [ProfilPengelolaController::class, 'destroyMetode'])->name('metode.destroy');
+
+
+
             // KOS 
             Route::get('/kos', function () {
                 $controller = new KosController();
@@ -296,6 +312,12 @@ Route::middleware([
         | PENGHUNI AKSES ROUTES
         |--------------------------------------------------------------------------*/
         Route::middleware(['check-role:Penghuni'])->group(function () {
+            // PROFILE  
+            Route::get('/info/profil', [ProfilPenghuniController::class, 'profil']);
+            Route::put('/info/update-profil', [ProfilPenghuniController::class, 'updateProfil'])->name('update.profilPenghuni');
+
+
+
             ### KAMAR
             Route::get('/info/kamar', function () {
                 $controller = new KamarController();
@@ -418,6 +440,12 @@ Route::middleware([
         | ART AKSES ROUTES
         |--------------------------------------------------------------------------*/
         Route::middleware(['check-role:ART'])->group(function () {
+            // PROFILE  
+            Route::get('/akses/profil', [ProfilARTController::class, 'profil']);
+            Route::put('/akses/update-profil', [ProfilARTController::class, 'updateProfil'])->name('update.profilArt');
+
+
+
             ### Kamar Kos
             Route::get('/akses/kamar', function () {
                 $controller = new KamarKosController();

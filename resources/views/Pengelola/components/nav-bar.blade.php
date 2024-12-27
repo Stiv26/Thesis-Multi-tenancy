@@ -100,8 +100,17 @@
                                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                                     tabindex="-1">
                                     <!-- Active: "bg-gray-100", Not Active: "" -->
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
-                                        tabindex="-1" id="user-menu-item-0">Profil</a>
+                                    @if (Auth::check() && Auth::user()->idRole == 1)
+                                        <a href="/profil" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                            tabindex="-1" id="user-menu-item-0">Profil</a>
+                                    @elseif (Auth::check() && Auth::user()->idRole == 2)
+                                        <a href="/info/profil" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                            tabindex="-1" id="user-menu-item-0">Profil</a>
+                                    @elseif (Auth::check() && Auth::user()->idRole == 3)
+                                        <a href="/akses/profil" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                            tabindex="-1" id="user-menu-item-0">Profil</a>
+                                    @endif
+                                    
                                     <form action="{{ route('logout') }}" method="POST" id="logout-form">
                                         @csrf
                                         <button type="submit" class="block px-4 py-2 text-sm text-gray-700"

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Renter;
+use Illuminate\Support\Str;
 
 class TenantController extends Controller
 {
@@ -45,14 +46,26 @@ class TenantController extends Controller
         // Panggil event untuk memigrasi tenant
         event(new TenantCreated($tenant));
 
-        DB::table('users')->insert([
-            'no_telp' => $request->telpon,
-            'password' => $request->password, 
-            'email' => $request->email,
-            'nama' => $request->nama,
-            'status' => 'Aktif',
-            'idRole' => 1,
-        ]);
+        $uuid = Str::uuid();
+        $tempId = crc32($uuid->toString()) & 0xffffffff;
+
+        DB::beginTransaction();
+            DB::table('users')->insert([
+                'id' => $tempId,
+                'no_telp' => $request->telpon,
+                'password' => $request->password, 
+                'email' => $request->email,
+                'nama' => $request->nama,
+                'status' => 'Aktif',
+                'idRole' => 1,
+            ]);
+
+            DB::table('metodePembayaran')->insert([
+                'metode' => $request->bank,
+                'nomor_tujuan' => $request->rekening,
+                'users_id' => $tempId,
+            ]);
+        DB::commit();
 
         return redirect()->back()->with('success', "Tenant '{$request->id}' berhasil dibuat dengan domain: {$domain}");
     }

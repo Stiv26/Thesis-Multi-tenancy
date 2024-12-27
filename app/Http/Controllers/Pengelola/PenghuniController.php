@@ -33,6 +33,7 @@ class PenghuniController extends Controller
     {
         $data = DB::table('users as u')
             ->join('kontrak as k', 'k.users_id', '=', 'u.id')
+            ->join('metodePembayaran as m', 'm.users_id', '=', 'u.id')
             ->select('*')
             ->where('u.status', '=', 'aktif')
             ->where('u.id', '=', $id)
@@ -208,6 +209,13 @@ class PenghuniController extends Controller
                 'status' => 'Pembayaran Perdana',
             ]);
 
+            // insert metodepembayaran
+            DB::table('metodePembayaran')->insert([
+                'metode' => $request->bank,
+                'nomor_tujuan' => $request->rekening,
+                'users_id' => $tempId,
+            ]);
+
             // Insert data ke tabel pengaturan (jika ada)
             if ($request->waktu_tagihan != 0) {
                 DB::table('pengaturan')->insert([
@@ -238,7 +246,7 @@ class PenghuniController extends Controller
                 }
             }
 
-            // Commit transaksi jika semua berhasil
+        // Commit transaksi jika semua berhasil
         DB::commit();
 
         return redirect()->route('penghuni.index')->with('success', 'Kontrak berhasil ditambahkan.');
