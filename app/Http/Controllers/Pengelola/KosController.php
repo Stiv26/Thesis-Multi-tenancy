@@ -107,8 +107,7 @@ class KosController extends Controller
         $belumLunas = DB::table('kontrak as k')
             ->join('pembayaran as p', 'k.idKontrak', 'p.idKontrak')
             ->where('k.idKontrak', $id)
-            ->where('p.status', 'Belum Lunas')
-            ->orWhere('p.status', 'Verifikasi')
+            ->whereIn('p.status', ['Belum Lunas', 'Revisi', 'Verifikasi'])
             ->exists();
 
         // Jika ada pembayaran yang belum lunas, return dengan error

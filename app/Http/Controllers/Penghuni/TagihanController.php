@@ -22,7 +22,7 @@ class TagihanController extends Controller
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
             ->select('*', 'p.status as status_pembayaran', 'p.tgl_denda as dendanya')
-            ->where('p.status', '=', 'Belum Lunas')
+            ->whereIn('p.status', ['Belum Lunas', 'Revisi'])
             ->where('k.users_id', '=', Auth::user()->id)
             ->get();
         
@@ -77,7 +77,7 @@ class TagihanController extends Controller
             ->join('users as u', 'u.id', '=', 'k.users_id')
             ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihan', 'p.tgl_denda as denda', 'k.status as status_kontrak')
             ->where('p.idPembayaran', '=', $id)
-            ->first();
+            ->first();  
 
         $biayaList = DB::table('biayaLainnya as bl')
             ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
@@ -85,7 +85,7 @@ class TagihanController extends Controller
             ->where('bl.idPembayaran', '=', $id)
             ->get();
 
-        $denda = DB::table('denda as d')
+        $denda = DB::table('denda')
             ->select('*')
             ->first();
 
@@ -97,7 +97,7 @@ class TagihanController extends Controller
         return response()->json([
             'data' => $data,
             'biayaList' => $biayaList,
-            'denda' => $denda,
+            'denda' => $denda ?: null,
             'metode' => $metode
         ]);
     }

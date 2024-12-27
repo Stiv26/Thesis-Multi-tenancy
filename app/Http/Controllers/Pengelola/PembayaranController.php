@@ -49,7 +49,7 @@ class PembayaranController extends Controller
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
             ->select('*', 'p.status as status_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran')
-            ->where('p.status', '=', 'Belum Lunas')
+            ->whereIn('p.status', ['Belum Lunas', 'Revisi'])
             ->whereIn('k.status', ['Aktif', 'Pembayaran Perdana'])
             ->get();
 
@@ -194,7 +194,6 @@ class PembayaranController extends Controller
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
             ->select('*', 'p.status as status_pembayaran' ,'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrak')
-            ->where('p.status', '=', 'Belum Lunas')
             ->where('p.idPembayaran', '=', $id)
             ->first();
 
@@ -211,7 +210,7 @@ class PembayaranController extends Controller
         return response()->json([
             'data' => $data,
             'biayaList' => $biayaList,
-            'denda' => $denda
+            'denda' => $denda ?: null
         ]);
     }
 
@@ -325,11 +324,11 @@ class PembayaranController extends Controller
             DB::table('pembayaran')->insert([
                 'idPembayaran' => $tempId,
                 'idKontrak' => $request->idKontrak,
-                'tgl_tagihan' => $request->tgl_tagihan,
+                'tgl_tagihan' => now(),
                 'tgl_denda' => $request->tgl_denda,
                 'total_bayar' => $request->total_bayar,
                 'keterangan' => $request->keterangan,
-                'status' => 'Belum Lunas',
+                'status' => 'Revisi',
             ]);
 
             return redirect()->back()->with('error', 'Pembayaran telah ditolak.');

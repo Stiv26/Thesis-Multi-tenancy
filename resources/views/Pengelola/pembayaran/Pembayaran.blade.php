@@ -398,6 +398,14 @@
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     readonly>
                                             </div>
+
+                                            <div class="flex items-center space-x-4">
+                                                <label for="rentang" class="w-32 text-md font-medium text-gray-700">
+                                                    Rentang:</label>
+                                                <input id="modal-bukti-rentang" type="text" value="" name="rentang"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    readonly>
+                                            </div>
                                             
                                             <div class="text-center">
                                                 <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
@@ -663,7 +671,7 @@
                                     <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
                                 </div>
 
-                                <div class="flex items-center space-x-4">
+                                <div class="flex items-center space-x-4" id="harga-kontrak">
                                     <label for="harga" class="w-32 text-md font-medium text-gray-700">
                                         Harga:</label>
                                     <input id="modal-harga" type="text" value=""
@@ -1057,7 +1065,7 @@
         $('.verifikasi-pembayaran').on('click', function(e) {
             e.preventDefault();
             var id = $(this).data('id');
-
+ 
             $.ajax({
                 url: '/verifikasi/' + id,
                 type: 'GET',
@@ -1066,6 +1074,7 @@
                     $('#modal-bukti-nama').val(data.data.nama);
                     $('#modal-bukti-tagihanPembayaran').val(data.data.tagihanPembayaran);
                     $('#modal-bukti-dendaPembayaran').val(data.data.dendaPembayaran);
+                    $('#modal-bukti-rentang').val(data.data.waktu + " " + data.data.rentang);
                     $('#modal-bukti-harga').val(data.data.harga);
                     $('#modal-bukti-total').val(data.data.dibayar);
                     $('#modal-bukti-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
@@ -1104,8 +1113,8 @@
                     $('#modal-revisi-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-revisi-nama').val(data.data.idKamar);
                     $('#modal-revisi-idKontrak').val(data.data.idKontrak);
-                    $('#modal-revisi-tgl_tagihan').val(data.data.tgl_tagihan);
-                    $('#modal-revisi-tgl_denda').val(data.data.tgl_denda);
+                    $('#modal-revisi-tgl_tagihan').val(data.data.tagihanPembayaran);
+                    $('#modal-revisi-tgl_denda').val(data.data.dendaPembayaran);
                     $('#modal-revisi-idPembayaran').val(data.data.idPembayaran);
                 }
             });
@@ -1152,13 +1161,20 @@
                     // mengirim id ke editpembayaran yang sesuai
                     $('#edit-pembayaran-btn').attr('href', '/list/edit-pembayaran/' + id);
 
-                    
-
+                    if (data.data.status_pembayaran === 'Revisi') {
+                        $('#deposit-kontrak').addClass('hidden');
+                        $('#denda-kontrak').addClass('hidden');
+                        $('#harga-kontrak').addClass('hidden');
+                    }
+                    else {
+                        $('#harga-kontrak').removeClass('hidden');
+                    }
+                        
                     // Logika untuk denda
                     const today = new Date(); 
                     const dendaDate = new Date(data.data.dendaPembayaran);
 
-                    if (today >= dendaDate) {
+                    if (today >= dendaDate && data.denda) {
                         $('#denda-kontrak').removeClass('hidden');
 
                         const jenisDenda = data.denda.jenis_denda;
@@ -1175,11 +1191,10 @@
                         {
                             if (data.data.deposit !== null) 
                             {
-                                $('#deposit-kontrak').removeClass('hidden');
                                 const deposit = parseFloat(data.data.deposit);
 
                                 if (jenisDenda === 'Nominal') {
-                                    denda = nilaiDenda - deposit;
+                                    denda = nilaiDenda;
                                 }
                                 else if (jenisDenda === 'Persen') {
                                     denda = ((totalBayar - deposit) * nilaiDenda) / 100;
@@ -1188,7 +1203,7 @@
                                     const hari = Math.abs(today - dendaDate);
                                     const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
 
-                                    denda = (formatHari * nilaiDenda) - deposit;
+                                    denda = formatHari * nilaiDenda;
                                 }   
                             } 
                             else {
@@ -1207,7 +1222,8 @@
                                     denda = formatHari * nilaiDenda;
                                 }
                             }
-                        } else {
+                        } 
+                        else {
                             $('#deposit-kontrak').addClass('hidden');
 
                             if (jenisDenda === 'Nominal') {
@@ -1234,6 +1250,13 @@
                         $('#modal-total').val(data.data.total_bayar);
                     }
 
+                    // DEPOSIT KONTRAK
+                    if (data.data.deposit === null || data.data.status_kontrak === 'Aktif') {
+                        $('#deposit-kontrak').addClass('hidden');
+                    } else {
+                        $('#deposit-kontrak').removeClass('hidden');
+                        $('#modal-deposit').val(data.data.deposit);
+                    }
                 }
             }); 
         });
