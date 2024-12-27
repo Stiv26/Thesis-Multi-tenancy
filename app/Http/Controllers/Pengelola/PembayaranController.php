@@ -135,14 +135,19 @@ class PembayaranController extends Controller
 
     public function storeTagihan(Request $request)
     {
-        // Pengecekan apakah kontrak masih pembayaran perdana
-        $cekStatus = DB::table('kontrak as k')
-            ->where('k.idKontrak', $request->idKontrak)
-            ->value('k.status');
+        // Pengecekan pembayaran perdana
+        $cekStatus = DB::table('pembayaran as p')
+            ->where('p.idKontrak', $request->idKontrak)
+            ->where('p.status_kontrak', 'Pembayaran Perdana')
+            ->orderByDesc('p.tgl_tagihan')
+            ->first();
 
-        if ($cekStatus === 'Pembayaran Perdana') {
-            return redirect()->route('pembayaran.index')
-                ->with('error', 'Selesaikan pembayaran perdana dulu');
+        // Logika kondisi
+        if ($cekStatus) {
+            if ($cekStatus->status === 'Belum Lunas') {
+                return redirect()->route('pembayaran.index')
+                    ->with('error', 'Selesaikan pembayaran perdana dulu sebelum membuat pembayaran baru.');
+            }
         }
 
         $uuid = Str::uuid();
@@ -158,6 +163,7 @@ class PembayaranController extends Controller
             'total_bayar' => $request->total_bayar,
             'status' => 'Belum Lunas',
             'keterangan' => $request->keterangan,
+            'status_kontrak' => $cekStatus ? 'Aktif' : 'Pembayaran Perdana',
         ]);
 
         DB::table('kontrak')
@@ -258,6 +264,7 @@ class PembayaranController extends Controller
         $data = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
+            ->join('metodepembayaran as m', 'm.idmetodepembayaran', '=', 'p.idmetodepembayaran')
             ->select('*', 'p.status as status_pembayaran' ,'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrak')
             ->where('p.idPembayaran', $id)
             ->first();
@@ -336,6 +343,7 @@ class PembayaranController extends Controller
         $data = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
+            ->join('metodepembayaran as m', 'm.idmetodepembayaran', '=', 'p.idmetodepembayaran')
             ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrak')
             ->where('P.idPembayaran', '=', $id)
             ->first();

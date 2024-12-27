@@ -46,12 +46,9 @@ class TenantController extends Controller
         // Panggil event untuk memigrasi tenant
         event(new TenantCreated($tenant));
 
-        $uuid = Str::uuid();
-        $tempId = crc32($uuid->toString()) & 0xffffffff;
-
         DB::beginTransaction();
             DB::table('users')->insert([
-                'id' => $tempId,
+                'id' => 1,
                 'no_telp' => $request->telpon,
                 'password' => $request->password, 
                 'email' => $request->email,
@@ -63,7 +60,7 @@ class TenantController extends Controller
             DB::table('metodePembayaran')->insert([
                 'metode' => $request->bank,
                 'nomor_tujuan' => $request->rekening,
-                'users_id' => $tempId,
+                'users_id' => 1,
             ]);
         DB::commit();
 

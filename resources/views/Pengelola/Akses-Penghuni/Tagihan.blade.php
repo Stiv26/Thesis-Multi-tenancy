@@ -172,6 +172,14 @@
                                         </div>
 
                                         <div class="flex items-center space-x-4">
+                                            <label for="metode" class="w-32 text-md font-medium text-gray-700">
+                                                Metode Pembayaran:</label>
+                                            <input id="modal-verifikasi-metode" type="text" value="" name="metode"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
                                             <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
                                                 Keterangan:</label>
                                             <textarea id="modal-verifikasi-keterangan" type="text" value="" rows="2"
@@ -341,6 +349,14 @@
                                         <input id="modal-total" type="text" value="" name="total"
                                             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                             readonly>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
+                                        <label for="metode" class="w-32 text-md font-medium text-gray-700">
+                                            Metode Pembayaran:</label>
+                                        <select id="modal-metode" name="metode" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+
+                                        </select>
                                     </div>
 
                                     <div class="flex items-center space-x-4">
@@ -520,6 +536,14 @@
                                         readonly>
                                 </div>
 
+                                <div class="flex items-center space-x-4">
+                                    <label for="metode" class="w-32 text-md font-medium text-gray-700">
+                                        Metode Pembayaran:</label>
+                                    <input id="modal-riwayat-metode" type="text" value="" 
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
                                 <div class="text-center">
                                     <p class="text-gray-500 text-sm">Bukti Pembayaran</p>
                                 </div>
@@ -624,7 +648,6 @@
 
                     // menambahkan biaya lainnya kedalaam modal
                     $('#biaya-container').empty();
-
                     $.each(data.biayaList, function(index, biaya) {
                         $('#biaya-container').append(`
                         <div class="mb-2 flex items-center space-x-4">
@@ -636,10 +659,12 @@
                         `);
                     });
 
-                    // mengirim id ke editpembayaran yang sesuai
-                    $('#edit-pembayaran-btn').attr('href', '/list/edit-pembayaran/' + id);
-
-
+                    $('#modal-metode').empty(); 
+                    $.each(data.metode, function(index, metode) {
+                        $('#modal-metode').append(
+                            `<option value="${metode.idMetodePembayaran}">${metode.metode} - ${metode.nomor_tujuan}</option>`
+                        );
+                    });
 
                     // Logika untuk denda
                     const today = new Date(); 
@@ -658,8 +683,7 @@
 
                         let denda = 0;
 
-                        if (data.data.status_kontrak === 'Pembayaran Perdana')
-                        {
+                        if (data.data.status_kontrak === 'Pembayaran Perdana') {
                             if (data.data.deposit !== null) 
                             {
                                 const deposit = parseFloat(data.data.deposit);
@@ -691,7 +715,8 @@
                                     denda = formatHari * nilaiDenda;
                                 }
                             }
-                        } else {
+                        } 
+                        else {
                             if (jenisDenda === 'Nominal') {
                                 denda = nilaiDenda;
                             }
@@ -719,10 +744,16 @@
                     // DEPOSIT KONTRAK
                     if (data.data.deposit === null || data.data.status_kontrak === 'Aktif') {
                         $('#deposit-kontrak').addClass('hidden');
-                    } else {
+                    } 
+                    else {
                         $('#deposit-kontrak').removeClass('hidden');
                         $('#modal-deposit').val(data.data.deposit);
                     }
+
+
+
+                    // mengirim id ke editpembayaran yang sesuai
+                    $('#edit-pembayaran-btn').attr('href', '/list/edit-pembayaran/' + id);
                 }
             }); 
         });
@@ -743,12 +774,12 @@
                     $('#modal-verifikasi-status').val(data.data.status_pembayaran);
                     $('#modal-verifikasi-rentang').val(data.data.waktu + " " + data.data.rentang);
                     $('#modal-verifikasi-harga').val(data.data.harga);
+                    $('#modal-verifikasi-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
                     $('#modal-verifikasi-keterangan').val(data.data.keterangan_pembayaran);
                     $('#modal-verifikasi-idPembayaran').val(data.data.idPembayaran);
 
                     // menambahkan biaya lainnya kedalaam modal
                     $('#biaya-verifikasi-container').empty();
-
                     $.each(data.biayaList, function(index, biaya) {
                         $('#biaya-verifikasi-container').append(`
                         <div class="mb-2 flex items-center space-x-4">
@@ -760,20 +791,20 @@
                         `);
                     });
 
-                    // DENDA KONTRAK
-                    if (data.denda.nominal_denda === null) {
-                        $('#denda-verifikasi-kontrak').addClass('hidden');
-                    } else {
-                        $('#denda-verifikasi-kontrak').removeClass('hidden');
-                        $('#modal-verifikasi-denda').val(data.denda.nominal_denda);
-                    }
-
                     // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_kontrak === 'Aktif') {
+                    if (data.data.deposit === null || data.data.kontrak === 'Aktif') {
                         $('#deposit-verifikasi-kontrak').addClass('hidden');
                     } else {
                         $('#deposit-verifikasi-kontrak').removeClass('hidden');
                         $('#modal-verifikasi-deposit').val(data.data.deposit);
+                    }
+
+                    // DENDA KONTRAK
+                    if (data.denda === null) {
+                        $('#denda-verifikasi-kontrak').addClass('hidden');
+                    } else {
+                        $('#denda-verifikasi-kontrak').removeClass('hidden');
+                        $('#modal-verifikasi-denda').val(data.denda.nominal_denda);
                     }
                 }
             }); 
@@ -798,8 +829,8 @@
                 $('#modal-riwayat-rentang').val(data.data.waktu + " " + data.data.rentang);
                 $('#modal-riwayat-harga').val(data.data.harga);
                 $('#modal-riwayat-deposit').val(data.data.deposit);
-                $('#modal-riwayat-denda').val(data.denda.nominal_denda);
                 $('#modal-riwayat-total').val(data.data.dibayar);
+                $('#modal-riwayat-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
                 $('#modal-riwayat-tanggal').val(data.data.tanggal);
                 $('#modal-riwayat-status').val(data.data.status_pembayaran);
                 $('#modal-riwayat-keterangan').val(data.data.keterangan_pembayaran);

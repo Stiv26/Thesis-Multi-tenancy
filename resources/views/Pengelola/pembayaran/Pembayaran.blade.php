@@ -435,7 +435,14 @@
                                                 <label for="total_bayar" class="w-32 text-md font-medium text-gray-700">
                                                     Total Bayar:</label>
                                                 <input id="modal-bukti-total" type="number" value="" name="total_bayar" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
-                                            </div>        
+                                            </div>   
+                                            
+                                            {{-- metode pembayaran --}}
+                                            <div class="flex items-center space-x-4 mt-4">
+                                                <label for="metode" class="w-32 text-md font-medium text-gray-700">
+                                                    Metode Pembayaran:</label>
+                                                <input id="modal-bukti-metode" type="text" value="" name="metode" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
+                                            </div> 
 
                                             {{-- keterangan --}}
                                             <div class="flex items-center space-x-4 mt-4">
@@ -1061,6 +1068,7 @@
                     $('#modal-bukti-dendaPembayaran').val(data.data.dendaPembayaran);
                     $('#modal-bukti-harga').val(data.data.harga);
                     $('#modal-bukti-total').val(data.data.dibayar);
+                    $('#modal-bukti-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
                     $('#modal-bukti-keterangan').val(data.data.keterangan_pembayaran);
                     $('#modal-bukti-idPembayaran').val(data.data.idPembayaran);
                     $('#modal-bukti-idKontrak').val(data.data.idKontrak);
@@ -1251,6 +1259,7 @@
                     $('#modal-riwayat-harga').val(data.data.harga);
                     $('#modal-riwayat-deposit').val(data.data.deposit);
                     $('#modal-riwayat-total').val(data.data.dibayar);
+                    $('#modal-riwayat-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
                     $('#modal-riwayat-tanggal').val(data.data.tanggal);
                     $('#modal-riwayat-status').val(data.data.status_pembayaran);
                     $('#modal-riwayat-keterangan').val(data.data.keterangan_pembayaran);

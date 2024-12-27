@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('status', ['Belum Lunas', 'Verifikasi', 'Lunas'])->nullable(false);
             $table->foreignId('idMetodePembayaran')->nullable()->references('idMetodePembayaran')->on('metodepembayaran')->onDelete('cascade');
             $table->string('bukti', 255)->nullable();
+            $table->enum('status_kontrak', ['Aktif', 'Pembayaran Perdana'])->nullable(false);
             $table->string('keterangan', 255)->nullable();
             $table->integer('dibayar')->nullable();
         });

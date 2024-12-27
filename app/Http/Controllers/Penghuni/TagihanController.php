@@ -47,7 +47,8 @@ class TagihanController extends Controller
         $data = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
-            ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihan', 'p.tgl_denda as denda', 'k.status as status_kontrak')
+            ->join('metodepembayaran as m', 'm.idmetodepembayaran', '=', 'p.idmetodepembayaran')
+            ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihan', 'p.tgl_denda as denda', 'k.status as kontrak')
             ->where('p.idPembayaran', $id)
             ->first();
 
@@ -88,10 +89,16 @@ class TagihanController extends Controller
             ->select('*')
             ->first();
 
+        $metode = DB::table('metodePembayaran')
+            ->where('users_id', 1)
+            ->select('*')
+            ->get();
+
         return response()->json([
             'data' => $data,
             'biayaList' => $biayaList,
-            'denda' => $denda
+            'denda' => $denda,
+            'metode' => $metode
         ]);
     }
 
@@ -113,6 +120,7 @@ class TagihanController extends Controller
         $data = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
+            ->join('metodepembayaran as m', 'm.idmetodepembayaran', '=', 'p.idmetodepembayaran')
             ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrak')
             ->where('p.status', '=', 'Lunas')
             ->where('P.idPembayaran', '=', $id)
@@ -146,6 +154,7 @@ class TagihanController extends Controller
                 'dibayar' => $request->total,
                 'bukti' => $request->bukti,
                 'status' => 'Verifikasi',
+                'idMetodePembayaran' => $request->metode,
         ]);
 
         if ($request->has('denda') && !is_null($request->denda) && $request->denda > 0) {
