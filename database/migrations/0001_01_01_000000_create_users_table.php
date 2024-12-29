@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('nama')->nullable(false);
             $table->string('email')->nullable(false);
+            $table->enum('status', ['Aktif', 'Nonaktif'])->nullable(false);
             $table->timestamps();
         });
         

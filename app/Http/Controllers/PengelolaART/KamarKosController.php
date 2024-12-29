@@ -19,7 +19,7 @@ class KamarKosController extends Controller
         $data = DB::table('users as u')
             ->join('kontrak as k', 'k.users_id', '=', 'u.id')
             ->select('*')
-            ->where('k.status', '=', 'aktif')
+            ->whereIn('k.status', ['aktif', 'pembayaran perdana'])
             ->get();
 
         return view('Pengelola.akses-art.kamarkos', compact('data'));
@@ -36,5 +36,5 @@ class KamarKosController extends Controller
         return response()->json([
             'data' => $data
         ]);
-    } 
+    }
 }

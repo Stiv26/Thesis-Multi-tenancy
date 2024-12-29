@@ -184,30 +184,15 @@ class PenghuniController extends Controller
         DB::beginTransaction();
             // Insert data ke tabel users
             DB::table('users')->insert([
-                'id' => $tempId,
-                'no_telp' => $request->telpon,
-                'password' => $request->password,
-                'email' => $request->email,
-                'nama' => $request->nama,
-                'status' => 'Aktif',
-                'idRole' => 2,
-            ]);
+                'id' => $tempId, 'no_telp' => $request->telpon, 'password' => $request->password, 'email' => $request->email,
+                'nama' => $request->nama, 'status' => 'Aktif', 'idRole' => 2, ]);
 
             // Insert data ke tabel kontrak
             DB::table('kontrak')->insert([
-                'idKontrak' => $tempId,
-                'idKamar' => $request->kamar,
-                'Users_id' => $tempId,
-                'harga' => $request->harga,
-                'rentang' => $request->kontrak,
-                'waktu' => $request->waktu,
-                'tgl_masuk' => $request->masuk,
-                'tgl_tagihan' => $request->tagihan,
-                'tgl_denda' => $request->denda,
-                'deposit' => $request->deposit,
-                'keterangan' => $request->keterangan,
-                'status' => 'Pembayaran Perdana',
-            ]);
+                'idKontrak' => $tempId, 'idKamar' => $request->kamar, 'Users_id' => $tempId, 'harga' => $request->harga,
+                'rentang' => $request->kontrak, 'waktu' => $request->waktu, 'tgl_masuk' => $request->masuk,
+                'tgl_tagihan' => $request->tagihan, 'tgl_denda' => $request->denda, 'deposit' => $request->deposit,
+                'keterangan' => $request->keterangan, 'status' => 'Pembayaran Perdana', ]);
 
             // insert metodepembayaran
             DB::table('metodePembayaran')->insert([

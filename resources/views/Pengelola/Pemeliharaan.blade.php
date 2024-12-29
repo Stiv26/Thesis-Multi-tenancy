@@ -93,7 +93,7 @@
                                 </div>
  
                                 <div class="text-center">
-                                    <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
+                                    <p class="text-gray-500 text-sm">Lakukan Pejadwalan Anda</p>
                                 </div>
 
                                 <div class="flex items-center space-x-4">

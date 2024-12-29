@@ -41,7 +41,7 @@
                                 <label for="telpon" class="block text-sm font-medium leading-6 text-gray-900">Nomor
                                     Telepon</label>
                                 <div class="mt-2">
-                                    <input required type="text" name="telpon" id="telpon"
+                                    <input required type="text" name="telpon" id="telpon" minlength="8"
                                         class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
@@ -51,18 +51,20 @@
                                 <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Kata
                                     Sandi</label>
                                 <div class="mt-2">
-                                    <input required type="password" name="password" id="password"
+                                    <input required type="password" name="password" id="password" minlength="6"
                                         class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
 
                             {{-- CONFIRM PASS --}}
                             <div class="sm:col-span-4">
-                                <label for="confirm" class="block text-sm font-medium leading-6 text-gray-900">Konfirmasi  Kata
-                                    Sandi</label>
+                                <label for="confirm" class="block text-sm font-medium leading-6 text-gray-900">Konfirmasi Kata Sandi</label>
                                 <div class="mt-2">
-                                    <input required type="password" name="confirm" id="confirm"
+                                    <input required type="password" name="confirm" id="confirm" 
                                         class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    @error('confirm')
+                                        <p class="text-red-500 text-sm">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

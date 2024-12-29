@@ -18,7 +18,12 @@ class TenantController extends Controller
         // Validasi input
         $request->validate([
             'id' => 'required|unique:tenants,id',
+            'password' => 'required|min:6',
         ]);
+
+        if ($request->password !== $request->confirm) {
+            return back()->withErrors(['confirm' => 'Kata sandi tidak sama.']);
+        }
 
         // Buat domain berdasarkan ID tenant
         $domain = $request->id . '.localhost';
