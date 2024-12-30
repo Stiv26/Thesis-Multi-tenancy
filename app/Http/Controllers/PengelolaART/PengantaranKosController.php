@@ -22,6 +22,7 @@ class PengantaranKosController extends Controller
             ->select('*')
             ->where('t.pengantaran', '=', 'Diantar')
             ->where('t.status_pengantaran', '=', 'Menunggu')
+            ->where('t.status', '=', 'Lunas')
             ->get();
 
         return view('Pengelola.akses-art.pengantarankos', compact('data'));

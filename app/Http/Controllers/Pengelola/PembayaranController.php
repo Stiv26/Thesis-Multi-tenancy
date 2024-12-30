@@ -20,8 +20,8 @@ class PembayaranController extends Controller
         $tahun = $tahun ?? now()->year;
 
         $today = now(); // Tanggal hari ini
-        $startDate = $today->copy()->subDays(3); // 7 hari sebelum hari ini
-        $endDate = $today->copy()->addDays(7); // 14 hari setelah hari ini
+        $startDate = $today->copy()->subDays(3); // 3 hari sebelum hari ini
+        $endDate = $today->copy()->addDays(7); // 7  hari setelah hari ini
 
         $tagihan = DB::table('kontrak as k')
             ->join('users as u', 'u.id', '=', 'k.Users_id') // Gabungkan dengan tabel users
@@ -34,6 +34,7 @@ class PembayaranController extends Controller
                             ->whereRaw('p.idKontrak = k.idKontrak'); // Jika Mingguan/Harian, cek pembayaran
                     });
             })
+            ->orderBy('k.tgl_tagihan', 'asc')
             ->get();
 
 
@@ -42,6 +43,7 @@ class PembayaranController extends Controller
             ->join('users as u', 'u.id', '=', 'k.users_id')
             ->select('*', 'p.status as status_pembayaran')
             ->where('p.status', 'Verifikasi')
+            ->orderBy('p.tanggal', 'asc')
             ->get();
 
         // Mengambil data pembayaran belum lunas
@@ -51,6 +53,8 @@ class PembayaranController extends Controller
             ->select('*', 'p.status as status_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran')
             ->whereIn('p.status', ['Belum Lunas', 'Revisi'])
             ->whereIn('k.status', ['Aktif', 'Pembayaran Perdana'])
+            ->orderBy('k.tgl_tagihan', 'asc')
+            ->orderBy('k.idKamar', 'asc')
             ->get();
 
         // Mengambil data riwayat pembayaran (lunas)

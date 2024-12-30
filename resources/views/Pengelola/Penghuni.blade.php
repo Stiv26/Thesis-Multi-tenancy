@@ -334,8 +334,7 @@
                                         const waktuInput = document.getElementById('waktu'); // Input waktu tinggal
                                         const waktuContainer = document.getElementById('waktu-container'); // Container waktu tinggal
 
-                                        const waktuTagihanContainer = document.getElementById(
-                                        'waktu-tagihan-container'); // Container waktu tagihan
+                                        const waktuTagihanContainer = document.getElementById('waktu-tagihan-container'); // Container waktu tagihan
                                         const waktuDendaContainer = document.getElementById('waktu-denda-container'); // Container waktu denda
                                         const waktuTagihanInput = document.getElementById('waktu_tagihan');
                                         const waktuDendaInput = document.getElementById('waktu_denda');
@@ -498,7 +497,7 @@
                             <h2 class="text-base font-semibold leading-7 text-gray-900">Data Diri Penghuni*</h2>
                             <p class="mt-1 text-sm leading-6 text-gray-600">Data Diri Penghuni yang tinggal</p>
 
-                            <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div class="mt-10 mb-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 {{-- data diri --}}
                                 @foreach ($dataDiriList as $data)
                                     <div class="sm:col-span-3 sm:col-start-1">
@@ -518,7 +517,7 @@
                             </div>
 
                             <a href="#" data-toggle="modal" data-target="#ModalTambahDataDiri"
-                                class="mt-3 text-sm leading-6 text-gray-600 mr-4">
+                                class="text-sm leading-6 text-gray-600 mr-4">
                                 <span aria-hidden="true">+</span> Tambah Data Diri Baru</a>
 
                         </div>

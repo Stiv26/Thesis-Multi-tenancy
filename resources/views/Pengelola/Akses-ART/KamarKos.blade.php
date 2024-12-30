@@ -169,7 +169,7 @@
                     $('#modal-tagihan').val(data.data.tgl_tagihan);
                     $('#modal-denda').val(data.data.tgl_denda);
                     $('#modal-deposit').val(data.data.deposit);
-                    $('#modal-keterangan').val(data.keterangan);
+                    $('#modal-keterangan').val(data.data.keterangan);
                 }
             });
         });

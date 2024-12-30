@@ -439,6 +439,8 @@
                                                 readonly>
                                         </div>
 
+                                        <img src="" id="modal-bukti-foto" alt="Bukti Pembayaran" class="w-64 h-64 object-cover border border-gray-300 rounded-md">
+
                                         {{-- total bayar --}}
                                         <div class="flex items-center space-x-4 mt-4">
                                             <label for="total_bayar" class="w-32 text-md font-medium text-gray-700">
@@ -949,10 +951,9 @@
 
                         tglTagihan.setMonth(tglTagihan.getMonth() + 1); // Tambahkan 1 bulan
                         const lastDayOfNextMonth = new Date(tglTagihan.getFullYear(), tglTagihan.getMonth() + 1, 0).getDate();
-
                         tglTagihan.setDate(Math.min(waktuTagihan, lastDayOfNextMonth)); // Atur tanggal sesuai waktu_tagihan
-
                         const nextTagihan = tglTagihan.toISOString().split('T')[0]; // Format YYYY-MM-DD
+
                         $('#modal-buat-tagihanBerikutnya').val(nextTagihan);
 
                         // Hitung denda berikutnya
@@ -962,8 +963,8 @@
                         tglDenda.setMonth(tglDenda.getMonth() + 1); // Tambahkan 1 bulan
                         const lastDayOfNextMonthDenda = new Date(tglDenda.getFullYear(), tglDenda.getMonth() + 1, 0).getDate();
                         tglDenda.setDate(Math.min(waktuDenda, lastDayOfNextMonthDenda)); // Atur tanggal sesuai waktu_denda
-
                         const nextDenda = tglDenda.toISOString().split('T')[0]; // Format YYYY-MM-DD
+
                         $('#modal-buat-dendaBerikutnya').val(nextDenda);
                     } 
                     else {

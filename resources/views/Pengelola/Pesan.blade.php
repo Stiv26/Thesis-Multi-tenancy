@@ -37,7 +37,7 @@
                                 <td class="py-3 px-4">{{ $item->nama }}</td>
                                 <td class="py-3 px-4">{{ $item->tanggal }}</td>
                                 <td class="py-3 px-4">{{ $item->pesan }}</td>
-                                <td class="py-3 px-4">
+                                <td class="py-3 px-4 w-1/5">
                                     <a href="#" data-id="{{ $item->idNotifikasi }}" class="lihat-detail-pesan text-indigo-500 hover:text-indigo-700 transition">
                                         Tandai Sudah Terbaca <span aria-hidden="true">→</span></a>
                                 </td>
@@ -168,6 +168,7 @@
         }, 50);
     }
 </script>
+
 {{-- UPDATE PESAN --}}
 <script>
     $(document).on('click', '.lihat-detail-pesan', function(e) {

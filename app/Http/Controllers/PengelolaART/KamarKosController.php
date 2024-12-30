@@ -20,6 +20,7 @@ class KamarKosController extends Controller
             ->join('kontrak as k', 'k.users_id', '=', 'u.id')
             ->select('*')
             ->whereIn('k.status', ['aktif', 'pembayaran perdana'])
+            ->orderBy('k.idKamar', 'asc')
             ->get();
 
         return view('Pengelola.akses-art.kamarkos', compact('data'));

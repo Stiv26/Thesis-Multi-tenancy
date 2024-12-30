@@ -25,7 +25,7 @@
         <!-- PAGE PEMBAYARAN -->
         <section id="list" class="block">
             {{-- VERIFIKASI --}}
-            @if (!empty($verifikasi))
+            @if ($verifikasi->IsNotEmpty())
                 <div id="verifikasi-pembayaran">
                     <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat Detail</p>
                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -718,20 +718,19 @@
                                     denda = ((totalBayar - deposit) * nilaiDenda) / 100;
                                 } else {
                                     const hari = Math.abs(today - dendaDate);
-                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 *
-                                        24));
+                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
 
                                     denda = (formatHari * nilaiDenda) - deposit;
                                 }
-                            } else {
+                            } 
+                            else {
                                 if (jenisDenda === 'Nominal') {
                                     denda = nilaiDenda;
                                 } else if (jenisDenda === 'Persen') {
                                     denda = (totalBayar * nilaiDenda) / 100;
                                 } else {
                                     const hari = Math.abs(today - dendaDate);
-                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 *
-                                        24));
+                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
 
                                     denda = formatHari * nilaiDenda;
                                 }

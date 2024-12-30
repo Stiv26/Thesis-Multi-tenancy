@@ -695,7 +695,7 @@
                         `);
                     });
 
-                    $('#modal-keterangan').val(data.keterangan);
+                    $('#modal-keterangan').val(data.data.keterangan);
 
                     $('#edit-kontrak-btn').attr('href', '/kos/edit-kontrak/' + id);
                     $('#batalkan-kontrak-btn').attr('href', '/kos/batal-kontrak/' + id);

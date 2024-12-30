@@ -16,6 +16,43 @@
                     class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">Riwayat Pemeliharaan</a>
                 </nav>
             </div> 
+
+            {{-- JS --}}
+            <script>
+                function switchPage(page) {
+                    const listSection = document.getElementById('list');
+                    const pemeliharaanSection = document.getElementById('pemeliharaan');
+                    const btnList = document.getElementById('btnList');
+                    const btnPemeliharaan = document.getElementById('btnPemeliharaan');
+
+                    // Menghilangkan semua section
+                    listSection.classList.add('hidden');
+                    pemeliharaanSection.classList.add('hidden');
+
+                    // Menghilangkan aktifasi dari button
+                    btnList.classList.remove('bg-indigo-600', 'text-white');
+                    btnList.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                    btnPemeliharaan.classList.remove('bg-indigo-600', 'text-white');
+                    btnPemeliharaan.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+
+                    if (page === 'list') {
+                        // Tampilkan halaman Fasilitas dan set button aktif
+                        listSection.classList.remove('hidden');
+                        btnList.classList.add('bg-indigo-600', 'text-white');
+                        btnList.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                    } else if (page === 'pemeliharaan') {
+                        // Tampilkan halaman Kamar dan set button aktif
+                        pemeliharaanSection.classList.remove('hidden');
+                        btnPemeliharaan.classList.add('bg-indigo-600', 'text-white');
+                        btnPemeliharaan.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                    }
+
+                    // Memberikan sedikit delay sebelum scroll
+                    setTimeout(function() {
+                        window.scrollTo(0, 0);
+                    }, 50);
+                }
+            </script>
         </section>
 
         <!-- PAGE PEMELIHARAAN -->
@@ -54,6 +91,7 @@
                         @endforelse 
                     </tbody>
                 </table>
+
                 <!-- MODAL DATA -->
                 <div class="modal fade p-4" id="ModalPemeliharaan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog max-w-4xl mx-auto mt-24">
@@ -229,42 +267,7 @@
     </main>
 </x-layout>
 
-{{-- JS --}}
-<script>
-    function switchPage(page) {
-        const listSection = document.getElementById('list');
-        const pemeliharaanSection = document.getElementById('pemeliharaan');
-        const btnList = document.getElementById('btnList');
-        const btnPemeliharaan = document.getElementById('btnPemeliharaan');
 
-        // Menghilangkan semua section
-        listSection.classList.add('hidden');
-        pemeliharaanSection.classList.add('hidden');
-
-        // Menghilangkan aktifasi dari button
-        btnList.classList.remove('bg-indigo-600', 'text-white');
-        btnList.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
-        btnPemeliharaan.classList.remove('bg-indigo-600', 'text-white');
-        btnPemeliharaan.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
-
-        if (page === 'list') {
-            // Tampilkan halaman Fasilitas dan set button aktif
-            listSection.classList.remove('hidden');
-            btnList.classList.add('bg-indigo-600', 'text-white');
-            btnList.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
-        } else if (page === 'pemeliharaan') {
-            // Tampilkan halaman Kamar dan set button aktif
-            pemeliharaanSection.classList.remove('hidden');
-            btnPemeliharaan.classList.add('bg-indigo-600', 'text-white');
-            btnPemeliharaan.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
-        }
-
-        // Memberikan sedikit delay sebelum scroll
-        setTimeout(function() {
-            window.scrollTo(0, 0);
-        }, 50);
-    }
-</script>
 {{-- AJAX DETAIL --}}
 <script>
     $(document).ready(function(){
@@ -333,6 +336,7 @@
         });
     });
 </script>
+
 {{-- DROPDOWN STATUS SESUAI TANGGAL  --}}
 <script>
     document.addEventListener('DOMContentLoaded', () => {

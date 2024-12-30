@@ -23,6 +23,7 @@ class KosController extends Controller
             ->select('*')
             ->where('k.status', '=', 'aktif')
             ->orWhere('k.status', '=', 'Pembayaran Perdana')
+            ->orderBy('k.idKamar', 'asc')
             ->get();
 
         return view('Pengelola.kos.Kos', compact('data'));
