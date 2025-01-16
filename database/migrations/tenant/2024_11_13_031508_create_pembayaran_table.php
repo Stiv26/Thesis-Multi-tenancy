@@ -18,10 +18,10 @@ return new class extends Migration
             $table->date('tgl_denda')->nullable(false);
             $table->date('tanggal')->nullable();
             $table->integer('total_bayar')->nullable(false);
-            $table->enum('status', ['Belum Lunas', 'Verifikasi', 'Revisi','Lunas'])->nullable(false);
+            $table->enum('status', ['Belum Lunas', 'Verifikasi', 'Revisi', 'Lunas'])->nullable(false);
             $table->foreignId('idMetodePembayaran')->nullable()->references('idMetodePembayaran')->on('metodepembayaran')->onDelete('cascade');
             $table->string('bukti', 255)->nullable();
-            $table->enum('status_kontrak', ['Aktif', 'Pembayaran Perdana'])->nullable(false);
+            $table->enum('status_kontrak', ['Aktif', 'Pembayaran Perdana', 'Revisi'])->nullable(false);
             $table->string('keterangan', 255)->nullable();
             $table->integer('dibayar')->nullable();
         });

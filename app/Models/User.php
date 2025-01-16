@@ -28,7 +28,7 @@ class User extends Authenticatable
 
     public function renters()
     {
-        return $this->hasMany(Renter::class, 'users_id');
+        return $this->hasMany(Renter::class, 'Users_id');
     }
 
     /**

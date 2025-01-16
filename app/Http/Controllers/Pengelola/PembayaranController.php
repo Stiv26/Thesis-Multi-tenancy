@@ -268,7 +268,7 @@ class PembayaranController extends Controller
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
             ->join('metodepembayaran as m', 'm.idmetodepembayaran', '=', 'p.idmetodepembayaran')
-            ->select('*', 'p.status as status_pembayaran' ,'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrak')
+            ->select('*', 'p.status as status_pembayaran' ,'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrakPembayaran')
             ->where('p.idPembayaran', $id)
             ->first();
 
@@ -331,8 +331,9 @@ class PembayaranController extends Controller
                 'tgl_tagihan' => now(),
                 'tgl_denda' => $request->tgl_denda,
                 'total_bayar' => $request->total_bayar,
-                'keterangan' => $request->keterangan,
                 'status' => 'Revisi',
+                'status_kontrak' => 'Revisi',
+                'keterangan' => $request->keterangan,
             ]);
 
             return redirect()->back()->with('error', 'Pembayaran telah ditolak.');

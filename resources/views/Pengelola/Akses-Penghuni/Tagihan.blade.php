@@ -139,7 +139,7 @@
                                             <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
                                         </div>
 
-                                        <div class="flex items-center space-x-4">
+                                        <div class="flex items-center space-x-4" id="harga-verifikasi-kontrak">
                                             <label for="harga" class="w-32 text-md font-medium text-gray-700">
                                                 Harga:</label>
                                             <input id="modal-verifikasi-harga" type="text" value=""
@@ -691,6 +691,14 @@
                         $('#harga-kontrak').removeClass('hidden');
                     }
 
+                    // DEPOSIT KONTRAK
+                    if (data.data.deposit === null || data.data.status_pembayaran === 'Revisi') {
+                        $('#deposit-kontrak').addClass('hidden');
+                    } else {
+                        $('#deposit-kontrak').removeClass('hidden');
+                        $('#modal-deposit').val(data.data.deposit);
+                    }
+
                     // Logika untuk denda
                     const today = new Date();
                     const dendaDate = new Date(data.data.denda);
@@ -757,15 +765,6 @@
                         $('#modal-total').val(data.data.total_bayar);
                     }
 
-                    // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_kontrak === 'Aktif') {
-                        $('#deposit-kontrak').addClass('hidden');
-                    } else {
-                        $('#deposit-kontrak').removeClass('hidden');
-                        $('#modal-deposit').val(data.data.deposit);
-                    }
-
-
 
                     // mengirim id ke editpembayaran yang sesuai
                     $('#edit-pembayaran-btn').attr('href', '/list/edit-pembayaran/' + id);
@@ -788,7 +787,6 @@
                     $('#modal-verifikasi-tagihan').val(data.data.tagihan);
                     $('#modal-verifikasi-status').val(data.data.status_pembayaran);
                     $('#modal-verifikasi-rentang').val(data.data.waktu + " " + data.data.rentang);
-                    $('#modal-verifikasi-harga').val(data.data.harga);
                     $('#modal-verifikasi-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
                     $('#modal-verifikasi-keterangan').val(data.data.keterangan_pembayaran);
                     $('#modal-verifikasi-idPembayaran').val(data.data.idPembayaran);
@@ -806,8 +804,16 @@
                         `);
                     });
 
+                    // DISPLAY REVISI
+                    if (data.data.status_kontrak === 'Revisi') {
+                        $('#harga-verifikasi-kontrak').addClass('hidden');
+                    } else {
+                        $('#harga-verifikasi-kontrak').removeClass('hidden');
+                        $('#modal-verifikasi-harga').val(data.data.harga);
+                    }
+
                     // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.kontrak === 'Aktif') {
+                    if (data.data.deposit === null || data.data.status_kontrak === 'Revisi' || data.data.status_kontrak === 'Revisi') {
                         $('#deposit-verifikasi-kontrak').addClass('hidden');
                     } else {
                         $('#deposit-verifikasi-kontrak').removeClass('hidden');

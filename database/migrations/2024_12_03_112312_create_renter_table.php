@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedInteger('domains_id'); 
             $table->foreign('domains_id')->references('id')->on('domains')->onDelete('cascade');
 
-            $table->foreignId('Users_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('Users_id')->constrained('users')->onDelete('cascade');
         
             $table->timestamps();
         });

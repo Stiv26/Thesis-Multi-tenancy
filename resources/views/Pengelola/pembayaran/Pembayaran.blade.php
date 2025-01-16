@@ -412,7 +412,7 @@
                                             <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
                                         </div>
 
-                                        <div class="flex items-center space-x-4">
+                                        <div class="flex items-center space-x-4" id="bukti-harga">
                                             <label for="harga" class="w-32 text-md font-medium text-gray-700">
                                                 Harga:</label>
                                             <input id="modal-bukti-harga" type="text" value="" name="harga"
@@ -530,8 +530,28 @@
                                             <label for="harga" class="w-32 text-md font-medium text-gray-700">
                                                 Nominal Pembayaran:</label>
                                             <input id="modal-revisi-total_bayar" type="text" value="" name="total_bayar"
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
-                                        </div>      
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" required>
+                                        </div> 
+                                        
+                                        <div class="flex items-center space-x-4">
+                                            <label for="tempo" class="w-32 text-md font-medium text-gray-700">
+                                                Tanggal Denda:</label>
+                                            <input id="modal-revisi-tgl_denda" type="date" value="" name="tgl_denda"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" required>
+                                        </div>
+
+                                        {{-- ATUR TANGGAL --}}
+                                        <script>
+                                            const inputTanggal = document.getElementById("modal-revisi-tgl_denda");
+                                            const today = new Date();
+                                            const tomorrow = new Date(today);
+                                            tomorrow.setDate(today.getDate() + 1); // Tambahkan 1 hari ke tanggal sekarang
+                                            const yyyy = tomorrow.getFullYear();
+                                            const mm = String(tomorrow.getMonth() + 1).padStart(2, '0'); // Bulan dalam format 2 digit
+                                            const dd = String(tomorrow.getDate()).padStart(2, '0'); // Tanggal dalam format 2 digit
+                                        
+                                            inputTanggal.min = `${yyyy}-${mm}-${dd}`; // Set atribut min pada input
+                                        </script>
 
                                         {{-- keterangan --}}
                                         <div class="flex items-center space-x-4 mt-4">
@@ -544,7 +564,6 @@
                                         <input type="hidden" id="modal-revisi-idPembayaran" name="idPembayaran">
                                         <input type="hidden" id="modal-revisi-idKontrak" name="idKontrak">
                                         <input type="hidden" id="modal-revisi-tgl_tagihan" name="tgl_tagihan">
-                                        <input type="hidden" id="modal-revisi-tgl_denda" name="tgl_denda">
 
                                     </div> 
                                     {{-- SUBMIT --}}
@@ -1076,7 +1095,6 @@
                     $('#modal-bukti-tagihanPembayaran').val(data.data.tagihanPembayaran);
                     $('#modal-bukti-dendaPembayaran').val(data.data.dendaPembayaran);
                     $('#modal-bukti-rentang').val(data.data.waktu + " " + data.data.rentang);
-                    $('#modal-bukti-harga').val(data.data.harga);
                     $('#modal-bukti-total').val(data.data.dibayar);
                     $('#modal-bukti-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
                     $('#modal-bukti-keterangan').val(data.data.keterangan_pembayaran);
@@ -1104,18 +1122,25 @@
                         $('#modal-bukti-denda').val(data.denda.nominal_denda);
                     }
 
-                    if (data.data.deposit === null || data.data.status_kontrak === 'Aktif') {
+                    if (data.data.deposit === null || data.data.status_kontrak === 'Revisi' || data.data.status_kontrak === 'Aktif') {
                         $('#bukti-deposit').addClass('hidden');
                     } else {
                         $('#bukti-deposit').removeClass('hidden');
                         $('#modal-bukti-deposit').val(data.data.deposit);
                     }
 
+                    // DISPLAY REVISI
+                    if (data.data.status_kontrak === 'Revisi') {
+                        $('#bukti-harga').addClass('hidden');
+                    } else {
+                        $('#bukti-harga').removeClass('hidden');
+                        $('#modal-bukti-harga').val(data.data.harga);
+                    }
+
                     $('#modal-revisi-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-revisi-nama').val(data.data.idKamar);
                     $('#modal-revisi-idKontrak').val(data.data.idKontrak);
                     $('#modal-revisi-tgl_tagihan').val(data.data.tagihanPembayaran);
-                    $('#modal-revisi-tgl_denda').val(data.data.dendaPembayaran);
                     $('#modal-revisi-idPembayaran').val(data.data.idPembayaran);
                 }
             });

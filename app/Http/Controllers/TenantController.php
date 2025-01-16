@@ -45,7 +45,7 @@ class TenantController extends Controller
             'alamat' => $request->alamat,
             'keterangan' => $request->keterangan,
             'domains_id' => $tenant->domains()->first()->id,
-            'users_id' => Auth::id(), 
+            'users_id' => Auth::user()->id, 
         ]);
 
         // Panggil event untuk memigrasi tenant
