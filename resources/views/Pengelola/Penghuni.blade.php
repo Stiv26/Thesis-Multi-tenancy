@@ -193,6 +193,11 @@
                                     <input required type="text" name="telpon" id="telpon"
                                         class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
+                                @if ($errors->has('users'))
+                                    <div class="alert alert-danger mt-3">
+                                        {{ $errors->first('users') }}
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="sm:col-span-4">
@@ -372,10 +377,9 @@
                             {{-- waktu tagihan pertanggalnya --}}
                             <div id="waktu-tagihan-container" class="sm:col-span-1">
                                 <label for="waktu_tagihan"
-                                    class="block text-sm font-medium leading-6 text-gray-900">Pertanggal
-                                    Tagihan</label>
+                                    class="block text-sm font-medium leading-6 text-gray-900">Pertanggal Tagihan</label>
                                 <div class="mt-2">
-                                    <input required required type="number" name="waktu_tagihan" id="waktu_tagihan"
+                                    <input required type="number" name="waktu_tagihan" id="waktu_tagihan" max="31" min="1" 
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
@@ -385,10 +389,37 @@
                                 <label for="waktu_denda"
                                     class="block text-sm font-medium leading-6 text-gray-900">Pertanggal Denda</label>
                                 <div class="mt-2">
-                                    <input required required type="number" name="waktu_denda" id="waktu_denda"
+                                    <input required type="number" name="waktu_denda" id="waktu_denda" max="31" min="1" 
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <span id="error-message" class="text-red-500 text-sm hidden">Denda tidak boleh lebih kecil dari tanggal tagihan.</span>
+
+                                    {{-- CHECK PERTANGGAL TIDAK BOLEH KURANG --}}
+                                    <script>
+                                        const waktuTagihan = document.getElementById('waktu_tagihan');
+                                        const waktuDenda = document.getElementById('waktu_denda');
+                                        const errorMessage = document.getElementById('error-message');
+                                    
+                                        function validateDates() {
+                                            const tagihanValue = parseInt(waktuTagihan.value, 10);
+                                            const dendaValue = parseInt(waktuDenda.value, 10);
+                                    
+                                            // Check if dendaValue is smaller than tagihanValue
+                                            if (dendaValue < tagihanValue) {
+                                                errorMessage.classList.remove('hidden'); // Show error message
+                                                waktuDenda.setCustomValidity('Tanggal denda tidak boleh lebih kecil dari tanggal tagihan.');
+                                            } else {
+                                                errorMessage.classList.add('hidden'); // Hide error message
+                                                waktuDenda.setCustomValidity(''); // Reset validity
+                                            }
+                                        }
+                                    
+                                        // Attach event listeners
+                                        waktuTagihan.addEventListener('input', validateDates);
+                                        waktuDenda.addEventListener('input', validateDates);
+                                    </script>
                                 </div>
                             </div>
+                            
 
                             {{-- tinggalnya (mingguan/harian) --}}
                             <div id="waktu-container" class="sm:col-span-2">
@@ -898,6 +929,24 @@
             });
         }
     });
+</script>
+
+{{-- SET TELP + REKENING TIDAK BOLEH NOMOR --}}
+<script>
+    function allowOnlyNumbers(event) {
+        const input = event.target;
+        const value = input.value;
+
+        // Replace non-numeric characters
+        input.value = value.replace(/[^0-9]/g, '');
+    }
+
+    const rekeningInput = document.getElementById('rekening');
+    const telponInput = document.getElementById('telpon');
+
+    // Attach the event listener
+    rekeningInput.addEventListener('input', allowOnlyNumbers);
+    telponInput.addEventListener('input', allowOnlyNumbers);
 </script>
 
 {{-- AJAX DETAIL --}}

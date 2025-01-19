@@ -286,6 +286,12 @@ class KosController extends Controller
 
     public function storeKamar(Request $request)
     {
+        $existingKamar = DB::table('kamar')->where('idKamar', $request->kamar)->first();
+
+        if ($existingKamar) {
+            return back()->withErrors(['kamar' => 'Nomor Kamar sudah ada. Silakan gunakan nomor yang berbeda.'])->withInput();
+        }
+
         DB::table('kamar')->insert([
             'idKamar' => $request['kamar'],
             'harga' => $request['harga'],

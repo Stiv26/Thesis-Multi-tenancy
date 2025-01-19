@@ -505,8 +505,14 @@
                                         <input type="text" name="no_telp" id="no_telp"
                                             class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             required>
+                                        @if ($errors->has('users'))
+                                            <div class="alert alert-danger mt-3">
+                                                {{ $errors->first('users') }}
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
+
                                 {{-- Password --}}
                                 <div class="sm:col-span-3 sm:col-start-1">
                                     <label for="password"
@@ -575,7 +581,7 @@
             </section>
         </section>
 
-        {{-- PAGE KARYAWAN --}}
+        {{-- PAGE RIWAYAT KARYAWAN --}}
         <section id="riwayatKaryawan" class="hidden">
             <section>
                 <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat Detail</p>
@@ -710,6 +716,24 @@
     </main>
 </x-layout>
 
+{{-- TELP + REKENING TIDAK BOLEH HURUF --}}
+<script>
+    function allowOnlyNumbers(event) {
+        const input = event.target;
+        const value = input.value;
+
+        // Replace all non-numeric characters
+        input.value = value.replace(/[^0-9]/g, '');
+    }
+
+    // Get the input fields
+    const rekeningInput = document.getElementById('rekening');
+    const noTelpInput = document.getElementById('no_telp');
+
+    // Add event listeners to filter input
+    rekeningInput.addEventListener('input', allowOnlyNumbers);
+    noTelpInput.addEventListener('input', allowOnlyNumbers);
+</script>
 
 {{-- AJAX --}}
 <script>

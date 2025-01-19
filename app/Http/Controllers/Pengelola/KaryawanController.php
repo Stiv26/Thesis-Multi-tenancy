@@ -112,6 +112,12 @@ class KaryawanController extends Controller
 
     public function storeKaryawan(Request $request)
     {
+        $existingUser  = DB::table('users')->where('no_telp', $request->no_telp)->where('status', 'Aktif')->first();
+
+        if ($existingUser) {
+            return back()->withErrors(['users' => 'Nomor Telepon karyawan sudah aktif terdaftar.'])->withInput();
+        }
+
         $uuid = Str::uuid();
         $tempId = crc32($uuid->toString()) & 0xffffffff;
 

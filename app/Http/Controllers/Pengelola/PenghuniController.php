@@ -178,6 +178,12 @@ class PenghuniController extends Controller
 
     public function storeKontrak(Request $request)
     {
+        $existingUser  = DB::table('users')->where('no_telp', $request->no_telp)->where('status', 'Aktif')->first();
+
+        if ($existingUser) {
+            return back()->withErrors(['users' => 'Nomor Telepon sudah aktif terdaftar dalam kos.'])->withInput();
+        }
+
         $uuid = Str::uuid();
         $tempId = crc32($uuid->toString()) & 0xffffffff;
 
