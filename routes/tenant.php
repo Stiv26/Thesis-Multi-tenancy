@@ -394,7 +394,7 @@ Route::middleware([
                 Route::post('/tambah-perbaikan', [PerbaikanController::class, 'storePerbaikan'])->name('perbaikan.store');
 
                 // routing update pemeliharaan
-                Route::put('/perbaikan/update/{id}', [PerbaikanController::class, 'updatePerbaikan'])->name('perbaikan.update');
+                Route::put('/perbaikan/update', [PerbaikanController::class, 'updatePerbaikan'])->name('perbaikan.update');
                 Route::put('/pemeliharaan/tandai-selesai/{id}', [PerbaikanController::class, 'updateSelesai'])->name('pesan.updateSelesai');
 
                 // routeing delete pemeliharaan

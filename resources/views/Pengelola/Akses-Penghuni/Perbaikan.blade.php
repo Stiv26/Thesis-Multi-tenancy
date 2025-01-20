@@ -156,19 +156,88 @@
                                 
                             </div>
                             <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                @if(!empty($item->idPemeliharaan))
+                                {{-- @if(!empty($item->idPemeliharaan))
                                     <button type="button" id="hapus-pemeliharaan-btn" data-id="{{ $item->idPemeliharaan }}"
                                         class="hapus-pemeliharaan-btn rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-500">
                                         Hapus
                                     </button>
-                                @endif
-                                <button type="button" id="ubah-pemeliharaan-btn" class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                @endif --}}
+                                <button type="button" data-toggle="modal" data-target="#ModalRevisiJadwal" data-dismiss="modal" class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                     Ajukan Kembali
                                 </button>                                                              
                                 <button type="button" class=" rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600" data-dismiss="modal">
                                     Tutup
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- MODAL REVISI --}}
+                <div class="modal fade p-4" id="ModalRevisiJadwal" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                        <div class="modal-content rounded-lg shadow-lg bg-white"> 
+                            <form action="{{ route('perbaikan.update') }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                {{-- header --}}
+                                <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                    <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Revisi Perbaikan</h3>
+                                    <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
+                                        aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                {{-- content --}}
+                                <div class="modal-body p-6 space-y-2">
+                                    <!-- AJAX -->
+                                    <div class="flex items-center space-x-4">
+                                        <label for="fasilitas" class="w-32 text-md font-medium text-gray-700">
+                                            Fasilitas:</label>
+                                        <input id="modal-revisi-fasilitas" type="text" value="" name="fasilitas"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                            disabled>
+                                    </div>
+                                    
+                                    <div class="text-center">
+                                        <p class="text-gray-500 text-sm">Masukan tanggal perbaikan baru.</p>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-4">
+                                        <label for="jadwal" class="w-32 text-md font-medium text-gray-700">
+                                            Tanggal Pemeliharaan:</label>
+                                        <input id="modal-revisi-jadwal" type="datetime-local" value="" name="jadwal"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" required>
+                                    </div>
+
+                                    {{-- keterangan --}}
+                                    <div class="flex items-center space-x-4 mt-4">
+                                        <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
+                                            Keterangan:</label>
+                                        <textarea id="modal-revisi-pesan" type="text" value="" rows="2" name="pesan"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"></textarea>
+                                    </div>
+
+                                    <input type="hidden" id="modal-revisi-idPemeliharaan" name="idPemeliharaan">
+
+                                </div> 
+                                {{-- SUBMIT --}}
+                                <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                    <button type="button" data-dismiss="modal" 
+                                        class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                        Tutup
+                                    </button>
+                                    <button type="submit" name="action" value="tolak"
+                                        class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                        Revisi Pembayaran
+                                    </button>
+                                </div>                                    
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -237,12 +306,23 @@
                                     </div>
                                 @endif
 
+                                {{-- tanggal  --}}
+                                <div class="sm:col-span-3 sm:col-start-1">
+                                    <label for="jadwal"
+                                        class="block text-sm font-medium leading-6 text-gray-900">Tanggal Perbaikan</label>
+                                    <div class="mt-2">
+                                        <input type="datetime-local" name="jadwal" id="jadwal"
+                                            class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            required>
+                                    </div>
+                                </div>
+
                                 {{-- pesan --}}
                                 <div class="sm:col-span-3 sm:col-start-1">
                                     <label for="pesan"
                                         class="block text-sm font-medium leading-6 text-gray-900">Pesan</label>
                                     <div class="mt-2">
-                                        <textarea id="pesan" name="pesan" rows="3" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+                                        <textarea required id="pesan" name="pesan" rows="3" class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -380,56 +460,55 @@
                     $('#modal-fasilitas').val(data.fasilitas);
                     $('#modal-jadwal').val(data.tgl_pemeliharaan);
                     $('#modal-pesan').val(data.pesan);
-
                     $('#modal-status').val(data.status_pemeliharaan);
                     $('#modal-jadwalkan').val(data.tgl_pemeliharaan);
 
-                    // ubah id pemeliharaan
-                    $('#ubah-pemeliharaan-btn').data('id', id);
+                    $('#modal-revisi-idPemeliharaan').val(data.idPemeliharaan);
+                    $('#modal-revisi-fasilitas').val(data.fasilitas);
                 }
             });
         });
 
-        $('#ubah-pemeliharaan-btn').on('click', function () {
-            var idPemeliharaan = $(this).data('id');
-            var jadwal = $('#modal-jadwalkan').val();
+        // $('#ubah-pemeliharaan-btn').on('click', function () {
+        //     var idPemeliharaan = $(this).data('id');
+        //     var jadwal = $('#modal-jadwalkan').val();
 
-            $.ajax({
-                url: '/perbaikan/update/' + idPemeliharaan,
-                type: 'PUT',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    tgl_pemeliharaan: jadwal
-                },
-                success: function (response) {
-                    location.reload(); 
-                },
-                error: function (xhr) {
-                    console.error('Gagal memperbarui data:', xhr.responseText);
-                }
-            });
-        });
+        //     $.ajax({
+        //         url: '/perbaikan/update/' + idPemeliharaan,
+        //         type: 'PUT',
+        //         data: {
+        //             _token: '{{ csrf_token() }}',
+        //             tgl_pemeliharaan: jadwal
+        //         },
+        //         success: function (response) {
+        //             location.reload(); 
+        //         },
+        //         error: function (xhr) {
+        //             console.error('Gagal memperbarui data:', xhr.responseText);
+        //         }
+        //     });
+        // });
 
-        $('.hapus-pemeliharaan-btn').on('click', function () {
-            var idPemeliharaan = $(this).data('id');
+        // $('.hapus-pemeliharaan-btn').on('click', function () {
+        //     var idPemeliharaan = $(this).data('id');
 
-            if (confirm('Apakah Anda yakin ingin menghapus pemeliharaan ini?')) {
-                $.ajax({
-                    url: '{{ route('pemeliharaan.destroy', ':id') }}'.replace(':id', idPemeliharaan),
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                        location.reload(); // Muat ulang halaman setelah penghapusan
-                    },
-                    error: function(xhr) {
-                        alert('Gagal menghapus pemeliharaan. Silakan coba lagi.');
-                    }
-                });
-            }
-        });
+        //     if (confirm('Apakah Anda yakin ingin menghapus pemeliharaan ini?')) {
+        //         $.ajax({
+        //             url: '{{ route('pemeliharaan.destroy', ':id') }}'.replace(':id', idPemeliharaan),
+        //             type: 'DELETE',
+        //             data: {
+        //                 _token: '{{ csrf_token() }}'
+        //             },
+        //             success: function(response) {
+        //                 alert(response.message);
+        //                 location.reload(); // Muat ulang halaman setelah penghapusan
+        //             },
+        //             error: function(xhr) {
+        //                 alert('Gagal menghapus pemeliharaan. Silakan coba lagi.');
+        //             }
+        //         });
+        //     }
+        // });
 
         $('.lihat-detail-riwayat').on('click', function(e) {
             e.preventDefault();

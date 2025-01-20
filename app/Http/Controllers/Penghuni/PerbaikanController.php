@@ -36,16 +36,17 @@ class PerbaikanController extends Controller
         return view('pengelola.akses-penghuni.pembelianlayanan', compact('data'));
     }   
 
-    public function updatePerbaikan(Request $request, $id)
+    public function updatePerbaikan(Request $request)
     {
         DB::table('pemeliharaan')
-            ->where('idPemeliharaan', $id)
+            ->where('idPemeliharaan', $request->idPemeliharaan)
             ->update([
-                'tgl_pemeliharaan' => null,
+                'tgl_pemeliharaan' => $request->jadwal,
+                'pesan' => $request->pesan,
                 'status' => 'Permintaan',
         ]);
     
-        return response()->json(['message' => 'Jadwal pemeliharaan berhasil diperbarui!'], 200);
+        return redirect()->back()->with('success', 'Jadwal pemeliharaan berhasil diperbarui!');
     }
 
     public function detailPerbaikan($id)
@@ -67,6 +68,7 @@ class PerbaikanController extends Controller
             'fasilitas' => $request->fasilitas,
             'pesan'=> $request->pesan,
             'tanggal' => now(),
+            'tgl_pemeliharaan'=> $request->jadwal,
             'status'=> 'Permintaan',
         ]);
 
@@ -84,12 +86,12 @@ class PerbaikanController extends Controller
         return response()->json(['message' => 'Pemeliharaan berhasil diperbarui!'], 200);
     }
 
-    public function destroyPemeliharaan($id)
-    {
-        DB::table('pemeliharaan')->where('idPemeliharaan', $id)->delete();
+    // public function destroyPemeliharaan($id)
+    // {
+    //     DB::table('pemeliharaan')->where('idPemeliharaan', $id)->delete();
 
-        return response()->json(['message' => 'Pemeliharaan berhasil dihapus.']);
-    }
+    //     return response()->json(['message' => 'Pemeliharaan berhasil dihapus.']);
+    // }
 
     public function riwayatPemeliharaan()
     {
