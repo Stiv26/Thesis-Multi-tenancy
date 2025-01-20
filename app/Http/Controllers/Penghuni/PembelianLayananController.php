@@ -19,6 +19,7 @@ class PembelianLayananController extends Controller
     {
         $data = DB::table('layanantambahan')
             ->select('*')
+            ->where('stok', '>', 0)
             ->get();
 
         return view('pengelola.akses-penghuni.PembelianLayanan', compact('data'));

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('idMetodePembayaran')->nullable()->references('idMetodePembayaran')->on('metodepembayaran')->onDelete('cascade');
             $table->string('bukti', 255)->nullable();
             $table->date('tanggal')->nullable(false); 
-            $table->date('tgl_terima');
+            $table->dateTime('tgl_terima');
             $table->enum('pengantaran', ['Ambil Sendiri', 'Diantar'])->nullable(false);
             $table->enum('status_pengantaran', ['Menunggu', 'Sudah diantar', 'Ambil Sendiri', 'Selesai'])->nullable();
             $table->string('pesan', 255)->nullable();

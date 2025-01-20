@@ -175,7 +175,7 @@
                                             <label for="terima" class="text-md font-medium text-gray-700">Tanggal
                                                 Terima</label>
                                             <div>
-                                                <input id="modal-terima" type="date" value=""
+                                                <input id="modal-terima" type="datetime-local" value=""
                                                     name="tgl_terima" required
                                                     class="w-full text-center px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
 
@@ -474,8 +474,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="py-3 px-4 text-center text-gray-500">Belum ada layanan
-                                        tambahan untuk kos ini.</td>
+                                    <td colspan="7" class="py-3 px-4 text-center text-gray-500">Belum ada pesanan yang dilakukan.</td>
                                 </tr>
                             @endforelse
                         </tbody>
