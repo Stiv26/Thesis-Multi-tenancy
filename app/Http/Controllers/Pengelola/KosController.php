@@ -16,7 +16,9 @@ class KosController extends Controller
         return view('Pengelola.kos.Kos', compact('data'));
     }
 
-    public function kontrak()
+
+    // PAGE KONTRAK //
+    public function kontrak() 
     {
         $data = DB::table('kontrak as k')
             ->join('users as u', 'k.users_id', '=', 'u.id')
@@ -29,7 +31,7 @@ class KosController extends Controller
         return view('Pengelola.kos.Kos', compact('data'));
     }
 
-    public function detailKontrak($id)
+    public function detailKontrak($id) // modal detail
     {
         $data = DB::table('kontrak as k')
             ->join('users as u', 'k.users_id', '=', 'u.id')
@@ -59,7 +61,7 @@ class KosController extends Controller
         ]);
     } 
 
-    public function editKontrak($id)
+    public function editKontrak($id) // masukan data kontrak ke edit kontrak
     {
         $data = DB::table('kontrak as k')
             ->join('users as u', 'k.users_id', '=', 'u.id')
@@ -102,7 +104,7 @@ class KosController extends Controller
         return view('Pengelola.kos.editkontrak', compact('data', 'pengaturan','kamarList', 'penghuniList', 'biayaList', 'biayaKontrakId'));
     }
 
-    public function updateKontrak(Request $request, $id)
+    public function updateKontrak(Request $request, $id) // update kontrak
     {
         // Pengecekan apakah ada pembayaran yang belum lunas
         $belumLunas = DB::table('kontrak as k')
@@ -174,10 +176,10 @@ class KosController extends Controller
                 ->delete();
         }
 
-        return redirect()->route('penghuni.index')->with('status', 'Data kontrak berhasil diperbarui!');
+        return redirect()->route('kos.index')->with('status', 'Data kontrak berhasil diperbarui!');
     }
 
-    public function pembatalanKontrak($id)
+    public function pembatalanKontrak($id) // masukan data kontrakk ke hapus kontrak
     {
         $data = DB::table('kontrak as k')
             ->join('users as u', 'k.users_id', '=', 'u.id')
@@ -188,7 +190,7 @@ class KosController extends Controller
         return view('Pengelola.kos.pembatalankontrak', compact('data'));
     }
 
-    public function destroyKontrak(Request $request, $id)
+    public function destroyKontrak(Request $request, $id) // destroy kontrak
     {
         $PembayaranBelumLunas = DB::table('kontrak as k')
             ->join('pembayaran as p', 'k.idKontrak', 'p.idKontrak')
@@ -236,12 +238,7 @@ class KosController extends Controller
 
 
 
-
-
-
-
-
-
+    // PAGE KAMAR //
     public function kamar()
     {
         $data = DB::table('kamar as k')
@@ -251,7 +248,7 @@ class KosController extends Controller
         return view('Pengelola.kos.Kos', compact('data'));
     }
 
-    public function detailKamar($id)
+    public function detailKamar($id) // modal kamar
     {
         $data = DB::table('kamar')
             ->select('*')
@@ -261,30 +258,22 @@ class KosController extends Controller
         return response()->json($data);
     }
 
-    public function editKamar($id)
-    {
-        $data = DB::table('kamar')
-            ->select('*')
-            ->where('idKamar', '=', $id)
-            ->first();
-
-        return view('Pengelola.kos.editKamar', compact('data'));
-    }
-
-    public function updateKamar(Request $request, $id)
+    public function updateKamar(Request $request) // udpate kamar
     {
         DB::table('kamar')
-            ->where('idKamar', $id)
+            ->where('idKamar', $request->idKamar)
             ->update([
-                'idKamar' => $request->no_kamar,
-                'harga' => $request->harga_kamar,
-                'keterangan' => $request->keterangan_kamar,
+                'idKamar' => $request->idKamar,
+                'harga' => $request->harga,
+                'keterangan' => $request->keterangan,
+                'harga_mingguan' => $request->harga_mingguan,
+                'harga_harian' => $request->harga_harian,
             ]);
 
         return redirect()->route('kos.index')->with('status', 'Data fasilitas berhasil diperbarui!');
     }
 
-    public function storeKamar(Request $request)
+    public function storeKamar(Request $request) // tambah kamar
     {
         $existingKamar = DB::table('kamar')->where('idKamar', $request->kamar)->first();
 
@@ -303,25 +292,16 @@ class KosController extends Controller
         return redirect()->route('kos.index')->with('success', 'Kamar berhasil ditambahkan.');
     }
 
-    public function destroyKamar($id)
+    public function destroyKamar(Request $request) // hapus kamar
     {
-        DB::table('kamar')->where('idKamar', $id)->delete();
+        DB::table('kamar')->where('idKamar', $request->idKamar)->delete();
 
-        return response()->json(['message' => 'Kamar berhasil dihapus']);
+        return redirect()->route('kos.index')->with('message', 'Kamar berhasil dihapus.');
     }
 
 
 
-
-
-
-
-
-
-
-
-
-
+    // PAGE FASILITAS //
     public function fasilitas()
     {
         $data = DB::table('fasilitas')

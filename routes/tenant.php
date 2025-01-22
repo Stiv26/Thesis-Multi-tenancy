@@ -61,9 +61,10 @@ Route::middleware([
         return view('pengelola.welcome');
     });
 
+    // login route
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LoginController::class, 'login'])->name('login.post');
-
+    Route::post('/login', [LoginController::class, 'login'])->name('login.post'); 
+    // forget password route
     Route::get('/lupa-password', [AuthController::class, 'showResetPasswordForm'])->name('password.request');
     Route::post('/lupa-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
@@ -99,6 +100,19 @@ Route::middleware([
             Route::get('/kontrak/{id}', [KosController::class, 'detailKontrak']);
             Route::get('/kamar/{id}', [KosController::class, 'detailKamar']);
             Route::get('/fasilitas/{id}', [KosController::class, 'detailFasilitas']);
+            
+            // routeing kamar
+            Route::post('/kos/tambah-kamar', [KosController::class, 'storeKamar'])->name('kamar.store'); // create kamar
+            Route::put('/kos/update-kamar', [KosController::class, 'updateKamar'])->name('kos.updateKamar'); // update kamar
+            Route::delete('/kos/hapus-kamar', [KosController::class, 'destroyKamar'])->name('kamar.destroy'); // delete kamar
+            // routeing fasilitas
+            Route::post('/kos/tambah-fasilitas', [KosController::class, 'storeFasilitas'])->name('fasilitas.store'); // create fasilitas
+            Route::delete('/kos/hapus-fasilitas/{id}', [KosController::class, 'destroyFasilitas'])->name('fasilitas.destroy'); // delete fasilitas
+            // routeing  aturan
+            Route::post('/kos/tambah-aturan', [KosController::class, 'storeAturan'])->name('aturan.store'); // tambah sop
+            Route::delete('/kos/hapus-sop/{id}', [KosController::class, 'destroyAturan'])->name('aturan.destroy'); // hapus sop
+
+
 
             // routeing update kontrak
             Route::get('/kos/edit-kontrak/{id}', [KosController::class, 'editKontrak']);
@@ -107,26 +121,14 @@ Route::middleware([
             // routeing pembatalan kontrak
             Route::get('/kos/batal-kontrak/{id}', [KosController::class, 'pembatalanKontrak']);
             Route::put('/kos/destroy-kontrak/{id}', [KosController::class, 'destroyKontrak'])->name('kos.destroyKontrak');
-
-            // routeing update kamar
-            Route::get('/kos/edit-kamar/{id}', [KosController::class, 'editKamar']);
-            Route::put('/kos/update-kamar/{id}', [KosController::class, 'updateKamar'])->name('kos.updateKamar');
-            // routeing create kamar
-            Route::post('/kos/tambah-kamar', [KosController::class, 'storeKamar'])->name('kamar.store');
-            // routeing delete kamar
-            Route::delete('/kos/hapus-kamar/{id}', [KosController::class, 'destroyKamar'])->name('kamar.destroy');
-
+            
+            
             // routeing update fasilitas
             Route::get('/kos/edit-fasilitas/{id}', [KosController::class, 'editFasilitas']);
             Route::put('/kos/update-fasilitas/{id}', [KosController::class, 'updateFasilitas'])->name('kos.updateFasilitas');
-            // routeing create fasilitas
-            Route::post('/kos/tambah-fasilitas', [KosController::class, 'storeFasilitas'])->name('fasilitas.store');
-            // routeing delete fasilitas
-            Route::delete('/kos/hapus-fasilitas/{id}', [KosController::class, 'destroyFasilitas'])->name('fasilitas.destroy');
+            
 
-            // routeing tambah aturan
-            Route::post('/kos/tambah-aturan', [KosController::class, 'storeAturan'])->name('aturan.store');
-            Route::delete('/kos/hapus-sop/{id}', [KosController::class, 'destroyAturan'])->name('aturan.destroy');
+            
 
 
 

@@ -236,6 +236,11 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- MODAL UBAH --}}
+                
+
+                {{-- MODAL HAPUS --}}
             </div>
         </section>
 
@@ -276,94 +281,236 @@
                         </tbody>
                     </table>
 
-                    <!-- MODAL DATA -->
-                    <div class="modal fade p-4" id="ModalKamar" tabindex="-1" role="dialog"
-                        aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                            <div class="modal-content rounded-lg shadow-lg bg-white">
-                                <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                    <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Kamar
-                                    </h3>
-                                    <button type="button" class="text-gray-400 hover:text-gray-600"
-                                        data-dismiss="modal" aria-hidden="true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="modal-body p-6 space-y-2">
-                                    <!-- AJAX -->
-                                    <div class="flex items-center space-x-4">
-                                        <label for="no_kamar" class="w-32 text-md font-medium text-gray-700">
-                                            Nomor Kamar:</label>
-                                        <input id="modal-no_kamar" type="text" value=""
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                            readonly>
+                    <main id="modal-kamar">
+                        <!-- MODAL DATA -->
+                        <div class="modal fade p-4" id="ModalKamar" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                <div class="modal-content rounded-lg shadow-lg bg-white">
+                                    {{-- header --}}
+                                    <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Kamar
+                                        </h3>
+                                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                                            data-dismiss="modal" aria-hidden="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
                                     </div>
+                                    {{-- content --}}
+                                    <div class="modal-body p-6 space-y-2">
+                                        <!-- AJAX -->
+                                        <div class="flex items-center space-x-4">
+                                            <label for="no_kamar" class="w-32 text-md font-medium text-gray-700">
+                                                Nomor Kamar:</label>
+                                            <input id="modal-no_kamar" type="text" value=""
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
 
-                                    <div class="flex items-center space-x-4">
-                                        <label for="harga_kamar" class="w-32 text-md font-medium text-gray-700">
-                                            Harga (Per-Bulan):</label>
-                                        <input id="modal-harga_kamar" type="text" value=""
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                            readonly>
+                                        <div class="flex items-center space-x-4">
+                                            <label for="harga_kamar" class="w-32 text-md font-medium text-gray-700">
+                                                Harga (Per-Bulan):</label>
+                                            <input id="modal-harga_kamar" type="text" value=""
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="harga_mingguan" class="w-32 text-md font-medium text-gray-700">
+                                                Harga (Per-Minggu):</label>
+                                            <input id="modal-harga_mingguan" type="text" value=""
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="harga_harian" class="w-32 text-md font-medium text-gray-700">
+                                                Harga (Per-Harian):</label>
+                                            <input id="modal-harga_harian" type="text" value=""
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="keterangan_kamar" class="w-32 text-md font-medium text-gray-700">
+                                                Keterangan:</label>
+                                            <textarea id="modal-keterangan_kamar" type="text" value="" rows="2"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
+                                        </div>
+
                                     </div>
-
-                                    <div class="flex items-center space-x-4">
-                                        <label for="harga_mingguan" class="w-32 text-md font-medium text-gray-700">
-                                            Harga (Per-Minggu):</label>
-                                        <input id="modal-harga_mingguan" type="text" value=""
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                            readonly>
-                                    </div>
-
-                                    <div class="flex items-center space-x-4">
-                                        <label for="harga_harian" class="w-32 text-md font-medium text-gray-700">
-                                            Harga (Per-Harian):</label>
-                                        <input id="modal-harga_harian" type="text" value=""
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                            readonly>
-                                    </div>
-
-                                    <div class="flex items-center space-x-4">
-                                        <label for="keterangan_kamar" class="w-32 text-md font-medium text-gray-700">
-                                            Keterangan:</label>
-                                        <textarea id="modal-keterangan_kamar" type="text" value="" rows="2"
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                    @if(!empty($item->idKamar))
-                                        <button type="button" id="hapus-kamar-btn" data-id="{{ $item->idKamar }}"
+                                    <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                        <button type="button" data-toggle="modal" data-target="#ModalHapusKamar" data-dismiss="modal" 
                                             class="rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-500">
                                             Hapus
                                         </button>
-                                    @endif
-                                    <a href="#" id="edit-kamar-btn">
-                                        <button type="button"
+                                        <button type="button" data-toggle="modal" data-target="#ModalUbahKamar" data-dismiss="modal" 
                                             class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                             Ubah Kamar
                                         </button>
-                                    </a>
-                                    <button type="button"
-                                        class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                                        data-dismiss="modal">
-                                        Tutup
-                                    </button>
+                                        <button type="button"
+                                            class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                                            data-dismiss="modal">
+                                            Tutup
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+                        {{-- MODAL UBAH KAMAR --}}
+                        <div class="modal fade p-4" id="ModalUbahKamar" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                <div class="modal-content rounded-lg shadow-lg bg-white"> 
+                                    <form action="{{ route('kos.updateKamar') }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        {{-- header --}}
+                                        <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                            <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Ubah Data Kamar</h3>
+                                            <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
+                                                aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        {{-- content --}}
+                                        <div class="modal-body p-6 space-y-2">
+                                            <!-- AJAX -->
+                                            <div class="flex items-center space-x-4">
+                                                <label for="kamar" class="w-32 text-md font-medium text-gray-700">
+                                                    Nomor Kamar:</label>
+                                                <input id="modal-kamar-nomor" type="text" value="" name="idKamar"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    required>
+                                            </div>
+
+                                            <div class="flex items-center space-x-4">
+                                                <label for="harga" class="w-32 text-md font-medium text-gray-700">
+                                                    Harga (Per-Bulan):</label>
+                                                <input id="modal-kamar-harga" type="number" value="" name="harga"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    required>
+                                            </div>
+
+                                            <div class="flex items-center space-x-4">
+                                                <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
+                                                    Keterangan:</label>
+                                                <textarea id="modal-kamar-keterangan" type="text" value="" rows="2" name="keterangan"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" required></textarea>
+                                            </div>
+                                            
+                                            <div class="text-center">
+                                                <p class="text-gray-500 text-sm">Bagian ini digunakan untuk nominal harga mingguan dan harian.</p>
+                                            </div>
+
+                                            <div class="flex items-center space-x-4">
+                                                <label for="mingguan" class="w-32 text-md font-medium text-gray-700">
+                                                    Harga (Per-Mingguan):</label>
+                                                <input id="modal-kamar-mingguan" type="number" value="" name="harga_mingguan"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    required>
+                                            </div>
+                                            
+                                            <div class="flex items-center space-x-4">
+                                                <label for="harian" class="w-32 text-md font-medium text-gray-700">
+                                                    Harga (Per-Harian):</label>
+                                                <input id="modal-kamar-harian" type="number" value="" name="harga_harian"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    required>
+                                            </div>
+
+                                        </div> 
+                                        {{-- SUBMIT --}}
+                                        <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                            <button type="button" data-dismiss="modal" 
+                                                class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                Tutup
+                                            </button>
+                                            <button type="submit"
+                                                class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                Ubah Kamar
+                                            </button>
+                                        </div>                                    
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- MODAL HAPUS KAMAR --}}
+                        <div class="modal fade p-4" id="ModalHapusKamar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                <div class="modal-content rounded-lg shadow-lg bg-white">
+                                    <div class="modal-body p-6 space-y-2">
+                                        <form action="{{ route('kamar.destroy') }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="flex items-center space-x-4">
+                                                <!-- Icon Warning -->
+                                                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+                                                    <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                                                    </svg>
+                                                </div>
+                                                <!-- Modal Title -->
+                                                <div class="text-left">
+                                                    <h3 class="text-lg font-semibold text-gray-900" id="modal-title">Konfirmasi Penghapusan Kamar</h3>
+                                                    <p class="mt-2 text-sm text-gray-500">Apakah anda yakin ingin menghapus kamar ini?</p>
+
+                                                    <input type="hidden" id="modal-hapusKamar-idKamar" name="idKamar">
+                                                </div>
+                                            </div>
+                    
+                                            <!-- Footer: Tombol Aksi -->
+                                            <div class="mt-6 flex justify-end space-x-4">
+                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Batal</button>
+                                                <button type="submit" data-toggle="modal" data-target="#ModalSuksesHapus"  class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition">Hapus</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal sukses hapus -->
+                            <div class="modal fade p-4" id="ModalSuksesHapus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                    <div class="modal-content rounded-lg shadow-lg bg-white">
+                                        <div class="modal-body p-6 space-y-4 text-center">
+                                            <!-- Icon Success -->
+                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                                </svg>
+                                            </div>
+                                            <!-- Pesan -->
+                                            <h3 class="text-lg font-semibold text-gray-900">Kamar Berhasil Dihapus</h3>
+                                            <p class="text-sm text-gray-500">Kamar telah dihapus dari sistem.</p>
+                                            <div class="mt-4">
+                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </main>
                 </div>
+                
                 <div class="border-b border-gray-900/10 pb-10">
             </section>
 
             {{-- TAMBAH DATA --}}
-            <section>
-                <form action="{{ route('kamar.store') }}" method="POST" class="mt-10">
+            <section class="mt-10">
+                <form action="{{ route('kamar.store') }}" method="POST" >
                     @csrf
                     <div class="space-y-12">
                         <div class="border-b border-gray-900/10 pb-10">
@@ -553,6 +700,7 @@
                     </div>
 
                 </div>
+                
                 <div class="border-b border-gray-900/10 pb-10">
             </section>
 
@@ -729,30 +877,15 @@
                     $('#modal-harga_harian').val(data.harga_harian);
                     $('#modal-keterangan_kamar').val(data.keterangan);
 
-                    $('#edit-kamar-btn').attr('href', '/kos/edit-kamar/' + id);
+                    $('#modal-kamar-nomor').val(data.idKamar);
+                    $('#modal-kamar-harga').val(data.harga);
+                    $('#modal-kamar-keterangan').val(data.keterangan);
+                    $('#modal-kamar-mingguan').val(data.harga_mingguan);
+                    $('#modal-kamar-harian').val(data.harga_harian);
+
+                    $('#modal-hapusKamar-idKamar').val(data.idKamar);
                 }
             });
-        });
-
-        $('#hapus-kamar-btn').on('click', function() {
-            var idKamar = $(this).data('id');
-
-            if (confirm('Apakah Anda yakin ingin menghapus kamar ini?')) {
-                $.ajax({
-                    url: '{{ route('kamar.destroy', ':id') }}'.replace(':id', idKamar),
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                        location.reload();
-                    },
-                    error: function(xhr) {
-                        alert('Gagal menghapus kamar. Silakan coba lagi.');
-                    }
-                });
-            }
         });
     });
 </script>
