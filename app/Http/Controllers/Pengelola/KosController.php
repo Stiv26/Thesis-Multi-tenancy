@@ -311,7 +311,7 @@ class KosController extends Controller
         return view('pengelola.kos.Kos', compact('data'));
     }
 
-    public function detailFasilitas($id)
+    public function detailFasilitas($id) // modal fasilitas
     {
         $data = DB::table('fasilitas')
             ->select('*')
@@ -321,20 +321,10 @@ class KosController extends Controller
         return response()->json($data);
     }
 
-    public function editFasilitas($id)
-    {
-        $data = DB::table('fasilitas')
-            ->select('*')
-            ->where('idFasilitas', '=', $id)
-            ->first();
-
-        return view('pengelola.kos.editFasilitas', compact('data'));
-    }
-
-    public function updateFasilitas(Request $request, $id)
+    public function updateFasilitas(Request $request) // update fasilitas
     {
         DB::table('fasilitas')
-            ->where('idFasilitas', $id)
+            ->where('idFasilitas', $request->idFasilitas)
             ->update([
                 'fasilitas' => $request->fasilitas,
                 'jumlah' => $request->jumlah,
@@ -344,7 +334,7 @@ class KosController extends Controller
         return redirect()->route('kos.index')->with('status', 'Data fasilitas berhasil diperbarui!');
     }
 
-    public function storeFasilitas(Request $request)
+    public function storeFasilitas(Request $request) // tambah fasilitas
     {
         DB::table('fasilitas')->insert([
             'fasilitas' => $request->fasilitas,
@@ -355,17 +345,16 @@ class KosController extends Controller
         return redirect()->back()->with('status', 'Fasilitas berhasil ditambahkan!');
     }
 
-    public function destroyFasilitas($id)
+    public function destroyFasilitas(Request $request) // hapus fasilitas
     {
-        DB::table('fasilitas')->where('idFasilitas', $id)->delete();
+        DB::table('fasilitas')->where('idFasilitas', $request->idFasilitas)->delete();
 
-        return response()->json(['message' => 'Fasilitas berhasil dihapus']);
+        return redirect()->route('kos.index')->with('message', 'fasilitas berhasil dihapus.');
     }
 
 
 
-
-
+    // PAGE SOP //
     public function peraturan()
     {
         $data = DB::table('peraturan as p')
@@ -375,7 +364,7 @@ class KosController extends Controller
         return view('Pengelola.kos.kos', compact('data'));
     }
 
-    public function storeAturan(Request $request)
+    public function storeAturan(Request $request) // tambah sop
     {
         DB::table('peraturan')->insert([
             'aturan' => $request->aturan,
@@ -384,11 +373,32 @@ class KosController extends Controller
         return redirect()->back()->with('status', 'Aturan berhasil ditambahkan!');
     }
 
-    public function destroyAturan($id)
+    public function detailAturan($id) // modal aturan
     {
-        DB::table('peraturan')->where('idPeraturan', $id)->delete();
+        $data = DB::table('peraturan')
+            ->select('*')
+            ->where('idPeraturan', $id)
+            ->first();
 
-        return response()->json(['message' => 'Peraturan berhasil dihapus']);
+        return response()->json($data);
+    }
+
+    public function updateAturan(Request $request) // update aturan
+    {
+        DB::table('peraturan')
+            ->where('idPeraturan', $request->idPeraturan)
+            ->update([
+                'aturan' => $request->aturan,
+            ]);
+
+        return redirect()->route('kos.index')->with('status', 'Data Aturan berhasil diperbarui!');
+    }
+
+    public function destroyAturan(Request $request) // hapus sop
+    {
+        DB::table('peraturan')->where('idPeraturan', $request->idPengaturan)->delete();
+
+        return redirect()->route('kos.index')->with('message', 'Aturan berhasil dihapus.');
     }
 
 

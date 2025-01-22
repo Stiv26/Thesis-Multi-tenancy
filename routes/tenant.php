@@ -76,11 +76,10 @@ Route::middleware([
         |--------------------------------------------------------------------------*/
         Route::middleware(['check-role:Pengelola'])->group(function () {
             // PROFILE  
-            Route::get('/profil', [ProfilPengelolaController::class, 'profil'])->name('login.index');
-            Route::put('/update-profil', [ProfilPengelolaController::class, 'updateProfil'])->name('update.profilPengelola');
-
-            Route::post('/metode-pembayaran/store', [ProfilPengelolaController::class, 'storeMetode'])->name('metode.store');
-            Route::delete('/metode-pembayaran/{id}', [ProfilPengelolaController::class, 'destroyMetode'])->name('metode.destroy');
+            Route::get('/profil', [ProfilPengelolaController::class, 'profil'])->name('login.index'); // data ke page profil
+            Route::put('/update-profil', [ProfilPengelolaController::class, 'updateProfil'])->name('update.profilPengelola'); // update profil
+            Route::post('/metode-pembayaran/store', [ProfilPengelolaController::class, 'storeMetode'])->name('metode.store'); // data metode ke page profil
+            Route::delete('/metode-pembayaran/{id}', [ProfilPengelolaController::class, 'destroyMetode'])->name('metode.destroy'); // update metode
 
 
 
@@ -100,6 +99,7 @@ Route::middleware([
             Route::get('/kontrak/{id}', [KosController::class, 'detailKontrak']);
             Route::get('/kamar/{id}', [KosController::class, 'detailKamar']);
             Route::get('/fasilitas/{id}', [KosController::class, 'detailFasilitas']);
+            Route::get('/aturan/{id}', [KosController::class, 'detailAturan']);
             
             // routeing kamar
             Route::post('/kos/tambah-kamar', [KosController::class, 'storeKamar'])->name('kamar.store'); // create kamar
@@ -107,28 +107,21 @@ Route::middleware([
             Route::delete('/kos/hapus-kamar', [KosController::class, 'destroyKamar'])->name('kamar.destroy'); // delete kamar
             // routeing fasilitas
             Route::post('/kos/tambah-fasilitas', [KosController::class, 'storeFasilitas'])->name('fasilitas.store'); // create fasilitas
-            Route::delete('/kos/hapus-fasilitas/{id}', [KosController::class, 'destroyFasilitas'])->name('fasilitas.destroy'); // delete fasilitas
+            Route::put('/kos/update-fasilitas', [KosController::class, 'updateFasilitas'])->name('kos.updateFasilitas'); // update fasilitas
+            Route::delete('/kos/hapus-fasilitas', [KosController::class, 'destroyFasilitas'])->name('fasilitas.destroy'); // delete fasilitas
             // routeing  aturan
             Route::post('/kos/tambah-aturan', [KosController::class, 'storeAturan'])->name('aturan.store'); // tambah sop
-            Route::delete('/kos/hapus-sop/{id}', [KosController::class, 'destroyAturan'])->name('aturan.destroy'); // hapus sop
-
-
+            Route::put('/kos/update-aturan', [KosController::class, 'updateAturan'])->name('kos.updateAturan'); // update sop
+            Route::delete('/kos/hapus-sop', [KosController::class, 'destroyAturan'])->name('aturan.destroy'); // hapus sop
 
             // routeing update kontrak
-            Route::get('/kos/edit-kontrak/{id}', [KosController::class, 'editKontrak']);
-            Route::put('/kos/update-kontrak/{id}', [KosController::class, 'updateKontrak'])->name('kos.updateKontrak');
-
+            Route::get('/kos/edit-kontrak/{id}', [KosController::class, 'editKontrak']); // data kontrak ke page ubah
+            Route::put('/kos/update-kontrak/{id}', [KosController::class, 'updateKontrak'])->name('kos.updateKontrak'); // ubah kontrak
             // routeing pembatalan kontrak
-            Route::get('/kos/batal-kontrak/{id}', [KosController::class, 'pembatalanKontrak']);
-            Route::put('/kos/destroy-kontrak/{id}', [KosController::class, 'destroyKontrak'])->name('kos.destroyKontrak');
-            
-            
-            // routeing update fasilitas
-            Route::get('/kos/edit-fasilitas/{id}', [KosController::class, 'editFasilitas']);
-            Route::put('/kos/update-fasilitas/{id}', [KosController::class, 'updateFasilitas'])->name('kos.updateFasilitas');
-            
+            Route::get('/kos/batal-kontrak/{id}', [KosController::class, 'pembatalanKontrak']);  // data kontrak ke page batal
+            Route::put('/kos/destroy-kontrak/{id}', [KosController::class, 'destroyKontrak'])->name('kos.destroyKontrak'); // batalkan kontrak
 
-            
+
 
 
 
@@ -168,6 +161,8 @@ Route::middleware([
 
 
 
+
+
             // PEMBAYARAN   
             Route::get('pembayaran/{bulan?}/{tahun?}', [PembayaranController::class, 'pembayaran'])->name('pembayaran.index');
 
@@ -190,6 +185,8 @@ Route::middleware([
 
 
 
+
+
             // PESAN
             Route::get('pesan', function () {
                 $controller = new PesanController();
@@ -201,10 +198,11 @@ Route::middleware([
             });
             // routing update notifikasi
             Route::put('/notifikasi/tandai-terbaca/{id}', [PesanController::class, 'updateStatus'])->name('notifikasi.updateStatus');
-
             // routing create pengumuman
             Route::post('/pesan/tambah-pengumuman', [PesanController::class, 'storePengumuman'])->name('pengumuman.store');
 
+
+            
 
 
             // KARYAWAN

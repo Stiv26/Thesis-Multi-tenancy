@@ -237,10 +237,6 @@
                     </div>
                 </div>
 
-                {{-- MODAL UBAH --}}
-                
-
-                {{-- MODAL HAPUS --}}
             </div>
         </section>
 
@@ -281,7 +277,7 @@
                         </tbody>
                     </table>
 
-                    <main id="modal-kamar">
+                    <main id="bagian-modal-kamar"> 
                         <!-- MODAL DATA -->
                         <div class="modal fade p-4" id="ModalKamar" tabindex="-1" role="dialog"
                             aria-labelledby="myModalLabel" aria-hidden="true">
@@ -435,12 +431,34 @@
                                                 class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                                 Tutup
                                             </button>
-                                            <button type="submit"
+                                            <button type="submit" data-toggle="modal" data-target="#ModalSuksesUbahKamar" 
                                                 class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                                 Ubah Kamar
                                             </button>
                                         </div>                                    
                                     </form>
+                                </div>
+                            </div>
+
+                             <!-- Modal sukses ubah kamar -->
+                             <div class="modal fade p-4" id="ModalSuksesUbahKamar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                    <div class="modal-content rounded-lg shadow-lg bg-white">
+                                        <div class="modal-body p-6 space-y-4 text-center">
+                                            <!-- Icon Success -->
+                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                                </svg>
+                                            </div>
+                                            <!-- Pesan -->
+                                            <h3 class="text-lg font-semibold text-gray-900">Kamar Berhasil Diubah</h3>
+                                            <p class="text-sm text-gray-500">Kamar telah diperbaruhi dari sistem.</p>
+                                            <div class="mt-4">
+                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -472,15 +490,15 @@
                                             <!-- Footer: Tombol Aksi -->
                                             <div class="mt-6 flex justify-end space-x-4">
                                                 <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Batal</button>
-                                                <button type="submit" data-toggle="modal" data-target="#ModalSuksesHapus"  class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition">Hapus</button>
+                                                <button type="submit" data-toggle="modal" data-target="#ModalSuksesHapusKamar" class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition">Hapus</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Modal sukses hapus -->
-                            <div class="modal fade p-4" id="ModalSuksesHapus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <!-- Modal sukses hapus kamar -->
+                            <div class="modal fade p-4" id="ModalSuksesHapusKamar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog max-w-4xl mx-auto mt-24">
                                     <div class="modal-content rounded-lg shadow-lg bg-white">
                                         <div class="modal-body p-6 space-y-4 text-center">
@@ -631,73 +649,222 @@
                         </tbody>
                     </table>
 
-                    <!-- MODAL DATA -->
-                    <div class="modal fade p-4" id="ModalFasilitas" tabindex="-1" role="dialog"
-                        aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                            <div class="modal-content rounded-lg shadow-lg bg-white">
-                                <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                    <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Kamar
-                                    </h3>
-                                    <button type="button" class="text-gray-400 hover:text-gray-600"
-                                        data-dismiss="modal" aria-hidden="true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="modal-body p-6 space-y-2">
-                                    <!-- AJAX -->
-                                    <div class="flex items-center space-x-4">
-                                        <label for="fasilitas" class="w-32 text-md font-medium text-gray-700">
-                                            Fasilitas:</label>
-                                        <input id="modal-fasilitas" type="text" value=""
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                            readonly>
+                    <main id="bagian-modal-fasiltias">
+                        <!-- MODAL DATA -->
+                        <div class="modal fade p-4" id="ModalFasilitas" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                <div class="modal-content rounded-lg shadow-lg bg-white">
+                                    {{-- header --}}
+                                    <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Kamar
+                                        </h3>
+                                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                                            data-dismiss="modal" aria-hidden="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
                                     </div>
+                                    {{-- content --}}
+                                    <div class="modal-body p-6 space-y-2">
+                                        <!-- AJAX -->
+                                        <div class="flex items-center space-x-4">
+                                            <label for="fasilitas" class="w-32 text-md font-medium text-gray-700">
+                                                Fasilitas:</label>
+                                            <input id="modal-fasilitas" type="text" value=""
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
 
-                                    <div class="flex items-center space-x-4">
-                                        <label for="jumlah" class="w-32 text-md font-medium text-gray-700">
-                                            Jumlah:</label>
-                                        <input id="modal-jumlah" type="text" value=""
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                            readonly>
+                                        <div class="flex items-center space-x-4">
+                                            <label for="jumlah" class="w-32 text-md font-medium text-gray-700">
+                                                Jumlah:</label>
+                                            <input id="modal-jumlah" type="text" value=""
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="jenis" class="w-32 text-md font-medium text-gray-700">
+                                                Jenis:</label>
+                                            <input id="modal-jenis" type="text" value=""
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
                                     </div>
-
-                                    <div class="flex items-center space-x-4">
-                                        <label for="jenis" class="w-32 text-md font-medium text-gray-700">
-                                            Jenis:</label>
-                                        <input id="modal-jenis" type="text" value=""
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                            readonly>
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                    @if(!empty($item->idFasilitas))
-                                        <button type="button" id="hapus-fasilitas-btn"
-                                            data-id="{{ $item->idFasilitas }}"
+                                    <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                        <button type="button" data-toggle="modal" data-target="#ModalHapusFasilitas" data-dismiss="modal"
                                             class="rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-500">
                                             Hapus
                                         </button>
-                                    @endif
-                                    <a href="#" id="edit-fasilitas-btn">
-                                        <button type="button"
+                                        <button type="button" data-toggle="modal" data-target="#ModalUbahFasilitas" data-dismiss="modal" 
                                             class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                             Ubah Fasilitas
                                         </button>
-                                    </a>
-                                    <button type="button"
-                                        class=" rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                                        data-dismiss="modal">
-                                        Tutup
-                                    </button>
+                                        <button type="button"
+                                            class=" rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                                            data-dismiss="modal">
+                                            Tutup
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+                        {{-- MODAL UBAH FASILITAS --}}
+                        <div class="modal fade p-4" id="ModalUbahFasilitas" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                <div class="modal-content rounded-lg shadow-lg bg-white"> 
+                                    <form action="{{ route('kos.updateFasilitas') }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        {{-- header --}}
+                                        <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                            <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Ubah Data Fasilitas</h3>
+                                            <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
+                                                aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        {{-- content --}}
+                                        <div class="modal-body p-6 space-y-2">
+                                            
+                                            <div class="flex items-center space-x-4">
+                                                <label for="fasilitas" class="w-32 text-md font-medium text-gray-700">
+                                                    Fasilitas:</label>
+                                                <input id="modal-fasilitas-fasilitas" type="text" value="" name="fasilitas"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    required>
+                                            </div>
+
+                                            <div class="flex items-center space-x-4">
+                                                <label for="jumlah" class="w-32 text-md font-medium text-gray-700">
+                                                    Jumlah:</label>
+                                                <input id="modal-fasilitas-jumlah" type="number" value="" name="jumlah" min="1"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    required>
+                                            </div>
+
+                                            <div class="flex items-center space-x-4">
+                                                <label for="jenis" class="w-32 text-md font-medium text-gray-700">
+                                                    Jenis:</label>
+                                                <select id="modal-fasilitas-jenis" name="jenis" required 
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                                    <option value="umum">Umum</option>
+                                                    <option value="kamar">Kamar</option>
+                                                </select>  
+                                            </div>      
+                                            
+                                            <input type="hidden" id="modal-fasilitas-idFasilitas" name="idFasilitas">
+
+                                        </div> 
+                                        {{-- SUBMIT --}}
+                                        <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                            <button type="button" data-dismiss="modal"  
+                                                class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                Tutup
+                                            </button>
+                                            <button type="submit" data-toggle="modal" data-target="#ModalSuksesUbahFasilitas"
+                                                class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                Ubah Fasilitas
+                                            </button>
+                                        </div>                                    
+                                    </form>
+                                </div>
+                            </div>
+
+                            {{-- modal sukses ubah fasilitas --}}
+                            <div class="modal fade p-4" id="ModalSuksesUbahFasilitas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                    <div class="modal-content rounded-lg shadow-lg bg-white">
+                                        <div class="modal-body p-6 space-y-4 text-center">
+                                            <!-- Icon Success -->
+                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                                </svg>
+                                            </div>
+                                            <!-- Pesan -->
+                                            <h3 class="text-lg font-semibold text-gray-900">Fasilitas Berhasil Diubah</h3>
+                                            <p class="text-sm text-gray-500">Fasilitas telah diperbaruhi dari sistem.</p>
+                                            <div class="mt-4">
+                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        {{-- MODAL HAPUS FASILITAS --}}
+                        <div class="modal fade p-4" id="ModalHapusFasilitas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                <div class="modal-content rounded-lg shadow-lg bg-white">
+                                    <div class="modal-body p-6 space-y-2">
+                                        <form action="{{ route('fasilitas.destroy') }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="flex items-center space-x-4">
+                                                <!-- Icon Warning -->
+                                                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+                                                    <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                                                    </svg>
+                                                </div>
+                                                <!-- Modal Title -->
+                                                <div class="text-left">
+                                                    <h3 class="text-lg font-semibold text-gray-900" id="modal-title">Konfirmasi Penghapusan Fasilitas</h3>
+                                                    <p class="mt-2 text-sm text-gray-500">Apakah anda yakin ingin menghapus Fasilitas ini?</p>
+
+                                                    <input type="hidden" id="modal-hapusFasilitas-idFasilitas" name="idFasilitas">
+                                                </div>
+                                            </div>
+                    
+                                            <!-- Footer: Tombol Aksi -->
+                                            <div class="mt-6 flex justify-end space-x-4">
+                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Batal</button>
+                                                <button type="submit" data-toggle="modal" data-target="#ModalSuksesHapusFasilitas"  class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition">Hapus</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal sukses hapus -->
+                            <div class="modal fade p-4" id="ModalSuksesHapusFasilitas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                    <div class="modal-content rounded-lg shadow-lg bg-white">
+                                        <div class="modal-body p-6 space-y-4 text-center">
+                                            <!-- Icon Success -->
+                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                                </svg>
+                                            </div>
+                                            <!-- Pesan -->
+                                            <h3 class="text-lg font-semibold text-gray-900">Fasilitas Berhasil Dihapus</h3>
+                                            <p class="text-sm text-gray-500">Fasilitas telah dihapus dari sistem.</p>
+                                            <div class="mt-4">
+                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </main>      
 
                 </div>
                 
@@ -768,7 +935,8 @@
                 @foreach ($peraturan as $item)
                     <div class="flex justify-between">
                         <li class="text-md py-1 px-3">{{ $item->aturan }}</li>
-                        <a href="#" data-id="{{ $item->idPeraturan }}" id="hapus-peraturan" class="text-red-600 text-sm py-1 px-3">Hapus</a>
+                        <a href="#" data-id="{{ $item->idPeraturan }}" data-toggle="modal"
+                            data-target="#ModalDetailAturan" class="lihat-detail-aturan text-red-600 text-sm py-1 px-3">Perbaruhi</a>
                     </div>
                 @endforeach
             </ol>
@@ -776,40 +944,177 @@
             <a href="#" data-toggle="modal" data-target="#ModalSop" class="mt-3 text-sm leading-6 text-gray-600 ml-4">
                 <span aria-hidden="true">+</span> Tambah Aturan Baru</a>
 
-            {{-- MODAL TAMBAH ATURAN --}}
-            <div class="modal fade p-4" id="ModalSop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                    <form action="{{ route('aturan.store') }}" method="POST" class="modal-content rounded-lg shadow-lg bg-white">
-                        @csrf
-                        {{-- Header modal --}}
-                        <div class="modal-header border-b border-gray-200 py-4 px-6">
-                            <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Tambah Aturan Kos</h3>
-                            <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal" aria-hidden="true">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
-                            </button>
+            <main id="bagian-modal-sop">
+                {{-- MODAL TAMBAH ATURAN --}}
+                <div class="modal fade p-4" id="ModalSop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                        <form action="{{ route('aturan.store') }}" method="POST" class="modal-content rounded-lg shadow-lg bg-white">
+                            @csrf
+                            {{-- Header modal --}}
+                            <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Tambah Aturan Kos</h3>
+                                <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            {{-- Content modal --}}
+                            <div class="modal-body p-6 space-y-2">
+                                <div class="flex items-center space-x-4">
+                                    <label for="tambah-aturan" class="w-32 text-md font-medium text-gray-700">Aturan:</label>
+                                    <input required id="tambah-aturan" name="aturan" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                </div>
+                            </div>
+                            {{-- Footer --}}
+                            <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                <button type="submit" class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                    Tambah
+                                </button>                                                               
+                                <button type="button" class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600" data-dismiss="modal">
+                                    Tutup
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- MODAL UBAH DATA -->
+                <div class="modal fade p-4" id="ModalDetailAturan" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                        <div class="modal-content rounded-lg shadow-lg bg-white">
+                            {{-- header --}}
+                            <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Kamar
+                                </h3>
+                                <button type="button" class="text-gray-400 hover:text-gray-600"
+                                    data-dismiss="modal" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                            {{-- content --}}
+                            <form action="{{ route('kos.updateAturan') }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-body p-6 space-y-2">
+                                    <!-- AJAX -->
+                                    <div class="flex items-center space-x-4">
+                                        <label for="fasilitas" class="w-32 text-md font-medium text-gray-700">
+                                            Aturan:</label>
+                                        <input id="modal-aturan-aturan" type="text" value="" name="aturan"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                            required>
+                                    </div>
+
+                                    <input type="hidden" id="modal-aturan-idPeraturan" name="idPeraturan">
+
+                                </div>
+                                <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                    <button type="button" data-toggle="modal" data-target="#ModalHapusSop" data-dismiss="modal"
+                                        class="rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-500">
+                                        Hapus
+                                    </button>
+                                    <button type="submit" data-toggle="modal" data-target="#ModalSuksesUbahAturan"
+                                        class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                        Ubah Aturan
+                                    </button>
+                                    <button type="button"
+                                        class=" rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                                        data-dismiss="modal">
+                                        Tutup
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        {{-- Content modal --}}
-                        <div class="modal-body p-6 space-y-2">
-                            <div class="flex items-center space-x-4">
-                                <label for="tambah-aturan" class="w-32 text-md font-medium text-gray-700">Aturan:</label>
-                                <input required id="tambah-aturan" name="aturan" type="text" value=""
-                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                    </div>
+
+                    {{-- modal sukses ubah aturan --}}
+                    <div class="modal fade p-4" id="ModalSuksesUbahAturan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                            <div class="modal-content rounded-lg shadow-lg bg-white">
+                                <div class="modal-body p-6 space-y-4 text-center">
+                                    <!-- Icon Success -->
+                                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                        </svg>
+                                    </div>
+                                    <!-- Pesan -->
+                                    <h3 class="text-lg font-semibold text-gray-900">Aturan Berhasil Diubah</h3>
+                                    <p class="text-sm text-gray-500">Aturan telah diperbaruhi dari sistem.</p>
+                                    <div class="mt-4">
+                                        <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        {{-- Footer --}}
-                        <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                            <button type="submit" class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                                Tambah
-                            </button>                                                               
-                            <button type="button" class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600" data-dismiss="modal">
-                                Tutup
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+
+                {{-- MODAL HAPUS SOP --}}
+                <div class="modal fade p-4" id="ModalHapusSop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                        <div class="modal-content rounded-lg shadow-lg bg-white">
+                            <div class="modal-body p-6 space-y-2">
+                                <form action="{{ route('aturan.destroy') }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="flex items-center space-x-4">
+                                        <!-- Icon Warning -->
+                                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+                                            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                                            </svg>
+                                        </div>
+                                        <!-- Modal Title -->
+                                        <div class="text-left">
+                                            <h3 class="text-lg font-semibold text-gray-900" id="modal-title">Konfirmasi Penghapusan Aturan</h3>
+                                            <p class="mt-2 text-sm text-gray-500">Apakah anda yakin ingin menghapus Aturan ini?</p>
+
+                                            <input type="hidden" id="modal-hapusAturan-idPengaturan" name="idPengaturan">
+                                        </div>
+                                    </div>
+            
+                                    <!-- Footer: Tombol Aksi -->
+                                    <div class="mt-6 flex justify-end space-x-4">
+                                        <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Batal</button>
+                                        <button type="submit" data-toggle="modal" data-target="#ModalSuksesHapusAturan"  class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition">Hapus</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal sukses hapus -->
+                    <div class="modal fade p-4" id="ModalSuksesHapusAturan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                            <div class="modal-content rounded-lg shadow-lg bg-white">
+                                <div class="modal-body p-6 space-y-4 text-center">
+                                    <!-- Icon Success -->
+                                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                        </svg>
+                                    </div>
+                                    <!-- Pesan -->
+                                    <h3 class="text-lg font-semibold text-gray-900">Aturan Berhasil Dihapus</h3>
+                                    <p class="text-sm text-gray-500">Aturan telah dihapus dari sistem.</p>
+                                    <div class="mt-4">
+                                        <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
         </section>
 
     </main>
@@ -905,54 +1210,35 @@
                     $('#modal-jumlah').val(data.jumlah);
                     $('#modal-jenis').val(data.jenis);
 
-                    $('#edit-fasilitas-btn').attr('href', '/kos/edit-fasilitas/' + id);
+                    $('#modal-fasilitas-fasilitas').val(data.fasilitas);
+                    $('#modal-fasilitas-jumlah').val(data.jumlah);
+                    $('#modal-fasilitas-jenis').val(data.jenis);
+                    $('#modal-fasilitas-idFasilitas').val(data.idFasilitas);
+
+                    $('#modal-hapusFasilitas-idFasilitas').val(data.idFasilitas);
                 }
             });
-        });
-
-        $('#hapus-fasilitas-btn').on('click', function() {
-            var idFasilitas = $(this).data('id');
-
-            if (confirm('Apakah Anda yakin ingin menghapus fasilitas ini?')) {
-                $.ajax({
-                    url: '{{ route('fasilitas.destroy', ':id') }}'.replace(':id', idFasilitas),
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                        location.reload();
-                    },
-                    error: function(xhr) {
-                        alert('Gagal menghapus fasilitas. Silakan coba lagi.');
-                    }
-                });
-            }
         });
     });
 </script>
 
 {{-- AJAX SOP --}}
 <script>
-    $('#hapus-peraturan').on('click', function() {
-        var idPeraturan = $(this).data('id');  // Ambil ID peraturan dari data-id
+   $(document).ready(function() {
+        $('.lihat-detail-aturan').on('click', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
 
-        if (confirm('Apakah Anda yakin ingin menghapus peraturan ini?')) {
             $.ajax({
-                url: '/kos/hapus-sop/' + idPeraturan, // Sesuaikan URL untuk menghapus peraturan
-                type: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}'  // Token CSRF untuk keamanan
-                },
-                success: function(response) {
-                    alert(response.message);  // Menampilkan pesan sukses
-                    location.reload();  // Reload halaman untuk memperbarui data
-                },
-                error: function(xhr) {
-                    alert('Gagal menghapus peraturan. Silakan coba lagi.');  // Menampilkan pesan error
+                url: '/aturan/' + id,
+                type: 'GET',
+                success: function(data) {
+                    $('#modal-aturan-idPeraturan').val(data.idPeraturan);
+                    $('#modal-aturan-aturan').val(data.aturan);
+
+                    $('#modal-hapusAturan-idPengaturan').val(data.idPeraturan);
                 }
             });
-        }
+        });
     });
 </script>
