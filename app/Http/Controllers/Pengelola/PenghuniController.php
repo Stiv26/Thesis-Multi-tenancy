@@ -17,7 +17,7 @@ class PenghuniController extends Controller
         return view('Pengelola.penghuni', compact('data'));
     }
 
-    public function penghuni()
+    public function penghuni() // list penghuni
     {
         $data = DB::table('users as u')
             ->join('kontrak as k', 'k.users_id', '=', 'u.id')
@@ -29,7 +29,7 @@ class PenghuniController extends Controller
         return view('Pengelola.Penghuni', compact('data'));
     }
 
-    public function detailPenghuni($id)
+    public function detailPenghuni($id) // modal penghuni
     {
         $data = DB::table('users as u')
             ->join('kontrak as k', 'k.users_id', '=', 'u.id')
@@ -54,85 +54,22 @@ class PenghuniController extends Controller
         ]);
     }
 
-    public function listKamar()
-    {
-        $listKamar = DB::table('kamar as k')
-            ->leftJoin('kontrak as kon', function ($join) {
-                $join->on('k.idKamar', '=', 'kon.idKamar')
-                    ->where(function ($query) {
-                        $query->where('kon.status', '=', 'aktif')
-                            ->orWhere('kon.status', '=', 'pembayaran perdana');
-                    });
-            })
-            ->select('k.*')
-            ->where(function ($query) {
-                $query->whereNull('kon.idKamar')
-                    ->orWhere('kon.status', 'nonaktif');
-            })
-            ->get();
 
-        return view('Pengelola.penghuni', compact('listKamar'));
+    // TAMBAH KONTRAK //
+    public function detailAturanDenda($id) // modal aturan denda - Settings
+    {
+        $data = DB::table('denda')
+            ->where('idDenda', $id)
+            ->first();
+
+            if ($data) {
+                return response()->json(['data' => $data]);
+            } else {
+                return response()->json(['data' => null], 404); // Jika tidak ada data, kembalikan null
+            }
     }
 
-    public function biaya()
-    {
-        if (!\Illuminate\Support\Facades\Schema::hasTable('biaya')) {
-            return response()->json(['biayaList' => []]); // Kembalikan array kosong jika tabel tidak ada
-        }
-
-        $biayaList = DB::table('biaya as b')
-            ->select('*')
-            ->get();
-
-        return view('Pengelola.penghuni', compact('biayaList'));
-    }
-
-    public function dataDiri()
-    {
-        if (!\Illuminate\Support\Facades\Schema::hasTable('datadiri')) {
-            return response()->json(['dataDiriList' => []]); // Kembalikan array kosong jika tabel tidak ada
-        }
-
-        $dataDiriList = DB::table('listdatadiri as l')
-            ->select('*')
-            ->get();
-
-        return view('Pengelola.penghuni', compact('dataDiriList'));
-    }
-
-    public function storeDataDiri(Request $request)
-    {
-        DB::table('listdatadiri')->insert([
-            'data_diri' => $request->dataDiri,
-        ]);
- 
-        return redirect()->back()->with('success', 'Data Diri berhasil ditambahkan.');
-    }
-
-    public function storeBiaya(Request $request)
-    {
-        DB::table('biaya')->insert([
-            'biaya' => $request->biaya,
-        ]);
-
-        return redirect()->back()->with('success', 'Biaya berhasil ditambahkan.');
-    }
-
-    public function destroyBiaya($id)
-    {
-        DB::table('biaya')->where('idBiaya', $id)->delete();
-
-        return response()->json(['message' => 'Biaya berhasil dihapus']);
-    }
-
-    public function destroyDataDiri($id)
-    {
-        DB::table('listDataDiri')->where('idListDataDiri', $id)->delete();
-
-        return response()->json(['message' => 'Data Diri berhasil dihapus']);
-    }
-
-    public function aturanDenda(Request $request)
+    public function aturanDenda(Request $request) // Buat aturan denda - Settings
     {
         $exists = DB::table('denda')->where('idDenda', $request->idDenda)->exists();
 
@@ -161,22 +98,87 @@ class PenghuniController extends Controller
         return redirect()->back()->with('Data berhasil ditambahkan');
     }
 
-    public function detailAturanDenda($id)
+    public function listKamar() // dropdown pilih kamar
     {
-        $data = DB::table('denda')
-            ->where('idDenda', $id)
-            ->first();
+        $listKamar = DB::table('kamar as k')
+            ->leftJoin('kontrak as kon', function ($join) {
+                $join->on('k.idKamar', '=', 'kon.idKamar')
+                    ->where(function ($query) {
+                        $query->where('kon.status', '=', 'aktif')
+                            ->orWhere('kon.status', '=', 'pembayaran perdana');
+                    });
+            })
+            ->select('k.*')
+            ->where(function ($query) {
+                $query->whereNull('kon.idKamar')
+                    ->orWhere('kon.status', 'nonaktif');
+            })
+            ->get();
 
-            if ($data) {
-                return response()->json(['data' => $data]);
-            } else {
-                return response()->json(['data' => null], 404); // Jika tidak ada data, kembalikan null
-            }
+        return view('Pengelola.penghuni', compact('listKamar'));
+    }
+
+    public function biaya() // list biaya - SaaS
+    {
+        if (!\Illuminate\Support\Facades\Schema::hasTable('biaya')) {
+            return response()->json(['biayaList' => []]); // Kembalikan array kosong jika tabel tidak ada
+        }
+
+        $biayaList = DB::table('biaya as b')
+            ->select('*')
+            ->get();
+
+        return view('Pengelola.penghuni', compact('biayaList'));
+    }
+
+    public function storeBiaya(Request $request) // tambah biaya - SaaS
+    {
+        DB::table('biaya')->insert([
+            'biaya' => $request->biaya,
+        ]);
+
+        return redirect()->back()->with('success', 'Biaya berhasil ditambahkan.');
+    }
+
+    public function destroyBiaya($id) // hapus biaya - SaaS
+    {
+        DB::table('biaya')->where('idBiaya', $id)->delete();
+
+        return response()->json(['message' => 'Biaya berhasil dihapus']);
+    }
+
+    public function dataDiri() // list data diri - SaaS
+    {
+        if (!\Illuminate\Support\Facades\Schema::hasTable('datadiri')) {
+            return response()->json(['dataDiriList' => []]); // Kembalikan array kosong jika tabel tidak ada
+        }
+
+        $dataDiriList = DB::table('listdatadiri as l')
+            ->select('*')
+            ->get();
+
+        return view('Pengelola.penghuni', compact('dataDiriList'));
+    }
+
+    public function storeDataDiri(Request $request) // tambah data diri - Saas
+    {
+        DB::table('listdatadiri')->insert([
+            'data_diri' => $request->dataDiri,
+        ]);
+ 
+        return redirect()->back()->with('success', 'Data Diri berhasil ditambahkan.');
+    }
+
+    public function destroyDataDiri($id) // hapus data diri - SaaS
+    {
+        DB::table('listDataDiri')->where('idListDataDiri', $id)->delete();
+
+        return response()->json(['message' => 'Data Diri berhasil dihapus']);
     }
 
 
-
-    public function storeKontrak(Request $request)
+    // MAIN FUNCTION
+    public function storeKontrak(Request $request) // tambah kontrak
     {
         $existingUser  = DB::table('users')->where('no_telp', $request->no_telp)->where('status', 'Aktif')->first();
 

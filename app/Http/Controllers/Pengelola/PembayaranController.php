@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PembayaranController extends Controller
 {
-    public function pembayaran($bulan = null, $tahun = null)
+    public function pembayaran($bulan = null, $tahun = null) // master page data keuangan + buat tagihan, verifikasi, lihat + riwayat 
     {
         $header = 'Daftar Pembayaran';
 
@@ -20,9 +20,10 @@ class PembayaranController extends Controller
         $tahun = $tahun ?? now()->year;
 
         $today = now(); // Tanggal hari ini
-        $startDate = $today->copy()->subDays(3); // 3 hari sebelum hari ini
+        $startDate = $today->copy()->subDays(7); // 3 hari sebelum hari ini
         $endDate = $today->copy()->addDays(7); // 7  hari setelah hari ini
 
+        // menampilkan tagihan yang harus dibuat
         $tagihan = DB::table('kontrak as k')
             ->join('users as u', 'u.id', '=', 'k.Users_id') // Gabungkan dengan tabel users
             ->whereBetween('k.tgl_tagihan', [$startDate, $endDate]) // Filter rentang tanggal tagihan
@@ -37,7 +38,7 @@ class PembayaranController extends Controller
             ->orderBy('k.tgl_tagihan', 'asc')
             ->get();
 
-
+        // menampilkan tagihan yang sudah di bayarkan 
         $verifikasi = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
@@ -46,7 +47,7 @@ class PembayaranController extends Controller
             ->orderBy('p.tanggal', 'asc')
             ->get();
 
-        // Mengambil data pembayaran belum lunas
+        // Mengambil data pembayaran yang sudah dibuat tetapi belum lunas
         $pembayaran = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
@@ -105,7 +106,9 @@ class PembayaranController extends Controller
         ));
     }
 
-    public function detailTagihan($id)
+    
+
+    public function detailTagihan($id) // modal tagihan yang harus dibuat
     {
         $data = DB::table('kontrak as k')
             ->join('users as u', 'u.id', '=', 'k.users_id')
@@ -137,7 +140,7 @@ class PembayaranController extends Controller
         ]);
     }  
 
-    public function storeTagihan(Request $request)
+    public function storeTagihan(Request $request) // buat tagihan untuk penghuni
     {
         // Pengecekan pembayaran perdana
         $cekStatus = DB::table('pembayaran as p')
@@ -192,7 +195,7 @@ class PembayaranController extends Controller
         return redirect()->back()->with('success', 'Pembayaran berhasil ditambahkan.');
     }
 
-    public function detailPembayaran($id)
+    public function detailPembayaran($id) // modal tagihan yang sudah dibuat tetapi belum di bayar
     {
         $data = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
@@ -218,33 +221,33 @@ class PembayaranController extends Controller
         ]);
     }
 
-    public function editPembayaran($id)
-    {
-        $data = DB::table('pembayaran as p')
-            ->join('kontrak as k', 'k.idkontrak', '=', 'p.idkontrak')
-            ->join('users as u', 'u.id', '=', 'k.users_id')
-            ->select('*', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran')
-            ->where('p.status', '=', 'Belum Lunas')
-            ->where('p.idPembayaran', '=', $id)
-            ->first();
+    // public function editPembayaran($id)
+    // {
+    //     $data = DB::table('pembayaran as p')
+    //         ->join('kontrak as k', 'k.idkontrak', '=', 'p.idkontrak')
+    //         ->join('users as u', 'u.id', '=', 'k.users_id')
+    //         ->select('*', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran')
+    //         ->where('p.status', '=', 'Belum Lunas')
+    //         ->where('p.idPembayaran', '=', $id)
+    //         ->first();
 
-        $biayaList = DB::table('biayaLainnya as bl')
-            ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
-            ->select('*')
-            ->where('bl.idPembayaran', '=', $id)
-            ->get();
+    //     $biayaList = DB::table('biayaLainnya as bl')
+    //         ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
+    //         ->select('*')
+    //         ->where('bl.idPembayaran', '=', $id)
+    //         ->get();
 
-        return view('pengelola.pembayaran.editPembayaran', compact('data', 'biayaList'));
-    }
+    //     return view('pengelola.pembayaran.editPembayaran', compact('data', 'biayaList'));
+    // }
 
-    public function updatePembayaran(Request $request, $id)
+    public function updatePembayaran(Request $request) // ubah tagihan
     {
         DB::table('pembayaran')
-            ->where('idPembayaran', $id)
+            ->where('idPembayaran', $request->idPembayaran)
             ->update([
-                'tgl_tagihan' => $request->tagihan,
-                'tgl_denda' => $request->denda,
-                'status' => $request->status,
+                'tgl_tagihan' => $request->tgl_tagihan,
+                'tgl_denda' => $request->tgl_denda,
+                'total_bayar' => $request->total,
                 'keterangan' => $request->keterangan,
             ]);
 
@@ -262,7 +265,7 @@ class PembayaranController extends Controller
         return redirect()->route('pembayaran.index')->with('status', 'Data Pembayaran berhasil diperbarui!');
     }
 
-    public function detailVerifikasi($id)
+    public function detailVerifikasi($id) // modal tagihan yang sudah dibayar
     {
         $data = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
@@ -291,7 +294,7 @@ class PembayaranController extends Controller
         ]);
     }
 
-    public function verifikasiPembayaran(Request $request) 
+    public function verifikasiPembayaran(Request $request) // modal verifikasi atau menolak bukti tagihan
     {
         $idPembayaran = $request->idPembayaran;
 
@@ -342,7 +345,9 @@ class PembayaranController extends Controller
         return redirect()->back()->with('warning', 'Aksi tidak dikenali.');
     }
 
-    public function detailRiwayat($id)
+
+
+    public function detailRiwayat($id) // modal riwayat
     {
         $data = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')

@@ -143,28 +143,27 @@ Route::middleware([
                 return view('pengelola.Penghuni', compact('header', 'penghuni', 'listKamar', 'biayaList', 'dataDiriList'));
             })->name('penghuni.index');
 
-            // routeing tambah biaya + data diri
-            Route::post('/biayaFasilitas/store', [PenghuniController::class, 'storeBiaya'])->name('biaya.store');
-            Route::post('/datadiri/store', [PenghuniController::class, 'storeDataDiri'])->name('datadiri.store');
+            // routeing setting denda 
+            Route::post('/penghuni/tambah-denda', [PenghuniController::class, 'aturanDenda'])->name('aturan.denda');
+            Route::get('/penghuni/detailAturanDenda/{id}', [PenghuniController::class, 'detailAturanDenda']);
 
-            // routeing delete biaya+ data diri
-            Route::delete('/penghuni/hapus-biaya/{id}', [PenghuniController::class, 'destroyBiaya'])->name('biaya.destroy');
-            Route::delete('/penghuni/hapus-dataDiri/{id}', [PenghuniController::class, 'destroyDataDiri'])->name('dataDiri.destroy');
+            // routeing biaya
+            Route::post('/biayaFasilitas/store', [PenghuniController::class, 'storeBiaya'])->name('biaya.store'); // tambah saas biaya
+            Route::delete('/penghuni/hapus-biaya/{id}', [PenghuniController::class, 'destroyBiaya'])->name('biaya.destroy'); // hapus saas biaya
+            // routeing data diri
+            Route::post('/datadiri/store', [PenghuniController::class, 'storeDataDiri'])->name('datadiri.store'); // tambah saas data diri
+            Route::delete('/penghuni/hapus-dataDiri/{id}', [PenghuniController::class, 'destroyDataDiri'])->name('dataDiri.destroy'); // hapus saas datadiri
 
             // routeing tambah kontrak 
-            Route::post('/penghuni/tambah-kontrak', [PenghuniController::class, 'storeKontrak'])->name('kontrak.store');
-            Route::post('/penghuni/tambah-denda', [PenghuniController::class, 'aturanDenda'])->name('aturan.denda');
-
-            // routeing detail penghuni
-            Route::get('/penghuni/{id}', [PenghuniController::class, 'detailpenghuni']);
-            Route::get('/penghuni/detailAturanDenda/{id}', [PenghuniController::class, 'detailAturanDenda']);
+            Route::post('/penghuni/tambah-kontrak', [PenghuniController::class, 'storeKontrak'])->name('kontrak.store'); // main route function tambah kontrak
+            Route::get('/penghuni/{id}', [PenghuniController::class, 'detailpenghuni']); // modal penghuni
 
 
 
 
 
             // PEMBAYARAN   
-            Route::get('pembayaran/{bulan?}/{tahun?}', [PembayaranController::class, 'pembayaran'])->name('pembayaran.index');
+            Route::get('pembayaran/{bulan?}/{tahun?}', [PembayaranController::class, 'pembayaran'])->name('pembayaran.index'); // show all main page data
 
             // modal detail  
             Route::get('/tagihan/{id}', [PembayaranController::class, 'detailTagihan']);
@@ -172,16 +171,15 @@ Route::middleware([
             Route::get('/list/{id}', [PembayaranController::class, 'detailPembayaran']);
             Route::get('/riwayat/{id}', [PembayaranController::class, 'detailRiwayat']);
 
-            // routeing buat pembayaran
-            Route::post('/pembayaran/buatTagihan', [PembayaranController::class, 'storeTagihan'])->name('tagihan.store');
-            Route::put('/pembayaran/verifikasiPembayaran', [PembayaranController::class, 'verifikasiPembayaran'])->name('tagihan.verifikasi');
-
+            // routeing pembayaran
+            Route::post('/pembayaran/buatTagihan', [PembayaranController::class, 'storeTagihan'])->name('tagihan.store'); // buat tagihan awal
+            Route::put('/pembayaran/verifikasi-pembayaran', [PembayaranController::class, 'verifikasiPembayaran'])->name('pembayaran.verifikasiPembayaran'); // verifikasi tagihan
+            Route::put('/pembayaran/update-pembayaran', [PembayaranController::class, 'updatePembayaran'])->name('pembayaran.updatePembayaran'); // ubah tagihan
+            
             // routeing update pembayaran
-            Route::get('/list/edit-pembayaran/{id}', [PembayaranController::class, 'EditPembayaran']);
-            Route::put('/pembayaran/update-pembayaran/{id}', [PembayaranController::class, 'updatePembayaran'])->name('pembayaran.updatePembayaran');
-
+            // Route::get('/list/edit-pembayaran/{id}', [PembayaranController::class, 'EditPembayaran']);
             // routeing verifikasi pembayaran
-            Route::put('/pembayaran/verifikasi-pembayaran', [PembayaranController::class, 'verifikasiPembayaran'])->name('pembayaran.verifikasiPembayaran');
+            // Route::put('/pembayaran/verifikasiPembayaran', [PembayaranController::class, 'verifikasiPembayaran'])->name('tagihan.verifikasi');
 
 
 
@@ -197,9 +195,9 @@ Route::middleware([
                 return view('pengelola.pesan', compact('header', 'pesan'));
             });
             // routing update notifikasi
-            Route::put('/notifikasi/tandai-terbaca/{id}', [PesanController::class, 'updateStatus'])->name('notifikasi.updateStatus');
+            Route::put('/notifikasi/tandai-terbaca/{id}', [PesanController::class, 'updateStatus'])->name('notifikasi.updateStatus'); // tandai terbaca
             // routing create pengumuman
-            Route::post('/pesan/tambah-pengumuman', [PesanController::class, 'storePengumuman'])->name('pengumuman.store');
+            Route::post('/pesan/tambah-pengumuman', [PesanController::class, 'storePengumuman'])->name('pengumuman.store'); // buat pengumuman
 
 
             
