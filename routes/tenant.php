@@ -222,21 +222,15 @@ Route::middleware([
             Route::get('/karyawan/{id}', [KaryawanController::class, 'detailKaryawan']); 
             Route::get('/karyawan/riwayat/{id}', [KaryawanController::class, 'detailRiwayatKaryawan']);
 
-            // routeing tambah 
-            Route::post('/karyawan/tambah-tugas', [KaryawanController::class, 'storeTugas'])->name('tugas.store');
-            Route::post('/karyawan/tambah-karyawan', [KaryawanController::class, 'storeKaryawan'])->name('karyawan.store');
-
-            // routeing update tugas
-            Route::get('/tugas/edit-tugas/{id}', [KaryawanController::class, 'editTugas']);
-            Route::put('/tugas/update-tugas/{id}', [KaryawanController::class, 'updateTugas'])->name('tugas.updateTugas');
-
-            // routeing update karyawan
-            Route::get('/karyawan/edit-karyawan/{id}', [KaryawanController::class, 'editKaryawan']);
-            Route::put('/karyawan/update-karyawan/{id}', [KaryawanController::class, 'updatekaryawan'])->name('karyawan.updatekaryawan');
+            // routeing tugas
+            Route::post('/karyawan/tambah-tugas', [KaryawanController::class, 'storeTugas'])->name('tugas.store'); // tambah tugas
+            Route::put('/tugas/update-tugas', [KaryawanController::class, 'updateTugas'])->name('tugas.updateTugas'); // ubah tugas
             
-            // routeing delete karyawan
-            Route::get('/karyawan/pemberhentian-karyawan/{id}', [KaryawanController::class, 'pemberhentianKaryawan']);
-            Route::put('/karyawan/destroy-karyawan/{id}', [KaryawanController::class, 'destroyKaryawan'])->name('karyawan.destroy');
+            // routeing karyawan
+            Route::post('/karyawan/tambah-karyawan', [KaryawanController::class, 'storeKaryawan'])->name('karyawan.store'); // tambah karyawan
+            Route::put('/karyawan/update-karyawan', [KaryawanController::class, 'updatekaryawan'])->name('karyawan.updatekaryawan'); // ubah karyawan
+            Route::put('/karyawan/destroy-karyawan', [KaryawanController::class, 'destroyKaryawan'])->name('karyawan.destroy'); // pecat karyawan
+            
 
 
 
@@ -263,6 +257,7 @@ Route::middleware([
 
 
 
+            
             // LAYANANTAMBAHAN
             if (!Schema::hasTable('layanantambahan')) {
                 Route::get('layanan-tambahan', function () {

@@ -15,7 +15,7 @@ class KaryawanController extends Controller
         return view('Pengelola.karyawan.karyawan', compact('data'));
     }
 
-    public function tugas()
+    public function tugas() // laporan tugas yang diberikan
     {
         $data = DB::table('tugas as t')
             ->select('*')
@@ -25,7 +25,7 @@ class KaryawanController extends Controller
         return view('Pengelola.karyawan.karyawan', compact('data'));
     }
 
-    public function detailTugas($id)
+    public function detailTugas($id) // modal lihat tugas
     {
         $data = DB::table('tugas as t')
             ->select('*')
@@ -35,29 +35,7 @@ class KaryawanController extends Controller
         return response()->json($data);
     }
 
-    public function editTugas($id)
-    {
-        $data = DB::table('tugas as t')
-            ->select('*')
-            ->where('t.idTugas', $id)
-            ->first();
-
-        return view('pengelola.karyawan.editTugas', compact('data'));
-    }
-
-    public function updateTugas(Request $request, $id)
-    {
-        DB::table('tugas')
-            ->where('idTugas', $id)
-            ->update([
-                'tanggal' => $request->tanggal,
-                'tugas' => $request->tugas,
-            ]);
-
-        return redirect()->route('karyawan.index')->with('status', 'Data tugas berhasil diperbarui!');
-    }
- 
-    public function storeTugas(Request $request)
+    public function storeTugas(Request $request) // buat tugas
     {
         DB::table('tugas')->insert([
             'tugas' => $request['tugas'],
@@ -68,7 +46,24 @@ class KaryawanController extends Controller
         return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil ditambahkan.');
     }
 
-    public function riwayat()
+    public function updateTugas(Request $request) // ubah tugas
+    {
+        DB::table('tugas')
+            ->where('idTugas', $request->idTugas)
+            ->update([
+                'tanggal' => $request->tanggal,
+                'tugas' => $request->tugas,
+                'status' => $request->status,
+            ]);
+
+        return redirect()->route('karyawan.index')->with('status', 'Data tugas berhasil diperbarui!');
+    }
+ 
+
+
+
+
+    public function riwayat() // riwayat tugas
     {
         $data = DB::table('tugas as t')
             ->select('*')
@@ -78,7 +73,7 @@ class KaryawanController extends Controller
         return view('Pengelola.karyawan.karyawan', compact('data'));
     }
 
-    public function detailRiwayat($id)
+    public function detailRiwayat($id) // modal riwayat tugas
     {
         $data = DB::table('tugas as t')
             ->select('*')
@@ -88,7 +83,11 @@ class KaryawanController extends Controller
         return response()->json($data);
     }
 
-    public function karyawan()
+
+
+
+
+    public function karyawan() // list karyawan
     {
         $data = DB::table('users as u')
             ->select('*')
@@ -99,7 +98,7 @@ class KaryawanController extends Controller
         return view('Pengelola.karyawan.karyawan', compact('data'));
     }
 
-    public function detailKaryawan($id)
+    public function detailKaryawan($id) // modal data karyawan
     {
         $data = DB::table('users as u')
             ->join('metodePembayaran as m', 'm.users_id', '=', 'u.id')
@@ -110,7 +109,7 @@ class KaryawanController extends Controller
         return response()->json($data);
     }
 
-    public function storeKaryawan(Request $request)
+    public function storeKaryawan(Request $request) // tambah karyawan baru
     {
         $existingUser  = DB::table('users')->where('no_telp', $request->no_telp)->where('status', 'Aktif')->first();
 
@@ -142,20 +141,10 @@ class KaryawanController extends Controller
         return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil ditambahkan.');
     }
 
-    public function editKaryawan($id)
-    {
-        $data = DB::table('users')
-            ->select('*')
-            ->where('id', $id)
-            ->first();
-
-        return view('pengelola.karyawan.editKaryawan', compact('data'));
-    }
-
-    public function updateKaryawan(Request $request, $id)
+    public function updateKaryawan(Request $request) // ubah data karyawan
     {
         DB::table('users')
-            ->where('id', $id)
+            ->where('id', $request->id)
             ->update([
                 'no_telp' => $request->no_telp,
                 'password' => $request->password,
@@ -163,29 +152,26 @@ class KaryawanController extends Controller
                 'nama' => $request->nama,
             ]);
 
+        DB::table('metodepembayaran')
+            ->where('users_id', $request->id)
+            ->update([
+                'metode' => $request->metode,
+                'nomor_tujuan' => $request->rekening,
+            ]);
+
         return redirect()->route('karyawan.index')->with('status', 'Data karyawan berhasil diperbarui!');
     }
 
-    public function pemberhentianKaryawan($id)
-    {
-        $data = DB::table('users as u')
-            ->select('*')
-            ->where('u.id', $id)
-            ->first();
-
-        return view('pengelola.karyawan.pemberhentiankaryawan', compact('data'));
-    }
-
-    public function destroyKaryawan(Request $request, $id)
+    public function destroyKaryawan(Request $request) // pecat karyawan
     {
         DB::table('users')
-            ->where('id', $id)
+            ->where('id', $request->id)
             ->update([
                 'status' => 'nonaktif',
         ]);
 
         DB::table('pemberhentian')->insert([
-            'users_id' => $id,
+            'users_id' => $request->id,
             'alasan' => $request->alasan,
             'tanggal' => $request->tanggal,
         ]);
@@ -193,7 +179,11 @@ class KaryawanController extends Controller
         return redirect()->route('karyawan.index')->with('status', 'Data karyawan berhasil dihapus');
     }
 
-    public function riwayatKaryawan()
+
+
+
+
+    public function riwayatKaryawan() // riwayat karyawan
     {
         $data = DB::table('users as u')
             ->select('*')
@@ -204,7 +194,7 @@ class KaryawanController extends Controller
         return view('Pengelola.karyawan.karyawan', compact('data'));
     }
 
-    public function detailRiwayatKaryawan($id)
+    public function detailRiwayatKaryawan($id) // modal riwayat karyawan
     {
         $data = DB::table('users as u')
             ->join('pemberhentian as p', 'p.users_id', '=', 'u.id')

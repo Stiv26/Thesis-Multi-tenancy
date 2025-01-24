@@ -940,34 +940,34 @@
                         {{-- Bagian Submit --}}
                         <div class="mt-6 flex items-center justify-end gap-x-6">
                             <p class="text-sm leading-6 text-gray-500">Periksa Kembali Data Anda</p>
-                            <button type="submit"  data-toggle="modal" data-target="#ModalSuksesBuatFasilitas"
+                            <button type="submit" data-toggle="modal" data-target="#ModalSuksesBuatFasilitas"
                                 class="rounded-md bg-indigo-600 px-20 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Simpan</button>
                         </div>
                     </div>
                 </form>
-            </section>
 
-            {{-- modal sukses tambah penghuni --}}
-            <div class="modal fade p-4" id="ModalSuksesBuatFasilitas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                    <div class="modal-content rounded-lg shadow-lg bg-white">
-                        <div class="modal-body p-6 space-y-4 text-center">
-                            <!-- Icon Success -->
-                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                </svg>
-                            </div>
-                            <!-- Pesan -->
-                            <h3 class="text-lg font-semibold text-gray-900">Fasiitas Berhasil Ditambahkan</h3>
-                            <p class="text-sm text-gray-500">Fasilitas Kos berhasil disimpan oleh sistem.</p>
-                            <div class="mt-4">
-                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                {{-- modal sukses tambah fasilitas --}}
+                <div class="modal fade p-4" id="ModalSuksesBuatFasilitas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                        <div class="modal-content rounded-lg shadow-lg bg-white">
+                            <div class="modal-body p-6 space-y-4 text-center">
+                                <!-- Icon Success -->
+                                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                    <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                    </svg>
+                                </div>
+                                <!-- Pesan -->
+                                <h3 class="text-lg font-semibold text-gray-900">Fasiitas Berhasil Ditambahkan</h3>
+                                <p class="text-sm text-gray-500">Fasilitas Kos berhasil disimpan oleh sistem.</p>
+                                <div class="mt-4">
+                                    <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </section>
         
         {{-- PAGE SOP --}}

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tugas', function (Blueprint $table) {
             $table->id('idTugas');
             $table->string('tugas', 255)->nullable(false);
-            $table->date('tanggal')->nullable(false);
+            $table->datetime('tanggal')->nullable(false);
             $table->enum('status', ['Belum Selesai', 'Selesai'])->nullable(false);
             $table->string('bukti', 255)->nullable();
             $table->date('tgl_update')->nullable();
