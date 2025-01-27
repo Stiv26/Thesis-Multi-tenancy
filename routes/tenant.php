@@ -278,15 +278,11 @@ Route::middleware([
                 Route::get('/detailLayanan/{id}', [LayananTambahanController::class, 'detailLayanan']);
                 Route::get('/detailTransaksi/{id}', [LayananTambahanController::class, 'detailTransaksi']);
 
-                // routeing delete layanan 
-                Route::delete('/layanan-tambahan/hapus-layanan/{id}', [LayananTambahanController::class, 'destroyLayanan'])->name('layanan.destroy');
+                // routeing layanan tambahan
+                Route::post('/layanan-tambahan/tambah-layanan', [LayananTambahanController::class, 'storeLayanan'])->name('layanan-tambahan.store'); // tambah layanan
+                Route::put('/layanan-tambahan/update-layanan', [LayananTambahanController::class, 'updateLayanan'])->name('layanan-tambahan.updateLayanan'); // ubah layanan
+                Route::delete('/layanan-tambahan/hapus-layanan', [LayananTambahanController::class, 'destroyLayanan'])->name('layanan.destroy'); // hapus layanan
 
-                // routeing create layanan tambahan
-                Route::post('/layanan-tambahan/tambah-layanan', [LayananTambahanController::class, 'storeLayanan'])->name('layanan-tambahan.store');
-
-                // routing update layanan 
-                Route::get('/layanan-tambahan/edit-layanan/{id}', [LayananTambahanController::class, 'editLayanan']);
-                Route::put('/layanan-tambahan/update-layanan/{id}', [LayananTambahanController::class, 'updateLayanan'])->name('layanan-tambahan.updateLayanan');
 
                 // routeing verifikasi pembayaran
                 Route::put('/layanan-tambahan/verifikasi-pembayaran', [LayananTambahanController::class, 'verifikasiPembayaran'])->name('transaksi.verifikasiPembayaran');

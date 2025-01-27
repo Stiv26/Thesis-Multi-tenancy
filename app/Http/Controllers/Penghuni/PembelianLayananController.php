@@ -104,7 +104,7 @@ class PembelianLayananController extends Controller
         DB::table('transaksi')
             ->where('idTransaksi', $request->idTransaksi)
             ->update([
-                'status' => 'Lunas',
+                'status' => 'Verifikasi',
                 'bukti' => $request->bukti,
                 'dibayar' => $request->total_bayar,
             ]);
@@ -186,7 +186,7 @@ class PembelianLayananController extends Controller
     }
 
     // 1. PENGHUNI BELI LAYANAN TAMBAHAN
-    public function storeTransaksi(Request $request)
+    public function storeTransaksi(Request $request) // pembelian layanan tambahan
     {
         DB::table('transaksi')->insert([
             'idLayananTambahan' => $request->idLayanan,
@@ -199,7 +199,7 @@ class PembelianLayananController extends Controller
             'pengantaran' => $request->pengantaran,
             'status_pengantaran' => $request->pengantaran === 'Diantar' ? 'Menunggu' : 'Ambil Sendiri',
             'pesan' => $request->pesan,
-            'status' => 'Verifikasi',
+            'status' => 'Verifikasi', 
             'dibayar' => $request->total,
         ]);
 

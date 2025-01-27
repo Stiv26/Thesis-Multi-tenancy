@@ -296,6 +296,7 @@
                                 </div>
                             </div>
 
+                            {{-- bank --}}
                             <div class="sm:col-span-2 sm:col-start-1">
                                 <label for="bank" class="block text-sm font-medium leading-6 text-gray-900">Bank
                                     Utama</label>
@@ -310,6 +311,7 @@
                                 </div>
                             </div>
 
+                            {{-- rekening --}}
                             <div class="sm:col-span-2">
                                 <label for="rekening" class="block text-sm font-medium leading-6 text-gray-900">Nomor
                                     Rekening</label>
@@ -420,7 +422,6 @@
                                 </div>
                             </div>
                             
-
                             {{-- tinggalnya (mingguan/harian) --}}
                             <div id="waktu-container" class="sm:col-span-2">
                                 <label for="waktu" class="block text-sm font-medium leading-6 text-gray-900">Waktu
@@ -535,7 +536,7 @@
                                         <label for="deskripsi_{{ $data->idListDataDiri }}"
                                             class="block text-sm font-medium leading-6 text-gray-900">{{ $data->data_diri }}</label>
                                         <div class="mt-2 flex">
-                                            <input type="text" name="deskripsi[]"
+                                            <input required type="text" name="deskripsi[]"
                                                 id="deskripsi_{{ $data->idListDataDiri }}"
                                                 class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                             <input required type="hidden" name="idListDataDiri[]"

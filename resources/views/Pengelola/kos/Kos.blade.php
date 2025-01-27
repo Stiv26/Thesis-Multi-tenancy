@@ -602,7 +602,7 @@
                         {{-- Bagian Submit --}}
                         <div class="mt-6 flex items-center justify-end gap-x-6">
                             <p class="text-sm leading-6 text-gray-500">Periksa Kembali Data Anda</p>
-                            <button type="submit"  data-toggle="modal" data-target="#ModalSuksesBuatKamar"
+                            <button type="submit" data-toggle="modal" data-target="#ModalSuksesBuatKamar"
                                 class="rounded-md bg-indigo-600 px-20 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Simpan</button>
                         </div>
                     </div>
@@ -883,7 +883,6 @@
                             </div>
 
                         </div>
-
                     </main>      
 
                 </div>
