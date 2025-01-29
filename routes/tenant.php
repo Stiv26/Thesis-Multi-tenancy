@@ -176,11 +176,6 @@ Route::middleware([
             Route::put('/pembayaran/verifikasi-pembayaran', [PembayaranController::class, 'verifikasiPembayaran'])->name('pembayaran.verifikasiPembayaran'); // verifikasi tagihan
             Route::put('/pembayaran/update-pembayaran', [PembayaranController::class, 'updatePembayaran'])->name('pembayaran.updatePembayaran'); // ubah tagihan
             
-            // routeing update pembayaran
-            // Route::get('/list/edit-pembayaran/{id}', [PembayaranController::class, 'EditPembayaran']);
-            // routeing verifikasi pembayaran
-            // Route::put('/pembayaran/verifikasiPembayaran', [PembayaranController::class, 'verifikasiPembayaran'])->name('tagihan.verifikasi');
-
 
 
 
@@ -302,8 +297,8 @@ Route::middleware([
         |--------------------------------------------------------------------------*/
         Route::middleware(['check-role:Penghuni'])->group(function () {
             // PROFILE  
-            Route::get('/info/profil', [ProfilPenghuniController::class, 'profil']);
-            Route::put('/info/update-profil', [ProfilPenghuniController::class, 'updateProfil'])->name('update.profilPenghuni');
+            Route::get('/info/profil', [ProfilPenghuniController::class, 'profil']); // data page profil
+            Route::put('/info/update-profil', [ProfilPenghuniController::class, 'updateProfil'])->name('update.profilPenghuni'); // update data profil
 
 
 

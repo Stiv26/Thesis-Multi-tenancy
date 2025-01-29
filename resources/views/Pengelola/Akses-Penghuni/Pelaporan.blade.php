@@ -71,34 +71,58 @@
                         </button>                
                     </div>
     
-                    <!-- Modal Konfirmasi -->
-                    <div class="modal fade p-4" id="ModalConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                            <div class="modal-content rounded-lg shadow-lg bg-white">
-                                <div class="modal-body p-6 space-y-2">
-                                    <div class="flex items-center space-x-4">
-                                        <!-- Icon Warning -->
-                                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-                                            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-                                            </svg>
+                    <main id="modal-bagian-konfirmasi-pelaporan">
+                        <!-- Modal Konfirmasi -->
+                        <div class="modal fade p-4" id="ModalConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                <div class="modal-content rounded-lg shadow-lg bg-white">
+                                    <div class="modal-body p-6 space-y-2">
+                                        <div class="flex items-center space-x-4">
+                                            <!-- Icon Warning -->
+                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+                                                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                                                </svg>
+                                            </div>
+                                            <!-- Modal Title & Description -->
+                                            <div class="text-left">
+                                                <h3 class="text-lg font-semibold text-gray-900" id="modal-title">Konfirmasi Pelaporan</h3>
+                                                <p class="mt-2 text-sm text-gray-500">Apakah anda yakin ingin mengirimkan pesan pelaporan ini?</p>
+                                            </div>
                                         </div>
-                                        <!-- Modal Title & Description -->
-                                        <div class="text-left">
-                                            <h3 class="text-lg font-semibold text-gray-900" id="modal-title">Konfirmasi Pelaporan</h3>
-                                            <p class="mt-2 text-sm text-gray-500">Apakah anda yakin ingin mengirimkan pesan pelaporan ini?</p>
+                
+                                        <!-- Footer: Tombol Aksi -->
+                                        <div class="mt-6 flex justify-end space-x-4">
+                                            <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Batal</button>
+                                            <button type="submit" data-toggle="modal" data-target="#ModalSuksesBuatPelaporan" class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition">Kirim</button>
                                         </div>
-                                    </div>
-            
-                                    <!-- Footer: Tombol Aksi -->
-                                    <div class="mt-6 flex justify-end space-x-4">
-                                        <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Batal</button>
-                                        <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition">Kirim</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+                        <!-- Modal sukses konfirmasi pelaporan -->
+                        <div class="modal fade p-4" id="ModalSuksesBuatPelaporan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                                <div class="modal-content rounded-lg shadow-lg bg-white">
+                                    <div class="modal-body p-6 space-y-4 text-center">
+                                        <!-- Icon Success -->
+                                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                            <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                            </svg>
+                                        </div>
+                                        <!-- Pesan -->
+                                        <h3 class="text-lg font-semibold text-gray-900">Pelaporan Berhasil Dibuat</h3>
+                                        <p class="text-sm text-gray-500">Pelaporan telah tercatat oleh sistem dan dikirimkan ke pengelola.</p>
+                                        <div class="mt-4">
+                                            <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
                 </form>
             </section>
         </section>

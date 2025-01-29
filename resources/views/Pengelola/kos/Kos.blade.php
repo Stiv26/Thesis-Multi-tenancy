@@ -243,7 +243,6 @@
         {{-- PAGE KAMAR --}}
         <section id="kamar" class="hidden">
             <section>
-
                 <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat Detail</p>
                 {{-- LIST --}}
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">

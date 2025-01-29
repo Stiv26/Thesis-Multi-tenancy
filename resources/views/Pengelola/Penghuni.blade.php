@@ -906,8 +906,6 @@
     });
 </script>
 
-
-
 {{-- HAPUS DATA DIRI + BIAYA  --}}
 <script>
     $('.hapus-biaya').on('click', function() {
