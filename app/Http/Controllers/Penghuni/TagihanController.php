@@ -16,7 +16,8 @@ class TagihanController extends Controller
         return view('Pengelola.akses-penghuni.tagihan', compact('data'));
     }
 
-    public function tagihan()
+    // tagihan // 
+    public function tagihan() // list tagihan
     {
         $data = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
@@ -29,48 +30,7 @@ class TagihanController extends Controller
         return view('Pengelola.akses-penghuni.tagihan', compact('data'));
     }
 
-    public function verifikasi()
-    {
-        $data = DB::table('pembayaran as p')
-            ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
-            ->join('users as u', 'u.id', '=', 'k.users_id')
-            ->select('*', 'p.status as status_pembayaran', 'p.tgl_denda as dendanya')
-            ->where('p.status', '=', 'Verifikasi')
-            ->where('k.users_id', '=', Auth::user()->id)
-            ->get();
-        
-        return view('Pengelola.akses-penghuni.tagihan', compact('data'));
-    }
-
-    public function detailVerifikasi($id)
-    {
-        $data = DB::table('pembayaran as p')
-            ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
-            ->join('users as u', 'u.id', '=', 'k.users_id')
-            ->join('metodepembayaran as m', 'm.idmetodepembayaran', '=', 'p.idmetodepembayaran')
-            ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihan', 'p.tgl_denda as denda', 'k.status as kontrak')
-            ->where('p.idPembayaran', $id)
-            ->first();
-
-        $biayaList = DB::table('biayaLainnya as bl')
-            ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
-            ->select('*')
-            ->where('bl.idPembayaran', $id)
-            ->get();
-
-        $denda = DB::table('dendaTambahan')
-            ->select('*')
-            ->where('idPembayaran', $id)
-            ->first();
-
-        return response()->json([
-            'data' => $data,
-            'biayaList' => $biayaList,
-            'denda' => $denda
-        ]);
-    }
-
-    public function detailTagihan($id)
+    public function detailTagihan($id) // modal tagihan
     {
         $data = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
@@ -102,6 +62,73 @@ class TagihanController extends Controller
         ]);
     }
 
+    public function storePembayaran(Request $request) // buat permintaan perbaikan
+    {
+        DB::table('pembayaran')
+            ->where('idPembayaran', $request->idPembayaran)
+            ->update([
+                'tanggal' => now(),
+                'dibayar' => $request->total,
+                'bukti' => $request->bukti,
+                'status' => 'Verifikasi',
+                'idMetodePembayaran' => $request->metode,
+        ]);
+
+        if ($request->has('denda') && !is_null($request->denda) && $request->denda > 0) {
+            DB::table('dendaTambahan')->insert([
+                'idPembayaran' => $request->idPembayaran,
+                'idDenda' => 1,
+                'nominal_denda' => $request->denda,
+            ]);
+        }
+
+        return redirect()->back()->with('Transaksi berhasil ditambahkan!');
+    }
+
+    public function verifikasi() // list waiting verifikasi
+    {
+        $data = DB::table('pembayaran as p')
+            ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
+            ->join('users as u', 'u.id', '=', 'k.users_id')
+            ->select('*', 'p.status as status_pembayaran', 'p.tgl_denda as dendanya')
+            ->where('p.status', '=', 'Verifikasi')
+            ->where('k.users_id', '=', Auth::user()->id)
+            ->get();
+        
+        return view('Pengelola.akses-penghuni.tagihan', compact('data'));
+    }
+
+    public function detailVerifikasi($id) // modal waiting verifikasi
+    {
+        $data = DB::table('pembayaran as p')
+            ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
+            ->join('users as u', 'u.id', '=', 'k.users_id')
+            ->join('metodepembayaran as m', 'm.idmetodepembayaran', '=', 'p.idmetodepembayaran')
+            ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihan', 'p.tgl_denda as denda', 'k.status as kontrak')
+            ->where('p.idPembayaran', $id)
+            ->first();
+
+        $biayaList = DB::table('biayaLainnya as bl')
+            ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
+            ->select('*')
+            ->where('bl.idPembayaran', $id)
+            ->get();
+
+        $denda = DB::table('dendaTambahan')
+            ->select('*')
+            ->where('idPembayaran', $id)
+            ->first();
+
+        return response()->json([
+            'data' => $data,
+            'biayaList' => $biayaList,
+            'denda' => $denda
+        ]);
+    }
+
+
+
+    // riwayat //
     public function riwayatTagihan()
     {
         $data = DB::table('pembayaran as p')
@@ -143,28 +170,5 @@ class TagihanController extends Controller
             'biayaList' => $biayaList,
             'denda' => $denda ?: null
         ]);
-    }
-
-    public function storePembayaran(Request $request) 
-    {
-        DB::table('pembayaran')
-            ->where('idPembayaran', $request->idPembayaran)
-            ->update([
-                'tanggal' => now(),
-                'dibayar' => $request->total,
-                'bukti' => $request->bukti,
-                'status' => 'Verifikasi',
-                'idMetodePembayaran' => $request->metode,
-        ]);
-
-        if ($request->has('denda') && !is_null($request->denda) && $request->denda > 0) {
-            DB::table('dendaTambahan')->insert([
-                'idPembayaran' => $request->idPembayaran,
-                'idDenda' => 1,
-                'nominal_denda' => $request->denda,
-            ]);
-        }
-
-        return redirect()->back()->with('Transaksi berhasil ditambahkan!');
     }
 }

@@ -107,7 +107,7 @@
                             <form id="form-upload-laporan" action="{{ route('laporan.update', ['id' => ':id']) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
-                            
+                                {{-- ajax --}}
                                 <div class="modal-body p-6 space-y-2">
                                     <div class="flex items-center space-x-4">
                                         <label id="modal-tanggal" class="text-md font-medium text-gray-700"></label>
@@ -119,12 +119,13 @@
                                     </div>
                                     <div class="flex items-center space-x-4 mt-3">
                                         <label for="bukti" class="w-32 text-md font-medium text-gray-700">Upload File:</label>
-                                        <input id="modal-bukti" type="file" name="bukti"
+                                        <input id="modal-bukti" type="file" name="bukti" required
                                             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                     </div>
                                 </div>
+                                {{-- footer --}}
                                 <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                    <button type="submit"
+                                    <button type="submit" data-toggle="modal" data-target="#ModalSuksesDikerja"
                                         class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                         Simpan
                                     </button>
@@ -135,6 +136,28 @@
                                     </button>
                                 </div>
                             </form>                            
+                    </div>
+                </div>
+
+                 <!-- Modal pesanan sukses dikerja -->
+                 <div class="modal fade p-4" id="ModalSuksesDikerja" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                        <div class="modal-content rounded-lg shadow-lg bg-white">
+                            <div class="modal-body p-6 space-y-4 text-center">
+                                <!-- Icon Success -->
+                                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                    <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                    </svg>
+                                </div>
+                                <!-- Pesan -->
+                                <h3 class="text-lg font-semibold text-gray-900">Tugas Selesai</h3>
+                                <p class="text-sm text-gray-500">Tugas selesai dan tersimpan oleh sistem.</p>
+                                <div class="mt-4">
+                                    <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 

@@ -69,6 +69,6 @@ class TenantController extends Controller
             ]);
         DB::commit();
 
-        return redirect()->back()->with('success', "Tenant '{$request->id}' berhasil dibuat dengan domain: {$domain}");
+        return redirect()->back();
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfilPenghuniController extends Controller
 {
-    public function profil()
+    public function profil() // data input profil
     {
         $data = DB::table('users as u')
             ->join('metodepembayaran as m', 'u.id', 'm.users_id')
@@ -20,7 +20,7 @@ class ProfilPenghuniController extends Controller
         return view('pengelola.akses-penghuni.profilpenghuni', compact('data'));
     }  
 
-    public function updateProfil(Request $request)
+    public function updateProfil(Request $request) // ubah profil
     {
         DB::table('users')
             ->where('id', Auth::user()->id)

@@ -15,7 +15,7 @@ class PelaporanController extends Controller
         return view('Pengelola.akses-penghuni.pelaporan', compact('data'));
     }
 
-    public function pelaporan()
+    public function pelaporan() // list pelaporan tabel
     {
         $data = DB::table('notifikasi as n')
             ->join('users as u', 'n.users_pengirim', '=', 'u.id')
@@ -27,7 +27,7 @@ class PelaporanController extends Controller
         return view('pengelola.akses-penghuni.pelaporan', compact('data'));
     }  
 
-    public function storePelaporan(Request $request)
+    public function storePelaporan(Request $request) // buat pelaporan
     {
         DB::table('notifikasi')->insert([
             'users_pengirim' => Auth::user()->id,
@@ -39,7 +39,7 @@ class PelaporanController extends Controller
         return redirect()->back()->with('success', 'Pelaporan berhasil dikirim.');
     }
 
-    public function riwayatPelaporan()
+    public function riwayatPelaporan() // riwayat yang sdh di baca
     {
         $data = DB::table('notifikasi as n')
             ->join('users as u', 'n.users_pengirim', '=', 'u.id')

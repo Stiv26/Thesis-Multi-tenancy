@@ -703,6 +703,7 @@
                         );
                     });
 
+                    // REVISI
                     if (data.data.status_pembayaran === 'Revisi') {
                         $('#deposit-kontrak').addClass('hidden');
                         $('#denda-kontrak').addClass('hidden');
@@ -710,12 +711,6 @@
                     }
                     else {
                         $('#harga-kontrak').removeClass('hidden');
-                    }
-
-                    // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_pembayaran === 'Revisi') {
-                        $('#deposit-kontrak').addClass('hidden');
-                    } else {
                         $('#deposit-kontrak').removeClass('hidden');
                         $('#modal-deposit').val(data.data.deposit);
                     }
@@ -737,39 +732,51 @@
 
                         let denda = 0;
 
-                        if (data.data.status_kontrak === 'Pembayaran Perdana') {
+                        if (data.data.status_kontrak === 'Pembayaran Perdana')
+                        {
                             if (data.data.deposit !== null) {
                                 const deposit = parseFloat(data.data.deposit);
 
                                 if (jenisDenda === 'Nominal') {
                                     denda = nilaiDenda;
-                                } else if (jenisDenda === 'Persen') {
+                                } 
+                                else if (jenisDenda === 'Persen') {
                                     denda = ((totalBayar - deposit) * nilaiDenda) / 100;
-                                } else {
+                                } 
+                                else {
                                     const hari = Math.abs(today - dendaDate);
                                     const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
 
-                                    denda = (formatHari * nilaiDenda) - deposit;
+                                    denda = formatHari * nilaiDenda;
                                 }
                             } 
                             else {
+                                $('#deposit-kontrak').addClass('hidden');
+
                                 if (jenisDenda === 'Nominal') {
                                     denda = nilaiDenda;
-                                } else if (jenisDenda === 'Persen') {
+                                } 
+                                else if (jenisDenda === 'Persen') {
                                     denda = (totalBayar * nilaiDenda) / 100;
-                                } else {
+                                } 
+                                else {
                                     const hari = Math.abs(today - dendaDate);
                                     const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
 
                                     denda = formatHari * nilaiDenda;
                                 }
                             }
-                        } else {
+                        } 
+                        else {
+                            $('#deposit-kontrak').addClass('hidden');
+
                             if (jenisDenda === 'Nominal') {
                                 denda = nilaiDenda;
-                            } else if (jenisDenda === 'Persen') {
+                            } 
+                            else if (jenisDenda === 'Persen') {
                                 denda = (totalBayar * nilaiDenda) / 100;
-                            } else {
+                            } 
+                            else {
                                 const hari = Math.abs(today - dendaDate);
                                 const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
 
@@ -780,12 +787,20 @@
                         // Atur nilai denda
                         $('#modal-denda').val(denda);
                         $('#modal-total').val(totalBayar + denda);
-                    } else {
+                    } 
+                    else {
                         $('#denda-kontrak').addClass('hidden');
                         $('#modal-denda').val('');
                         $('#modal-total').val(data.data.total_bayar);
                     }
 
+                    // DEPOSIT KONTRAK
+                    if (data.data.deposit === null || data.data.status_kontrak === 'Aktif') {
+                        $('#deposit-kontrak').addClass('hidden');
+                    } else {
+                        $('#deposit-kontrak').removeClass('hidden');
+                        $('#modal-deposit').val(data.data.deposit);
+                    }
 
                     // mengirim id ke editpembayaran yang sesuai
                     $('#edit-pembayaran-btn').attr('href', '/list/edit-pembayaran/' + id);
@@ -834,7 +849,7 @@
                     }
 
                     // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_kontrak === 'Revisi' || data.data.status_kontrak === 'Revisi') {
+                    if (data.data.deposit === null || data.data.status_kontrak === 'Revisi' || data.data.status_kontrak === 'Aktif') {
                         $('#deposit-verifikasi-kontrak').addClass('hidden');
                     } else {
                         $('#deposit-verifikasi-kontrak').removeClass('hidden');

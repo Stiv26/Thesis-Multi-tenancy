@@ -15,16 +15,7 @@ class PerbaikanController extends Controller
         return view('Pengelola.akses-penghuni.perbaikan', compact('data'));
     }
 
-    public function listFasilitas()
-    {
-        $data = DB::table('fasilitas as f')
-            ->select('*')
-            ->get();
-
-        return view('Pengelola.akses-penghuni.perbaikan', compact('data'));
-    }
-
-    public function perbaikan()
+    public function perbaikan() // tabel list perbaikan waiting list
     {
         $data = DB::table('pemeliharaan as p')
             ->join('kontrak as k', 'k.idKontrak', '=', 'p.idkontrak')
@@ -36,7 +27,19 @@ class PerbaikanController extends Controller
         return view('pengelola.akses-penghuni.pembelianlayanan', compact('data'));
     }   
 
-    public function updatePerbaikan(Request $request)
+    public function detailPerbaikan($id) // modal permintaan perbaikan
+    {
+        $data = DB::table('pemeliharaan as p')
+            ->join('kontrak as k', 'k.idKontrak', '=', 'p.idkontrak')
+            ->select('*', 'p.status as status_pemeliharaan')
+            ->where('p.status', '!=', 'Selesai')
+            ->where('p.idPemeliharaan', '=', $id)
+            ->first();
+
+        return response()->json($data);
+    }
+
+    public function updatePerbaikan(Request $request) // ajukan kembali
     {
         DB::table('pemeliharaan')
             ->where('idPemeliharaan', $request->idPemeliharaan)
@@ -49,19 +52,29 @@ class PerbaikanController extends Controller
         return redirect()->back()->with('success', 'Jadwal pemeliharaan berhasil diperbarui!');
     }
 
-    public function detailPerbaikan($id)
+    public function updateSelesai($id) // selesaikan perbaikan
     {
-        $data = DB::table('pemeliharaan as p')
-            ->join('kontrak as k', 'k.idKontrak', '=', 'p.idkontrak')
-            ->select('*', 'p.status as status_pemeliharaan')
-            ->where('p.status', '!=', 'Selesai')
-            ->where('p.idPemeliharaan', '=', $id)
-            ->first();
-
-        return response()->json($data);
+        DB::table('pemeliharaan')
+            ->where('idPemeliharaan', $id)
+            ->update([
+                'status' => 'Selesai',
+        ]);
+    
+        return response()->json(['message' => 'Pemeliharaan berhasil diperbarui!'], 200);
     }
 
-    public function storePerbaikan(Request $request)
+
+    // form tambah
+    public function listFasilitas() // list fasilitas untuk pemeliharaan
+    {
+        $data = DB::table('fasilitas as f')
+            ->select('*')
+            ->get();
+
+        return view('Pengelola.akses-penghuni.perbaikan', compact('data'));
+    }
+
+    public function storePerbaikan(Request $request) // buat pemeliharaan
     {
         DB::table('pemeliharaan')->insert([
             'idKontrak' => Auth::user()->id,
@@ -75,24 +88,9 @@ class PerbaikanController extends Controller
         return redirect()->back()->with('success', 'Pelaporan berhasil dikirim.');
     }
 
-    public function updateSelesai($id)
-    {
-        DB::table('pemeliharaan')
-            ->where('idPemeliharaan', $id)
-            ->update([
-                'status' => 'Selesai',
-        ]);
-    
-        return response()->json(['message' => 'Pemeliharaan berhasil diperbarui!'], 200);
-    }
 
-    // public function destroyPemeliharaan($id)
-    // {
-    //     DB::table('pemeliharaan')->where('idPemeliharaan', $id)->delete();
 
-    //     return response()->json(['message' => 'Pemeliharaan berhasil dihapus.']);
-    // }
-
+    // riwayat // 
     public function riwayatPemeliharaan()
     {
         $data = DB::table('pemeliharaan as p')

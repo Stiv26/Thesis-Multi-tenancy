@@ -142,54 +142,49 @@ class PembayaranController extends Controller
 
     public function storeTagihan(Request $request) // buat tagihan untuk penghuni
     {
-        // Pengecekan pembayaran perdana
         $cekStatus = DB::table('pembayaran as p')
             ->where('p.idKontrak', $request->idKontrak)
             ->where('p.status_kontrak', 'Pembayaran Perdana')
             ->orderByDesc('p.tgl_tagihan')
             ->first();
 
-        // Logika kondisi
         if ($cekStatus) {
             if ($cekStatus->status === 'Belum Lunas') {
                 return redirect()->route('pembayaran.index')
                     ->with('error', 'Selesaikan pembayaran perdana dulu sebelum membuat pembayaran baru.');
             }
         }
-
         $uuid = Str::uuid();
         $tempId = crc32($uuid->toString()) & 0xffffffff;
 
         DB::beginTransaction();
+            DB::table('pembayaran')->insert([
+                'idPembayaran' => $tempId,
+                'idKontrak' => $request->idKontrak,
+                'tgl_tagihan' => $request->buatTagihan,
+                'tgl_denda' => $request->buatDenda,
+                'total_bayar' => $request->total_bayar,
+                'status' => 'Belum Lunas',
+                'keterangan' => $request->keterangan,
+                'status_kontrak' => $cekStatus ? 'Aktif' : 'Pembayaran Perdana',
+            ]);
 
-        DB::table('pembayaran')->insert([
-            'idPembayaran' => $tempId,
-            'idKontrak' => $request->idKontrak,
-            'tgl_tagihan' => $request->buatTagihan,
-            'tgl_denda' => $request->buatDenda,
-            'total_bayar' => $request->total_bayar,
-            'status' => 'Belum Lunas',
-            'keterangan' => $request->keterangan,
-            'status_kontrak' => $cekStatus ? 'Aktif' : 'Pembayaran Perdana',
-        ]);
+            DB::table('kontrak')
+                ->where('idkontrak', $request->idKontrak)
+                ->update([
+                    'tgl_tagihan' => $request->tagihanBerikutnya,
+                    'tgl_denda' => $request->dendaBerikutnya,
+            ]);
 
-        DB::table('kontrak')
-            ->where('idkontrak', $request->idKontrak)
-            ->update([
-                'tgl_tagihan' => $request->tagihanBerikutnya,
-                'tgl_denda' => $request->dendaBerikutnya,
-        ]);
-
-        if ($request->has('idBiaya') && $request->has('harga_biaya')) {
-            foreach ($request->idBiaya as $key => $idBiaya) {
-                DB::table('biayalainnya')->insert([
-                    'idBiaya' => $idBiaya,
-                    'idPembayaran' => $tempId,
-                    'harga' => $request->harga_biaya[$key] ?? 0,
-                ]);
+            if ($request->has('idBiaya') && $request->has('harga_biaya')) {
+                foreach ($request->idBiaya as $key => $idBiaya) {
+                    DB::table('biayalainnya')->insert([
+                        'idBiaya' => $idBiaya,
+                        'idPembayaran' => $tempId,
+                        'harga' => $request->harga_biaya[$key] ?? 0,
+                    ]);
+                }
             }
-        }
-
         DB::commit();
 
         return redirect()->back()->with('success', 'Pembayaran berhasil ditambahkan.');

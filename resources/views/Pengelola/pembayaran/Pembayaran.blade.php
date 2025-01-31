@@ -1280,7 +1280,6 @@
 
                     // menambahkan biaya lainnya kedalaam modal
                     $('#bukti-biaya-container').empty();
-
                     $.each(data.biayaList, function(index, biaya) {
                         $('#bukti-biaya-container').append(`
                         <div class="mb-2 flex items-center space-x-4">
@@ -1292,6 +1291,7 @@
                         `);
                     });
 
+                    // DENDA KONTRAK
                     if (!data.denda || data.denda.nominal_denda === null) {
                         $('#bukti-denda').addClass('hidden');
                     } else {
@@ -1299,6 +1299,7 @@
                         $('#modal-bukti-denda').val(data.denda.nominal_denda);
                     }
 
+                    // DEPOSIT KONTRAK
                     if (data.data.deposit === null || data.data.status_kontrak === 'Revisi' || data.data.status_kontrak === 'Aktif') {
                         $('#bukti-deposit').addClass('hidden');
                     } else {
@@ -1358,7 +1359,6 @@
 
                     // menambahkan biaya lainnya kedalaam modal
                     $('#biaya-container').empty();
-
                     $.each(data.biayaList, function(index, biaya) {
                         $('#biaya-container').append(`
                         <div class="mb-2 flex items-center space-x-4">
@@ -1370,6 +1370,7 @@
                         `);
                     });
 
+                    // REVISI
                     if (data.data.status_pembayaran === 'Revisi') {
                         $('#deposit-kontrak').addClass('hidden');
                         $('#denda-kontrak').addClass('hidden');
@@ -1377,6 +1378,8 @@
                     }
                     else {
                         $('#harga-kontrak').removeClass('hidden');
+                        $('#deposit-kontrak').removeClass('hidden');
+                        $('#modal-deposit').val(data.data.deposit);
                     }
                         
                     // Logika untuk denda
@@ -1466,6 +1469,7 @@
                         $('#deposit-kontrak').removeClass('hidden');
                         $('#modal-deposit').val(data.data.deposit);
                     }
+         
                 }
             }); 
         });
