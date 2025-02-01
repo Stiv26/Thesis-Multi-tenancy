@@ -21,7 +21,7 @@
                         Riwayat Pembayaran</a>
                 </nav>
             </div>
-            
+
             {{-- JS --}}
             <script>
                 function switchPage(page) {
@@ -130,7 +130,7 @@
 
         <!-- PAGE PEMBAYARAN -->
         <section id="list" class="hidden">
-            
+
             {{-- BUAT TAGIHAN --}}
             @if ($tagihan->isNotEmpty())
                 <div>
@@ -167,14 +167,15 @@
                     <div class="modal fade p-4" id="ModalBuatTagihan" tabindex="-1" role="dialog"
                         aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                            <div class="modal-content rounded-lg shadow-lg bg-white"> 
+                            <div class="modal-content rounded-lg shadow-lg bg-white">
                                 <form action="{{ route('tagihan.store') }}" method="POST">
                                     @csrf
                                     {{-- header --}}
                                     <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Buat Pembayaran</h3>
-                                        <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
-                                            aria-hidden="true">
+                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Buat
+                                            Pembayaran</h3>
+                                        <button type="button" class="text-gray-400 hover:text-gray-600"
+                                            data-dismiss="modal" aria-hidden="true">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -204,7 +205,8 @@
                                         <div class="flex items-center space-x-4">
                                             <label for="tagihan" class="w-32 text-md font-medium text-gray-700">
                                                 Tanggal Tagihan:</label>
-                                            <input id="modal-buat-tagihan" type="date" value="" name="buatTagihan"
+                                            <input id="modal-buat-tagihan" type="date" value=""
+                                                name="buatTagihan"
                                                 class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                 readonly>
                                         </div>
@@ -212,7 +214,8 @@
                                         <div class="flex items-center space-x-4">
                                             <label for="tempo" class="w-32 text-md font-medium text-gray-700">
                                                 Tanggal Denda:</label>
-                                            <input id="modal-buat-denda" type="date" value="" name="buatDenda"
+                                            <input id="modal-buat-denda" type="date" value=""
+                                                name="buatDenda"
                                                 class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                 readonly>
                                         </div>
@@ -220,11 +223,12 @@
                                         <div class="flex items-center space-x-4">
                                             <label for="rentang" class="w-32 text-md font-medium text-gray-700">
                                                 Rentang:</label>
-                                            <input id="modal-buat-rentang" type="text" value="" name="buatRentang"
+                                            <input id="modal-buat-rentang" type="text" value=""
+                                                name="buatRentang"
                                                 class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                 readonly>
                                         </div>
-                                        
+
                                         <div class="text-center">
                                             <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
                                         </div>
@@ -233,29 +237,39 @@
                                         <div class="flex items-center space-x-4 mt-4">
                                             <label for="harga" class="w-32 text-md font-medium text-gray-700">
                                                 Harga:</label>
-                                            <input id="modal-buat-total" type="number" value="" name="total" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
-                                        </div> 
+                                            <input id="modal-buat-total" type="number" value=""
+                                                name="total"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
 
                                         {{-- deposit --}}
                                         <div class="flex items-center space-x-4 mt-4" id="deposit-container">
                                             <label for="deposit" class="w-32 text-md font-medium text-gray-700">
                                                 Deposit:</label>
-                                            <input id="modal-buat-deposit" type="number" value="" name="deposit" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
-                                        </div> 
+                                            <input id="modal-buat-deposit" type="number" value=""
+                                                name="deposit"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
 
                                         <!-- Container untuk biayaList yang akan diisi melalui AJAX -->
-                                        <div id="buat-biaya-container"></div>    
+                                        <div id="buat-biaya-container"></div>
 
                                         {{-- total bayar --}}
                                         <div class="flex items-center space-x-4 mt-4">
                                             <label for="total_bayar" class="w-32 text-md font-medium text-gray-700">
                                                 Total Bayar:</label>
-                                            <input id="total_bayar" type="number" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" disabled>
-                                            <input id="hidden_total_bayar" type="hidden" name="total_bayar" value="">
-                                        </div>        
-                                        
+                                            <input id="total_bayar" type="number" value=""
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                disabled>
+                                            <input id="hidden_total_bayar" type="hidden" name="total_bayar"
+                                                value="">
+                                        </div>
+
                                         {{-- Input Hidden idkontrak insert db + waktu buat update harga --}}
-                                        <input id="modal-buat-kontrak" type="hidden" name="idKontrak" value="">
+                                        <input id="modal-buat-kontrak" type="hidden" name="idKontrak"
+                                            value="">
                                         <input id="modal-buat-waktu" type="hidden" name="waktu" value="">
 
                                         <input id="modal-buat-rentang" type="hidden" name="rentang" value="">
@@ -271,13 +285,15 @@
                                         {{-- TAGIHAN NEW --}}
                                         <div id="waktu_tagihan_denda_update">
                                             <div class="text-center">
-                                                <p class="text-gray-500 text-sm">Tanggal tagihan dan denda untuk periode berikutnya</p>
+                                                <p class="text-gray-500 text-sm">Tanggal tagihan dan denda untuk
+                                                    periode berikutnya</p>
                                             </div>
 
                                             <div class="flex items-center space-x-4">
                                                 <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
                                                     Tagihan Berikutnya:</label>
-                                                <input id="modal-buat-tagihanBerikutnya" type="date" value="" name="tagihanBerikutnya"
+                                                <input id="modal-buat-tagihanBerikutnya" type="date"
+                                                    value="" name="tagihanBerikutnya"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     required readonly>
                                             </div>
@@ -285,15 +301,17 @@
                                             <div class="flex items-center space-x-4">
                                                 <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
                                                     Denda Berikutnya:</label>
-                                                <input id="modal-buat-dendaBerikutnya" type="date" value="" name="dendaBerikutnya"
+                                                <input id="modal-buat-dendaBerikutnya" type="date" value=""
+                                                    name="dendaBerikutnya"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     required readonly>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                     {{-- SUBMIT --}}
                                     <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                        <button type="submit" data-toggle="modal" data-target="#ModalSuksesBuatTagihan"
+                                        <button type="submit" data-toggle="modal"
+                                            data-target="#ModalSuksesBuatTagihan"
                                             class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                             Buat Pembayaran
                                         </button>
@@ -309,21 +327,27 @@
                     </div>
 
                     {{-- modal sukses tambah penghuni --}}
-                    <div class="modal fade p-4" id="ModalSuksesBuatTagihan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal fade p-4" id="ModalSuksesBuatTagihan" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog max-w-4xl mx-auto mt-24">
                             <div class="modal-content rounded-lg shadow-lg bg-white">
                                 <div class="modal-body p-6 space-y-4 text-center">
                                     <!-- Icon Success -->
-                                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                    <div
+                                        class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
                                         </svg>
                                     </div>
                                     <!-- Pesan -->
-                                    <h3 class="text-lg font-semibold text-gray-900">Tagihan Penghuni Berhasil Dibuat</h3>
+                                    <h3 class="text-lg font-semibold text-gray-900">Tagihan Penghuni Berhasil Dibuat
+                                    </h3>
                                     <p class="text-sm text-gray-500">Tagihan penghuni akan disampaikan oleh sistem.</p>
                                     <div class="mt-4">
-                                        <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                        <button type="button" data-dismiss="modal"
+                                            class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
                                     </div>
                                 </div>
                             </div>
@@ -369,19 +393,20 @@
                         <div class="modal fade p-4" id="ModalVerifikasiPembayaran" tabindex="-1" role="dialog"
                             aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                                <div class="modal-content rounded-lg shadow-lg bg-white"> 
+                                <div class="modal-content rounded-lg shadow-lg bg-white">
                                     <form action="{{ route('pembayaran.verifikasiPembayaran') }}" method="POST">
                                         @csrf
                                         @method('PUT')
                                         {{-- header --}}
                                         <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                            <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Verifikasi Pembayaran</h3>
-                                            <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
-                                                aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M6 18L18 6M6 6l12 12" />
+                                            <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">
+                                                Verifikasi Pembayaran</h3>
+                                            <button type="button" class="text-gray-400 hover:text-gray-600"
+                                                data-dismiss="modal" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
@@ -391,7 +416,8 @@
                                             <div class="flex items-center space-x-4">
                                                 <label for="kamar" class="w-32 text-md font-medium text-gray-700">
                                                     Kamar:</label>
-                                                <input id="modal-bukti-kamar" type="text" value="" name="idKamar"
+                                                <input id="modal-bukti-kamar" type="text" value=""
+                                                    name="idKamar"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     disabled>
                                             </div>
@@ -399,7 +425,8 @@
                                             <div class="flex items-center space-x-4">
                                                 <label for="nama" class="w-32 text-md font-medium text-gray-700">
                                                     Nama Penyewa:</label>
-                                                <input id="modal-bukti-nama" type="text" value="" name="nama"
+                                                <input id="modal-bukti-nama" type="text" value=""
+                                                    name="nama"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     disabled>
                                             </div>
@@ -407,7 +434,8 @@
                                             <div class="flex items-center space-x-4">
                                                 <label for="tagihan" class="w-32 text-md font-medium text-gray-700">
                                                     Tanggal Tagihan:</label>
-                                                <input id="modal-bukti-tagihanPembayaran" type="date" value="" name="tgl_tagihan"
+                                                <input id="modal-bukti-tagihanPembayaran" type="date"
+                                                    value="" name="tgl_tagihan"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     readonly>
                                             </div>
@@ -415,7 +443,8 @@
                                             <div class="flex items-center space-x-4">
                                                 <label for="tempo" class="w-32 text-md font-medium text-gray-700">
                                                     Tanggal Denda:</label>
-                                                <input id="modal-bukti-dendaPembayaran" type="date" value="" name="tgl_denda"
+                                                <input id="modal-bukti-dendaPembayaran" type="date" value=""
+                                                    name="tgl_denda"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     readonly>
                                             </div>
@@ -423,11 +452,12 @@
                                             <div class="flex items-center space-x-4">
                                                 <label for="rentang" class="w-32 text-md font-medium text-gray-700">
                                                     Rentang:</label>
-                                                <input id="modal-bukti-rentang" type="text" value="" name="rentang"
+                                                <input id="modal-bukti-rentang" type="text" value=""
+                                                    name="rentang"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     readonly>
                                             </div>
-                                            
+
                                             <div class="text-center">
                                                 <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
                                             </div>
@@ -435,7 +465,8 @@
                                             <div class="flex items-center space-x-4" id="bukti-harga">
                                                 <label for="harga" class="w-32 text-md font-medium text-gray-700">
                                                     Harga:</label>
-                                                <input id="modal-bukti-harga" type="text" value="" name="harga"
+                                                <input id="modal-bukti-harga" type="text" value=""
+                                                    name="harga"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     readonly>
                                             </div>
@@ -443,41 +474,52 @@
                                             <div class="flex items-center space-x-4" id="bukti-deposit">
                                                 <label for="deposit" class="w-32 text-md font-medium text-gray-700">
                                                     Deposit:</label>
-                                                <input id="modal-bukti-deposit" type="text" value="" name="deposit"
+                                                <input id="modal-bukti-deposit" type="text" value=""
+                                                    name="deposit"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     readonly>
                                             </div>
 
                                             <!-- Container untuk biayaList yang akan diisi melalui AJAX -->
-                                            <div id="bukti-biaya-container"></div> 
-                                            
+                                            <div id="bukti-biaya-container"></div>
+
                                             <div class="flex items-center space-x-4" id="bukti-denda">
                                                 <label for="denda" class="w-32 text-md font-medium text-gray-700">
                                                     Denda:</label>
-                                                <input id="modal-bukti-denda" type="text" value="" name="denda"
+                                                <input id="modal-bukti-denda" type="text" value=""
+                                                    name="denda"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     readonly>
                                             </div>
 
-                                            <img src="" id="modal-bukti-foto" alt="Bukti Pembayaran" class="w-64 h-64 object-cover border border-gray-300 rounded-md">
+                                            <img src="" id="modal-bukti-foto" alt="Bukti Pembayaran"
+                                                class="w-64 h-64 object-cover border border-gray-300 rounded-md">
 
                                             {{-- total bayar --}}
                                             <div class="flex items-center space-x-4 mt-4">
-                                                <label for="total_bayar" class="w-32 text-md font-medium text-gray-700">
+                                                <label for="total_bayar"
+                                                    class="w-32 text-md font-medium text-gray-700">
                                                     Total Bayar:</label>
-                                                <input id="modal-bukti-total" type="number" value="" name="total_bayar" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
-                                            </div>   
-                                            
+                                                <input id="modal-bukti-total" type="number" value=""
+                                                    name="total_bayar"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    readonly>
+                                            </div>
+
                                             {{-- metode pembayaran --}}
                                             <div class="flex items-center space-x-4 mt-4">
                                                 <label for="metode" class="w-32 text-md font-medium text-gray-700">
                                                     Metode Pembayaran:</label>
-                                                <input id="modal-bukti-metode" type="text" value="" name="metode" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
-                                            </div> 
+                                                <input id="modal-bukti-metode" type="text" value=""
+                                                    name="metode"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    readonly>
+                                            </div>
 
                                             {{-- keterangan --}}
                                             <div class="flex items-center space-x-4 mt-4">
-                                                <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
+                                                <label for="keterangan"
+                                                    class="w-32 text-md font-medium text-gray-700">
                                                     Keterangan:</label>
                                                 <textarea id="modal-bukti-keterangan" type="text" value="" rows="2" name="keterangan"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
@@ -486,38 +528,48 @@
                                             <input type="hidden" id="modal-bukti-idPembayaran" name="idPembayaran">
                                             <input type="hidden" id="modal-bukti-idKontrak" name="idKontrak">
 
-                                        </div> 
+                                        </div>
                                         {{-- SUBMIT --}}
                                         <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                            <button type="button" name="action" value="tolak" data-toggle="modal" data-target="#ModalTolakPembayaran" data-dismiss="modal" 
+                                            <button type="button" name="action" value="tolak" data-toggle="modal"
+                                                data-target="#ModalTolakPembayaran" data-dismiss="modal"
                                                 class="verifikasi-pembayaran rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600">
                                                 Pembayaran Salah
                                             </button>
-                                            <button type="submit" name="action" value="verifikasi" data-toggle="modal" data-target="#ModalSuksesVerifikasiBukti" 
+                                            <button type="submit" name="action" value="verifikasi"
+                                                data-toggle="modal" data-target="#ModalSuksesVerifikasiBukti"
                                                 class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                                 Verifikasi
                                             </button>
-                                        </div>                                    
+                                        </div>
                                     </form>
                                 </div>
                             </div>
 
                             <!-- Modal sukses verifikasi -->
-                            <div class="modal fade p-4" id="ModalSuksesVerifikasiBukti" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal fade p-4" id="ModalSuksesVerifikasiBukti" tabindex="-1"
+                                role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog max-w-4xl mx-auto mt-24">
                                     <div class="modal-content rounded-lg shadow-lg bg-white">
                                         <div class="modal-body p-6 space-y-4 text-center">
                                             <!-- Icon Success -->
-                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                            <div
+                                                class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                                <svg class="h-6 w-6 text-green-600" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
                                                 </svg>
                                             </div>
                                             <!-- Pesan -->
-                                            <h3 class="text-lg font-semibold text-gray-900">Bukti Pembayaran Berhasil Diverifikasi</h3>
-                                            <p class="text-sm text-gray-500">Pembayaran penghuni telah lunas dan disimpan oleh sistem.</p>
+                                            <h3 class="text-lg font-semibold text-gray-900">Bukti Pembayaran Berhasil
+                                                Diverifikasi</h3>
+                                            <p class="text-sm text-gray-500">Pembayaran penghuni telah lunas dan
+                                                disimpan oleh sistem.</p>
                                             <div class="mt-4">
-                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                                <button type="button" data-dismiss="modal"
+                                                    class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
                                             </div>
                                         </div>
                                     </div>
@@ -529,19 +581,20 @@
                         <div class="modal fade p-4" id="ModalTolakPembayaran" tabindex="-1" role="dialog"
                             aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                                <div class="modal-content rounded-lg shadow-lg bg-white"> 
+                                <div class="modal-content rounded-lg shadow-lg bg-white">
                                     <form action="{{ route('pembayaran.verifikasiPembayaran') }}" method="POST">
                                         @csrf
                                         @method('PUT')
                                         {{-- header --}}
                                         <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                            <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Revisi Pembayaran</h3>
-                                            <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
-                                                aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M6 18L18 6M6 6l12 12" />
+                                            <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Revisi
+                                                Pembayaran</h3>
+                                            <button type="button" class="text-gray-400 hover:text-gray-600"
+                                                data-dismiss="modal" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
@@ -551,7 +604,8 @@
                                             <div class="flex items-center space-x-4">
                                                 <label for="kamar" class="w-32 text-md font-medium text-gray-700">
                                                     Kamar:</label>
-                                                <input id="modal-revisi-kamar" type="text" value="" name="idKamar"
+                                                <input id="modal-revisi-kamar" type="text" value=""
+                                                    name="idKamar"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     disabled>
                                             </div>
@@ -559,27 +613,33 @@
                                             <div class="flex items-center space-x-4">
                                                 <label for="nama" class="w-32 text-md font-medium text-gray-700">
                                                     Nama Penyewa:</label>
-                                                <input id="modal-revisi-nama" type="text" value="" name="nama"
+                                                <input id="modal-revisi-nama" type="text" value=""
+                                                    name="nama"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     disabled>
                                             </div>
-                                            
+
                                             <div class="text-center">
-                                                <p class="text-gray-500 text-sm">Masukan Nominal Pembayaran Yang Harus dibayar</p>
+                                                <p class="text-gray-500 text-sm">Masukan Nominal Pembayaran Yang Harus
+                                                    dibayar</p>
                                             </div>
 
                                             <div class="flex items-center space-x-4">
                                                 <label for="harga" class="w-32 text-md font-medium text-gray-700">
                                                     Nominal Pembayaran:</label>
-                                                <input id="modal-revisi-total_bayar" type="text" value="" name="total_bayar"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" required>
-                                            </div> 
-                                            
+                                                <input id="modal-revisi-total_bayar" type="text" value=""
+                                                    name="total_bayar"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    required>
+                                            </div>
+
                                             <div class="flex items-center space-x-4">
                                                 <label for="tempo" class="w-32 text-md font-medium text-gray-700">
                                                     Tanggal Denda:</label>
-                                                <input id="modal-revisi-tgl_denda" type="date" value="" name="tgl_denda"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" required>
+                                                <input id="modal-revisi-tgl_denda" type="date" value=""
+                                                    name="tgl_denda"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    required>
                                             </div>
 
                                             {{-- ATUR TANGGAL --}}
@@ -591,13 +651,14 @@
                                                 const yyyy = tomorrow.getFullYear();
                                                 const mm = String(tomorrow.getMonth() + 1).padStart(2, '0'); // Bulan dalam format 2 digit
                                                 const dd = String(tomorrow.getDate()).padStart(2, '0'); // Tanggal dalam format 2 digit
-                                            
+
                                                 inputTanggal.min = `${yyyy}-${mm}-${dd}`; // Set atribut min pada input
                                             </script>
 
                                             {{-- keterangan --}}
                                             <div class="flex items-center space-x-4 mt-4">
-                                                <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
+                                                <label for="keterangan"
+                                                    class="w-32 text-md font-medium text-gray-700">
                                                     Keterangan:</label>
                                                 <textarea id="modal-revisi-keterangan" type="text" value="" rows="2" name="keterangan"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"></textarea>
@@ -607,38 +668,47 @@
                                             <input type="hidden" id="modal-revisi-idKontrak" name="idKontrak">
                                             <input type="hidden" id="modal-revisi-tgl_tagihan" name="tgl_tagihan">
 
-                                        </div> 
+                                        </div>
                                         {{-- SUBMIT --}}
                                         <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                            <button type="button" data-dismiss="modal" 
+                                            <button type="button" data-dismiss="modal"
                                                 class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                                 Tutup
                                             </button>
-                                            <button type="submit" name="action" value="tolak"  data-toggle="modal" data-target="#ModalSuksesRevisiPembayaran" 
+                                            <button type="submit" name="action" value="tolak" data-toggle="modal"
+                                                data-target="#ModalSuksesRevisiPembayaran"
                                                 class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                                 Revisi Pembayaran
                                             </button>
-                                        </div>                                    
+                                        </div>
                                     </form>
                                 </div>
                             </div>
 
                             <!-- Modal sukses direvisi -->
-                            <div class="modal fade p-4" id="ModalSuksesRevisiPembayaran" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal fade p-4" id="ModalSuksesRevisiPembayaran" tabindex="-1"
+                                role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog max-w-4xl mx-auto mt-24">
                                     <div class="modal-content rounded-lg shadow-lg bg-white">
                                         <div class="modal-body p-6 space-y-4 text-center">
                                             <!-- Icon Success -->
-                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                            <div
+                                                class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                                <svg class="h-6 w-6 text-green-600" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
                                                 </svg>
                                             </div>
                                             <!-- Pesan -->
-                                            <h3 class="text-lg font-semibold text-gray-900">Pembayaran Berhasil Direvisi</h3>
-                                            <p class="text-sm text-gray-500">Pembayaran telah direvisi dan dikirim tagihan telah dikirimkan.</p>
+                                            <h3 class="text-lg font-semibold text-gray-900">Pembayaran Berhasil
+                                                Direvisi</h3>
+                                            <p class="text-sm text-gray-500">Pembayaran telah direvisi dan dikirim
+                                                tagihan telah dikirimkan.</p>
                                             <div class="mt-4">
-                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                                <button type="button" data-dismiss="modal"
+                                                    class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
                                             </div>
                                         </div>
                                     </div>
@@ -680,12 +750,13 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="py-3 px-4 text-center text-gray-500">Belum ada data pembayaran yang tersedia untuk periode ini.</td>
+                                <td colspan="6" class="py-3 px-4 text-center text-gray-500">Belum ada data
+                                    pembayaran yang tersedia untuk periode ini.</td>
                             </tr>
-                        @endforelse 
+                        @endforelse
                     </tbody>
                 </table>
-                
+
                 {{-- MODAL DATA --}}
                 <div class="modal fade p-4" id="ModalPembayaran" tabindex="-1" role="dialog"
                     aria-labelledby="myModalLabel" aria-hidden="true">
@@ -800,10 +871,11 @@
                                     <textarea id="modal-keterangan" type="text" value="" rows="2"
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
                                 </div>
-            
-                            </div> 
+
+                            </div>
                             <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                <button type="button" data-toggle="modal" data-target="#ModalUbahPembayaran" data-dismiss="modal"
+                                <button type="button" data-toggle="modal" data-target="#ModalUbahPembayaran"
+                                    data-dismiss="modal"
                                     class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                     Ubah Pembayaran
                                 </button>
@@ -821,15 +893,16 @@
                 <div class="modal fade p-4" id="ModalUbahPembayaran" tabindex="-1" role="dialog"
                     aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                        <div class="modal-content rounded-lg shadow-lg bg-white"> 
+                        <div class="modal-content rounded-lg shadow-lg bg-white">
                             <form action="{{ route('pembayaran.updatePembayaran') }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 {{-- header --}}
                                 <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                    <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Ubah Tagihan Pembayaran</h3>
-                                    <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
-                                        aria-hidden="true">
+                                    <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Ubah Tagihan
+                                        Pembayaran</h3>
+                                    <button type="button" class="text-gray-400 hover:text-gray-600"
+                                        data-dismiss="modal" aria-hidden="true">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -839,11 +912,12 @@
                                 </div>
                                 {{-- content --}}
                                 <div class="modal-body p-6 space-y-2">
-                                    
+
                                     <div class="flex items-center space-x-4">
                                         <label for="kamar" class="w-32 text-md font-medium text-gray-700">
                                             Kamar:</label>
-                                        <input id="modal-ubahTagihan-kamar" type="text" value="" name="kamar"
+                                        <input id="modal-ubahTagihan-kamar" type="text" value=""
+                                            name="kamar"
                                             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                             disabled>
                                     </div>
@@ -851,7 +925,8 @@
                                     <div class="flex items-center space-x-4">
                                         <label for="nama" class="w-32 text-md font-medium text-gray-700">
                                             Nama Penyewa:</label>
-                                        <input id="modal-ubahTagihan-nama" type="text" value="" name="nama" min="1"
+                                        <input id="modal-ubahTagihan-nama" type="text" value=""
+                                            name="nama" min="1"
                                             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                             disabled>
                                     </div>
@@ -859,7 +934,8 @@
                                     <div class="flex items-center space-x-4">
                                         <label for="tgl_tagihan" class="w-32 text-md font-medium text-gray-700">
                                             Tanggal Tagihan:</label>
-                                        <input id="modal-ubahTagihan-tgl_tagihan" type="date" value="" name="tgl_tagihan" min="1"
+                                        <input id="modal-ubahTagihan-tgl_tagihan" type="date" value=""
+                                            name="tgl_tagihan" min="1"
                                             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                             required>
                                     </div>
@@ -867,18 +943,20 @@
                                     <div class="flex items-center space-x-4">
                                         <label for="tgl_denda" class="w-32 text-md font-medium text-gray-700">
                                             Tanggal Denda:</label>
-                                        <input id="modal-ubahTagihan-tgl_denda" type="date" value="" name="tgl_denda" min="1"
+                                        <input id="modal-ubahTagihan-tgl_denda" type="date" value=""
+                                            name="tgl_denda" min="1"
                                             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                             required>
                                     </div>
 
                                     <!-- Container untuk biayaList yang akan diisi melalui AJAX -->
-                                    <div id="ubah-biaya-container"></div>  
+                                    <div id="ubah-biaya-container"></div>
 
                                     <div class="flex items-center space-x-4">
                                         <label for="tgl_denda" class="w-32 text-md font-medium text-gray-700">
                                             Total Pembayaran:</label>
-                                        <input id="modal-ubahTagihan-total" type="number" value="" name="total" min="0"
+                                        <input id="modal-ubahTagihan-total" type="number" value=""
+                                            name="total" min="0"
                                             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                             required>
                                     </div>
@@ -889,13 +967,13 @@
                                         <textarea id="modal-ubahTagihan-keterangan" type="text" value="" rows="2" name="keterangan"
                                             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" required></textarea>
                                     </div>
-                                    
+
                                     <input type="hidden" id="modal-ubahTagihan-idPembayaran" name="idPembayaran">
 
-                                </div> 
+                                </div>
                                 {{-- SUBMIT --}}
                                 <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                    <button type="button" data-dismiss="modal"  
+                                    <button type="button" data-dismiss="modal"
                                         class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                         Tutup
                                     </button>
@@ -903,33 +981,39 @@
                                         class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                         Simpan Perubahan
                                     </button>
-                                </div>                                    
+                                </div>
                             </form>
                         </div>
                     </div>
 
                     {{-- modal sukses ubah fasilitas --}}
-                    <div class="modal fade p-4" id="ModalSuksesUbahTagihan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal fade p-4" id="ModalSuksesUbahTagihan" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog max-w-4xl mx-auto mt-24">
                             <div class="modal-content rounded-lg shadow-lg bg-white">
                                 <div class="modal-body p-6 space-y-4 text-center">
                                     <!-- Icon Success -->
-                                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                    <div
+                                        class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
                                         </svg>
                                     </div>
                                     <!-- Pesan -->
                                     <h3 class="text-lg font-semibold text-gray-900">Tagihan Berhasil Diubah</h3>
-                                    <p class="text-sm text-gray-500">Tagihan penghuni telah diperbaruhi dari sistem.</p>
+                                    <p class="text-sm text-gray-500">Tagihan penghuni telah diperbaruhi dari sistem.
+                                    </p>
                                     <div class="mt-4">
-                                        <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                        <button type="button" data-dismiss="modal"
+                                            class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
 
             </div>
@@ -968,9 +1052,10 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="py-3 px-4 text-center text-gray-500">Belum ada riwayat pembayaran untuk kos ini.</td>
+                                <td colspan="6" class="py-3 px-4 text-center text-gray-500">Belum ada riwayat
+                                    pembayaran untuk kos ini.</td>
                             </tr>
-                        @endforelse 
+                        @endforelse
                     </tbody>
                 </table>
 
@@ -1120,7 +1205,7 @@
 <script>
     $(document).ready(function() {
         $('.buat-pembayaran').on('click', function(e) {
-        e.preventDefault();
+            e.preventDefault();
             var id = $(this).data('id');
 
             $.ajax({
@@ -1142,30 +1227,40 @@
 
                     if (rentang === 'Bulan') {
                         $('#waktu_tagihan_denda_update').show();
-                        
+
                         /// Hitung tanggal tagihan berikutnya
-                        const tglTagihan = new Date(data.data.tgl_tagihan); // Konversi ke objek Date
-                        const waktuTagihan = parseInt(data.pengaturan.waktu_tagihan) || tglTagihan.getDate(); // Ambil waktu_tagihan atau default tanggal tagihan saat ini
+                        const tglTagihan = new Date(data.data
+                            .tgl_tagihan); // Konversi ke objek Date
+                        const waktuTagihan = parseInt(data.pengaturan.waktu_tagihan) ||
+                            tglTagihan
+                            .getDate(); // Ambil waktu_tagihan atau default tanggal tagihan saat ini
 
                         tglTagihan.setMonth(tglTagihan.getMonth() + 1); // Tambahkan 1 bulan
-                        const lastDayOfNextMonth = new Date(tglTagihan.getFullYear(), tglTagihan.getMonth() + 1, 0).getDate();
-                        tglTagihan.setDate(Math.min(waktuTagihan, lastDayOfNextMonth)); // Atur tanggal sesuai waktu_tagihan
-                        const nextTagihan = tglTagihan.toISOString().split('T')[0]; // Format YYYY-MM-DD
+                        const lastDayOfNextMonth = new Date(tglTagihan.getFullYear(),
+                            tglTagihan.getMonth() + 1, 0).getDate();
+                        tglTagihan.setDate(Math.min(waktuTagihan,
+                            lastDayOfNextMonth)); // Atur tanggal sesuai waktu_tagihan
+                        const nextTagihan = tglTagihan.toISOString().split('T')[
+                            0]; // Format YYYY-MM-DD
 
                         $('#modal-buat-tagihanBerikutnya').val(nextTagihan);
 
                         // Hitung denda berikutnya
-                        const tglDenda = new Date(data.data.tgl_denda); // Konversi ke objek Date
-                        const waktuDenda = parseInt(data.pengaturan.waktu_denda) || tglDenda.getDate(); // Ambil waktu_denda atau default tanggal denda saat ini
+                        const tglDenda = new Date(data.data
+                            .tgl_denda); // Konversi ke objek Date
+                        const waktuDenda = parseInt(data.pengaturan.waktu_denda) || tglDenda
+                            .getDate(); // Ambil waktu_denda atau default tanggal denda saat ini
 
                         tglDenda.setMonth(tglDenda.getMonth() + 1); // Tambahkan 1 bulan
-                        const lastDayOfNextMonthDenda = new Date(tglDenda.getFullYear(), tglDenda.getMonth() + 1, 0).getDate();
-                        tglDenda.setDate(Math.min(waktuDenda, lastDayOfNextMonthDenda)); // Atur tanggal sesuai waktu_denda
-                        const nextDenda = tglDenda.toISOString().split('T')[0]; // Format YYYY-MM-DD
+                        const lastDayOfNextMonthDenda = new Date(tglDenda.getFullYear(),
+                            tglDenda.getMonth() + 1, 0).getDate();
+                        tglDenda.setDate(Math.min(waktuDenda,
+                            lastDayOfNextMonthDenda)); // Atur tanggal sesuai waktu_denda
+                        const nextDenda = tglDenda.toISOString().split('T')[
+                            0]; // Format YYYY-MM-DD
 
                         $('#modal-buat-dendaBerikutnya').val(nextDenda);
-                    } 
-                    else {
+                    } else {
                         $('#waktu_tagihan_denda_update').hide();
 
                         $('#modal-buat-tagihanBerikutnya').val(data.data.tgl_tagihan);
@@ -1174,13 +1269,13 @@
 
 
                     // CEK SHOW DEPOSIT/BIAYA
-                    if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data.deposit !== null) {
+                    if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data
+                        .deposit !== null) {
                         $('#buat-biaya-container').hide(); // Sembunyikan biaya tambahan
-                        
+
                         $('#deposit-container').show(); // Tampilkan deposit
                         $('#modal-buat-deposit').val(data.data.deposit);
-                    } 
-                    else {
+                    } else {
                         $('#deposit-container').hide(); // Sembunyikan deposit jika null
                     }
 
@@ -1202,7 +1297,7 @@
                     }
                     updateTotalBayar();
                 }
-            }); 
+            });
         });
 
         // method untuk update total bayar
@@ -1228,7 +1323,7 @@
 
             // Update input total bayar
             $('#total_bayar').val(total);
-            $('#hidden_total_bayar').val(total);  // Untuk submit
+            $('#hidden_total_bayar').val(total); // Untuk submit
         };
 
 
@@ -1254,7 +1349,9 @@
         });
 
         // Pantau perubahan dalam biayaContainer (misalnya penambahan elemen input biaya lainnya)
-        observer.observe($('#buat-biaya-container')[0], { childList: true });
+        observer.observe($('#buat-biaya-container')[0], {
+            childList: true
+        });
     });
 </script>
 
@@ -1264,7 +1361,7 @@
         $('.verifikasi-pembayaran').on('click', function(e) {
             e.preventDefault();
             var id = $(this).data('id');
- 
+
             $.ajax({
                 url: '/verifikasi/' + id,
                 type: 'GET',
@@ -1273,12 +1370,16 @@
                     $('#modal-bukti-nama').val(data.data.nama);
                     $('#modal-bukti-tagihanPembayaran').val(data.data.tagihanPembayaran);
                     $('#modal-bukti-dendaPembayaran').val(data.data.dendaPembayaran);
-                    $('#modal-bukti-rentang').val(data.data.waktu + " " + data.data.rentang);
+                    $('#modal-bukti-rentang').val(data.data.waktu + " " + data.data
+                        .rentang);
                     $('#modal-bukti-total').val(data.data.dibayar);
-                    $('#modal-bukti-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
+                    $('#modal-bukti-metode').val(data.data.metode + " - " + data.data
+                        .nomor_tujuan);
                     $('#modal-bukti-keterangan').val(data.data.keterangan_pembayaran);
                     $('#modal-bukti-idPembayaran').val(data.data.idPembayaran);
                     $('#modal-bukti-idKontrak').val(data.data.idKontrak);
+
+                    $('#modal-bukti-foto').attr('src', data.gambar_url)
 
                     // menambahkan biaya lainnya kedalaam modal
                     $('#bukti-biaya-container').empty();
@@ -1302,7 +1403,8 @@
                     }
 
                     // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_kontrak === 'Revisi' || data.data.status_kontrak === 'Aktif') {
+                    if (data.data.deposit === null || data.data.status_kontrak ===
+                        'Revisi' || data.data.status_kontrak === 'Aktif') {
                         $('#bukti-deposit').addClass('hidden');
                     } else {
                         $('#bukti-deposit').removeClass('hidden');
@@ -1371,21 +1473,20 @@
                             </div>
                         `);
                     });
-                    
+
                     // REVISI
                     if (data.data.status_pembayaran === 'Revisi') {
                         $('#deposit-kontrak').addClass('hidden');
                         $('#denda-kontrak').addClass('hidden');
                         $('#harga-kontrak').addClass('hidden');
-                    }
-                    else {
+                    } else {
                         $('#harga-kontrak').removeClass('hidden');
                         $('#deposit-kontrak').removeClass('hidden');
                         $('#modal-deposit').val(data.data.deposit);
                     }
-                        
+
                     // Logika untuk denda
-                    const today = new Date(); 
+                    const today = new Date();
                     const dendaDate = new Date(data.data.dendaPembayaran);
 
                     if (today >= dendaDate && data.denda) {
@@ -1397,56 +1498,49 @@
                         const angkaMingguan = parseFloat(data.denda.angka_mingguan);
                         const angkaHarian = parseFloat(data.denda.angka_harian);
                         const rentang = data.data.rentang;
-                        const nilaiDenda = rentang === 'Bulan' ? angka : rentang === 'Mingguan' ? angkaMingguan : angkaHarian;
-                        
+                        const nilaiDenda = rentang === 'Bulan' ? angka : rentang ===
+                            'Mingguan' ? angkaMingguan : angkaHarian;
+
                         let denda = 0;
-                        
-                        if (data.data.status_kontrak === 'Pembayaran Perdana')
-                        {
-                            if (data.data.deposit !== null) 
-                            {
+
+                        if (data.data.status_kontrak === 'Pembayaran Perdana') {
+                            if (data.data.deposit !== null) {
                                 const deposit = parseFloat(data.data.deposit);
 
                                 if (jenisDenda === 'Nominal') {
                                     denda = nilaiDenda;
-                                }
-                                else if (jenisDenda === 'Persen') {
+                                } else if (jenisDenda === 'Persen') {
                                     denda = ((totalBayar - deposit) * nilaiDenda) / 100;
-                                }
-                                else {
+                                } else {
                                     const hari = Math.abs(today - dendaDate);
-                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
+                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 *
+                                        24));
 
                                     denda = formatHari * nilaiDenda;
-                                }   
-                            } 
-                            else {
+                                }
+                            } else {
                                 $('#deposit-kontrak').addClass('hidden');
 
                                 if (jenisDenda === 'Nominal') {
                                     denda = nilaiDenda;
-                                }
-                                else if (jenisDenda === 'Persen') {
+                                } else if (jenisDenda === 'Persen') {
                                     denda = (totalBayar * nilaiDenda) / 100;
-                                }
-                                else {
+                                } else {
                                     const hari = Math.abs(today - dendaDate);
-                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
+                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 *
+                                        24));
 
                                     denda = formatHari * nilaiDenda;
                                 }
                             }
-                        } 
-                        else {
+                        } else {
                             $('#deposit-kontrak').addClass('hidden');
 
                             if (jenisDenda === 'Nominal') {
                                 denda = nilaiDenda;
-                            }
-                            else if (jenisDenda === 'Persen') {
+                            } else if (jenisDenda === 'Persen') {
                                 denda = (totalBayar * nilaiDenda) / 100;
-                            }
-                            else {
+                            } else {
                                 const hari = Math.abs(today - dendaDate);
                                 const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
 
@@ -1457,15 +1551,15 @@
                         // Atur nilai denda
                         $('#modal-denda').val(denda);
                         $('#modal-total').val(totalBayar + denda);
-                    } 
-                    else {
+                    } else {
                         $('#denda-kontrak').addClass('hidden');
                         $('#modal-denda').val('');
                         $('#modal-total').val(data.data.total_bayar);
                     }
 
                     // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_kontrak === 'Aktif') {
+                    if (data.data.deposit === null || data.data.status_kontrak ===
+                        'Aktif') {
                         $('#deposit-kontrak').addClass('hidden');
                     } else {
                         $('#deposit-kontrak').removeClass('hidden');
@@ -1475,7 +1569,7 @@
 
 
                     // BAGIAN UBAH //
-         
+
                     // mengubah biaya lainnya kedalaam modal
                     $('#ubah-biaya-container').empty();
                     $.each(data.biayaList, function(index, biaya) {
@@ -1494,7 +1588,7 @@
 
 
                 }
-            }); 
+            });
         });
     });
 </script>
@@ -1514,11 +1608,13 @@
                     $('#modal-riwayat-nama').val(data.data.nama);
                     $('#modal-riwayat-tgl_tagihan').val(data.data.tgl_tagihan);
                     $('#modal-riwayat-tgl_denda').val(data.data.tgl_denda);
-                    $('#modal-riwayat-rentang').val(data.data.waktu + ' ' + data.data.rentang);
+                    $('#modal-riwayat-rentang').val(data.data.waktu + ' ' + data.data
+                        .rentang);
                     $('#modal-riwayat-harga').val(data.data.harga);
                     $('#modal-riwayat-deposit').val(data.data.deposit);
                     $('#modal-riwayat-total').val(data.data.dibayar);
-                    $('#modal-riwayat-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
+                    $('#modal-riwayat-metode').val(data.data.metode + " - " + data.data
+                        .nomor_tujuan);
                     $('#modal-riwayat-tanggal').val(data.data.tanggal);
                     $('#modal-riwayat-status').val(data.data.status_pembayaran);
                     $('#modal-riwayat-keterangan').val(data.data.keterangan_pembayaran);
@@ -1539,8 +1635,7 @@
 
                     if (!data.denda || data.denda.nominal_denda === null) {
                         $('#riwayat-denda').addClass('hidden');
-                    }
-                    else {
+                    } else {
                         $('#riwayat-denda').removeClass('hidden');
                         $('#modal-riwayat-denda').val(data.denda.nominal_denda);
                     }

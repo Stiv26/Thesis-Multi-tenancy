@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Pengelola;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PembayaranController extends Controller
 {
@@ -68,7 +69,7 @@ class PembayaranController extends Controller
             ->get();
 
 
-            
+
         // Data keuangan (pendapatan berdasarkan bulan/tahun)
         $totalPendapatan = DB::table('pembayaran')
             ->where('status', 'Lunas')
@@ -107,7 +108,7 @@ class PembayaranController extends Controller
         ));
     }
 
-    
+
 
     public function detailTagihan($id) // modal tagihan yang harus dibuat
     {
@@ -139,7 +140,7 @@ class PembayaranController extends Controller
             'biayaKontrak' => $biayaKontrak,
             'metode' => $metode
         ]);
-    }  
+    }
 
     public function storeTagihan(Request $request) // buat tagihan untuk penghuni
     {
@@ -159,33 +160,33 @@ class PembayaranController extends Controller
         $tempId = crc32($uuid->toString()) & 0xffffffff;
 
         DB::beginTransaction();
-            DB::table('pembayaran')->insert([
-                'idPembayaran' => $tempId,
-                'idKontrak' => $request->idKontrak,
-                'tgl_tagihan' => $request->buatTagihan,
-                'tgl_denda' => $request->buatDenda,
-                'total_bayar' => $request->total_bayar,
-                'status' => 'Belum Lunas',
-                'keterangan' => $request->keterangan,
-                'status_kontrak' => $cekStatus ? 'Aktif' : 'Pembayaran Perdana',
+        DB::table('pembayaran')->insert([
+            'idPembayaran' => $tempId,
+            'idKontrak' => $request->idKontrak,
+            'tgl_tagihan' => $request->buatTagihan,
+            'tgl_denda' => $request->buatDenda,
+            'total_bayar' => $request->total_bayar,
+            'status' => 'Belum Lunas',
+            'keterangan' => $request->keterangan,
+            'status_kontrak' => $cekStatus ? 'Aktif' : 'Pembayaran Perdana',
+        ]);
+
+        DB::table('kontrak')
+            ->where('idkontrak', $request->idKontrak)
+            ->update([
+                'tgl_tagihan' => $request->tagihanBerikutnya,
+                'tgl_denda' => $request->dendaBerikutnya,
             ]);
 
-            DB::table('kontrak')
-                ->where('idkontrak', $request->idKontrak)
-                ->update([
-                    'tgl_tagihan' => $request->tagihanBerikutnya,
-                    'tgl_denda' => $request->dendaBerikutnya,
-            ]);
-
-            if ($request->has('idBiaya') && $request->has('harga_biaya')) {
-                foreach ($request->idBiaya as $key => $idBiaya) {
-                    DB::table('biayalainnya')->insert([
-                        'idBiaya' => $idBiaya,
-                        'idPembayaran' => $tempId,
-                        'harga' => $request->harga_biaya[$key] ?? 0,
-                    ]);
-                }
+        if ($request->has('idBiaya') && $request->has('harga_biaya')) {
+            foreach ($request->idBiaya as $key => $idBiaya) {
+                DB::table('biayalainnya')->insert([
+                    'idBiaya' => $idBiaya,
+                    'idPembayaran' => $tempId,
+                    'harga' => $request->harga_biaya[$key] ?? 0,
+                ]);
             }
+        }
         DB::commit();
 
         return redirect()->back()->with('success', 'Pembayaran berhasil ditambahkan.');
@@ -196,7 +197,7 @@ class PembayaranController extends Controller
         $data = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
-            ->select('*', 'p.status as status_pembayaran' ,'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrak')
+            ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrak')
             ->where('p.idPembayaran', '=', $id)
             ->first();
 
@@ -249,7 +250,7 @@ class PembayaranController extends Controller
 
         if (!empty($request->biaya)) {
             foreach ($request->biaya as $biayaItem) {
-                DB::table('biayalainnya') 
+                DB::table('biayalainnya')
                     ->where('idBiaya', $biayaItem['idbiaya'])
                     ->where('idPembayaran', $biayaItem['idpembayaran'])
                     ->update([
@@ -267,7 +268,7 @@ class PembayaranController extends Controller
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
             ->join('metodepembayaran as m', 'm.idmetodepembayaran', '=', 'p.idmetodepembayaran')
-            ->select('*', 'p.status as status_pembayaran' ,'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrakPembayaran')
+            ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrakPembayaran')
             ->where('p.idPembayaran', $id)
             ->first();
 
@@ -283,11 +284,33 @@ class PembayaranController extends Controller
             ->where('dt.idpembayaran', $id)
             ->first();
 
+        $gambarUrl = null;
+        if ($data->bukti) {
+            $gambarUrl = route('private.file', ['filename' => basename($data->bukti)]);
+        }
+
         return response()->json([
             'data' => $data,
             'biayaList' => $biayaList,
-            'denda' => $denda ?: null
+            'denda' => $denda ?: null,
+            'gambar_url' => $gambarUrl
         ]);
+    }
+
+    public function show($filename)
+    {
+        $path = 'pembayaran/' . $filename;
+
+        if (!Storage::disk('private')->exists($path)) {
+            abort(404);
+        }
+
+        $file = Storage::disk('private')->get($path);
+        $type = Storage::disk('private')->mimeType($path);
+
+        return response($file, 200)
+            ->header('Content-Type', $type)
+            ->header('Cache-Control', 'max-age=604800'); // Cache 1 minggu
     }
 
     public function verifikasiPembayaran(Request $request) // modal verifikasi atau menolak bukti tagihan
@@ -299,17 +322,16 @@ class PembayaranController extends Controller
                 ->where('idPembayaran', $idPembayaran)
                 ->update([
                     'status' => 'Lunas',
-            ]);
+                ]);
 
             DB::table('kontrak')
                 ->where('idKontrak', $request->idKontrak)
                 ->update([
                     'status' => 'Aktif',
-            ]);
+                ]);
 
             return redirect()->back()->with('success', 'Pembayaran berhasil diverifikasi.');
-        } 
-        elseif ($request->action === 'tolak') {
+        } elseif ($request->action === 'tolak') {
             $dibayar = DB::table('pembayaran')->where('idPembayaran', $idPembayaran)->value('dibayar');
 
             DB::table('pembayaran')
@@ -317,8 +339,8 @@ class PembayaranController extends Controller
                 ->update([
                     'status' => 'Lunas',
                     'dibayar' => $dibayar - $request->total_bayar,
-            ]);
-            
+                ]);
+
             // DB::table('dendaTambahan')->where('idPembayaran', $idPembayaran)->delete();
 
             $uuid = Str::uuid();

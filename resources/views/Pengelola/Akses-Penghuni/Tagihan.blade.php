@@ -258,8 +258,8 @@
                                 <div class="modal-header border-b border-gray-200 py-4 px-6">
                                     <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Tagihan
                                     </h3>
-                                    <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
-                                        aria-hidden="true">
+                                    <button type="button" class="text-gray-400 hover:text-gray-600"
+                                        data-dismiss="modal" aria-hidden="true">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -267,7 +267,8 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <form action="{{ route('pembayaran.store') }}" method="POST">
+                                <form action="{{ route('pembayaran.store') }}" method="POST"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     {{-- content --}}
                                     <div class="modal-body p-6 space-y-2">
@@ -409,21 +410,27 @@
                     </div>
 
                     <!-- Modal sukses bayar tagihan -->
-                    <div class="modal fade p-4" id="ModalSuksesBayar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal fade p-4" id="ModalSuksesBayar" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog max-w-4xl mx-auto mt-24">
                             <div class="modal-content rounded-lg shadow-lg bg-white">
                                 <div class="modal-body p-6 space-y-4 text-center">
                                     <!-- Icon Success -->
-                                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
+                                    <div
+                                        class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
+                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
                                         </svg>
                                     </div>
                                     <!-- Pesan -->
                                     <h3 class="text-lg font-semibold text-gray-900">Tagihan Berhasil Dibayar</h3>
-                                    <p class="text-sm text-gray-500">Tagihan telah terbayar dan tercatat oleh sistem.</p>
+                                    <p class="text-sm text-gray-500">Tagihan telah terbayar dan tercatat oleh sistem.
+                                    </p>
                                     <div class="mt-4">
-                                        <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                        <button type="button" data-dismiss="modal"
+                                            class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
                                     </div>
                                 </div>
                             </div>
@@ -651,7 +658,7 @@
             pembayaranSection.classList.remove('hidden');
             btnPembayaran.classList.add('bg-indigo-600', 'text-white');
             btnPembayaran.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300',
-            'hover:bg-gray-50');
+                'hover:bg-gray-50');
         }
 
         // Memberikan sedikit delay sebelum scroll
@@ -708,8 +715,7 @@
                         $('#deposit-kontrak').addClass('hidden');
                         $('#denda-kontrak').addClass('hidden');
                         $('#harga-kontrak').addClass('hidden');
-                    }
-                    else {
+                    } else {
                         $('#harga-kontrak').removeClass('hidden');
                         $('#deposit-kontrak').removeClass('hidden');
                         $('#modal-deposit').val(data.data.deposit);
@@ -721,62 +727,56 @@
 
                     if (today >= dendaDate && data.denda) {
                         $('#denda-kontrak').removeClass('hidden');
-                        
+
                         const jenisDenda = data.denda.jenis_denda;
                         const totalBayar = parseFloat(data.data.total_bayar);
                         const angka = parseFloat(data.denda.angka);
                         const angkaMingguan = parseFloat(data.denda.angka_mingguan);
                         const angkaHarian = parseFloat(data.denda.angka_harian);
                         const rentang = data.data.rentang;
-                        const nilaiDenda = rentang === 'Bulan' ? angka : rentang === 'Mingguan' ? angkaMingguan : angkaHarian;
+                        const nilaiDenda = rentang === 'Bulan' ? angka : rentang ===
+                            'Mingguan' ? angkaMingguan : angkaHarian;
 
                         let denda = 0;
 
-                        if (data.data.status_kontrak === 'Pembayaran Perdana')
-                        {
+                        if (data.data.status_kontrak === 'Pembayaran Perdana') {
                             if (data.data.deposit !== null) {
                                 const deposit = parseFloat(data.data.deposit);
 
                                 if (jenisDenda === 'Nominal') {
                                     denda = nilaiDenda;
-                                } 
-                                else if (jenisDenda === 'Persen') {
+                                } else if (jenisDenda === 'Persen') {
                                     denda = ((totalBayar - deposit) * nilaiDenda) / 100;
-                                } 
-                                else {
+                                } else {
                                     const hari = Math.abs(today - dendaDate);
-                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
+                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 *
+                                        24));
 
                                     denda = formatHari * nilaiDenda;
                                 }
-                            } 
-                            else {
+                            } else {
                                 $('#deposit-kontrak').addClass('hidden');
 
                                 if (jenisDenda === 'Nominal') {
                                     denda = nilaiDenda;
-                                } 
-                                else if (jenisDenda === 'Persen') {
+                                } else if (jenisDenda === 'Persen') {
                                     denda = (totalBayar * nilaiDenda) / 100;
-                                } 
-                                else {
+                                } else {
                                     const hari = Math.abs(today - dendaDate);
-                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
+                                    const formatHari = Math.ceil(hari / (1000 * 60 * 60 *
+                                        24));
 
                                     denda = formatHari * nilaiDenda;
                                 }
                             }
-                        } 
-                        else {
+                        } else {
                             $('#deposit-kontrak').addClass('hidden');
 
                             if (jenisDenda === 'Nominal') {
                                 denda = nilaiDenda;
-                            } 
-                            else if (jenisDenda === 'Persen') {
+                            } else if (jenisDenda === 'Persen') {
                                 denda = (totalBayar * nilaiDenda) / 100;
-                            } 
-                            else {
+                            } else {
                                 const hari = Math.abs(today - dendaDate);
                                 const formatHari = Math.ceil(hari / (1000 * 60 * 60 * 24));
 
@@ -787,15 +787,15 @@
                         // Atur nilai denda
                         $('#modal-denda').val(denda);
                         $('#modal-total').val(totalBayar + denda);
-                    } 
-                    else {
+                    } else {
                         $('#denda-kontrak').addClass('hidden');
                         $('#modal-denda').val('');
                         $('#modal-total').val(data.data.total_bayar);
                     }
 
                     // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_kontrak === 'Aktif') {
+                    if (data.data.deposit === null || data.data.status_kontrak ===
+                        'Aktif') {
                         $('#deposit-kontrak').addClass('hidden');
                     } else {
                         $('#deposit-kontrak').removeClass('hidden');
@@ -822,8 +822,10 @@
                     $('#modal-verifikasi-tempo').val(data.data.denda);
                     $('#modal-verifikasi-tagihan').val(data.data.tagihan);
                     $('#modal-verifikasi-status').val(data.data.status_pembayaran);
-                    $('#modal-verifikasi-rentang').val(data.data.waktu + " " + data.data.rentang);
-                    $('#modal-verifikasi-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
+                    $('#modal-verifikasi-rentang').val(data.data.waktu + " " + data.data
+                        .rentang);
+                    $('#modal-verifikasi-metode').val(data.data.metode + " - " + data.data
+                        .nomor_tujuan);
                     $('#modal-verifikasi-keterangan').val(data.data.keterangan_pembayaran);
                     $('#modal-verifikasi-idPembayaran').val(data.data.idPembayaran);
 
@@ -849,7 +851,8 @@
                     }
 
                     // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_kontrak === 'Revisi' || data.data.status_kontrak === 'Aktif') {
+                    if (data.data.deposit === null || data.data.status_kontrak ===
+                        'Revisi' || data.data.status_kontrak === 'Aktif') {
                         $('#deposit-verifikasi-kontrak').addClass('hidden');
                     } else {
                         $('#deposit-verifikasi-kontrak').removeClass('hidden');

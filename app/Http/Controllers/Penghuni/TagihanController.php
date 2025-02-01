@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class TagihanController extends Controller
 {
     public function header()
-    { 
+    {
         $data = 'Daftar Tagihan';
         return view('Pengelola.akses-penghuni.tagihan', compact('data'));
     }
@@ -26,7 +26,7 @@ class TagihanController extends Controller
             ->whereIn('p.status', ['Belum Lunas', 'Revisi'])
             ->where('k.users_id', '=', Auth::user()->id)
             ->get();
-        
+
         return view('Pengelola.akses-penghuni.tagihan', compact('data'));
     }
 
@@ -37,7 +37,7 @@ class TagihanController extends Controller
             ->join('users as u', 'u.id', '=', 'k.users_id')
             ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihan', 'p.tgl_denda as denda', 'k.status as status_kontrak')
             ->where('p.idPembayaran', '=', $id)
-            ->first();  
+            ->first();
 
         $biayaList = DB::table('biayaLainnya as bl')
             ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
@@ -64,15 +64,20 @@ class TagihanController extends Controller
 
     public function storePembayaran(Request $request) // buat permintaan perbaikan
     {
+        $path = $request->file('bukti')->store(
+            'pembayaran', // Folder tujuan
+            'private'     // Nama disk yang digunakan
+        );
+
         DB::table('pembayaran')
             ->where('idPembayaran', $request->idPembayaran)
             ->update([
                 'tanggal' => now(),
                 'dibayar' => $request->total,
-                'bukti' => $request->bukti,
+                'bukti' => $path,
                 'status' => 'Verifikasi',
                 'idMetodePembayaran' => $request->metode,
-        ]);
+            ]);
 
         if ($request->has('denda') && !is_null($request->denda) && $request->denda > 0) {
             DB::table('dendaTambahan')->insert([
@@ -94,7 +99,7 @@ class TagihanController extends Controller
             ->where('p.status', '=', 'Verifikasi')
             ->where('k.users_id', '=', Auth::user()->id)
             ->get();
-        
+
         return view('Pengelola.akses-penghuni.tagihan', compact('data'));
     }
 
@@ -136,9 +141,9 @@ class TagihanController extends Controller
             ->leftJoin('users as u', 'u.id', '=', 'k.users_id')
             ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrak')
             ->where('p.status', '=', 'Lunas')
-            ->where('k.users_id', '=', Auth::user()->id )
+            ->where('k.users_id', '=', Auth::user()->id)
             ->get();
-        
+
         return view('Pengelola.akses-penghuni.tagihan', compact('data'));
     }
 

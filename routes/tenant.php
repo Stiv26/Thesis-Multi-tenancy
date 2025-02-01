@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthController;
@@ -63,7 +64,7 @@ Route::middleware([
 
     // login route
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LoginController::class, 'login'])->name('login.post'); 
+    Route::post('/login', [LoginController::class, 'login'])->name('login.post');
     // forget password route
     Route::get('/lupa-password', [AuthController::class, 'showResetPasswordForm'])->name('password.request');
     Route::post('/lupa-password', [AuthController::class, 'resetPassword'])->name('password.update');
@@ -100,7 +101,7 @@ Route::middleware([
             Route::get('/kamar/{id}', [KosController::class, 'detailKamar']);
             Route::get('/fasilitas/{id}', [KosController::class, 'detailFasilitas']);
             Route::get('/aturan/{id}', [KosController::class, 'detailAturan']);
-            
+
             // routeing kamar
             Route::post('/kos/tambah-kamar', [KosController::class, 'storeKamar'])->name('kamar.store'); // create kamar
             Route::put('/kos/update-kamar', [KosController::class, 'updateKamar'])->name('kos.updateKamar'); // update kamar
@@ -168,6 +169,7 @@ Route::middleware([
             // modal detail  
             Route::get('/tagihan/{id}', [PembayaranController::class, 'detailTagihan']);
             Route::get('/verifikasi/{id}', [PembayaranController::class, 'detailVerifikasi']);
+            Route::get('/private-file/{filename}', [PembayaranController::class, 'show'])->name('private.file');
             Route::get('/list/{id}', [PembayaranController::class, 'detailPembayaran']);
             Route::get('/riwayat/{id}', [PembayaranController::class, 'detailRiwayat']);
 
@@ -175,7 +177,7 @@ Route::middleware([
             Route::post('/pembayaran/buatTagihan', [PembayaranController::class, 'storeTagihan'])->name('tagihan.store'); // buat tagihan awal
             Route::put('/pembayaran/verifikasi-pembayaran', [PembayaranController::class, 'verifikasiPembayaran'])->name('pembayaran.verifikasiPembayaran'); // verifikasi tagihan
             Route::put('/pembayaran/update-pembayaran', [PembayaranController::class, 'updatePembayaran'])->name('pembayaran.updatePembayaran'); // ubah tagihan
-            
+
 
 
 
@@ -195,7 +197,7 @@ Route::middleware([
             Route::post('/pesan/tambah-pengumuman', [PesanController::class, 'storePengumuman'])->name('pengumuman.store'); // buat pengumuman
 
 
-            
+
 
 
             // KARYAWAN
@@ -214,22 +216,22 @@ Route::middleware([
             // modal detail
             Route::get('/tugas/{id}', [KaryawanController::class, 'detailTugas']);
             Route::get('/tugas/riwayat/{id}', [KaryawanController::class, 'detailRiwayat']);
-            Route::get('/karyawan/{id}', [KaryawanController::class, 'detailKaryawan']); 
+            Route::get('/karyawan/{id}', [KaryawanController::class, 'detailKaryawan']);
             Route::get('/karyawan/riwayat/{id}', [KaryawanController::class, 'detailRiwayatKaryawan']);
 
             // routeing tugas
             Route::post('/karyawan/tambah-tugas', [KaryawanController::class, 'storeTugas'])->name('tugas.store'); // tambah tugas
             Route::put('/tugas/update-tugas', [KaryawanController::class, 'updateTugas'])->name('tugas.updateTugas'); // ubah tugas
-            
+
             // routeing karyawan
             Route::post('/karyawan/tambah-karyawan', [KaryawanController::class, 'storeKaryawan'])->name('karyawan.store'); // tambah karyawan
             Route::put('/karyawan/update-karyawan', [KaryawanController::class, 'updatekaryawan'])->name('karyawan.updatekaryawan'); // ubah karyawan
             Route::put('/karyawan/destroy-karyawan', [KaryawanController::class, 'destroyKaryawan'])->name('karyawan.destroy'); // pecat karyawan
-            
 
 
 
-            
+
+
             // PEMELIHARAAN 
             if (!Schema::hasTable('pemeliharaan')) {
                 Route::get('pemeliharaan', function () {
@@ -252,7 +254,7 @@ Route::middleware([
 
 
 
-            
+
             // LAYANANTAMBAHAN
             if (!Schema::hasTable('layanantambahan')) {
                 Route::get('layanan-tambahan', function () {
@@ -288,7 +290,6 @@ Route::middleware([
                 // routeing selesaikan pesanan
                 Route::get('/selesaikan-pesanan/{id}', [LayananTambahanController::class, 'detailSelesaikan']);
                 Route::put('/layanan-tambahan/selesaikan-pesanan', [LayananTambahanController::class, 'selesaikanPesanan'])->name('transaksi.selesaikanPesanan');
-
             }
         });
 
@@ -359,30 +360,30 @@ Route::middleware([
 
             ### PERBAIKAN
             // if (Schema::hasTable('pemeliharaan')) {
-                Route::get('/info/perbaikan', function () {
-                    $controller = new PerbaikanController();
+            Route::get('/info/perbaikan', function () {
+                $controller = new PerbaikanController();
 
-                    $header = $controller->header()->getData()['data'];
-                    $perbaikan = $controller->perbaikan()->getData()['data'];
-                    $listFasilitas = $controller->listFasilitas()->getData()['data'];
-                    $riwayatPemeliharaan = $controller->riwayatPemeliharaan()->getData()['data'];
+                $header = $controller->header()->getData()['data'];
+                $perbaikan = $controller->perbaikan()->getData()['data'];
+                $listFasilitas = $controller->listFasilitas()->getData()['data'];
+                $riwayatPemeliharaan = $controller->riwayatPemeliharaan()->getData()['data'];
 
-                    return view('pengelola.Akses-Penghuni.perbaikan', compact('header', 'riwayatPemeliharaan', 'listFasilitas', 'perbaikan'));
-                })->name('penghuni.perbaikan');
+                return view('pengelola.Akses-Penghuni.perbaikan', compact('header', 'riwayatPemeliharaan', 'listFasilitas', 'perbaikan'));
+            })->name('penghuni.perbaikan');
 
-                // modal detail
-                Route::get('/detailPerbaikan/{id}', [PerbaikanController::class, 'detailPerbaikan']);
-                Route::get('/detailPerbaikanRiwayat/{id}', [PerbaikanController::class, 'detailRiwayat']);
+            // modal detail
+            Route::get('/detailPerbaikan/{id}', [PerbaikanController::class, 'detailPerbaikan']);
+            Route::get('/detailPerbaikanRiwayat/{id}', [PerbaikanController::class, 'detailRiwayat']);
 
-                // routeing create pelaporan
-                Route::post('/tambah-perbaikan', [PerbaikanController::class, 'storePerbaikan'])->name('perbaikan.store');
+            // routeing create pelaporan
+            Route::post('/tambah-perbaikan', [PerbaikanController::class, 'storePerbaikan'])->name('perbaikan.store');
 
-                // routing update pemeliharaan
-                Route::put('/perbaikan/update', [PerbaikanController::class, 'updatePerbaikan'])->name('perbaikan.update');
-                Route::put('/pemeliharaan/tandai-selesai/{id}', [PerbaikanController::class, 'updateSelesai'])->name('pesan.updateSelesai');
+            // routing update pemeliharaan
+            Route::put('/perbaikan/update', [PerbaikanController::class, 'updatePerbaikan'])->name('perbaikan.update');
+            Route::put('/pemeliharaan/tandai-selesai/{id}', [PerbaikanController::class, 'updateSelesai'])->name('pesan.updateSelesai');
 
-                // routeing delete pemeliharaan
-                Route::delete('/pemeliharaan/hapus/{id}', [PerbaikanController::class, 'destroyPemeliharaan'])->name('pemeliharaan.destroy');
+            // routeing delete pemeliharaan
+            Route::delete('/pemeliharaan/hapus/{id}', [PerbaikanController::class, 'destroyPemeliharaan'])->name('pemeliharaan.destroy');
 
             // }
 
@@ -390,33 +391,33 @@ Route::middleware([
 
             ### PEMBELIAN LAYANAN TAMBAHAN
             // if (Schema::hasTable('layanantambahan')) {
-                Route::get('/info/pembelian-layanan', function () {
-                    $controller = new PembelianLayananController();
+            Route::get('/info/pembelian-layanan', function () {
+                $controller = new PembelianLayananController();
 
-                    $header = $controller->header()->getData()['data'];
-                    $listTransaksi = $controller->listTransaksi()->getData()['data'];
-                    $konfirmLIst = $controller->konfirmLIst()->getData()['data'];
-                    $revisiPembayaran = $controller->revisiPembayaran()->getData()['data'];
-                    $pesanan = $controller->pesanan()->getData()['data'];
-                    $layananTambahan = $controller->layananTambahan()->getData()['data'];
-                    $riwayatTransaksi = $controller->riwayatTransaksi()->getData()['data'];
+                $header = $controller->header()->getData()['data'];
+                $listTransaksi = $controller->listTransaksi()->getData()['data'];
+                $konfirmLIst = $controller->konfirmLIst()->getData()['data'];
+                $revisiPembayaran = $controller->revisiPembayaran()->getData()['data'];
+                $pesanan = $controller->pesanan()->getData()['data'];
+                $layananTambahan = $controller->layananTambahan()->getData()['data'];
+                $riwayatTransaksi = $controller->riwayatTransaksi()->getData()['data'];
 
-                    return view('pengelola.Akses-Penghuni.pembelianlayanan', compact('header', 'listTransaksi', 'revisiPembayaran', 'konfirmLIst', 'layananTambahan', 'pesanan', 'riwayatTransaksi'));
-                })->name('penghuni.pembelian');
+                return view('pengelola.Akses-Penghuni.pembelianlayanan', compact('header', 'listTransaksi', 'revisiPembayaran', 'konfirmLIst', 'layananTambahan', 'pesanan', 'riwayatTransaksi'));
+            })->name('penghuni.pembelian');
 
-                // modal detail
-                Route::get('/pembelian/listPesanan/{id}', [PembelianLayananController::class, 'detailListPesanan']);
-                Route::get('/pembelian/revisiPembayaran/{id}', [PembelianLayananController::class, 'detailRevisiPembayaran']);
-                Route::get('/detailPembelian/{id}', [PembelianLayananController::class, 'detailPembelian']);
-                Route::get('/detailPengantaran/{id}', [PembelianLayananController::class, 'detailPengantaran']);
-                Route::get('/detailRiwayatPembelian/{id}', [PembelianLayananController::class, 'detailRiwayatPembelian']);
+            // modal detail
+            Route::get('/pembelian/listPesanan/{id}', [PembelianLayananController::class, 'detailListPesanan']);
+            Route::get('/pembelian/revisiPembayaran/{id}', [PembelianLayananController::class, 'detailRevisiPembayaran']);
+            Route::get('/detailPembelian/{id}', [PembelianLayananController::class, 'detailPembelian']);
+            Route::get('/detailPengantaran/{id}', [PembelianLayananController::class, 'detailPengantaran']);
+            Route::get('/detailRiwayatPembelian/{id}', [PembelianLayananController::class, 'detailRiwayatPembelian']);
 
-                // routeing create transaksi
-                Route::post('/tambah-transaksi', [PembelianLayananController::class, 'storeTransaksi'])->name('transaksi.store');
-                Route::put('/tambah-transaksi/storeRevisi', [PembelianLayananController::class, 'storeRevisiPembayaran'])->name('revisiTransaksi.store');
+            // routeing create transaksi
+            Route::post('/tambah-transaksi', [PembelianLayananController::class, 'storeTransaksi'])->name('transaksi.store');
+            Route::put('/tambah-transaksi/storeRevisi', [PembelianLayananController::class, 'storeRevisiPembayaran'])->name('revisiTransaksi.store');
 
-                // routeing pesanan selesai
-                Route::put('/transaksi/pesanan-selesai', [PembelianLayananController::class, 'pesananSelesai'])->name('transaksi.pesananSelesai');
+            // routeing pesanan selesai
+            Route::put('/transaksi/pesanan-selesai', [PembelianLayananController::class, 'pesananSelesai'])->name('transaksi.pesananSelesai');
             // }
         });
 
@@ -458,7 +459,7 @@ Route::middleware([
 
             // routing update laporan
             Route::put('/akses/update-laporan/{id}', [LaporanKosController::class, 'updateLaporan'])->name('laporan.update');
-           
+
             // modal detail
             Route::get('/akses/laporan/{id}', [LaporanKosController::class, 'detailLaporan']);
             Route::get('/akses/riwayat-laporan/{id}', [LaporanKosController::class, 'detailRiwayatLaporan']);
@@ -472,7 +473,7 @@ Route::middleware([
                 $header = $controller->header()->getData()['data'];
                 $pesan = $controller->pesan()->getData()['data'];
 
-                return view('pengelola.Akses-art.pesankos', compact('header' ,'pesan'));
+                return view('pengelola.Akses-art.pesankos', compact('header', 'pesan'));
             })->name('art.pesan');
 
             // routing update notifikasi
@@ -509,12 +510,11 @@ Route::middleware([
                 $header = $controller->header()->getData()['data'];
                 $pesanan = $controller->pesanan()->getData()['data'];
 
-                return view('pengelola.Akses-art.pengantarankos', compact('header' , 'pesanan'));
+                return view('pengelola.Akses-art.pengantarankos', compact('header', 'pesanan'));
             })->name('art.pengantaran');
 
             // routeing update pengantaran
             Route::put('/akses/pengantaran/selesai/{id}', [PengantaranKosController::class, 'updateStatusPengantaran'])->name('pengantaran.updateStatus');
-
         });
     });
 });
