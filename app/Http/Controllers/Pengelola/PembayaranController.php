@@ -35,6 +35,7 @@ class PembayaranController extends Controller
                             ->whereRaw('p.idKontrak = k.idKontrak'); // Jika Mingguan/Harian, cek pembayaran
                     });
             })
+            ->where('k.status', '!=', 'Nonaktif')
             ->orderBy('k.tgl_tagihan', 'asc')
             ->get();
 
@@ -246,13 +247,13 @@ class PembayaranController extends Controller
                 'keterangan' => $request->keterangan,
             ]);
 
-        if (!empty($request->biaya) && is_array($request->biaya)) {
-            foreach ($request->biaya as $biaya) {
-                DB::table('biayaLainnya')
-                    ->where('idPembayaran', $biaya['idpembayaran'])
-                    ->where('idBiaya', $biaya['idbiaya'])
+        if (!empty($request->biaya)) {
+            foreach ($request->biaya as $biayaItem) {
+                DB::table('biayalainnya') 
+                    ->where('idBiaya', $biayaItem['idbiaya'])
+                    ->where('idPembayaran', $biayaItem['idpembayaran'])
                     ->update([
-                        'harga' => $biaya['harga'],
+                        'harga' => $biayaItem['harga']
                     ]);
             }
         }

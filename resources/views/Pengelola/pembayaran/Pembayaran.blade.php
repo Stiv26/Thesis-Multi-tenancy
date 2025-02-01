@@ -130,7 +130,7 @@
 
         <!-- PAGE PEMBAYARAN -->
         <section id="list" class="hidden">
-
+            
             {{-- BUAT TAGIHAN --}}
             @if ($tagihan->isNotEmpty())
                 <div>
@@ -872,6 +872,9 @@
                                             required>
                                     </div>
 
+                                    <!-- Container untuk biayaList yang akan diisi melalui AJAX -->
+                                    <div id="ubah-biaya-container"></div>  
+
                                     <div class="flex items-center space-x-4">
                                         <label for="tgl_denda" class="w-32 text-md font-medium text-gray-700">
                                             Total Pembayaran:</label>
@@ -1133,7 +1136,6 @@
                     // hidden
                     $('#modal-buat-kontrak').val(data.data.idKontrak);
                     $('#modal-buat-waktu').val(data.data.waktu);
-                    
 
                     // CEK RENTANG BUAT SELANJUTNYA
                     const rentang = data.data.rentang;
@@ -1188,13 +1190,13 @@
 
                         $.each(data.biayaKontrak, function(index, biaya) {
                             $('#buat-biaya-container').append(`
-                                <div class="mb-2 flex items-center space-x-4">
+                                <divx class="mb-2 flex items-center space-x-4">
                                     <label class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
                                     <input type="number" name="harga_biaya[]" 
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
                                         value="0">
                                     <input type="hidden" name="idBiaya[]" value="${biaya.idBiaya}">
-                                </div>
+                                </divx>
                             `);
                         });
                     }
@@ -1369,7 +1371,7 @@
                             </div>
                         `);
                     });
-
+                    
                     // REVISI
                     if (data.data.status_pembayaran === 'Revisi') {
                         $('#deposit-kontrak').addClass('hidden');
@@ -1469,7 +1471,28 @@
                         $('#deposit-kontrak').removeClass('hidden');
                         $('#modal-deposit').val(data.data.deposit);
                     }
+
+
+
+                    // BAGIAN UBAH //
          
+                    // mengubah biaya lainnya kedalaam modal
+                    $('#ubah-biaya-container').empty();
+                    $.each(data.biayaList, function(index, biaya) {
+                        $('#ubah-biaya-container').append(`
+                        <div class="mb-2 flex items-center space-x-4">
+                            <label class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
+                            <input type="text" name="biaya[${index}][harga]" 
+                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
+                                value="${biaya.harga}">
+
+                            <input type="hidden" name="biaya[${index}][idbiaya]" value="${biaya.idBiaya}">
+                            <input type="hidden" name="biaya[${index}][idpembayaran]" value="${biaya.idPembayaran}">
+                        </div>
+                        `);
+                    });
+
+
                 }
             }); 
         });
