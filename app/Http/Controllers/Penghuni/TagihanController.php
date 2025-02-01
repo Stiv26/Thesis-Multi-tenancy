@@ -65,7 +65,7 @@ class TagihanController extends Controller
     public function storePembayaran(Request $request) // buat permintaan perbaikan
     {
         $path = $request->file('bukti')->store(
-            'pembayaran', // Folder tujuan
+            tenancy()->tenant->id . '/pembayaran', // Folder tujuan
             'private'     // Nama disk yang digunakan
         );
 

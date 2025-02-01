@@ -286,7 +286,8 @@ class PembayaranController extends Controller
 
         $gambarUrl = null;
         if ($data->bukti) {
-            $gambarUrl = route('private.file', ['filename' => basename($data->bukti)]);
+            // Gunakan full path tanpa basename()
+            $gambarUrl = route('private.file', ['filename' => $data->bukti]);
         }
 
         return response()->json([
@@ -299,17 +300,15 @@ class PembayaranController extends Controller
 
     public function show($filename)
     {
-        $path = 'pembayaran/' . $filename;
+        $path = $filename;
 
         if (!Storage::disk('private')->exists($path)) {
             abort(404);
         }
 
         $file = Storage::disk('private')->get($path);
-        $type = Storage::disk('private')->mimeType($path);
 
         return response($file, 200)
-            ->header('Content-Type', $type)
             ->header('Cache-Control', 'max-age=604800'); // Cache 1 minggu
     }
 

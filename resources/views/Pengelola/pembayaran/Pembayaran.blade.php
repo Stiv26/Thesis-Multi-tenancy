@@ -1349,9 +1349,9 @@
         });
 
         // Pantau perubahan dalam biayaContainer (misalnya penambahan elemen input biaya lainnya)
-        observer.observe($('#buat-biaya-container')[0], {
-            childList: true
-        });
+        // observer.observe($('#buat-biaya-container')[0], {
+        //     childList: true
+        // });
     });
 </script>
 

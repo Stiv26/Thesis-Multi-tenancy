@@ -169,7 +169,9 @@ Route::middleware([
             // modal detail  
             Route::get('/tagihan/{id}', [PembayaranController::class, 'detailTagihan']);
             Route::get('/verifikasi/{id}', [PembayaranController::class, 'detailVerifikasi']);
-            Route::get('/private-file/{filename}', [PembayaranController::class, 'show'])->name('private.file');
+            Route::get('/private-file/{filename}', [PembayaranController::class, 'show'])
+                ->where('filename', '.*') // Menerima path dengan slash (/)
+                ->name('private.file');
             Route::get('/list/{id}', [PembayaranController::class, 'detailPembayaran']);
             Route::get('/riwayat/{id}', [PembayaranController::class, 'detailRiwayat']);
 
