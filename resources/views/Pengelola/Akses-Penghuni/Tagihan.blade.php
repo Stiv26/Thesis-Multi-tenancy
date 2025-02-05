@@ -176,6 +176,13 @@
                                         </div>
 
                                         <div class="flex items-center space-x-4">
+                                            <label for="bukti" class="w-32 text-md font-medium text-gray-700">
+                                                Bukti Pembayaran:</label>
+                                            <img src="" id="modal-verifikasi-foto" alt="Bukti Pembayaran"
+                                                class="w-80 h-80 object-cover border border-gray-300 rounded-md">
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
                                             <label for="metode" class="w-32 text-md font-medium text-gray-700">
                                                 Metode Pembayaran:</label>
                                             <input id="modal-verifikasi-metode" type="text" value=""
@@ -592,6 +599,13 @@
                                 </div>
 
                                 <div class="flex items-center space-x-4">
+                                    <label for="bukti" class="w-32 text-md font-medium text-gray-700">
+                                        Bukti Pembayaran:</label>
+                                    <img src="" id="modal-riwayat-foto" alt="Bukti Pembayaran"
+                                        class="w-80 h-80 object-cover border border-gray-300 rounded-md">
+                                </div>
+
+                                <div class="flex items-center space-x-4">
                                     <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
                                         Tanggal Pembayaran:</label>
                                     <input id="modal-riwayat-tanggal" type="text" value=""
@@ -710,6 +724,15 @@
                         );
                     });
 
+                    // DEPOSIT KONTRAK
+                    if (data.data.deposit === null || data.data.status_kontrak ===
+                        'Aktif') {
+                        $('#deposit-kontrak').addClass('hidden');
+                    } else {
+                        $('#deposit-kontrak').removeClass('hidden');
+                        $('#modal-deposit').val(data.data.deposit);
+                    }
+
                     // REVISI
                     if (data.data.status_pembayaran === 'Revisi') {
                         $('#deposit-kontrak').addClass('hidden');
@@ -793,14 +816,7 @@
                         $('#modal-total').val(data.data.total_bayar);
                     }
 
-                    // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_kontrak ===
-                        'Aktif') {
-                        $('#deposit-kontrak').addClass('hidden');
-                    } else {
-                        $('#deposit-kontrak').removeClass('hidden');
-                        $('#modal-deposit').val(data.data.deposit);
-                    }
+                  
 
                     // mengirim id ke editpembayaran yang sesuai
                     $('#edit-pembayaran-btn').attr('href', '/list/edit-pembayaran/' + id);
@@ -828,6 +844,7 @@
                         .nomor_tujuan);
                     $('#modal-verifikasi-keterangan').val(data.data.keterangan_pembayaran);
                     $('#modal-verifikasi-idPembayaran').val(data.data.idPembayaran);
+                    $('#modal-verifikasi-foto').attr('src', data.gambar_url)
 
                     // menambahkan biaya lainnya kedalaam modal
                     $('#biaya-verifikasi-container').empty();
@@ -894,6 +911,7 @@
                 $('#modal-riwayat-tanggal').val(data.data.tanggal);
                 $('#modal-riwayat-status').val(data.data.status_pembayaran);
                 $('#modal-riwayat-keterangan').val(data.data.keterangan_pembayaran);
+                $('#modal-riwayat-foto').attr('src', data.gambar_url)
 
                 // menambahkan biaya lainnya kedalaam modal
                 $('#riwayat-container').empty();

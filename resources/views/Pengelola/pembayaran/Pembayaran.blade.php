@@ -130,7 +130,6 @@
 
         <!-- PAGE PEMBAYARAN -->
         <section id="list" class="hidden">
-
             {{-- BUAT TAGIHAN --}}
             @if ($tagihan->isNotEmpty())
                 <div>
@@ -492,9 +491,13 @@
                                                     readonly>
                                             </div>
 
-                                            <img src="" id="modal-bukti-foto" alt="Bukti Pembayaran"
-                                                class="w-64 h-64 object-cover border border-gray-300 rounded-md">
-
+                                            <div class="flex items-center space-x-4">
+                                                <label for="bukti" class="w-32 text-md font-medium text-gray-700">
+                                                    Bukti Pembayaran:</label>
+                                                <img src="" id="modal-bukti-foto" alt="Bukti Pembayaran"
+                                                    class="w-80 h-80 object-cover border border-gray-300 rounded-md">
+                                            </div>
+                                            
                                             {{-- total bayar --}}
                                             <div class="flex items-center space-x-4 mt-4">
                                                 <label for="total_bayar"
@@ -986,7 +989,7 @@
                         </div>
                     </div>
 
-                    {{-- modal sukses ubah fasilitas --}}
+                    {{-- modal sukses ubah tagihan --}}
                     <div class="modal fade p-4" id="ModalSuksesUbahTagihan" tabindex="-1" role="dialog"
                         aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog max-w-4xl mx-auto mt-24">
@@ -1162,6 +1165,13 @@
                                 </div>
 
                                 <div class="flex items-center space-x-4">
+                                    <label for="bukti" class="w-32 text-md font-medium text-gray-700">
+                                        Bukti Pembayaran:</label>
+                                    <img src="" id="modal-riwayat-foto" alt="Bukti Pembayaran"
+                                        class="w-80 h-80 object-cover border border-gray-300 rounded-md">
+                                </div>
+
+                                <div class="flex items-center space-x-4">
                                     <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
                                         Tanggal Pembayaran:</label>
                                     <input id="modal-riwayat-tanggal" type="text" value=""
@@ -1197,7 +1207,6 @@
                 </div>
             </div>
         </section>
-
     </main>
 </x-layout>
 
@@ -1474,6 +1483,15 @@
                         `);
                     });
 
+                    // DEPOSIT KONTRAK
+                    if (data.data.deposit === null || data.data.status_kontrak ===
+                        'Aktif') {
+                        $('#deposit-kontrak').addClass('hidden');
+                    } else {
+                        $('#deposit-kontrak').removeClass('hidden');
+                        $('#modal-deposit').val(data.data.deposit);
+                    }
+
                     // REVISI
                     if (data.data.status_pembayaran === 'Revisi') {
                         $('#deposit-kontrak').addClass('hidden');
@@ -1557,35 +1575,49 @@
                         $('#modal-total').val(data.data.total_bayar);
                     }
 
-                    // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_kontrak ===
-                        'Aktif') {
-                        $('#deposit-kontrak').addClass('hidden');
-                    } else {
-                        $('#deposit-kontrak').removeClass('hidden');
-                        $('#modal-deposit').val(data.data.deposit);
-                    }
+
 
 
 
                     // BAGIAN UBAH //
+                    if (data.data.status_pembayaran === 'Revisi') {
+                        $('#modal-ubahTagihan-total').val(data.data.total_bayar);
+                    }
+                    else {
+                        // Mengubah biaya lainnya ke dalam modal
+                        $('#ubah-biaya-container').empty();
+                        $.each(data.biayaList, function(index, biaya) {
+                            $('#ubah-biaya-container').append(`
+                                <div class="mb-2 flex items-center space-x-4">
+                                    <label class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
+                                    <input type="number" class="biaya-input flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
+                                        name="biaya[${index}][harga]" value="${biaya.harga}" min="0" data-harga="${biaya.harga}">
+                                    <input type="hidden" name="biaya[${index}][idbiaya]" value="${biaya.idBiaya}">
+                                    <input type="hidden" name="biaya[${index}][idpembayaran]" value="${biaya.idPembayaran}">
+                                </div>
+                            `);
+                        });
 
-                    // mengubah biaya lainnya kedalaam modal
-                    $('#ubah-biaya-container').empty();
-                    $.each(data.biayaList, function(index, biaya) {
-                        $('#ubah-biaya-container').append(`
-                        <div class="mb-2 flex items-center space-x-4">
-                            <label class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
-                            <input type="text" name="biaya[${index}][harga]" 
-                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
-                                value="${biaya.harga}">
+                        // Simpan harga dasar ke atribut data untuk perhitungan real-time
+                        $('#modal-ubahTagihan-total').data('base-price', parseFloat(data.data.harga) || 0);
 
-                            <input type="hidden" name="biaya[${index}][idbiaya]" value="${biaya.idBiaya}">
-                            <input type="hidden" name="biaya[${index}][idpembayaran]" value="${biaya.idPembayaran}">
-                        </div>
-                        `);
-                    });
+                        // Fungsi untuk update total bayar secara real-time
+                        const updateTotal = () => {
+                            let total = parseFloat($('#modal-ubahTagihan-total').data('base-price')) || 0;
+                            $('#ubah-biaya-container .biaya-input').each(function() {
+                                total += parseFloat($(this).val()) || 0;
+                            });
+                            $('#modal-ubahTagihan-total').val(total);
+                        };
 
+                        // Panggil update total pertama kali saat modal terbuka
+                        updateTotal();
+
+                        // Event listener untuk perubahan nilai input biaya
+                        $('#ubah-biaya-container').off('input').on('input', '.biaya-input', function() {
+                            updateTotal();
+                        });                    
+                    }
 
                 }
             });
@@ -1618,6 +1650,7 @@
                     $('#modal-riwayat-tanggal').val(data.data.tanggal);
                     $('#modal-riwayat-status').val(data.data.status_pembayaran);
                     $('#modal-riwayat-keterangan').val(data.data.keterangan_pembayaran);
+                    $('#modal-riwayat-foto').attr('src', data.gambar_url)
 
                     // menambahkan biaya lainnya kedalaam modal
                     $('#riwayat-container').empty();

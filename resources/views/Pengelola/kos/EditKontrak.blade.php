@@ -131,9 +131,9 @@
                                 value="{{ $data->waktu }}" required>
                         </li>
                         
+                        <label for="biaya_kontrak" class="block font-medium mb-4">Biaya Kontrak:</label>
                         @foreach ($biayaList as $biaya)
-                            <li class="mb-4">
-                                <label for="biaya_kontrak" class="block font-medium mb-2">Biaya Kontrak:</label>
+                            <li>
                                 <div class="flex flex-wrap gap-x-2">
                                     <div class="w-1/8 mb-2"> 
                                         <input type="hidden" name="biaya[{{ $biaya->idBiaya }}][idKontrak]" value="{{ $data->idKontrak }}">

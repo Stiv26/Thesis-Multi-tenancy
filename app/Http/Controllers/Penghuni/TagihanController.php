@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class TagihanController extends Controller
 {
@@ -124,12 +125,20 @@ class TagihanController extends Controller
             ->where('idPembayaran', $id)
             ->first();
 
+        $gambarUrl = null;
+        if ($data->bukti) {
+            // Gunakan full path tanpa basename()
+            $gambarUrl = route('bukti.file', ['filename' => $data->bukti]);
+        }
+
         return response()->json([
             'data' => $data,
             'biayaList' => $biayaList,
-            'denda' => $denda
+            'denda' => $denda,
+            'gambar_url' => $gambarUrl
         ]);
     }
+
 
 
 
@@ -170,10 +179,31 @@ class TagihanController extends Controller
             ->where('dt.idpembayaran', $id)
             ->first();
 
+        $gambarUrl = null;
+        if ($data->bukti) {
+            // Gunakan full path tanpa basename()
+            $gambarUrl = route('bukti.file', ['filename' => $data->bukti]);
+        }
+
         return response()->json([
             'data' => $data,
             'biayaList' => $biayaList,
-            'denda' => $denda ?: null
+            'denda' => $denda ?: null,
+            'gambar_url' => $gambarUrl
         ]);
+    }
+
+    public function show($filename)
+    {
+        $path = $filename;
+
+        if (!Storage::disk('private')->exists($path)) {
+            abort(404);
+        }
+
+        $file = Storage::disk('private')->get($path);
+
+        return response($file, 200)
+            ->header('Cache-Control', 'max-age=604800'); // Cache 1 minggu
     }
 }

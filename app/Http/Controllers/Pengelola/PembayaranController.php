@@ -66,6 +66,7 @@ class PembayaranController extends Controller
             ->leftJoin('users as u', 'u.id', '=', 'k.users_id')
             ->select('*', 'p.status as status_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran')
             ->where('p.status', '=', 'Lunas')
+            ->orderBy('p.tanggal', 'desc')
             ->get();
 
 
@@ -298,20 +299,6 @@ class PembayaranController extends Controller
         ]);
     }
 
-    public function show($filename)
-    {
-        $path = $filename;
-
-        if (!Storage::disk('private')->exists($path)) {
-            abort(404);
-        }
-
-        $file = Storage::disk('private')->get($path);
-
-        return response($file, 200)
-            ->header('Cache-Control', 'max-age=604800'); // Cache 1 minggu
-    }
-
     public function verifikasiPembayaran(Request $request) // modal verifikasi atau menolak bukti tagihan
     {
         $idPembayaran = $request->idPembayaran;
@@ -362,8 +349,6 @@ class PembayaranController extends Controller
         return redirect()->back()->with('warning', 'Aksi tidak dikenali.');
     }
 
-
-
     public function detailRiwayat($id) // modal riwayat
     {
         $data = DB::table('pembayaran as p')
@@ -386,10 +371,32 @@ class PembayaranController extends Controller
             ->where('dt.idpembayaran', $id)
             ->first();
 
+        $gambarUrl = null;
+        if ($data->bukti) {
+            // Gunakan full path tanpa basename()
+            $gambarUrl = route('private.file', ['filename' => $data->bukti]);
+        }
+
         return response()->json([
             'data' => $data,
             'biayaList' => $biayaList,
-            'denda' => $denda ?: null
+            'denda' => $denda ?: null,
+            'gambar_url' => $gambarUrl
         ]);
     }
+
+    public function show($filename)
+    {
+        $path = $filename;
+
+        if (!Storage::disk('private')->exists($path)) {
+            abort(404);
+        }
+
+        $file = Storage::disk('private')->get($path);
+
+        return response($file, 200)
+            ->header('Cache-Control', 'max-age=604800'); // Cache 1 minggu
+    }
+
 }

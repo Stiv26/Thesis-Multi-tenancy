@@ -169,11 +169,13 @@ Route::middleware([
             // modal detail  
             Route::get('/tagihan/{id}', [PembayaranController::class, 'detailTagihan']);
             Route::get('/verifikasi/{id}', [PembayaranController::class, 'detailVerifikasi']);
+            Route::get('/list/{id}', [PembayaranController::class, 'detailPembayaran']);
+            Route::get('/riwayat/{id}', [PembayaranController::class, 'detailRiwayat']);
+
+            // routeing foto modal verifikasi + riwayat
             Route::get('/private-file/{filename}', [PembayaranController::class, 'show'])
                 ->where('filename', '.*') // Menerima path dengan slash (/)
                 ->name('private.file');
-            Route::get('/list/{id}', [PembayaranController::class, 'detailPembayaran']);
-            Route::get('/riwayat/{id}', [PembayaranController::class, 'detailRiwayat']);
 
             // routeing pembayaran
             Route::post('/pembayaran/buatTagihan', [PembayaranController::class, 'storeTagihan'])->name('tagihan.store'); // buat tagihan awal
@@ -335,6 +337,11 @@ Route::middleware([
             Route::get('/detailTagihan/{id}', [TagihanController::class, 'detailTagihan']);
             Route::get('/detailMenungguVerifikasi/{id}', [TagihanController::class, 'detailVerifikasi']);
             Route::get('/detailRiwayatTagihan/{id}', [TagihanController::class, 'detailRiwayat']);
+
+            // routeing foto modal verifikasi + riwayat
+            Route::get('/bukti/private-file/{filename}', [PembayaranController::class, 'show'])
+                ->where('filename', '.*') // Menerima path dengan slash (/)
+                ->name('bukti.file');
 
             // routeing create tagihan
             Route::post('/lunasi-pembayaran', [TagihanController::class, 'storePembayaran'])->name('pembayaran.store');

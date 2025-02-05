@@ -40,12 +40,17 @@ class PembelianLayananController extends Controller
 
     public function storeTransaksi(Request $request) // pembelian layanan tambahan
     {
+        $path = $request->file('bukti')->store(
+            tenancy()->tenant->id . '/pembelian', // Folder tujuan
+            'private'     // Nama disk yang digunakan
+        );
+
         DB::table('transaksi')->insert([
             'idLayananTambahan' => $request->idLayanan,
             'idKontrak' => Auth::user()->id,
             'jumlah' => $request->jumlah,
             'total_bayar' => $request->total,
-            'bukti' => $request->bukti,
+            'bukti' => $path,
             'tanggal' => now(),
             'tgl_terima' => $request->tgl_terima,
             'pengantaran' => $request->pengantaran,
