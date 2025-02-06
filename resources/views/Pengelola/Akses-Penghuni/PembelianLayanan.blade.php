@@ -1044,24 +1044,6 @@
                                         </div>
 
                                         <div class="flex items-center space-x-4">
-                                            <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
-                                                Tanggal:</label>
-                                            <input id="modal-list-tanggal" type="text" value=""
-                                                name="tanggal"
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                readonly>
-                                        </div>
-
-                                        <div class="flex items-center space-x-4">
-                                            <label for="harga" class="w-32 text-md font-medium text-gray-700">
-                                                Total Harga:</label>
-                                            <input id="modal-list-total" type="text" value=""
-                                                name="total_bayar"
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                readonly>
-                                        </div>
-
-                                        <div class="flex items-center space-x-4">
                                             <label for="tgl_terima" class="w-32 text-md font-medium text-gray-700">
                                                 Tanggal Terima:</label>
                                             <input id="modal-list-tgl_terima" type="text" value=""
@@ -1085,6 +1067,35 @@
                                                 Status:</label>
                                             <input id="modal-list-status" type="text" value=""
                                                 name="status"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <p class="text-gray-500 text-sm">Bukti Pembayaran</p>
+                                        </div>
+        
+                                        <div class="flex items-center space-x-4">
+                                            <label for="bukti" class="w-32 text-md font-medium text-gray-700">
+                                                Bukti Pembayaran:</label>
+                                            <img src="" id="modal-list-foto" alt="Bukti Pembayaran"
+                                                class="w-80 h-80 object-cover border border-gray-300 rounded-md">
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="harga" class="w-32 text-md font-medium text-gray-700">
+                                                Total Harga:</label>
+                                            <input id="modal-list-total" type="text" value=""
+                                                name="total_bayar"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
+                                            <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
+                                                Tanggal:</label>
+                                            <input id="modal-list-tanggal" type="text" value=""
+                                                name="tanggal"
                                                 class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                 readonly>
                                         </div>
@@ -1161,6 +1172,7 @@
                     aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog max-w-4xl mx-auto mt-24">
                         <div class="modal-content rounded-lg shadow-lg bg-white">
+                            {{-- header --}}
                             <div class="modal-header border-b border-gray-200 py-4 px-6">
                                 <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Pembelian
                                 </h3>
@@ -1173,8 +1185,8 @@
                                     </svg>
                                 </button>
                             </div>
+                            <!-- AJAX -->
                             <div class="modal-body p-6 space-y-2">
-                                <!-- AJAX -->
                                 <div class="flex items-center space-x-4">
                                     <label for="pembeli" class="w-32 text-md font-medium text-gray-700">
                                         Pembeli:</label>
@@ -1221,6 +1233,17 @@
                                     <input id="modal-detail-pengantaran" type="text" value=""
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                         readonly>
+                                </div>
+
+                                <div class="text-center">
+                                    <p class="text-gray-500 text-sm">Bukti Pembayaran</p>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <label for="bukti" class="w-32 text-md font-medium text-gray-700">
+                                        Bukti Pembayaran:</label>
+                                    <img src="" id="modal-detail-foto" alt="Bukti Pembayaran"
+                                        class="w-80 h-80 object-cover border border-gray-300 rounded-md">
                                 </div>
 
                                 <div class="flex items-center space-x-4">
@@ -1292,20 +1315,21 @@
                 url: '/pembelian/listPesanan/' + id,
                 type: 'GET',
                 success: function(data) {
-                    $('#modal-list-kamar').val('Kamar ' + data.idKamar);
-                    $('#modal-list-pembeli').val(data.nama);
-                    $('#modal-list-nama').val(data.nama_item);
-                    $('#modal-list-tanggal').val(data.tanggal);
-                    $('#modal-list-jumlah').val(data.jumlah);
-                    $('#modal-list-total').val(data.total_bayar);
-                    $('#modal-list-tgl_terima').val(data.tgl_terima);
-                    $('#modal-list-status_pengantaran').val(data.status_pengantaran);
-                    $('#modal-list-status').val(data.status_pembayaran);
-                    $('#modal-list-pesan').val(data.pesan);
+                    $('#modal-list-kamar').val('Kamar ' + data.data.idKamar);
+                    $('#modal-list-pembeli').val(data.data.nama);
+                    $('#modal-list-nama').val(data.data.nama_item);
+                    $('#modal-list-tanggal').val(data.data.tanggal);
+                    $('#modal-list-jumlah').val(data.data.jumlah);
+                    $('#modal-list-total').val(data.data.total_bayar);
+                    $('#modal-list-tgl_terima').val(data.data.tgl_terima);
+                    $('#modal-list-status_pengantaran').val(data.data.status_pengantaran);
+                    $('#modal-list-status').val(data.data.status_pembayaran);
+                    $('#modal-list-pesan').val(data.data.pesan);
+                    $('#modal-list-foto').attr('src', data.gambar_url);
 
-                    $('#modal-list-idTransaksi').val(data.idTransaksi);
-                    $('#modal-list-idLayanan').val(data.idLayananTambahan);
-                    $('#modal-list-stok').val(data.stok);
+                    $('#modal-list-idTransaksi').val(data.data.idTransaksi);
+                    $('#modal-list-idLayanan').val(data.data.idLayananTambahan);
+                    $('#modal-list-stok').val(data.data.stok);
                 }
             });
         });
@@ -1365,15 +1389,16 @@
                 url: '/detailRiwayatPembelian/' + id,
                 type: 'GET',
                 success: function(data) {
-                    $('#modal-detail-pembeli').val('Kamar ' + data.idKamar);
-                    $('#modal-detail-nama').val(data.nama_item);
-                    $('#modal-detail-tanggal').val(data.tanggal);
-                    $('#modal-detail-jumlah').val(data.jumlah);
-                    $('#modal-detail-tgl_terima').val(data.tgl_terima);
-                    $('#modal-detail-pengantaran').val(data.pengantaran);
-                    $('#modal-detail-total').val(data.dibayar);
-                    $('#modal-detail-status').val(data.status_pembelian);
-                    $('#modal-detail-pesan').val(data.pesan);
+                    $('#modal-detail-pembeli').val('Kamar ' + data.data.idKamar);
+                    $('#modal-detail-nama').val(data.data.nama_item);
+                    $('#modal-detail-tanggal').val(data.data.tanggal);
+                    $('#modal-detail-jumlah').val(data.data.jumlah);
+                    $('#modal-detail-tgl_terima').val(data.data.tgl_terima);
+                    $('#modal-detail-pengantaran').val(data.data.pengantaran);
+                    $('#modal-detail-total').val(data.data.dibayar);
+                    $('#modal-detail-status').val(data.data.status_pembelian);
+                    $('#modal-detail-pesan').val(data.data.pesan);
+                    $('#modal-detail-foto').attr('src', data.gambar_url);
                 }
             });
         });

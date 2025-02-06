@@ -171,24 +171,6 @@
                                             </div>
 
                                             <div class="flex items-center space-x-4">
-                                                <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
-                                                    Tanggal:</label>
-                                                <input id="modal-bukti-tanggal" type="text" value=""
-                                                    name="tanggal"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    readonly>
-                                            </div>
-
-                                            <div class="flex items-center space-x-4">
-                                                <label for="total_bayar" class="w-32 text-md font-medium text-gray-700">
-                                                    Total Bayar:</label>
-                                                <input id="modal-bukti-total_bayar" type="text" value=""
-                                                    name="total_bayar"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    readonly>
-                                            </div>
-
-                                            <div class="flex items-center space-x-4">
                                                 <label for="status" class="w-32 text-md font-medium text-gray-700">
                                                     Status:</label>
                                                 <input id="modal-bukti-status" type="text" value=""
@@ -211,6 +193,35 @@
                                                     Tanggal Ambil:</label>
                                                 <input id="modal-bukti-pengambilan" type="text" value=""
                                                     name="pengambilan"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    readonly>
+                                            </div>
+
+                                            <div class="text-center">
+                                                <p class="text-gray-500 text-sm">Bukti Pembayaran</p>
+                                            </div>
+            
+                                            <div class="flex items-center space-x-4">
+                                                <label for="bukti" class="w-32 text-md font-medium text-gray-700">
+                                                    Bukti Pembayaran:</label>
+                                                <img src="" id="modal-bukti-foto" alt="Bukti Pembayaran"
+                                                    class="w-80 h-80 object-cover border border-gray-300 rounded-md">
+                                            </div>
+
+                                            <div class="flex items-center space-x-4">
+                                                <label for="total_bayar" class="w-32 text-md font-medium text-gray-700">
+                                                    Total Bayar:</label>
+                                                <input id="modal-bukti-total_bayar" type="text" value=""
+                                                    name="total_bayar"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    readonly>
+                                            </div>
+
+                                            <div class="flex items-center space-x-4">
+                                                <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
+                                                    Tanggal:</label>
+                                                <input id="modal-bukti-tanggal" type="text" value=""
+                                                    name="tanggal"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     readonly>
                                             </div>
@@ -1090,14 +1101,6 @@
                                 </div>
 
                                 <div class="flex items-center space-x-4">
-                                    <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
-                                        Tanggal:</label>
-                                    <input id="modal-detail-tanggal" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="flex items-center space-x-4">
                                     <label for="jumlah" class="w-32 text-md font-medium text-gray-700">
                                         Jumlah:</label>
                                     <input id="modal-detail-jumlah" type="text" value=""
@@ -1122,6 +1125,25 @@
                                 </div>
 
                                 <div class="flex items-center space-x-4">
+                                    <label for="status" class="w-32 text-md font-medium text-gray-700">
+                                        Status:</label>
+                                    <input id="modal-detail-status" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                <div class="text-center">
+                                    <p class="text-gray-500 text-sm">Bukti Pembayaran</p>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <label for="bukti" class="w-32 text-md font-medium text-gray-700">
+                                        Bukti Pembayaran:</label>
+                                    <img src="" id="modal-detail-foto" alt="Bukti Pembayaran"
+                                        class="w-80 h-80 object-cover border border-gray-300 rounded-md">
+                                </div>
+
+                                <div class="flex items-center space-x-4">
                                     <label for="total" class="w-32 text-md font-medium text-gray-700">
                                         Total Bayar:</label>
                                     <input id="modal-detail-total" type="text" value=""
@@ -1130,9 +1152,9 @@
                                 </div>
 
                                 <div class="flex items-center space-x-4">
-                                    <label for="status" class="w-32 text-md font-medium text-gray-700">
-                                        Status:</label>
-                                    <input id="modal-detail-status" type="text" value=""
+                                    <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
+                                        Tanggal:</label>
+                                    <input id="modal-detail-tanggal" type="text" value=""
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                         readonly>
                                 </div>
@@ -1211,6 +1233,7 @@
                     $('#modal-bukti-pengambilan').val(data.data.tgl_terima);
                     $('#modal-bukti-pesan').val(data.data.pesan);
                     $('#modal-bukti-idTransaksi').val(data.data.idTransaksi);
+                    $('#modal-bukti-foto').attr('src', data.gambar_url);
 
                     // ACTION BATAL
                     $('#modal-revisi-kamar').val('Kamar ' + data.data.idKamar);
@@ -1262,15 +1285,16 @@
                 url: '/detailTransaksi/' + id,
                 type: 'GET',
                 success: function(data) {
-                    $('#modal-detail-pembeli').val(data.idKamar);
-                    $('#modal-detail-nama').val(data.nama_item);
-                    $('#modal-detail-tanggal').val(data.tanggal);
-                    $('#modal-detail-jumlah').val(data.jumlah);
-                    $('#modal-detail-tgl_terima').val(data.tgl_terima);
-                    $('#modal-detail-pengantaran').val(data.pengantaran);
-                    $('#modal-detail-total').val(data.dibayar);
-                    $('#modal-detail-status').val(data.status_pembelian);
-                    $('#modal-detail-pesan').val(data.pesan);
+                    $('#modal-detail-pembeli').val(data.data.idKamar);
+                    $('#modal-detail-nama').val(data.data.nama_item);
+                    $('#modal-detail-tanggal').val(data.data.tanggal);
+                    $('#modal-detail-jumlah').val(data.data.jumlah);
+                    $('#modal-detail-tgl_terima').val(data.data.tgl_terima);
+                    $('#modal-detail-pengantaran').val(data.data.pengantaran);
+                    $('#modal-detail-total').val(data.data.dibayar);
+                    $('#modal-detail-status').val(data.data.status_pembelian);
+                    $('#modal-detail-pesan').val(data.data.pesan);
+                    $('#modal-detail-foto').attr('src', data.gambar_url);
                 }
             });
         });

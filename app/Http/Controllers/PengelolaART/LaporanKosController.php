@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class LaporanKosController extends Controller
 {
@@ -42,21 +43,17 @@ class LaporanKosController extends Controller
             'bukti' => 'required|file|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi file foto
         ]);
 
-        // Proses file upload
-        $filePath = null;
-        
-        if ($request->hasFile('bukti')) {
-            $file = $request->file('bukti');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('bukti_laporan', $fileName, 'public'); // Simpan file ke folder 'storage/app/public/bukti_laporan'
-        }
+        $path = $request->file('bukti')->store(
+            tenancy()->tenant->id . '/laporan', // Folder tujuan
+            'private'     // Nama disk yang digunakan
+        );
 
         // Update data laporan ke database
         DB::table('tugas')
             ->where('idTugas', $id)
             ->update([
                 'status' => 'Selesai',
-                'bukti' => $filePath,
+                'bukti' => $path,
                 'tgl_update' => now(),
                 'users_id' => Auth::user()->id,
             ]);
@@ -83,11 +80,27 @@ class LaporanKosController extends Controller
             ->where('t.idTugas', $id)
             ->first();
 
-        if ($data && $data->bukti) {
-            $data->bukti = asset('storage/' . $data->bukti); // Konversi path ke URL
+        $gambarUrl = null;
+        if ($data->bukti) {
+            // Gunakan full path tanpa basename()
+            $gambarUrl = route('bukti.tugas.file', ['filename' => $data->bukti]);
         }
 
-        return response()->json($data);
+        return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
+    }
+
+    public function showTugas($filename)
+    {
+        $path = $filename;
+
+        if (!Storage::disk('private')->exists($path)) {
+            abort(404);
+        }
+
+        $file = Storage::disk('private')->get($path);
+
+        return response($file, 200)
+            ->header('Cache-Control', 'max-age=604800'); // Cache 1 minggu
     }
 
 }

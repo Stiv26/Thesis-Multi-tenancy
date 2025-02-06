@@ -464,8 +464,10 @@
                                     </div>
 
                                     <div class="flex items-center space-x-4">
-                                        <img id="modal-riwayat-bukti" src="/storage/bukti_laporan/example.jpg" alt="Bukti Laporan Terkirim">
-
+                                        <label for="bukti" class="w-32 text-md font-medium text-gray-700">
+                                            Bukti Pengerjaan:</label>
+                                        <img src="" id="modal-riwayat-foto" alt="Bukti Pengerjaan"
+                                            class="w-80 h-80 object-cover border border-gray-300 rounded-md">
                                     </div>
 
                                     <div class="flex items-center space-x-4">
@@ -1156,18 +1158,11 @@
                 url: '/tugas/riwayat/' + id,
                 type: 'GET',
                 success: function(data) {
-                    $('#modal-riwayat-tugas').val(data.tugas);
-                    $('#modal-riwayat-tanggal').val(data.tanggal);
-                    $('#modal-riwayat-statustugas').val(data.status);
-                    $('#modal-riwayat-upload').val(data.tgl_update);
-                    // $('#modal-riwayat-bukti').attr('src', '/' + data.bukti);
-
-                    // if (data.bukti) {
-                    //     $('#modal-riwayat-bukti').attr('src', '/storage/tenant000/app/public/bukti_laporan/' + data.bukti).show();
-                    // } 
-                    // else {
-                    //     $('#modal-riwayat-bukti').hide(); // Sembunyikan jika tidak ada bukti
-                    // }
+                    $('#modal-riwayat-tugas').val(data.data.tugas);
+                    $('#modal-riwayat-tanggal').val(data.data.tanggal);
+                    $('#modal-riwayat-statustugas').val(data.data.status);
+                    $('#modal-riwayat-upload').val(data.data.tgl_update);
+                    $('#modal-riwayat-foto').attr('src', data.gambar_url)
                 },
                 error: function() {
                     alert('Gagal mengambil data tugas.');

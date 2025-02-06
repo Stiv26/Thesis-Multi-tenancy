@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\FuncCall;
 use Psy\TabCompletion\Matcher\FunctionsMatcher;
+use Illuminate\Support\Facades\Storage;
 
 class LayananTambahanController extends Controller
 {
@@ -39,7 +40,13 @@ class LayananTambahanController extends Controller
             ->where('t.idTransaksi', $id)
             ->first();
 
-        return response()->json(['data' => $data]);
+        $gambarUrl = null;
+        if ($data->bukti) {
+            // Gunakan full path tanpa basename()
+            $gambarUrl = route('bukti.pembelian.file', ['filename' => $data->bukti]);
+        }
+
+        return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
     }
 
     public function verifikasiPembayaran(Request $request) // verifikais transaksi
@@ -218,6 +225,7 @@ class LayananTambahanController extends Controller
             ->select('*')
             ->Where('t.status_pengantaran', 'Selesai')
             ->where('t.status', 'Lunas')
+            ->orderBy('t.tgl_terima', 'desc')
             ->get();
     
         return view('pengelola.layanan-tambahan.LayananTambahan', compact('data'));
@@ -231,7 +239,28 @@ class LayananTambahanController extends Controller
             ->select('*', 't.status as status_pembelian')
             ->where('idTransaksi', '=', $id)
             ->first();
-    
-        return response()->json($data);
+
+        $gambarUrl = null;
+        if ($data->bukti) {
+            // Gunakan full path tanpa basename()
+            $gambarUrl = route('bukti.pembelian.file', ['filename' => $data->bukti]);
+        }
+
+        return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
     }  
+
+    // show foto //
+    public function showPembelian($filename)
+    {
+        $path = $filename;
+
+        if (!Storage::disk('private')->exists($path)) {
+            abort(404);
+        }
+
+        $file = Storage::disk('private')->get($path);
+
+        return response($file, 200)
+            ->header('Cache-Control', 'max-age=604800'); // Cache 1 minggu
+    }
 }

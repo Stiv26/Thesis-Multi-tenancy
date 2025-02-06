@@ -232,6 +232,11 @@ Route::middleware([
             Route::put('/karyawan/update-karyawan', [KaryawanController::class, 'updatekaryawan'])->name('karyawan.updatekaryawan'); // ubah karyawan
             Route::put('/karyawan/destroy-karyawan', [KaryawanController::class, 'destroyKaryawan'])->name('karyawan.destroy'); // pecat karyawan
 
+            // routeing foto laporan
+            Route::get('/laporan/private-file/{filename}', [LaporanKosController::class, 'showTugas'])
+                ->where('filename', '.*') // Menerima path dengan slash (/)
+                ->name('bukti.laporan.file');
+
 
 
 
@@ -278,6 +283,11 @@ Route::middleware([
                 Route::get('/layanan-tambahan/verifikasi/{id}', [LayananTambahanController::class, 'detailVerifikasi']);
                 Route::get('/detailLayanan/{id}', [LayananTambahanController::class, 'detailLayanan']);
                 Route::get('/detailTransaksi/{id}', [LayananTambahanController::class, 'detailTransaksi']);
+
+                // routeing foto modal verifikasi + riwayat
+                Route::get('/bukti-pembelian/private-file/{filename}', [LayananTambahanController::class, 'showPembelian'])
+                    ->where('filename', '.*') // Menerima path dengan slash (/)
+                    ->name('bukti.pembelian.file');
 
                 // routeing layanan tambahan
                 Route::post('/layanan-tambahan/tambah-layanan', [LayananTambahanController::class, 'storeLayanan'])->name('layanan-tambahan.store'); // tambah layanan
@@ -339,7 +349,7 @@ Route::middleware([
             Route::get('/detailRiwayatTagihan/{id}', [TagihanController::class, 'detailRiwayat']);
 
             // routeing foto modal verifikasi + riwayat
-            Route::get('/bukti/private-file/{filename}', [PembayaranController::class, 'show'])
+            Route::get('/bukti/private-file/{filename}', [TagihanController::class, 'show'])
                 ->where('filename', '.*') // Menerima path dengan slash (/)
                 ->name('bukti.file');
 
@@ -421,6 +431,11 @@ Route::middleware([
             Route::get('/detailPengantaran/{id}', [PembelianLayananController::class, 'detailPengantaran']);
             Route::get('/detailRiwayatPembelian/{id}', [PembelianLayananController::class, 'detailRiwayatPembelian']);
 
+            // routeing foto modal verifikasi dan riwayat
+            Route::get('/bukti-transaksi/private-file/{filename}', [PembelianLayananController::class, 'showTransaksi'])
+                ->where('filename', '.*') // Menerima path dengan slash (/)
+                ->name('bukti.transaksi.file');
+
             // routeing create transaksi
             Route::post('/tambah-transaksi', [PembelianLayananController::class, 'storeTransaksi'])->name('transaksi.store');
             Route::put('/tambah-transaksi/storeRevisi', [PembelianLayananController::class, 'storeRevisiPembayaran'])->name('revisiTransaksi.store');
@@ -472,6 +487,11 @@ Route::middleware([
             // modal detail
             Route::get('/akses/laporan/{id}', [LaporanKosController::class, 'detailLaporan']);
             Route::get('/akses/riwayat-laporan/{id}', [LaporanKosController::class, 'detailRiwayatLaporan']);
+
+            // routeing foto modal pengerjaan
+            Route::get('/tugas/private-file/{filename}', [LaporanKosController::class, 'showTugas'])
+                ->where('filename', '.*') // Menerima path dengan slash (/)
+                ->name('bukti.tugas.file');
 
 
 

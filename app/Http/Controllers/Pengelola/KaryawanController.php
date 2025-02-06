@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class KaryawanController extends Controller
 {
@@ -80,7 +81,27 @@ class KaryawanController extends Controller
             ->where('t.idTugas', $id)
             ->first();
 
-        return response()->json($data);
+        $gambarUrl = null;
+        if ($data->bukti) {
+            // Gunakan full path tanpa basename()
+            $gambarUrl = route('bukti.laporan.file', ['filename' => $data->bukti]);
+        }
+
+        return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
+    }
+
+    public function showTugas($filename)
+    {
+        $path = $filename;
+
+        if (!Storage::disk('private')->exists($path)) {
+            abort(404);
+        }
+
+        $file = Storage::disk('private')->get($path);
+
+        return response($file, 200)
+            ->header('Cache-Control', 'max-age=604800'); // Cache 1 minggu
     }
 
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PembelianLayananController extends Controller
 {
@@ -111,7 +112,13 @@ class PembelianLayananController extends Controller
             ->where('idTransaksi', $id)
             ->first();
 
-        return response()->json($data);
+        $gambarUrl = null;
+        if ($data->bukti) {
+            // Gunakan full path tanpa basename()
+            $gambarUrl = route('bukti.transaksi.file', ['filename' => $data->bukti]);
+        }
+
+        return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
     }
 
     // revisi pembayaran
@@ -210,6 +217,7 @@ class PembelianLayananController extends Controller
             ->Where('t.status_pengantaran', 'Selesai')
             ->where('t.status', 'Lunas')
             ->where('k.users_id', '=', Auth::user()->id)
+            ->orderBy('t.tgl_terima', 'desc')
             ->get();
 
         return view('pengelola.akses-penghuni.PembelianLayanan', compact('data'));
@@ -220,10 +228,30 @@ class PembelianLayananController extends Controller
         $data = DB::table('transaksi as t')
             ->join('layanantambahan as i', 't.idLayananTambahan', '=', 'i.idLayananTambahan')
             ->join('kontrak as k', 't.idKontrak', '=', 'k.idKontrak')
-            ->select('*')
+            ->select('*', 't.status as status_pembelian')
             ->where('idTransaksi', '=', $id)
             ->first();
 
-        return response()->json($data);
+        $gambarUrl = null;
+        if ($data->bukti) {
+            // Gunakan full path tanpa basename()
+            $gambarUrl = route('bukti.transaksi.file', ['filename' => $data->bukti]);
+        }
+
+        return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
+    }
+
+    public function showTransaksi($filename)
+    {
+        $path = $filename;
+
+        if (!Storage::disk('private')->exists($path)) {
+            abort(404);
+        }
+
+        $file = Storage::disk('private')->get($path);
+
+        return response($file, 200)
+            ->header('Cache-Control', 'max-age=604800'); // Cache 1 minggu
     }
 }

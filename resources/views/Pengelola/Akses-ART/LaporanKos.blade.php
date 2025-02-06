@@ -201,6 +201,7 @@
                 <div class="modal fade p-4" id="ModalRiwayat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog max-w-4xl mx-auto mt-24">
                         <div class="modal-content rounded-lg shadow-lg bg-white">
+                            {{-- HEADER --}}
                             <div class="modal-header border-b border-gray-200 py-4 px-6">
                                 <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Laporan Tugas</h3>
                                 <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal" aria-hidden="true">
@@ -209,8 +210,8 @@
                                     </svg>
                                 </button>
                             </div>
+                            <!-- AJAX -->
                             <div class="modal-body p-6 space-y-2">
-                               <!-- AJAX -->
                                 <div class="flex items-center space-x-4">
                                     <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
                                         Tanggal:</label>
@@ -231,7 +232,10 @@
                                 </div>
 
                                 <div class="flex items-center space-x-4">
-                                    <img id="modal-riwayat-bukti" src="" alt="Bukti Laporan Terkirim" class="flex-1 w-32 h-64 border border-gray-300 rounded-md object-cover">
+                                    <label for="bukti" class="w-32 text-md font-medium text-gray-700">
+                                        Bukti Pengerjaan:</label>
+                                    <img src="" id="modal-riwayat-foto" alt="Bukti Pengerjaan"
+                                        class="w-80 h-80 object-cover border border-gray-300 rounded-md">
                                 </div>
 
                                 <div class="flex items-center space-x-4">
@@ -281,31 +285,25 @@
             });
         });
 
-        // $('.lihat-detail-riwayat').on('click', function (e) {
-        //     e.preventDefault();
-        //     var id = $(this).data('id');
+        $('.lihat-detail-riwayat').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
 
-        //     $.ajax({
-        //         url: '/akses/riwayat-laporan/' + id,
-        //         type: 'GET',
-        //         success: function (data) {
-        //             $('#modal-riwayat-tugas').val(data.tugas);
-        //             $('#modal-riwayat-tanggal').val(data.tanggal);
-        //             $('#modal-riwayat-statustugas').val(data.status);
-        //             $('#modal-riwayat-upload').val(data.tgl_update);
-        //             $('#modal-riwayat-bukti').val(data.tgl_update);
-
-        //             // if (data.bukti) {
-        //             //     $('#modal-riwayat-bukti').attr('src', '/storage/tenant000/app/public/bukti_laporan/' + data.bukti).show();
-        //             // } 
-        //             // else {
-        //             //     $('#modal-riwayat-bukti').hide(); // Sembunyikan jika tidak ada bukti
-        //             // }
-        //         },
-        //         error: function () {
-        //             alert('Gagal mengambil data tugas.');
-        //         }
-        //     });
-        // });
+            $.ajax({
+                url: '/akses/riwayat-laporan/' + id,
+                type: 'GET',
+                success: function (data) {
+                    $('#modal-riwayat-tugas').val(data.data.tugas);
+                    $('#modal-riwayat-tanggal').val(data.data.tanggal);
+                    $('#modal-riwayat-statustugas').val(data.data.status);
+                    $('#modal-riwayat-upload').val(data.data.tgl_update);
+                    $('#modal-riwayat-bukti').val(data.data.tgl_update);
+                    $('#modal-riwayat-foto').attr('src', data.gambar_url)
+                },
+                error: function () {
+                    alert('Gagal mengambil data tugas.');
+                }
+            });
+        });
     });
 </script>
