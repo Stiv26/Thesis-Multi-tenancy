@@ -8,18 +8,15 @@ use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
-    // public function whoIsTheOwner()
-    // {
-    //     $data = DB::table('kontrak as k')
-    //         ->join('users as u', 'k.users_id', '=', 'u.id')
-    //         ->select('*')
-    //         ->where('k.status', '=', 'aktif')
-    //         ->orWhere('k.status', '=', 'Pembayaran Perdana')
-    //         ->orderBy('k.idKamar', 'asc')
-    //         ->get();
+    public function whoIsTheOwner()
+    {
+        $data = DB::table('users as u')
+            ->select('*')
+            ->where('u.idRole', 1)
+            ->first();
 
-    //      return view('Pengelola.kos.Kos', compact('data'));
-    // }
+         return view('Pengelola.welcome', compact('data'));
+    }
 
     public function listKamar()
     {

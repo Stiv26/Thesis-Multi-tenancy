@@ -79,12 +79,24 @@
                             @foreach($listKamar as $kamar)
                                 <div class="flex flex-col items-start justify-between shadow-lg rounded-lg p-6">
                                     {{-- Tampilkan data kamar --}}
+                                    <a data-id="{{ $kamar->idKamar }}" data-toggle="modal" data-target="#ModalKamar" class="lihat-detail-kamar w-full h-48 mb-4 overflow-hidden rounded-lg">
+                                        @if($kamar->foto)
+                                            <img src="{{ route('foto.file', ['filename' => $kamar->foto]) }}" 
+                                                 alt="Foto Kamar"
+                                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                        @else
+                                            <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                                Tidak ada foto
+                                            </div>
+                                        @endif
+                                    </a>
+
                                     <h3 class="text-lg font-semibold">Kamar {{ $kamar->idKamar }}</h3>
 
                                     <p class="text-gray-600">Harga: Rp {{ number_format($kamar->harga, 0, ',', '.') }}/bulan</p>
                                     <div>
                                         <button data-id="{{ $kamar->idKamar }}" data-toggle="modal" data-target="#ModalKamar" class="lihat-detail-kamar mr-1 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Lihat Detail</button>
-                                        <a href="https://wa.me/{{ $renter->no_telp }}" target="_blank" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Hubungi</a>
+                                        <a href="https://wa.me/{{ $owner->no_telp }}" target="_blank" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Hubungi</a>
                                     </div>
                                 </div>
                             @endforeach
@@ -148,7 +160,6 @@
                     </button>
                 </div>
                 
-                <!-- Daftar Harga (awalnya disembunyikan) -->
                 <div id="daftar-harga" class="mt-2 space-y-2 hidden ml-4">
                     <div class="flex">
                         <span class="font-medium text-gray-700 mr-2">Harga Bulanan:</span>
@@ -166,7 +177,7 @@
 
             </div>
             <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                <a href="/"
+                <a href="https://wa.me/{{ $owner->no_telp }}" target="_blank"
                     class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                     Pesan Kamar
                 </a>
@@ -190,7 +201,7 @@
             if ($('#daftar-harga').hasClass('hidden')) {
                 $(this).html('Lihat Harga &#9662;'); // Panah ke bawah
             } else {
-                $(this).html('Sembunyikan Harga &#9652;'); // Panah ke atas
+                $(this).html('Lihat Harga &#9652;'); // Panah ke atas
             }
         });
 

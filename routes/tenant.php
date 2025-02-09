@@ -63,19 +63,11 @@ Route::middleware([
         tenancy()->initialize($tenant);
 
         $controller = new DashboardController();
-        $listKamar = $controller->listKamar()->getData()['data'];;
+        $listKamar = $controller->listKamar()->getData()['data'];
+        $owner = $controller->whoIsTheOwner()->getData()['data'];
 
-        $domain = $tenant->domains()->first();
-        if (!$domain) {
-            abort(404, 'Domain tidak ditemukan.');
-        }
-        $renter = $domain->renter()->first();
-        if (!$renter) {
-            abort(404, 'Pemilik tidak ditemukan.');
-        }
 
-        return view('pengelola.welcome', compact('listKamar', 'renter'));
-        // return view('pengelola.welcome', compact('listKamar'));
+        return view('pengelola.welcome', compact('listKamar', 'owner'));
     });
 
     // routeing foto 
