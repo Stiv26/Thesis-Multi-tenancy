@@ -3,6 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>SuperKos</title>
 
@@ -18,8 +20,13 @@
         {{-- PANGGIL TAILWIND + FONT INTER --}}
         @vite('resources/css/app.css')
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+        <link rel="icon" type="img/x-icon" href="img/logo.png">
         {{-- ALPHINE UNTUK JS INTERACTIVE --}}
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> 
+        <!-- Bootstrap CSS --> 
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
     </head>
     <body class="antialiased">
@@ -51,7 +58,7 @@
                     <h1 class="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Tingkatkan Kualitas Manajemen Kos Anda</h1>
                     <p class="mt-6 text-lg leading-8 text-gray-600">Sistem yaang membantu pengelola kos meningkatkan efisiensi manajemen penghuni, pembayaran, dan layanan. Dengan fitur digital terintegrasi, manajemen kos menjadi lebih mudah dan efektif.</p>
                     <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="#" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Kirim Permintaan</a>
+                    <a href="#lihat-kamar" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Lihat Kamar</a>
                     <a href="/login" class="text-sm font-semibold leading-6 text-gray-900">Masuk <span aria-hidden="true">→</span></a>
                     </div>
                 </div>
@@ -59,8 +66,157 @@
                 <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
                     <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
                 </div>
+
+                {{-- list kamar --}}
+                <div class="px-6 sm:py-32 lg:px-8" id="lihat-kamar">
+                    <div class="mx-auto max-w-2xl text-center">
+                        <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Daftar Kamar Tersedia</h2>
+                        <p class="mt-2 text-lg leading-8 text-gray-600">Pilih kamar yang sesuai dengan kebutuhan Anda</p>
+                    </div>
+                    
+                    <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                        @if($listKamar->isNotEmpty())
+                            @foreach($listKamar as $kamar)
+                                <div class="flex flex-col items-start justify-between shadow-lg rounded-lg p-6">
+                                    {{-- Tampilkan data kamar --}}
+                                    <h3 class="text-lg font-semibold">Kamar {{ $kamar->idKamar }}</h3>
+
+                                    <p class="text-gray-600">Harga: Rp {{ number_format($kamar->harga, 0, ',', '.') }}/bulan</p>
+                                    <div>
+                                        <button data-id="{{ $kamar->idKamar }}" data-toggle="modal" data-target="#ModalKamar" class="lihat-detail-kamar mr-1 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Lihat Detail</button>
+                                        <a href="https://wa.me/{{ $renter->no_telp }}" target="_blank" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Hubungi</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="col-span-3 text-center py-8">
+                                <p class="text-gray-500">Tidak ada kamar tersedia saat ini</p>
+                            </div>
+                        @endif 
+                    </div>
+                </div>
+                
             </div>
-            </div>
+        </div>
           
     </body>
 </html>
+
+<!-- MODAL DATA -->
+<div class="modal fade p-4" id="ModalKamar" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog max-w-4xl mx-auto mt-24">
+        <div class="modal-content rounded-lg shadow-lg bg-white">
+            {{-- header --}}
+            <div class="modal-header border-b border-gray-200 py-4 px-6">
+                <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Kamar
+                </h3>
+                <button type="button" class="text-gray-400 hover:text-gray-600"
+                    data-dismiss="modal" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            {{-- content --}}
+            <div class="modal-body p-6 space-y-2">
+                <!-- AJAX -->
+                <div class="flex items-center space-x-4">
+                    <img src="" id="modal-foto" alt="Foto Kamar" 
+                        class="w-full object-cover border border-gray-300 rounded-md">
+                </div>
+
+                <div class="flex items-center justify-center space-x-4 mt-4">
+                    <div class="flex">
+                        <h3 class="text-gray-900 mr-2">Kamar </h3>
+                        <h3 id="modal-kamar" class="text-gray-900"></h3>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <label for="keterangan_kamar" class="w-42 text-md font-medium text-gray-700">
+                        Keterangan:</label>
+                    <textarea id="modal-keterangan" type="text" value="" rows="1"
+                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button id="toggle-harga" class="text-indigo-600 font-medium focus:outline-none">
+                        Lihat Harga &#9662; <!-- Tanda panah ke bawah -->
+                    </button>
+                </div>
+                
+                <!-- Daftar Harga (awalnya disembunyikan) -->
+                <div id="daftar-harga" class="mt-2 space-y-2 hidden ml-4">
+                    <div class="flex">
+                        <span class="font-medium text-gray-700 mr-2">Harga Bulanan:</span>
+                        <span id="modal-harga" class="text-gray-700"></span>
+                    </div>
+                    <div class="flex">
+                        <span class="font-medium text-gray-700 mr-2">Harga Mingguan:</span>
+                        <span id="modal-harga_mingguan" class="text-gray-700"></span>
+                    </div>
+                    <div class="flex">
+                        <span class="font-medium text-gray-700 mr-2">Harga Harian:</span>
+                        <span id="modal-harga_harian" class="text-gray-700"></span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                <a href="/"
+                    class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                    Pesan Kamar
+                </a>
+                <button type="button"
+                    class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                    data-dismiss="modal">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- AJAX DETAIL --}}
+<script>
+    $(document).ready(function(){
+        $('#toggle-harga').on('click', function() {
+            $('#daftar-harga').toggleClass('hidden'); // Show/hide daftar harga
+            
+            // Ubah ikon panah sesuai kondisi (naik/turun)
+            if ($('#daftar-harga').hasClass('hidden')) {
+                $(this).html('Lihat Harga &#9662;'); // Panah ke bawah
+            } else {
+                $(this).html('Sembunyikan Harga &#9652;'); // Panah ke atas
+            }
+        });
+
+        $('.lihat-detail-kamar').on('click', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id'); 
+
+            $.ajax({
+                url: '/lihat/detail-kamar/' + id,
+                type: 'GET',
+                success: function(data) {
+                    // Perbarui gambar
+                    $('#modal-foto').attr('src', data.gambar_url); 
+                    $('#modal-kamar').text(data.data.idKamar); 
+
+                    // Tampilkan data ke dalam label
+                    $('#modal-harga').text('Rp. ' + (data.data.harga || 0).toLocaleString('id-ID'));
+                    $('#modal-harga_mingguan').text('Rp. ' + (data.data.harga_mingguan || 0).toLocaleString('id-ID'));
+                    $('#modal-harga_harian').text('Rp. ' + (data.data.harga_harian || 0).toLocaleString('id-ID'));
+                    $('#modal-keterangan').text(data.data.keterangan || 'Tidak ada keterangan.');     
+                },
+                error: function(xhr) {
+                    console.error('Error:', xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+

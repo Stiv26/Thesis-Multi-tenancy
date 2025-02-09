@@ -492,7 +492,6 @@
 
                 </div>
             </section>
-
         </section>
 
         {{-- PAGE KARYAWAN --}}

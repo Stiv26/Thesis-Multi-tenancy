@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\AuthNonactiveUsers;
+use App\Http\Middleware\CheckActiveUser;
 use App\Http\Middleware\CheckRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            "check-role" => CheckRole::class
+            "check-role" => CheckRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

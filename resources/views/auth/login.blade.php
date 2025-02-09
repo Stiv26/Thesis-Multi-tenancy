@@ -46,8 +46,8 @@
 
                 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-                        <img class="mx-auto h-10 w-auto"
-                            src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
+                        <img class="mx-auto h-20 w-auto"
+                            src="img/logo-black.png"
                             alt="Your Company">
                         <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Login Akun</h2>
                     </div>
@@ -55,7 +55,6 @@
                     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                         <form class="space-y-6" action="{{ route('login.post') }}" method="POST">
                             @csrf
-
                             <div>
                                 <label for="no_telp" class="block text-sm/6 font-medium text-gray-900">Nomor
                                     Ponsel</label>

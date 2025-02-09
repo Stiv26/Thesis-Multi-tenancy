@@ -24,4 +24,9 @@ class Renter extends Model
     {
         return $this->belongsTo(User::class, '');
     }
+
+    public function domain()
+    {
+        return $this->belongsTo(Domain::class, 'domains_id');
+    }
 }

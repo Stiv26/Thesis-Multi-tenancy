@@ -7,6 +7,7 @@ use App\Models\Kontrak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class KosController extends Controller
 {
@@ -255,11 +256,36 @@ class KosController extends Controller
             ->where('idKamar', '=', $id)
             ->first();
 
-        return response()->json($data);
+        $gambarUrl = null;
+        if ($data->foto) {
+            // Gunakan full path tanpa basename()
+            $gambarUrl = route('foto.kamar.file', ['filename' => $data->foto]);
+        }
+
+        return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
+    }
+
+    public function showKamar($filename)
+    {
+        $path = $filename;
+
+        if (!Storage::disk('private')->exists($path)) {
+            abort(404);
+        }
+
+        $file = Storage::disk('private')->get($path);
+
+        return response($file, 200)
+            ->header('Cache-Control', 'max-age=604800'); // Cache 1 minggu
     }
 
     public function updateKamar(Request $request) // udpate kamar
     {
+        $path = $request->file('foto')->store(
+            tenancy()->tenant->id . '/kamar', // Folder tujuan
+            'private'     // Nama disk yang digunakan
+        );
+
         DB::table('kamar')
             ->where('idKamar', $request->idKamar)
             ->update([
@@ -268,6 +294,7 @@ class KosController extends Controller
                 'keterangan' => $request->keterangan,
                 'harga_mingguan' => $request->harga_mingguan,
                 'harga_harian' => $request->harga_harian,
+                'foto' => $path,
             ]);
 
         return redirect()->route('kos.index')->with('status', 'Data fasilitas berhasil diperbarui!');
@@ -281,8 +308,14 @@ class KosController extends Controller
             return back()->withErrors(['kamar' => 'Nomor Kamar sudah ada. Silakan gunakan nomor yang berbeda.'])->withInput();
         }
 
+        $path = $request->file('foto')->store(
+            tenancy()->tenant->id . '/kamar', // Folder tujuan
+            'private'     // Nama disk yang digunakan
+        );
+
         DB::table('kamar')->insert([
             'idKamar' => $request['kamar'],
+            'foto' => $path,
             'harga' => $request['harga'],
             'harga_mingguan' => $request['harga_mingguan'],
             'harga_harian' => $request['harga_harian'],
@@ -400,13 +433,6 @@ class KosController extends Controller
 
         return redirect()->route('kos.index')->with('message', 'Aturan berhasil dihapus.');
     }
-
-
-
-
-
-    
-
 
 
 }

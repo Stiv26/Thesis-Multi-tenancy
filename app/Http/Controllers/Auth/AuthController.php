@@ -23,7 +23,7 @@ class AuthController extends Controller
         //     'password' => 'required|min:6|confirmed',
         // ]);
 
-        $user = DB::table('users')->where('email', $request->email)->where('status', 'Aktif')->first();
+        $user = DB::table('users')->where('email', $request->email)->first();
 
         if (!$user) {
             return redirect()->back()->withErrors(['email' => 'Email tidak ditemukan atau tidak aktif.']);

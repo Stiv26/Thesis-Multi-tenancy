@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    
+
     public function __construct()
     {
         $this->middleware('auth')->only('logout');
@@ -61,8 +61,7 @@ class LoginController extends Controller
         }
 
         if ($user && $user->password === $request->password) {
-            Auth::login($user);
-            
+            Auth::loginUsingId($user->id);
             $redirectRoute = $this->determineRedirectRoute();
             return redirect()->route($redirectRoute)->with('success', 'Login berhasil!');
         }
@@ -96,14 +95,12 @@ class LoginController extends Controller
         if ($user->idRole == 1) { // Assuming 1 is the role ID for "Pengelola"
             // Redirect "Pengelola" to /kos
             return 'kos.index';
-        } 
-        elseif ($user->idRole == 2) { // Assuming 2 is the role ID for "Penghuni"
+        } elseif ($user->idRole == 2) { // Assuming 2 is the role ID for "Penghuni"
             // Redirect "Penghuni" to /info/kamar
             return 'penghuni.kamar';  // Make sure this route exists
-        }
-        elseif ($user->idRole == 3) { 
-            
-            return 'art.kamar';  
+        } elseif ($user->idRole == 3) {
+
+            return 'art.kamar';
         }
 
         // Default redirection in case role doesn't match

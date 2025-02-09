@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('harga')->nullable(false);
             $table->integer('harga_mingguan')->nullable();
             $table->integer('harga_harian')->nullable();
+            $table->string('foto', 255)->nullable();
             $table->string('keterangan', 255);
         });
     }

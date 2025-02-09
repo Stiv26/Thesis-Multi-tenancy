@@ -226,10 +226,11 @@
                                     class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition">
                                     @if ($listKamar && $listKamar->isNotEmpty())
                                         @foreach ($listKamar as $kamarId)
-                                            <option value="{{ $kamarId->idKamar }}" data-harga="{{ $kamarId->harga }}"
-                                                data-mingguan="{{ $kamarId->harga_mingguan }}"
+                                            <option value="{{ $kamarId->idKamar }}" 
+                                                data-harga="{{ $kamarId->harga }}" 
+                                                data-mingguan="{{ $kamarId->harga_mingguan }}" 
                                                 data-harian="{{ $kamarId->harga_harian }}">
-                                                <span>Kamar {{ $kamarId->idKamar }}</span>
+                                                Kamar {{ $kamarId->idKamar }}
                                             </option>
                                         @endforeach
                                     @else
@@ -252,17 +253,15 @@
                                             const kontrakType = kontrakDropdown.value; // Tipe kontrak (Bulan, Mingguan, Harian)
 
                                             // Ambil harga berdasarkan tipe kontrak
-                                            let harga;
-                                            if (kontrakType === 'Bulan') {
-                                                harga = selectedKamar.getAttribute('data-harga');
-                                            } else if (kontrakType === 'Mingguan') {
-                                                harga = selectedKamar.getAttribute('data-mingguan');
+                                            let harga = parseFloat(selectedKamar.getAttribute('data-harga')) || 0;
+                                            if (kontrakType === 'Mingguan') {
+                                                harga = parseFloat(selectedKamar.getAttribute('data-mingguan')) || 0;
                                             } else if (kontrakType === 'Harian') {
-                                                harga = selectedKamar.getAttribute('data-harian');
+                                                harga = parseFloat(selectedKamar.getAttribute('data-harian')) || 0;
                                             }
 
                                             // Masukkan nilai harga ke input hidden
-                                            hargaInput.value = harga || ''; // Pastikan nilai terisi atau kosong jika tidak ada data
+                                            hargaInput.value = Math.max(harga, 0); // Pastikan nilai terisi atau kosong jika tidak ada data
                                         };
 
                                         // Event listener untuk perubahan pada dropdown kamar dan kontrak
@@ -356,14 +355,22 @@
 
                                                 waktuTagihanContainer.classList.remove('hidden'); // Tampilkan waktu tagihan
                                                 waktuDendaContainer.classList.remove('hidden'); // Tampilkan waktu denda
+
+                                                // nonaktifkan validasi
+                                                waktuTagihanInput.required = true;
+                                                waktuDendaInput.required = true;
                                             } else {
                                                 // Jika opsi Mingguan atau Harian dipilih
                                                 waktuContainer.classList.remove('hidden'); // Tampilkan waktu tinggal
-                                                waktuTagihanInput.value = 0;
-                                                waktuDendaInput.value = 0;
+                                                waktuTagihanInput.value = 1;
+                                                waktuDendaInput.value = 1;
 
                                                 waktuTagihanContainer.classList.add('hidden'); // Sembunyikan waktu tagihan
                                                 waktuDendaContainer.classList.add('hidden'); // Sembunyikan waktu denda
+
+                                                // nonaktifkan validasi
+                                                waktuTagihanInput.required = false;
+                                                waktuDendaInput.required = false;
                                             }
                                         };
 
@@ -381,7 +388,7 @@
                                 <label for="waktu_tagihan"
                                     class="block text-sm font-medium leading-6 text-gray-900">Pertanggal Tagihan</label>
                                 <div class="mt-2">
-                                    <input required type="number" name="waktu_tagihan" id="waktu_tagihan" max="31" min="1" 
+                                    <input required type="number" name="waktu_tagihan" id="waktu_tagihan" max="31" min="1"
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
@@ -391,7 +398,7 @@
                                 <label for="waktu_denda"
                                     class="block text-sm font-medium leading-6 text-gray-900">Pertanggal Denda</label>
                                 <div class="mt-2">
-                                    <input required type="number" name="waktu_denda" id="waktu_denda" max="31" min="1" 
+                                    <input required type="number" name="waktu_denda" id="waktu_denda" max="31" min="1"
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                     <span id="error-message" class="text-red-500 text-sm hidden">Denda tidak boleh lebih kecil dari tanggal tagihan.</span>
 
@@ -427,7 +434,7 @@
                                 <label for="waktu" class="block text-sm font-medium leading-6 text-gray-900">Waktu
                                     Tinggal (Minggu/Hari)</label>
                                 <div class="mt-2">
-                                    <input required id="waktu" name="waktu" type="number"
+                                    <input required id="waktu" name="waktu" type="number" placeholder="Masukkan jumlah minggu/hari"
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
@@ -839,11 +846,11 @@
             }
 
             // Ambil nilai waktu dan deposit
-            const waktu = parseFloat(waktuInput.value) || 1; // Default waktu 1 jika kosong
-            const deposit = parseFloat(depositInput.value) || 0;
+            const waktu = Math.max(parseFloat(waktuInput.value) || 1, 1); // Default waktu 1 jika kosong
+            const deposit = Math.max(parseFloat(depositInput.value) || 0, 0);
 
             // Hitung total harga
-            const totalHarga = harga * waktu + deposit;
+            const totalHarga = (harga * waktu) + deposit;
 
             // Perbarui input pembayaran
             pembayaranInput.value = totalHarga;

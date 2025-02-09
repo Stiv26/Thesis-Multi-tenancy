@@ -331,6 +331,13 @@
                                         </div>
 
                                         <div class="flex items-center space-x-4">
+                                            <label for="foto" class="w-32 text-md font-medium text-gray-700">
+                                                Foto:</label>
+                                            <img src="" id="modal-foto" alt="Foto Kamar" 
+                                                class="w-80 h-80 object-cover border border-gray-300 rounded-md">
+                                        </div>
+
+                                        <div class="flex items-center space-x-4">
                                             <label for="keterangan_kamar" class="w-32 text-md font-medium text-gray-700">
                                                 Keterangan:</label>
                                             <textarea id="modal-keterangan_kamar" type="text" value="" rows="2"
@@ -362,7 +369,7 @@
                             aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog max-w-4xl mx-auto mt-24">
                                 <div class="modal-content rounded-lg shadow-lg bg-white"> 
-                                    <form action="{{ route('kos.updateKamar') }}" method="POST">
+                                    <form action="{{ route('kos.updateKamar') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
                                         {{-- header --}}
@@ -397,17 +404,6 @@
                                             </div>
 
                                             <div class="flex items-center space-x-4">
-                                                <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
-                                                    Keterangan:</label>
-                                                <textarea id="modal-kamar-keterangan" type="text" value="" rows="2" name="keterangan"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" required></textarea>
-                                            </div>
-                                            
-                                            <div class="text-center">
-                                                <p class="text-gray-500 text-sm">Bagian ini digunakan untuk nominal harga mingguan dan harian.</p>
-                                            </div>
-
-                                            <div class="flex items-center space-x-4">
                                                 <label for="mingguan" class="w-32 text-md font-medium text-gray-700">
                                                     Harga (Per-Mingguan):</label>
                                                 <input id="modal-kamar-mingguan" type="number" value="" name="harga_mingguan"
@@ -421,6 +417,21 @@
                                                 <input id="modal-kamar-harian" type="number" value="" name="harga_harian"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                     required>
+                                            </div>
+
+                                            <div class="flex items-center space-x-4">
+                                                <label for="foto" class="w-32 text-md font-medium text-gray-700">
+                                                    Foto:</label>
+                                                <input required id="modal-kamar-foto" type="file" value=""
+                                                    name="foto"
+                                                    class="w-20 flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                            </div>
+
+                                            <div class="flex items-center space-x-4">
+                                                <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
+                                                    Keterangan:</label>
+                                                <textarea id="modal-kamar-keterangan" type="text" value="" rows="2" name="keterangan"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" required></textarea>
                                             </div>
 
                                         </div> 
@@ -527,7 +538,7 @@
 
             {{-- TAMBAH DATA --}}
             <section class="mt-10">
-                <form action="{{ route('kamar.store') }}" method="POST" >
+                <form action="{{ route('kamar.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="space-y-12">
                         <div class="border-b border-gray-900/10 pb-10">
@@ -549,6 +560,17 @@
                                             {{ $errors->first('kamar') }}
                                         </div>
                                     @endif
+                                </div>
+
+                                {{-- Foto --}}
+                                <div class="sm:col-span-3 sm:col-start-1">
+                                    <label for="foto"
+                                        class="block text-sm font-medium leading-6 text-gray-900">Foto</label>
+                                    <div class="mt-2">
+                                        <input type="file" name="foto" id="foto"
+                                            class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            required>
+                                    </div>
                                 </div>
 
                                 {{-- Harga --}}
@@ -585,6 +607,7 @@
                                             required>
                                     </div>
                                 </div>
+
                                 {{-- Harga Harian --}}
                                 <div class="sm:col-span-3 sm:col-start-1">
                                     <label for="harga"
@@ -1239,17 +1262,18 @@
                 url: '/kamar/' + id,
                 type: 'GET',
                 success: function(data) {
-                    $('#modal-no_kamar').val('Kamar ' + data.idKamar);
-                    $('#modal-harga_kamar').val(data.harga);
-                    $('#modal-harga_mingguan').val(data.harga_mingguan);
-                    $('#modal-harga_harian').val(data.harga_harian);
-                    $('#modal-keterangan_kamar').val(data.keterangan);
+                    $('#modal-no_kamar').val('Kamar ' + data.data.idKamar);
+                    $('#modal-harga_kamar').val(data.data.harga);
+                    $('#modal-harga_mingguan').val(data.data.harga_mingguan);
+                    $('#modal-harga_harian').val(data.data.harga_harian);
+                    $('#modal-keterangan_kamar').val(data.data.keterangan);
+                    $('#modal-foto').attr('src', data.gambar_url);
 
-                    $('#modal-kamar-nomor').val(data.idKamar);
-                    $('#modal-kamar-harga').val(data.harga);
-                    $('#modal-kamar-keterangan').val(data.keterangan);
-                    $('#modal-kamar-mingguan').val(data.harga_mingguan);
-                    $('#modal-kamar-harian').val(data.harga_harian);
+                    $('#modal-kamar-nomor').val(data.data.idKamar);
+                    $('#modal-kamar-harga').val(data.data.harga);
+                    $('#modal-kamar-keterangan').val(data.data.keterangan);
+                    $('#modal-kamar-mingguan').val(data.data.harga_mingguan);
+                    $('#modal-kamar-harian').val(data.data.harga_harian);
 
                     $('#modal-hapusKamar-idKamar').val(data.idKamar);
                 }

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Illuminate\Support\Facades\Schema;
+use App\Http\Controllers\HomeController;
 // PENGELOLA
 use App\Http\Controllers\Pengelola\KosController;
 use App\Http\Controllers\Pengelola\PenghuniController;
@@ -59,8 +61,28 @@ Route::middleware([
         }
 
         tenancy()->initialize($tenant);
-        return view('pengelola.welcome');
+
+        $controller = new DashboardController();
+        $listKamar = $controller->listKamar()->getData()['data'];;
+
+        $domain = $tenant->domains()->first();
+        if (!$domain) {
+            abort(404, 'Domain tidak ditemukan.');
+        }
+        $renter = $domain->renter()->first();
+        if (!$renter) {
+            abort(404, 'Pemilik tidak ditemukan.');
+        }
+
+        return view('pengelola.welcome', compact('listKamar', 'renter'));
+        // return view('pengelola.welcome', compact('listKamar'));
     });
+
+    // routeing foto 
+    Route::get('/lihat/detail-kamar/{id}', [DashboardController::class, 'detailKamar']);
+    Route::get('/kamar/private-file/{filename}', [DashboardController::class, 'showFoto'])
+        ->where('filename', '.*')
+        ->name('foto.file');
 
     // login route
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -106,6 +128,11 @@ Route::middleware([
             Route::post('/kos/tambah-kamar', [KosController::class, 'storeKamar'])->name('kamar.store'); // create kamar
             Route::put('/kos/update-kamar', [KosController::class, 'updateKamar'])->name('kos.updateKamar'); // update kamar
             Route::delete('/kos/hapus-kamar', [KosController::class, 'destroyKamar'])->name('kamar.destroy'); // delete kamar
+            // routeing foto kamar
+            Route::get('/foto/private-file/{filename}', [KosController::class, 'showKamar'])
+                ->where('filename', '.*') // Menerima path dengan slash (/)
+                ->name('foto.kamar.file');
+
             // routeing fasilitas
             Route::post('/kos/tambah-fasilitas', [KosController::class, 'storeFasilitas'])->name('fasilitas.store'); // create fasilitas
             Route::put('/kos/update-fasilitas', [KosController::class, 'updateFasilitas'])->name('kos.updateFasilitas'); // update fasilitas
