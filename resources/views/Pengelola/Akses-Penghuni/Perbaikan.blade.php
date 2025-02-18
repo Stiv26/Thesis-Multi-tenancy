@@ -76,40 +76,48 @@
                                 <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
                                 <td class="py-3 px-4">{{ $item->tanggal }}</td>
                                 <td class="py-3 px-4">{{ $item->fasilitas }}</td>
-                                <td class="py-3 px-4">{{ $item->tgl_pemeliharaan }}</td>
+                                <td class="py-3 px-4">{{ $item->tgl_pemeliharaan ?? '-' }}</td>
                                 <td class="py-3 px-4">{{ $item->status_pemeliharaan }}</td>
                                 <td class="py-3 px-4">
                                     @if ($item->status_pemeliharaan === 'Tolak')
-                                        <a href="#" data-id="{{ $item->idPemeliharaan }}" data-toggle="modal" data-target="#ModalPemeliharaan"
+                                        <a href="#" data-id="{{ $item->idPemeliharaan }}" data-toggle="modal" data-target="#ModalRevisiJadwal"
                                         class="lihat-detail-pemeliharaan text-indigo-500 hover:text-indigo-700 transition">
                                             Ajukan Kembali <span aria-hidden="true">→</span>
                                         </a>
                                     @elseif ($item->status_pemeliharaan === 'Pengerjaan')
-                                        <a href="#" data-id="{{ $item->idPemeliharaan }}" data-toggle="modal" data-target="#ModalSuksesTerperbaikan" class="ubah-pemeliharaan text-indigo-500 hover:text-indigo-700 transition">
+                                        <a href="#" data-toggle="modal" data-target="#ModalKonfirmasiSelesaikan" class="text-indigo-500 hover:text-indigo-700 transition">
                                             Tandai Selesai <span aria-hidden="true">→</span>
                                         </a>
 
-                                        <!-- Modal sukses selesaikan -->
-                                        <div class="modal fade p-4" id="ModalSuksesTerperbaikan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <!-- Modal Konfirmasi -->
+                                        <div class="modal fade p-4" id="ModalKonfirmasiSelesaikan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                             <div class="modal-dialog max-w-4xl mx-auto mt-24">
                                                 <div class="modal-content rounded-lg shadow-lg bg-white">
-                                                    <div class="modal-body p-6 space-y-4 text-center">
-                                                        <!-- Icon Success -->
-                                                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                                            <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                                            </svg>
+                                                    <div class="modal-body p-6 space-y-2">
+                                                        <div class="flex items-center space-x-4">
+                                                            <!-- Icon Warning -->
+                                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+                                                                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                                                                </svg>
+                                                            </div>
+                                                            <!-- Modal Title & Description -->
+                                                            <div class="text-left">
+                                                                <h3 class="text-lg font-semibold text-gray-900" id="modal-title">Konfirmasi Selesaikan Pemeliharaan</h3>
+                                                                <p class="mt-2 text-sm text-gray-500">Apakah anda yakin menyelesaian pemeliharaan ini?</p>
+                                                            </div>
                                                         </div>
-                                                        <!-- Pesan -->
-                                                        <h3 class="text-lg font-semibold text-gray-900">Permintaan Perbaikan Selesai</h3>
-                                                        <p class="text-sm text-gray-500">Permintaan perbaikan telah selesai dilakukan.</p>
-                                                        <div class="mt-4">
-                                                            <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
+                                
+                                                        <!-- Footer: Tombol Aksi -->
+                                                        <div class="mt-6 flex justify-end space-x-4">
+                                                            <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Batal</button>
+                                                            <button type="submit" data-id="{{ $item->idPemeliharaan }}" class="ubah-pemeliharaan bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition">Kirim</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                     @else
                                         <a href="#" data-id="{{ $item->idPemeliharaan }}" data-toggle="modal" data-target="#ModalPemeliharaan"
                                         class="lihat-detail-pemeliharaan text-indigo-500 hover:text-indigo-700 transition">
@@ -162,12 +170,6 @@
                                     </div>
 
                                     <div class="flex items-center space-x-4">
-                                        <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
-                                            Tanggal Penjadwalan:</label>
-                                        <input id="modal-jadwal" type="datetime-local" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
-                                    </div>
-
-                                    <div class="flex items-center space-x-4">
                                         <label for="pesan" class="w-32 text-md font-medium text-gray-700">
                                             Pesan:</label>
                                         <textarea id="modal-pesan" type="text" value="" rows="2" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
@@ -181,15 +183,11 @@
                                     
                                 </div>
                                 <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                    {{-- @if(!empty($item->idPemeliharaan))
-                                        <button type="button" id="hapus-pemeliharaan-btn" data-id="{{ $item->idPemeliharaan }}"
-                                            class="hapus-pemeliharaan-btn rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-500">
-                                            Hapus
-                                        </button>
-                                    @endif --}}
-                                    <button type="button" data-toggle="modal" data-target="#ModalRevisiJadwal" data-dismiss="modal" class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                    <button id="button-ajukan-kembali" type="button" data-toggle="modal" 
+                                        data-target="#ModalRevisiJadwal" data-dismiss="modal" 
+                                        class="hidden rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                         Ajukan Kembali
-                                    </button>                                                              
+                                    </button>                
                                     <button type="button" class=" rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600" data-dismiss="modal">
                                         Tutup
                                     </button>
@@ -208,7 +206,7 @@
                                     @method('PUT')
                                     {{-- header --}}
                                     <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Revisi Perbaikan</h3>
+                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Perbaikan</h3>
                                         <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
                                             aria-hidden="true">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -230,14 +228,7 @@
                                         </div>
                                         
                                         <div class="text-center">
-                                            <p class="text-gray-500 text-sm">Masukan tanggal perbaikan baru.</p>
-                                        </div>
-                                        
-                                        <div class="flex items-center space-x-4">
-                                            <label for="jadwal" class="w-32 text-md font-medium text-gray-700">
-                                                Tanggal Pemeliharaan:</label>
-                                            <input id="modal-revisi-jadwal" type="datetime-local" value="" name="jadwal"
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" required>
+                                            <p class="text-gray-500 text-sm">Masukan Pesan Permintaan Perbaikan.</p>
                                         </div>
 
                                         {{-- pesan --}}
@@ -259,36 +250,14 @@
                                         </button>
                                         <button type="submit" name="action" value="tolak" data-toggle="modal" data-target="#ModalSuksesRevisiPerbaikan"
                                             class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                                            Revisi Perbaikan
+                                            Kirim
                                         </button>
                                     </div>                                    
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <!-- Modal sukses konfirmasi perbaikan -->
-                    <div class="modal fade p-4" id="ModalSuksesRevisiPerbaikan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                            <div class="modal-content rounded-lg shadow-lg bg-white">
-                                <div class="modal-body p-6 space-y-4 text-center">
-                                    <!-- Icon Success -->
-                                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                        </svg>
-                                    </div>
-                                    <!-- Pesan -->
-                                    <h3 class="text-lg font-semibold text-gray-900">Perbaikan Berhasil Dibuat</h3>
-                                    <p class="text-sm text-gray-500">Permintaan Perbaikan telah tercatat oleh sistem dan dikirimkan ke pengelola.</p>
-                                    <div class="mt-4">
-                                        <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </main>
-
             </div>
             
             {{-- TAMBAH DATA --}}
@@ -353,17 +322,6 @@
                                     </div>
                                 @endif
 
-                                {{-- tanggal  --}}
-                                <div class="sm:col-span-3 sm:col-start-1">
-                                    <label for="jadwal"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Tanggal Perbaikan</label>
-                                    <div class="mt-2">
-                                        <input type="datetime-local" name="jadwal" id="jadwal"
-                                            class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            required>
-                                    </div>
-                                </div>
-
                                 {{-- pesan --}}
                                 <div class="sm:col-span-3 sm:col-start-1">
                                     <label for="pesan"
@@ -383,28 +341,6 @@
                         </div>
                     </div>
                 </form>
-
-                <!-- Modal sukses konfirmasi perbaikan -->
-                <div class="modal fade p-4" id="ModalSuksesBuatPerbaikan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                        <div class="modal-content rounded-lg shadow-lg bg-white">
-                            <div class="modal-body p-6 space-y-4 text-center">
-                                <!-- Icon Success -->
-                                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                    <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                    </svg>
-                                </div>
-                                <!-- Pesan -->
-                                <h3 class="text-lg font-semibold text-gray-900">Perbaikan Berhasil Dibuat</h3>
-                                <p class="text-sm text-gray-500">Permintaan Perbaikan telah tercatat oleh sistem dan dikirimkan ke pengelola.</p>
-                                <div class="mt-4">
-                                    <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </section>
         </section>
 
@@ -529,56 +465,19 @@
                     $('#modal-jadwal').val(data.tgl_pemeliharaan);
                     $('#modal-pesan').val(data.pesan);
                     $('#modal-status').val(data.status_pemeliharaan);
-                    $('#modal-jadwalkan').val(data.tgl_pemeliharaan);
+
+                    if (data.status_pemeliharaan === 'Tolak') {
+                        $('#button-ajukan-kembali').removeClass('hidden');
+                    } else {
+                        $('#button-ajukan-kembali').addClass('hidden');
+                    }
 
                     $('#modal-revisi-idPemeliharaan').val(data.idPemeliharaan);
                     $('#modal-revisi-fasilitas').val(data.fasilitas);
-                    $('#modal-revisi-jadwal').val(data.tgl_pemeliharaan);
                     $('#modal-revisi-pesan').val(data.pesan);
                 }
             });
         });
-
-        // $('#ubah-pemeliharaan-btn').on('click', function () {
-        //     var idPemeliharaan = $(this).data('id');
-        //     var jadwal = $('#modal-jadwalkan').val();
-
-        //     $.ajax({
-        //         url: '/perbaikan/update/' + idPemeliharaan,
-        //         type: 'PUT',
-        //         data: {
-        //             _token: '{{ csrf_token() }}',
-        //             tgl_pemeliharaan: jadwal
-        //         },
-        //         success: function (response) {
-        //             location.reload(); 
-        //         },
-        //         error: function (xhr) {
-        //             console.error('Gagal memperbarui data:', xhr.responseText);
-        //         }
-        //     });
-        // });
-
-        // $('.hapus-pemeliharaan-btn').on('click', function () {
-        //     var idPemeliharaan = $(this).data('id');
-
-        //     if (confirm('Apakah Anda yakin ingin menghapus pemeliharaan ini?')) {
-        //         $.ajax({
-        //             url: '{{ route('pemeliharaan.destroy', ':id') }}'.replace(':id', idPemeliharaan),
-        //             type: 'DELETE',
-        //             data: {
-        //                 _token: '{{ csrf_token() }}'
-        //             },
-        //             success: function(response) {
-        //                 alert(response.message);
-        //                 location.reload(); // Muat ulang halaman setelah penghapusan
-        //             },
-        //             error: function(xhr) {
-        //                 alert('Gagal menghapus pemeliharaan. Silakan coba lagi.');
-        //             }
-        //         });
-        //     }
-        // });
 
         $('.lihat-detail-riwayat').on('click', function(e) {
             e.preventDefault();
@@ -589,12 +488,12 @@
                 url: '/detailPerbaikanRiwayat/' + id,
                 type: 'GET',
                 success: function(data) {
-                    $('#modal-detail-kamar').val('Kamar ' + data.idKamar);
-                    $('#modal-detail-tanggal').val(data.tanggal);
-                    $('#modal-detail-fasilitas').val(data.fasilitas);
-                    $('#modal-detail-jadwal').val(data.tgl_pemeliharaan);
-                    $('#modal-detail-pesan').val(data.pesan);
-                    $('#modal-detail-status').val(data.status_pemeliharaan);
+                    $('#modal-detail-kamar').val('Kamar ' + data.data.idKamar);
+                    $('#modal-detail-tanggal').val(data.data.tanggal);
+                    $('#modal-detail-fasilitas').val(data.data.fasilitas);
+                    $('#modal-detail-jadwal').val(data.data.tgl_pemeliharaan);
+                    $('#modal-detail-pesan').val(data.data.pesan);
+                    $('#modal-detail-status').val(data.data.status_pemeliharaan);
                 }
             });
         });

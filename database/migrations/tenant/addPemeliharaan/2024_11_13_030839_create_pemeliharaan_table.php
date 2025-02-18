@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('pesan', 225)->nullable(false);
             $table->date('tanggal')->nullable(false);
             $table->datetime('tgl_pemeliharaan')->nullable();
-            $table->enum('status', ['Permintaan', 'Penjadwalan', 'Pengerjaan', 'Tolak', 'Selesai'])->nullable(false);
+            $table->enum('status', ['Permintaan', 'Pengerjaan', 'Tolak', 'Selesai'])->nullable(false);
         });
     }    
 

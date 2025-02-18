@@ -78,7 +78,7 @@
                                 <td class="py-3 px-4">{{ $item->tanggal }}</td>
                                 <td class="py-3 px-4">{{ $item->fasilitas }}</td>
                                 <td class="py-3 px-4">{{ $item->status_pemeliharaan }}</td>
-                                <td class="py-3 px-4">{{ $item->tgl_pemeliharaan }}</td>
+                                <td class="py-3 px-4">{{ $item->tgl_pemeliharaan ?? '-' }}</td>
                                 <td class="py-3 px-4">
                                     <a href="#" data-id="{{ $item->idPemeliharaan }}" data-toggle="modal" data-target="#ModalPemeliharaan" class="lihat-detail-pemeliharaan text-indigo-500 hover:text-indigo-700 transition">
                                         Lihat Detail <span aria-hidden="true">→</span></a>
@@ -110,25 +110,25 @@
                                <div class="flex items-center space-x-4">
                                     <label for="kamar" class="w-32 text-md font-medium text-gray-700">
                                         Pengirim:</label>
-                                    <input id="modal-kamar" type="text" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
+                                    <input id="modal-kamar" type="text" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" disabled>
                                 </div>
 
                                 <div class="flex items-center space-x-4">
                                     <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
                                         Tanggal Permintaan:</label>
-                                    <input id="modal-tanggal" type="text" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
+                                    <input id="modal-tanggal" type="text" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" disabled>
                                 </div>
 
                                 <div class="flex items-center space-x-4">
                                     <label for="fasilitas" class="w-32 text-md font-medium text-gray-700">
                                         Fasilitas:</label>
-                                    <input id="modal-fasilitas" type="text" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
+                                    <input id="modal-fasilitas" type="text" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" disabled>
                                 </div>
 
                                 <div class="flex items-center space-x-4">
                                     <label for="pesan" class="w-32 text-md font-medium text-gray-700">
                                         Pesan:</label>
-                                    <textarea id="modal-pesan" type="text" value="" rows="2" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
+                                    <textarea id="modal-pesan" type="text" value="" rows="2" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" disabled></textarea>
                                 </div>
  
                                 <div class="text-center">
@@ -140,35 +140,37 @@
                                         Status:</label>
                                     <select id="modal-status" name="status" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                         <option value="Permintaan" disabled>Permintaan</option>
-                                        <option value="Penjadwalan">Penjadwalan</option>
                                         <option value="Pengerjaan">Pengerjaan</option>
                                         <option value="Tolak">Tolak</option>
                                     </select>
                                 </div>
 
-                                <div class="flex items-center space-x-4">
+                                <div id="jadwal-container" class="flex items-center space-x-4">
                                     <label for="jadwalkan" class="w-32 text-md font-medium text-gray-700">
                                         Penjadwalan:</label>
                                     <input required id="modal-jadwalkan" name="jadwalkan" type="datetime-local" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                 </div>
-                                
+
                             </div>
                             {{-- FOOTER --}}
                             <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                <button type="button" data-toggle="modal" data-target="#ModalConfirmResponPemeliharaan" data-dismiss="modal" class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                                    Lakukan Perubahan
-                                </button>                                                               
-                                <button type="button" class=" rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600" data-dismiss="modal">
-                                    Tutup
-                                </button>
+                                <form action="">
+                                    <input type="hidden" name="idPemeliharaan" id="modal-idPemeliharaan">
+                                    <button type="button" name="action" value="revisi" class="btn-action rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                        Lakukan Perubahan
+                                    </button>                                                               
+                                    <button type="button" name="action" value="selesai" class="btn-action rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                        Selesaikan
+                                    </button>
+                                </form>   
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-             <!-- Modal Konfirmasi -->
-             <div class="modal fade p-4" id="ModalConfirmResponPemeliharaan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- Modal Konfirmasi -->
+            <div class="modal fade p-4" id="ModalConfirmResponPemeliharaan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog max-w-4xl mx-auto mt-24">
                     <div class="modal-content rounded-lg shadow-lg bg-white">
                         <div class="modal-body p-6 space-y-2">
@@ -307,7 +309,6 @@
             e.preventDefault();
             var id = $(this).data('id'); 
 
-            // AJAX untuk mengambil data kamar
             $.ajax({
                 url: '/detailPemeliharaan/' + id,
                 type: 'GET',
@@ -316,19 +317,50 @@
                     $('#modal-tanggal').val(data.tanggal);
                     $('#modal-fasilitas').val(data.fasilitas);
                     $('#modal-pesan').val(data.pesan);
-
                     $('#modal-status').val(data.status_pemeliharaan);
                     $('#modal-jadwalkan').val(data.tgl_pemeliharaan);
+                    $('#modal-idPemeliharaan').val(data.idPemeliharaan);
 
-                    // ubah id pemeliharaan
+                    if (data.status_pemeliharaan === 'Pengerjaan') {
+                        $('#modal-status').replaceWith(`
+                            <input type="text" id="modal-status" name="status" value="${data.status_pemeliharaan}" 
+                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
+                                readonly>`);
+
+                        $('.btn-action[name="action"][value="selesai"]').show();
+                    } else {
+                        // Jika status bukan "Pengerjaan", tetap tampilkan select
+                        $('#modal-status').replaceWith(`
+                            <select id="modal-status" name="status" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                <option disabled value="Permintaan" ${data.status_pemeliharaan === 'Permintaan' ? 'selected' : ''}>Permintaan</option>
+                                <option value="Pengerjaan" ${data.status_pemeliharaan === 'Pengerjaan' ? 'selected' : ''}>Pengerjaan</option>
+                                <option value="Tolak" ${data.status_pemeliharaan === 'Tolak' ? 'selected' : ''}>Tolak</option>
+                            </select>`);
+
+                        $('.btn-action[name="action"][value="selesai"]').hide();
+                    }
+
+                    // Panggil fungsi untuk menyesuaikan tampilan jadwal-container
+                    toggleJadwalContainer();
+
                     $('#ubah-pemeliharaan-btn').data('id', id);
+                    $('.btn-action').attr('data-id', id);
                 }
             });
         });
 
-        $('#ubah-pemeliharaan-btn').on('click', function () {
+        $('.btn-action').on('click', function() {
+            var action = $(this).val(); 
             var idPemeliharaan = $(this).data('id');
-            var status = $('#modal-status').val();
+            
+            $('#ubah-pemeliharaan-btn').data('action', action).data('id', idPemeliharaan);
+            $('#ModalConfirmResponPemeliharaan').modal('show');
+        });
+
+        $('#ubah-pemeliharaan-btn').on('click', function () {
+            var action = $(this).data('action');
+            var idPemeliharaan = $(this).data('id');
+            var status = (action === 'selesai') ? 'Selesai' : $('#modal-status').val();
             var jadwal = $('#modal-jadwalkan').val();
 
             $.ajax({
@@ -369,29 +401,49 @@
     });
 </script>
 
-{{-- DROPDOWN STATUS SESUAI TANGGAL  --}}
+{{-- TANGGAL --}}
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const statusDropdown = document.getElementById('modal-status'); // Dropdown status
-        const jadwalkanInput = document.getElementById('modal-jadwalkan'); // Input penjadwalan
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ambil elemen input datetime
+        const inputJadwal = document.getElementById('modal-jadwalkan');
 
-        const updateVisibility = () => {
-            const selectedStatus = statusDropdown.value; // Nilai terpilih dari dropdown status
-            
-            if (selectedStatus === 'Tolak') {
-                // Sembunyikan input penjadwalan jika statusnya "Tolak"
-                jadwalkanInput.parentElement.classList.add('hidden');
-                jadwalkanInput.value = ''; // Reset nilai input
-            } else {
-                // Tampilkan input penjadwalan untuk status selain "Tolak"
-                jadwalkanInput.parentElement.classList.remove('hidden');
-            }
-        };
+        // Fungsi untuk mendapatkan waktu saat ini dalam format 'YYYY-MM-DDTHH:MM'
+        function getMinDatetime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
 
-        // Jalankan saat halaman dimuat untuk memastikan visibilitas awal
-        updateVisibility();
+        // Set atribut min ke input
+        inputJadwal.min = getMinDatetime();
 
-        // Tambahkan event listener untuk perubahan pada dropdown status
-        statusDropdown.addEventListener('change', updateVisibility);
+        // Perbarui min setiap detik (jika diperlukan untuk real-time)
+        setInterval(() => {
+            inputJadwal.min = getMinDatetime();
+        }, 60000);
     });
 </script>
+<script>
+    $(document).on('change', '#modal-status', function() {
+        toggleJadwalContainer();
+    });
+</script>
+
+<script>
+    function toggleJadwalContainer() {
+        const status = $('#modal-status').val();
+        if (status === 'Tolak') {
+            $('#jadwal-container').hide(); // Sembunyikan jika Tolak
+            $('#modal-jadwalkan').removeAttr('required'); // Hapus required
+        } else {
+            $('#jadwal-container').show(); // Tampilkan selain Tolak
+            $('#modal-jadwalkan').attr('required', 'required'); // Tambah required
+        }
+    }
+</script>
+
+

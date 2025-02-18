@@ -81,7 +81,6 @@ class PerbaikanController extends Controller
             'fasilitas' => $request->fasilitas,
             'pesan'=> $request->pesan,
             'tanggal' => now(),
-            'tgl_pemeliharaan'=> $request->jadwal,
             'status'=> 'Permintaan',
         ]);
 
