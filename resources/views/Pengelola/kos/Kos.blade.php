@@ -190,7 +190,7 @@
                                         readonly>
                                 </div>
                                 {{-- deposit --}}
-                                <div class="flex items-center space-x-4">
+                                <div class="flex items-center space-x-4" id="modal-show-deposit">
                                     <label for="deposit" class="w-32 text-md font-medium text-gray-700">
                                         Deposit:</label>
                                     <input id="modal-deposit" type="text" value=""
@@ -449,28 +449,6 @@
                                     </form>
                                 </div>
                             </div>
-
-                            <!-- Modal sukses ubah kamar -->
-                            <div class="modal fade p-4" id="ModalSuksesUbahKamar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                                    <div class="modal-content rounded-lg shadow-lg bg-white">
-                                        <div class="modal-body p-6 space-y-4 text-center">
-                                            <!-- Icon Success -->
-                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                                </svg>
-                                            </div>
-                                            <!-- Pesan -->
-                                            <h3 class="text-lg font-semibold text-gray-900">Kamar Berhasil Diubah</h3>
-                                            <p class="text-sm text-gray-500">Kamar telah diperbaruhi dari sistem.</p>
-                                            <div class="mt-4">
-                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         {{-- MODAL HAPUS KAMAR --}}
@@ -506,29 +484,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Modal sukses hapus kamar -->
-                            <div class="modal fade p-4" id="ModalSuksesHapusKamar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                                    <div class="modal-content rounded-lg shadow-lg bg-white">
-                                        <div class="modal-body p-6 space-y-4 text-center">
-                                            <!-- Icon Success -->
-                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                                </svg>
-                                            </div>
-                                            <!-- Pesan -->
-                                            <h3 class="text-lg font-semibold text-gray-900">Kamar Berhasil Dihapus</h3>
-                                            <p class="text-sm text-gray-500">Kamar telah dihapus dari sistem.</p>
-                                            <div class="mt-4">
-                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </main>
                 </div>
@@ -624,34 +579,13 @@
                         {{-- Bagian Submit --}}
                         <div class="mt-6 flex items-center justify-end gap-x-6">
                             <p class="text-sm leading-6 text-gray-500">Periksa Kembali Data Anda</p>
-                            <button type="submit" data-toggle="modal" data-target="#ModalSuksesBuatKamar"
+                            <button type="submit" 
                                 class="rounded-md bg-indigo-600 px-20 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Simpan</button>
                         </div>
                     </div>
                 </form>
             </section>
 
-            {{-- modal sukses tambah penghuni --}}
-            <div class="modal fade p-4" id="ModalSuksesBuatKamar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                    <div class="modal-content rounded-lg shadow-lg bg-white">
-                        <div class="modal-body p-6 space-y-4 text-center">
-                            <!-- Icon Success -->
-                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                </svg>
-                            </div>
-                            <!-- Pesan -->
-                            <h3 class="text-lg font-semibold text-gray-900">Penghuni Berhasil Ditambahkan</h3>
-                            <p class="text-sm text-gray-500">Kontrak penghuni berhasil disimpan oleh sistem.</p>
-                            <div class="mt-4">
-                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </section>
 
         {{-- PAGE FASILITAS --}}
@@ -823,29 +757,6 @@
                                     </form>
                                 </div>
                             </div>
-
-                            {{-- modal sukses ubah fasilitas --}}
-                            <div class="modal fade p-4" id="ModalSuksesUbahFasilitas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                                    <div class="modal-content rounded-lg shadow-lg bg-white">
-                                        <div class="modal-body p-6 space-y-4 text-center">
-                                            <!-- Icon Success -->
-                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                                </svg>
-                                            </div>
-                                            <!-- Pesan -->
-                                            <h3 class="text-lg font-semibold text-gray-900">Fasilitas Berhasil Diubah</h3>
-                                            <p class="text-sm text-gray-500">Fasilitas telah diperbaruhi dari sistem.</p>
-                                            <div class="mt-4">
-                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
                         </div>
 
                         {{-- MODAL HAPUS FASILITAS --}}
@@ -881,29 +792,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Modal sukses hapus -->
-                            <div class="modal fade p-4" id="ModalSuksesHapusFasilitas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                                    <div class="modal-content rounded-lg shadow-lg bg-white">
-                                        <div class="modal-body p-6 space-y-4 text-center">
-                                            <!-- Icon Success -->
-                                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                                </svg>
-                                            </div>
-                                            <!-- Pesan -->
-                                            <h3 class="text-lg font-semibold text-gray-900">Fasilitas Berhasil Dihapus</h3>
-                                            <p class="text-sm text-gray-500">Fasilitas telah dihapus dari sistem.</p>
-                                            <div class="mt-4">
-                                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </main>      
 
@@ -966,28 +854,6 @@
                         </div>
                     </div>
                 </form>
-
-                {{-- modal sukses tambah fasilitas --}}
-                <div class="modal fade p-4" id="ModalSuksesBuatFasilitas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                        <div class="modal-content rounded-lg shadow-lg bg-white">
-                            <div class="modal-body p-6 space-y-4 text-center">
-                                <!-- Icon Success -->
-                                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                    <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                    </svg>
-                                </div>
-                                <!-- Pesan -->
-                                <h3 class="text-lg font-semibold text-gray-900">Fasiitas Berhasil Ditambahkan</h3>
-                                <p class="text-sm text-gray-500">Fasilitas Kos berhasil disimpan oleh sistem.</p>
-                                <div class="mt-4">
-                                    <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </section>
         </section>
         
@@ -1041,28 +907,6 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
-
-                    {{-- modal sukses tambah penghuni --}}
-                    <div class="modal fade p-4" id="ModalSuksesBuatSop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                            <div class="modal-content rounded-lg shadow-lg bg-white">
-                                <div class="modal-body p-6 space-y-4 text-center">
-                                    <!-- Icon Success -->
-                                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                        </svg>
-                                    </div>
-                                    <!-- Pesan -->
-                                    <h3 class="text-lg font-semibold text-gray-900">Aturab Berhasil Ditambahkan</h3>
-                                    <p class="text-sm text-gray-500">Aturan Kos berhasil disimpan oleh sistem.</p>
-                                    <div class="mt-4">
-                                        <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -1119,28 +963,6 @@
                             </form>
                         </div>
                     </div>
-
-                    {{-- modal sukses ubah aturan --}}
-                    <div class="modal fade p-4" id="ModalSuksesUbahAturan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                            <div class="modal-content rounded-lg shadow-lg bg-white">
-                                <div class="modal-body p-6 space-y-4 text-center">
-                                    <!-- Icon Success -->
-                                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                        </svg>
-                                    </div>
-                                    <!-- Pesan -->
-                                    <h3 class="text-lg font-semibold text-gray-900">Aturan Berhasil Diubah</h3>
-                                    <p class="text-sm text-gray-500">Aturan telah diperbaruhi dari sistem.</p>
-                                    <div class="mt-4">
-                                        <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 {{-- MODAL HAPUS SOP --}}
@@ -1176,29 +998,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Modal sukses hapus -->
-                    <div class="modal fade p-4" id="ModalSuksesHapusAturan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                            <div class="modal-content rounded-lg shadow-lg bg-white">
-                                <div class="modal-body p-6 space-y-4 text-center">
-                                    <!-- Icon Success -->
-                                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                        </svg>
-                                    </div>
-                                    <!-- Pesan -->
-                                    <h3 class="text-lg font-semibold text-gray-900">Aturan Berhasil Dihapus</h3>
-                                    <p class="text-sm text-gray-500">Aturan telah dihapus dari sistem.</p>
-                                    <div class="mt-4">
-                                        <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </main>
         </section>
@@ -1243,6 +1042,13 @@
 
                     $('#modal-keterangan').val(data.data.keterangan);
 
+                    if (data.data.deposit !== null) {
+                        $('#modal-show-deposit').show();
+                        $('#modal-deposit').val(data.data.deposit);
+                    } else {
+                        $('#modal-show-deposit').hide();
+                    }
+
                     $('#edit-kontrak-btn').attr('href', '/kos/edit-kontrak/' + id);
                     $('#batalkan-kontrak-btn').attr('href', '/kos/batal-kontrak/' + id);
                 }
@@ -1275,7 +1081,7 @@
                     $('#modal-kamar-mingguan').val(data.data.harga_mingguan);
                     $('#modal-kamar-harian').val(data.data.harga_harian);
 
-                    $('#modal-hapusKamar-idKamar').val(data.idKamar);
+                    $('#modal-hapusKamar-idKamar').val(data.data.idKamar);
                 }
             });
         });
@@ -1299,7 +1105,7 @@
 
                     $('#modal-fasilitas-fasilitas').val(data.fasilitas);
                     $('#modal-fasilitas-jumlah').val(data.jumlah);
-                    $('#modal-fasilitas-jenis').val(data.jenis);
+                    $('#modal-fasilitas-jenis').val(data.jenis).change();
                     $('#modal-fasilitas-idFasilitas').val(data.idFasilitas);
 
                     $('#modal-hapusFasilitas-idFasilitas').val(data.idFasilitas);

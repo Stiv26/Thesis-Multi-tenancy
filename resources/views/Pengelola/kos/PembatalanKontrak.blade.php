@@ -21,27 +21,31 @@
                             <input type="text" id="nama" name="nama" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
                                 value="Kamar {{ $data->idKamar }}" disabled>                         
                         </li>
-                        <li class="mb-4">
-                            <label for="depo" class="block font-medium mb-2">Deposit Kontrak:</label>
-                            <input type="text" id="depo" name="depo" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
+                        @if ($data->deposit)
+                            <li class="mb-4">
+                                <label for="depo" class="block font-medium mb-2">Deposit Kontrak:</label>
+                                <input type="text" id="depo" name="depo" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
                                 value="{{ $data->deposit }}" disabled>                         
-                        </li>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="px-6 py-4 w-3/5">
                     <ul class="text-sm text-gray-600">
-                        <li class="mb-4">
-                            <label for="deposit" class="block font-medium mb-2">Deposit:</label>
-                            <select id="deposit" name="deposit" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                                <option value="Kembalikan">Kembalikan</option>
-                                <option value="Potong">Potong</option>
-                            </select>   
-                        </li>
-                        <li class="mb-4">
-                            <label for="pengembalian" class="block font-medium mb-2">Nominal Pengembalian Deposit:</label>
-                            <input type="number" id="pengembalian" name="pengembalian" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
-                                value="{{ $data->deposit }}">                         
-                        </li>
+                        @if ($data->deposit)
+                            <li class="mb-4">
+                                <label for="deposit" class="block font-medium mb-2">Deposit:</label>
+                                <select required id="deposit" name="deposit" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                    <option value="Kembalikan">Kembalikan</option>
+                                    <option value="Potong">Potong</option>
+                                </select>   
+                            </li>
+                            <li class="mb-4">
+                                <label for="pengembalian" class="block font-medium mb-2">Nominal Pengembalian Deposit:</label>
+                                <input required type="number" id="pengembalian" name="pengembalian" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
+                                    value="{{ $data->deposit }}">                         
+                            </li>
+                        @endif
                         <li class="mb-4">
                             <label for="alasan" class="block font-medium mb-2">Alasan:</label>
                             <textarea id="alasan" name="alasan" rows="3" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition"></textarea>

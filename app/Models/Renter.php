@@ -20,13 +20,13 @@ class Renter extends Model
     ];
 
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, '');
-    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class, '');
+    // }
 
-    public function domain()
-    {
-        return $this->belongsTo(Domain::class, 'domains_id');
-    }
+    // public function domain()
+    // {
+    //     return $this->belongsTo(Domain::class, 'domains_id');
+    // }
 }

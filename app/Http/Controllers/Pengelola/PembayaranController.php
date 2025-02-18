@@ -21,7 +21,7 @@ class PembayaranController extends Controller
         $tahun = $tahun ?? now()->year;
 
         $today = now(); // Tanggal hari ini
-        $startDate = $today->copy()->subDays(7); // 3 hari sebelum hari ini
+        $startDate = $today->copy()->subDays(7); // 7 hari sebelum hari ini
         $endDate = $today->copy()->addDays(7); // 7  hari setelah hari ini
 
         // menampilkan tagihan yang harus dibuat

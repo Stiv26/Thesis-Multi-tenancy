@@ -20,7 +20,7 @@ class KamarController extends Controller
     {
         $data = DB::table('pengumuman as p')
             ->select('*')
-            ->where('tgl_expired', '<', Carbon::now())
+            ->where('tgl_expired', '>', Carbon::now())
             ->get();
 
         return view('Pengelola.akses-penghuni.kamar', compact('data'));

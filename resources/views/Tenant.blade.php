@@ -53,8 +53,8 @@
                                     </svg>
                                 </button>
                             </div>
+                            <!-- AJAX -->
                             <div class="modal-body p-6 space-y-2">
-                               <!-- AJAX -->
                                 <div class="flex items-center space-x-4">
                                     <label for="kos" class="w-32 text-md font-medium text-gray-700">
                                         Kos:</label>

@@ -15,8 +15,8 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     //     'custom_migrations' => 'array',
     // ];    
 
-    public function domains()
-    {
-        return $this->hasMany(Domain::class, 'tenant_id');
-    }
+    // public function domains()
+    // {
+    //     return $this->hasMany(Domain::class, 'tenant_id');
+    // }
 }

@@ -309,46 +309,18 @@
                                     </div>
                                     {{-- SUBMIT --}}
                                     <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                        <button type="submit" data-toggle="modal"
-                                            data-target="#ModalSuksesBuatTagihan"
-                                            class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                                            Buat Pembayaran
-                                        </button>
                                         <button type="button"
                                             class=" rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
                                             data-dismiss="modal">
                                             Tutup
                                         </button>
+                                        <button type="submit" data-toggle="modal"
+                                            data-target="#ModalSuksesBuatTagihan"
+                                            class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                            Buat Pembayaran
+                                        </button>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- modal sukses tambah penghuni --}}
-                    <div class="modal fade p-4" id="ModalSuksesBuatTagihan" tabindex="-1" role="dialog"
-                        aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                            <div class="modal-content rounded-lg shadow-lg bg-white">
-                                <div class="modal-body p-6 space-y-4 text-center">
-                                    <!-- Icon Success -->
-                                    <div
-                                        class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                        </svg>
-                                    </div>
-                                    <!-- Pesan -->
-                                    <h3 class="text-lg font-semibold text-gray-900">Tagihan Penghuni Berhasil Dibuat
-                                    </h3>
-                                    <p class="text-sm text-gray-500">Tagihan penghuni akan disampaikan oleh sistem.</p>
-                                    <div class="mt-4">
-                                        <button type="button" data-dismiss="modal"
-                                            class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -548,36 +520,6 @@
                                     </form>
                                 </div>
                             </div>
-
-                            <!-- Modal sukses verifikasi -->
-                            <div class="modal fade p-4" id="ModalSuksesVerifikasiBukti" tabindex="-1"
-                                role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                                    <div class="modal-content rounded-lg shadow-lg bg-white">
-                                        <div class="modal-body p-6 space-y-4 text-center">
-                                            <!-- Icon Success -->
-                                            <div
-                                                class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                                <svg class="h-6 w-6 text-green-600" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                                </svg>
-                                            </div>
-                                            <!-- Pesan -->
-                                            <h3 class="text-lg font-semibold text-gray-900">Bukti Pembayaran Berhasil
-                                                Diverifikasi</h3>
-                                            <p class="text-sm text-gray-500">Pembayaran penghuni telah lunas dan
-                                                disimpan oleh sistem.</p>
-                                            <div class="mt-4">
-                                                <button type="button" data-dismiss="modal"
-                                                    class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         {{-- MODAL REVISI --}}
@@ -685,36 +627,6 @@
                                             </button>
                                         </div>
                                     </form>
-                                </div>
-                            </div>
-
-                            <!-- Modal sukses direvisi -->
-                            <div class="modal fade p-4" id="ModalSuksesRevisiPembayaran" tabindex="-1"
-                                role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                                    <div class="modal-content rounded-lg shadow-lg bg-white">
-                                        <div class="modal-body p-6 space-y-4 text-center">
-                                            <!-- Icon Success -->
-                                            <div
-                                                class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                                <svg class="h-6 w-6 text-green-600" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                                </svg>
-                                            </div>
-                                            <!-- Pesan -->
-                                            <h3 class="text-lg font-semibold text-gray-900">Pembayaran Berhasil
-                                                Direvisi</h3>
-                                            <p class="text-sm text-gray-500">Pembayaran telah direvisi dan dikirim
-                                                tagihan telah dikirimkan.</p>
-                                            <div class="mt-4">
-                                                <button type="button" data-dismiss="modal"
-                                                    class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -988,35 +900,6 @@
                             </form>
                         </div>
                     </div>
-
-                    {{-- modal sukses ubah tagihan --}}
-                    <div class="modal fade p-4" id="ModalSuksesUbahTagihan" tabindex="-1" role="dialog"
-                        aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                            <div class="modal-content rounded-lg shadow-lg bg-white">
-                                <div class="modal-body p-6 space-y-4 text-center">
-                                    <!-- Icon Success -->
-                                    <div
-                                        class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mx-auto">
-                                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M10.125 14.25l-3.375-3.375M10.125 14.25l6.75-6.75M10.125 14.25l6.75-6.75m0 0L7.5 16.875m0 0L3.75 13.125" />
-                                        </svg>
-                                    </div>
-                                    <!-- Pesan -->
-                                    <h3 class="text-lg font-semibold text-gray-900">Tagihan Berhasil Diubah</h3>
-                                    <p class="text-sm text-gray-500">Tagihan penghuni telah diperbaruhi dari sistem.
-                                    </p>
-                                    <div class="mt-4">
-                                        <button type="button" data-dismiss="modal"
-                                            class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Tutup</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
             </div>
@@ -1274,12 +1157,12 @@
 
                         $('#modal-buat-tagihanBerikutnya').val(data.data.tgl_tagihan);
                         $('#modal-buat-dendaBerikutnya').val(data.data.tgl_denda);
+
                     }
 
 
                     // CEK SHOW DEPOSIT/BIAYA
-                    if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data
-                        .deposit !== null) {
+                    if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data.deposit !== null) {
                         $('#buat-biaya-container').hide(); // Sembunyikan biaya tambahan
 
                         $('#deposit-container').show(); // Tampilkan deposit
@@ -1357,10 +1240,6 @@
             updateTotalBayar();
         });
 
-        // Pantau perubahan dalam biayaContainer (misalnya penambahan elemen input biaya lainnya)
-        // observer.observe($('#buat-biaya-container')[0], {
-        //     childList: true
-        // });
     });
 </script>
 
@@ -1484,12 +1363,11 @@
                     });
 
                     // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_kontrak ===
-                        'Aktif') {
-                        $('#deposit-kontrak').addClass('hidden');
-                    } else {
-                        $('#deposit-kontrak').removeClass('hidden');
+                    if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data.deposit !== null) {
+                        $('#deposit-kontrak').show();
                         $('#modal-deposit').val(data.data.deposit);
+                    } else {
+                        $('#deposit-kontrak').hide();
                     }
 
                     // REVISI
@@ -1575,12 +1453,10 @@
                         $('#modal-total').val(data.data.total_bayar);
                     }
 
-
-
-
+                
 
                     // BAGIAN UBAH //
-                    if (data.data.status_pembayaran === 'Revisi') {
+                    if (data.data.status_pembayaran === 'Revisi' || data.data.rentang !== 'Bulan') {
                         $('#modal-ubahTagihan-total').val(data.data.total_bayar);
                     }
                     else {

@@ -725,12 +725,11 @@
                     });
 
                     // DEPOSIT KONTRAK
-                    if (data.data.deposit === null || data.data.status_kontrak ===
-                        'Aktif') {
-                        $('#deposit-kontrak').addClass('hidden');
-                    } else {
-                        $('#deposit-kontrak').removeClass('hidden');
+                    if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data.deposit !== null) {
+                        $('#deposit-kontrak').show();
                         $('#modal-deposit').val(data.data.deposit);
+                    } else {
+                        $('#deposit-kontrak').hide();
                     }
 
                     // REVISI

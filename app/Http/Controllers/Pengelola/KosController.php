@@ -36,7 +36,7 @@ class KosController extends Controller
     {
         $data = DB::table('kontrak as k')
             ->join('users as u', 'k.users_id', '=', 'u.id')
-            ->select('*')
+            ->select('*', 'k.status as status_kontrak')
             ->where('k.idKontrak', '=', $id)
             ->first();
 
@@ -132,7 +132,7 @@ class KosController extends Controller
                 'tgl_denda' => $request->tgl_denda,
         ]);
 
-        if ($request->filled('waktu_tagihan') && $request->filled('waktu_denda')) {
+        if ($request->waktu_tagihan && $request->waktu_denda) {
             DB::table('pengaturan')
                 ->where('idKontrak', $id)
                 ->update([
@@ -228,8 +228,8 @@ class KosController extends Controller
 
         DB::table('pembatalan')->insert([
             'idKontrak' => $id,
-            'deposit' => $request->deposit,
-            'pengembalian_deposit' => $request->pengembalian,
+            'deposit' => $request->deposit ?? 0,
+            'pengembalian_deposit' => $request->pengembalian ?? 'Kembalikan',
             'tanggal' => now(),
             'alasan' => $request->alasan,
         ]);
@@ -297,7 +297,7 @@ class KosController extends Controller
                 'foto' => $path,
             ]);
 
-        return redirect()->route('kos.index')->with('status', 'Data fasilitas berhasil diperbarui!');
+        return redirect()->route('kos.index')->with('status', 'Data kamar berhasil diperbarui!');
     }
 
     public function storeKamar(Request $request) // tambah kamar

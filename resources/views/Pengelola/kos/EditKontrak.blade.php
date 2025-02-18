@@ -114,12 +114,12 @@
                             <div class="flex">
                                 <div class="w-50 mr-4">
                                     <label for="waktu_tagihan" class="block font-medium mb-2">Pertanggal Tagihan:</label>
-                                    <input type="number" id="waktu_tagihan" name="waktu_tagihan" class="text-center border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
+                                    <input type="number" id="waktu_tagihan" name="waktu_tagihan" class="text-center border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" min="1"
                                         value="{{ $pengaturan->waktu_tagihan }}" required>
                                 </div>
                                 <div class="w-50">
                                     <label for="waktu_denda" class="block font-medium mb-2">Pertanggal Denda:</label>
-                                    <input type="number" id="waktu_denda" name="waktu_denda" class="text-center border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
+                                    <input type="number" id="waktu_denda" name="waktu_denda" class="text-center border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" min="1"
                                         value="{{ $pengaturan->waktu_denda }}" required>
                                 </div>
                             </div>
@@ -180,14 +180,9 @@
             if (selectedRentang === 'bulan') {
                 // Jika rentang adalah Bulanan
                 waktuContainer.classList.add('hidden'); // Sembunyikan input waktu tinggal
-                waktuInput.value = 1;
                 
                 waktuTagihanInput.parentElement.parentElement.classList.remove('hidden'); // Tampilkan input waktu tagihan
                 waktuDendaInput.parentElement.parentElement.classList.remove('hidden'); // Tampilkan input waktu denda
-            
-                // Set nilai default untuk waktu tagihan dan waktu denda
-                waktuTagihanInput.value = 1; 
-                waktuDendaInput.value = 1;
             } 
             else {
                 // Jika rentang adalah Mingguan atau Harian

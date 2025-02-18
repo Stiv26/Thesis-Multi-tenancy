@@ -27,10 +27,10 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function renters()
-    {
-        return $this->hasMany(Renter::class, 'Users_id');
-    }
+    // public function renters()
+    // {
+    //     return $this->hasMany(Renter::class, 'Users_id');
+    // }
 
     /**
      * The attributes that should be hidden for serialization.

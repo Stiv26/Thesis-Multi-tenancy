@@ -259,7 +259,7 @@
                                         </button>
                                         <button type="submit" name="action" value="tolak" data-toggle="modal" data-target="#ModalSuksesRevisiPerbaikan"
                                             class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                                            Revisi Pembayaran
+                                            Revisi Perbaikan
                                         </button>
                                     </div>                                    
                                 </form>
