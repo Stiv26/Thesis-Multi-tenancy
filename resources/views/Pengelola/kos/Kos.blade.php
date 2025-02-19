@@ -280,84 +280,71 @@
                         <!-- MODAL DATA -->
                         <div class="modal fade p-4" id="ModalKamar" tabindex="-1" role="dialog"
                             aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                            <div class="modal-dialog max-w-4xl mx-auto mt-24"> <!-- Lebar lebih besar -->
                                 <div class="modal-content rounded-lg shadow-lg bg-white">
-                                    {{-- header --}}
-                                    <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Kamar
-                                        </h3>
-                                        <button type="button" class="text-gray-400 hover:text-gray-600"
-                                            data-dismiss="modal" aria-hidden="true">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
+                                    <!-- Header -->
+                                    <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-center">
+                                        <h3 class="text-2xl font-semibold text-gray-800">Detail Kamar</h3>
+                                        <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal" aria-hidden="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </button>
                                     </div>
-                                    {{-- content --}}
-                                    <div class="modal-body p-6 space-y-2">
-                                        <!-- AJAX -->
-                                        <div class="flex items-center space-x-4">
-                                            <label for="no_kamar" class="w-32 text-md font-medium text-gray-700">
-                                                Nomor Kamar:</label>
-                                            <input id="modal-no_kamar" type="text" value=""
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                readonly>
+                        
+                                    <!-- Content -->
+                                    <div class="modal-body p-6 space-y-4"> <!-- Elemen tersusun ke bawah -->
+                                        
+                                        <!-- Nomor Kamar -->
+                                        <div>
+                                            <label for="no_kamar" class="block text-sm font-medium text-gray-600">Nomor Kamar</label>
+                                            <input id="modal-no_kamar" type="text" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600" readonly>
                                         </div>
-
-                                        <div class="flex items-center space-x-4">
-                                            <label for="harga_kamar" class="w-32 text-md font-medium text-gray-700">
-                                                Harga (Per-Bulan):</label>
-                                            <input id="modal-harga_kamar" type="text" value=""
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                readonly>
+                        
+                                        <!-- Harga Per-Bulan -->
+                                        <div>
+                                            <label for="harga_kamar" class="block text-sm font-medium text-gray-600">Harga (Per-Bulan)</label>
+                                            <input id="modal-harga_kamar" type="text" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600" readonly>
                                         </div>
-
-                                        <div class="flex items-center space-x-4">
-                                            <label for="harga_mingguan" class="w-32 text-md font-medium text-gray-700">
-                                                Harga (Per-Minggu):</label>
-                                            <input id="modal-harga_mingguan" type="text" value=""
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                readonly>
+                        
+                                        <div id="modal-mingguan-harian">
+                                            <!-- Harga Per-Minggu -->
+                                            <div>
+                                                <label for="harga_mingguan" class="block text-sm font-medium text-gray-600">Harga (Per-Minggu)</label>
+                                                <input id="modal-harga_mingguan" type="text" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600" readonly>
+                                            </div>
+                            
+                                            <!-- Harga Per-Harian -->
+                                            <div>
+                                                <label for="harga_harian" class="block text-sm font-medium text-gray-600">Harga (Per-Harian)</label>
+                                                <input id="modal-harga_harian" type="text" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600" readonly>
+                                            </div>
                                         </div>
-
-                                        <div class="flex items-center space-x-4">
-                                            <label for="harga_harian" class="w-32 text-md font-medium text-gray-700">
-                                                Harga (Per-Harian):</label>
-                                            <input id="modal-harga_harian" type="text" value=""
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                readonly>
+                        
+                                        <!-- Foto -->
+                                        <div>
+                                            <label for="modal-foto" class="block text-sm font-medium text-gray-600">Foto</label>
+                                            <img src="" id="modal-foto" alt="Foto Kamar" class="mt-1 w-full h-64 object-cover border border-gray-300 rounded-md">
                                         </div>
-
-                                        <div class="flex items-center space-x-4">
-                                            <label for="foto" class="w-32 text-md font-medium text-gray-700">
-                                                Foto:</label>
-                                            <img src="" id="modal-foto" alt="Foto Kamar" 
-                                                class="w-80 h-80 object-cover border border-gray-300 rounded-md">
+                        
+                                        <!-- Keterangan -->
+                                        <div>
+                                            <label for="keterangan_kamar" class="block text-sm font-medium text-gray-600">Keterangan</label>
+                                            <textarea id="modal-keterangan_kamar" rows="3" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600" readonly></textarea>
                                         </div>
-
-                                        <div class="flex items-center space-x-4">
-                                            <label for="keterangan_kamar" class="w-32 text-md font-medium text-gray-700">
-                                                Keterangan:</label>
-                                            <textarea id="modal-keterangan_kamar" type="text" value="" rows="2"
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
-                                        </div>
-
+                        
                                     </div>
-                                    <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                        <button type="button" data-toggle="modal" data-target="#ModalHapusKamar" data-dismiss="modal" 
+                        
+                                    <!-- Footer -->
+                                    <div class="modal-footer border-t border-gray-200 py-2 flex justify-end space-x-3">
+                                        <button type="button" data-toggle="modal" data-target="#ModalHapusKamar" data-dismiss="modal"
                                             class="rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-500">
                                             Hapus
                                         </button>
-                                        <button type="button" data-toggle="modal" data-target="#ModalUbahKamar" data-dismiss="modal" 
+                                        <button type="button" data-toggle="modal" data-target="#ModalUbahKamar" data-dismiss="modal"
                                             class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                             Ubah Kamar
-                                        </button>
-                                        <button type="button"
-                                            class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                                            data-dismiss="modal">
-                                            Tutup
                                         </button>
                                     </div>
                                 </div>
@@ -387,60 +374,45 @@
                                         {{-- content --}}
                                         <div class="modal-body p-6 space-y-2">
                                             <!-- AJAX -->
-                                            <div class="flex items-center space-x-4">
-                                                <label for="kamar" class="w-32 text-md font-medium text-gray-700">
-                                                    Nomor Kamar:</label>
-                                                <input id="modal-kamar-nomor" type="text" value="" name="idKamar"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    required>
+                                            <div>
+                                                <label for="modal-kamar-nomor" class="block text-sm font-medium text-gray-600">Nomor Kamar</label>
+                                                <input id="modal-kamar-nomor" type="number" name="idKamar" class="text-center mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                            </div>
+
+                                            <div>
+                                                <label for="modal-kamar-harga" class="block text-sm font-medium text-gray-600">Harga (Per-Bulan)</label>
+                                                <input id="modal-kamar-harga" type="text" name="harga" class="text-center mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                            </div>
+
+                                            <div id="modal-ubah-mingguan-harian">
+                                                <!-- Harga Per-Minggu -->
+                                                <div>
+                                                    <label for="modal-kamar-mingguan" class="block text-sm font-medium text-gray-600">Harga (Per-Minggu)</label>
+                                                    <input id="modal-kamar-mingguan" type="text" name="harga_mingguan" class="text-center mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                </div>
+                                
+                                                <!-- Harga Per-Harian -->
+                                                <div>
+                                                    <label for="modal-kamar-harian" class="block text-sm font-medium text-gray-600">Harga (Per-Harian)</label>
+                                                    <input id="modal-kamar-harian" type="text" name="harga_harian" class="text-center mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                </div>
                                             </div>
 
                                             <div class="flex items-center space-x-4">
-                                                <label for="harga" class="w-32 text-md font-medium text-gray-700">
-                                                    Harga (Per-Bulan):</label>
-                                                <input id="modal-kamar-harga" type="number" value="" name="harga"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    required>
-                                            </div>
-
-                                            <div class="flex items-center space-x-4">
-                                                <label for="mingguan" class="w-32 text-md font-medium text-gray-700">
-                                                    Harga (Per-Mingguan):</label>
-                                                <input id="modal-kamar-mingguan" type="number" value="" name="harga_mingguan"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    required>
-                                            </div>
-                                            
-                                            <div class="flex items-center space-x-4">
-                                                <label for="harian" class="w-32 text-md font-medium text-gray-700">
-                                                    Harga (Per-Harian):</label>
-                                                <input id="modal-kamar-harian" type="number" value="" name="harga_harian"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    required>
-                                            </div>
-
-                                            <div class="flex items-center space-x-4">
-                                                <label for="foto" class="w-32 text-md font-medium text-gray-700">
-                                                    Foto:</label>
-                                                <input required id="modal-kamar-foto" type="file" value=""
-                                                    name="foto"
+                                                <label for="modal-kamar-foto" class="block text-sm font-medium text-gray-600">Foto</label>
+                                                <input required id="modal-kamar-foto" type="file" name="foto"
                                                     class="w-20 flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                             </div>
 
-                                            <div class="flex items-center space-x-4">
-                                                <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
-                                                    Keterangan:</label>
+                                            <div>
+                                                <label for="modal-kamar-keterangan" class="block text-sm font-medium text-gray-600">Keterangan</label>
                                                 <textarea id="modal-kamar-keterangan" type="text" value="" rows="2" name="keterangan"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" required></textarea>
+                                                    class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600" required></textarea>
                                             </div>
 
                                         </div> 
                                         {{-- SUBMIT --}}
                                         <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                            <button type="button" data-dismiss="modal" 
-                                                class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                                                Tutup
-                                            </button>
                                             <button type="submit" data-toggle="modal" data-target="#ModalSuksesUbahKamar" 
                                                 class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                                 Ubah Kamar
@@ -550,29 +522,50 @@
                                     </div>
                                 </div>
                                 
-                                {{-- Harga Mingguan --}}
+                                {{-- HARGA MINGGUAN DAN HARIAN --}}
                                 <div class="sm:col-span-3 sm:col-start-1">
-                                    <p class="mt-3 text-sm leading-6 text-gray-600">Bagian ini digunakan untuk harga mingguan dan harian</p>
-
-                                    <label for="harga"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Harga (Per-Minggu)</label>
-                                    <div class="mt-2">
-                                        <input type="number" name="harga_mingguan" id="harga_mingguan"
-                                            class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            required>
-                                    </div>
+                                    <button type="button" id="toggle-harga" class="text-indigo-600 font-medium focus:outline-none">
+                                        Tambah Harga Mingguan/Harian &#9662; <!-- Tanda panah ke bawah -->
+                                    </button>
                                 </div>
-
-                                {{-- Harga Harian --}}
-                                <div class="sm:col-span-3 sm:col-start-1">
-                                    <label for="harga"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Harga (Per-Hari)</label>
-                                    <div class="mt-2">
-                                        <input type="number" name="harga_harian" id="harga_harian"
-                                            class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            required>
+                                <div id="hargaContainer" class="hidden sm:col-span-3 sm:col-start-1">
+                                    <!-- Harga Mingguan -->
+                                    <div class="sm:col-span-3 sm:col-start-1">
+                                        <p class="text-sm leading-6 text-gray-600">Bagian ini digunakan untuk harga mingguan dan harian</p>
+                                        <label for="harga_mingguan" class="block text-sm font-medium leading-6 text-gray-900">Harga (Per-Minggu)</label>
+                                        <div class="mt-2">
+                                            <input type="number" name="harga_mingguan" id="harga_mingguan"
+                                                class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        </div>
                                     </div>
+                                
+                                    <!-- Harga Harian -->
+                                    <div class="sm:col-span-3 sm:col-start-1 mt-4">
+                                        <label for="harga_harian" class="block text-sm font-medium leading-6 text-gray-900">Harga (Per-Hari)</label>
+                                        <div class="mt-2">
+                                            <input type="number" name="harga_harian" id="harga_harian"
+                                                class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        document.getElementById("toggle-harga").addEventListener("click", function () {
+                                            var hargaContainer = document.getElementById("hargaContainer");
+                                    
+                                            // Toggle class hidden
+                                            hargaContainer.classList.toggle("hidden");
+                                            
+                                            // Ganti tanda panah
+                                            var button = document.getElementById("toggle-harga");
+                                            if (hargaContainer.classList.contains("hidden")) {
+                                                button.innerHTML = 'Tambah Harga Mingguan/Harian &#9662;';
+                                            } else {
+                                                button.innerHTML = 'Tutup Harga Mingguan/Harian &#9652;';
+                                            }
+                                        });
+                                    </script>
                                 </div>
+                                
                             </div>
                         </div>
 
@@ -1082,6 +1075,30 @@
                     $('#modal-kamar-harian').val(data.data.harga_harian);
 
                     $('#modal-hapusKamar-idKamar').val(data.data.idKamar);
+
+                    if (!data.data.harga_mingguan && !data.data.harga_harian) {
+                        $('#modal-mingguan-harian').hide();
+                        $('#modal-ubah-mingguan-harian').hide();
+                    } else {
+                        $('#modal-mingguan-harian').show();
+                        $('#modal-ubah-mingguan-harian').show();
+                        
+                        if (!data.data.harga_mingguan) {
+                            $('#modal-harga_mingguan').parent().hide();
+                            $('#modal-kamar-mingguan').closest('div').hide();
+                        } else {
+                            $('#modal-harga_mingguan').parent().show();
+                            $('#modal-kamar-mingguan').val(data.data.harga_mingguan).closest('div').show();
+                        }
+
+                        if (!data.data.harga_harian) {
+                            $('#modal-harga_harian').parent().hide();
+                            $('#modal-kamar-harian').closest('div').hide();
+                        } else {
+                            $('#modal-harga_harian').parent().show();
+                            $('#modal-kamar-harian').val(data.data.harga_harian).closest('div').show();
+                        }
+                    }
                 }
             });
         });

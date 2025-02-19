@@ -273,6 +273,39 @@
                                     });
                                 </script>
 
+                                {{-- UPDATE RENTANG --}}
+                                <script>
+                                    document.getElementById('kamar').addEventListener('change', function() {
+                                        var selectedOption = this.options[this.selectedIndex];
+                                        var hargaMingguan = selectedOption.getAttribute('data-mingguan');
+                                        var hargaHarian = selectedOption.getAttribute('data-harian');
+                                        var kontrakDropdown = document.getElementById('kontrak');
+                                
+                                        // Reset dropdown kontrak
+                                        kontrakDropdown.innerHTML = `
+                                            <option value="Bulan">Bulan</option>
+                                            <option value="Mingguan">Mingguan</option>
+                                            <option value="Harian">Harian</option>
+                                        `;
+                                
+                                        // Hilangkan opsi "Mingguan" jika harga_mingguan null
+                                        if (hargaMingguan === null || hargaMingguan === '') {
+                                            var mingguanOption = kontrakDropdown.querySelector('option[value="Mingguan"]');
+                                            if (mingguanOption) {
+                                                mingguanOption.remove();
+                                            }
+                                        }
+                                
+                                        // Hilangkan opsi "Harian" jika harga_harian null
+                                        if (hargaHarian === null || hargaHarian === '') {
+                                            var harianOption = kontrakDropdown.querySelector('option[value="Harian"]');
+                                            if (harianOption) {
+                                                harianOption.remove();
+                                            }
+                                        }
+                                    });
+                                </script>
+
                             </div>
 
                             {{-- nama lengkap --}}
