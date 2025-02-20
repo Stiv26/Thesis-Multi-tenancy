@@ -28,8 +28,16 @@
 
         <header>
             <nav class="flex items-center justify-center p-6 lg:px-8" aria-label="Global">
+                <div class="flex lg:flex-1">
+                    <a href="/" class="text-sm font-semibold leading-6 text-gray-900"><span aria-hidden="true">&larr;</span> Kembali</a>
+                </div>
                 <div class="hidden lg:flex lg:gap-x-12">
                     <p class="text-xl font-semibold leading-6 text-gray-900">SuperKos</p>
+                </div>
+                <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+                    <div class="flex-shrink-0">
+                        <img class="h-12 w-12" src="img/logo-black.png" alt="Your Company">
+                    </div>
                 </div>
             </nav>
         </header>

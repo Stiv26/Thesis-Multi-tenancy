@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('password')->nullable(false);
             $table->string('email')->nullable(false);
             $table->string('nama')->nullable(false);
-            $table->enum('status', ['Aktif', 'Nonaktif'])->nullable(false);
+            $table->enum('status', ['Aktif', 'Nonaktif', 'Permintaan'])->nullable(false);
             $table->foreignId('idRole')->references('idRole')->on('role')->onDelete('cascade');
         });
     }

@@ -66,7 +66,6 @@ Route::middleware([
         $listKamar = $controller->listKamar()->getData()['data'];
         $owner = $controller->whoIsTheOwner()->getData()['data'];
 
-
         return view('pengelola.welcome', compact('listKamar', 'owner'));
     });
 
@@ -75,6 +74,10 @@ Route::middleware([
     Route::get('/kamar/private-file/{filename}', [DashboardController::class, 'showFoto'])
         ->where('filename', '.*')
         ->name('foto.file');
+
+    // routeing register
+    Route::get('/pendaftaran', [DashboardController::class, 'pendaftaran'])->name('pengelola.pendaftaran');
+    Route::post('/pendaftaran/tambah-kontrak', [DashboardController::class, 'storeKontrak'])->name('pendaftaran.store');
 
     // login route
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

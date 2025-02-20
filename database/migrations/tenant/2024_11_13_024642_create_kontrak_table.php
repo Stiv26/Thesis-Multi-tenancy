@@ -17,13 +17,13 @@ return new class extends Migration
             $table->foreignId('Users_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('harga')->nullable(false);
             $table->enum('rentang', ['Bulan', 'Mingguan', 'Harian'])->nullable(false);
-            $table->integer('waktu')->nullable();
+            $table->integer('waktu');
             $table->date('tgl_masuk')->nullable(false);
-            $table->date('tgl_tagihan')->nullable(false);
-            $table->date('tgl_denda')->nullable(false);
-            $table->integer('deposit')->nullable();
-            $table->string('keterangan', 255)->nullable();
-            $table->enum('status', ['Aktif', 'Nonaktif', 'Pembayaran Perdana'])->nullable(false);
+            $table->date('tgl_tagihan');
+            $table->date('tgl_denda');
+            $table->integer('deposit');
+            $table->string('keterangan', 255);
+            $table->enum('status', ['Aktif', 'Nonaktif', 'Pembayaran Perdana', 'Permintaan'])->nullable(false);
         });        
     }
 

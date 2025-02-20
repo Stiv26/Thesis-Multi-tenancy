@@ -96,7 +96,7 @@
                                     <p class="text-gray-600">Harga: Rp {{ number_format($kamar->harga, 0, ',', '.') }}/bulan</p>
                                     <div>
                                         <button data-id="{{ $kamar->idKamar }}" data-toggle="modal" data-target="#ModalKamar" class="lihat-detail-kamar mr-1 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Lihat Detail</button>
-                                        <a href="https://wa.me/{{ $owner->no_telp }}" target="_blank" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Hubungi</a>
+                                        <a href="{{ route('pengelola.pendaftaran') }}" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Pesan</a>
                                     </div>
                                 </div>
                             @endforeach
@@ -177,7 +177,7 @@
 
             </div>
             <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                <a href="https://wa.me/{{ $owner->no_telp }}" target="_blank"
+                <a href="{{ route('pengelola.pendaftaran') }}"
                     class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                     Pesan Kamar
                 </a>
@@ -219,8 +219,21 @@
 
                     // Tampilkan data ke dalam label
                     $('#modal-harga').text('Rp. ' + (data.data.harga || 0).toLocaleString('id-ID'));
-                    $('#modal-harga_mingguan').text('Rp. ' + (data.data.harga_mingguan || 0).toLocaleString('id-ID'));
-                    $('#modal-harga_harian').text('Rp. ' + (data.data.harga_harian || 0).toLocaleString('id-ID'));
+
+                    // Harga Mingguan
+                    if (data.data.harga_mingguan !== null) {
+                        $('#modal-harga_mingguan').text('Rp. ' + data.data.harga_mingguan.toLocaleString('id-ID')).parent().show();
+                    } else {
+                        $('#modal-harga_mingguan').parent().hide();
+                    }
+
+                    // Harga Harian
+                    if (data.data.harga_harian !== null) {
+                        $('#modal-harga_harian').text('Rp. ' + data.data.harga_harian.toLocaleString('id-ID')).parent().show();
+                    } else {
+                        $('#modal-harga_harian').parent().hide();
+                    }
+
                     $('#modal-keterangan').text(data.data.keterangan || 'Tidak ada keterangan.');     
                 },
                 error: function(xhr) {
