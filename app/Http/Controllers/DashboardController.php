@@ -4,160 +4,102 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
-    public function whoIsTheOwner() // cek ownernya siapa
+    public function index($bulan = null, $tahun = null)
     {
-        $data = DB::table('users as u')
+        $permintaan = DB::table('kontrak as k')
+            ->join('users as u', 'k.users_id', 'u.id')
             ->select('*')
-            ->where('u.idRole', 1)
-            ->first();
+            ->where('k.status', 'Permintaan')
+            ->orderBy('k.idKamar', 'asc')
+            ->get();
 
-        return view('Pengelola.welcome', compact('data'));
-    }
+        $count = DB::table('kontrak as k')
+            ->join('kamar as a', 'k.idkamar', 'a.idKamar')
+            ->where('k.status', 'Aktif')
+            ->orWhere('k.status', 'Pembayaran Perdana')
+            ->count();
 
-    public function listKamar() // list card kamar
-    {
-        $data = DB::table('kamar as k')
-            ->leftJoin('kontrak as kon', function ($join) {
-                $join->on('k.idKamar', '=', 'kon.idKamar')
-                    ->where(function ($query) {
-                        $query->where('kon.status', '=', 'aktif')
-                            ->orWhere('kon.status', '=', 'pembayaran perdana');
+        $room = DB::table('kamar as a')
+            ->leftJoin('kontrak as k', function ($join) {
+                $join->on('a.idKamar', '=', 'k.idKamar')
+                    ->whereIn('k.status', ['Aktif', 'Pembayaran Perdana']);
+            })
+            ->whereNull('k.idKamar')
+            ->count();
+
+            
+        $today = now(); // Tanggal hari ini
+        $startDate = $today->copy()->subDays(7); // 7 hari sebelum hari ini
+        $endDate = $today->copy()->addDays(7); // 7  hari setelah hari ini
+
+        $tagihan = DB::table('kontrak as k')
+            ->join('users as u', 'u.id', '=', 'k.Users_id') // Gabungkan dengan tabel users
+            ->whereBetween('k.tgl_tagihan', [$startDate, $endDate]) // Filter rentang tanggal tagihan
+            ->where(function ($query) {
+                $query->where('k.rentang', '=', 'Bulan') // Jika rentang adalah Bulan, tidak perlu pengecekan pembayaran
+                    ->orWhereNotExists(function ($subquery) {
+                        $subquery->select(DB::raw(1))
+                            ->from('pembayaran as p')
+                            ->whereRaw('p.idKontrak = k.idKontrak'); // Jika Mingguan/Harian, cek pembayaran
                     });
             })
-            ->select('k.*')
-            ->where(function ($query) {
-                $query->whereNull('kon.idKamar')
-                    ->orWhere('kon.status', 'nonaktif');
-            })
+            ->where('k.status', '!=', 'Nonaktif')
+            ->orderBy('k.tgl_tagihan', 'asc')
             ->get();
 
-        return view('pengelola.welcome', compact('data'));
-    }
-
-    public function detailKamar($id) // modal kamar
-    {
-        $data = DB::table('kamar as k')
+        $pesan = DB::table('notifikasi as n')
+            ->join('users as u', 'n.users_pengirim', 'u.id')
             ->select('*')
-            ->where('k.idKamar', $id)
-            ->first();
-
-        $gambarUrl = null;
-        if ($data->foto) {
-            $gambarUrl = route('foto.file', ['filename' => $data->foto]);
-        }
-
-        return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
-    }
-
-    public function showFoto($filename) // tampilkan porto kamar
-    {
-        $path = $filename;
-
-        if (!Storage::disk('private')->exists($path)) {
-            abort(404);
-        }
-
-        $file = Storage::disk('private')->get($path);
-
-        return response($file, 200)
-            ->header('Cache-Control', 'max-age=604800'); // Cache 1 minggu
-    }
-
-    // REGISTER
-    public function pendaftaran()
-    {
-        $listKamar = DB::table('kamar as k')
-            ->leftJoin('kontrak as kon', function ($join) {
-                $join->on('k.idKamar', '=', 'kon.idKamar')
-                    ->where(function ($query) {
-                        $query->where('kon.status', '=', 'aktif')
-                            ->orWhere('kon.status', '=', 'pembayaran perdana');
-                    });
-            })
-            ->select('k.*')
-            ->where(function ($query) {
-                $query->whereNull('kon.idKamar')
-                    ->orWhere('kon.status', 'nonaktif');
-            })
+            ->where('n.status', 'Terkirim')
             ->get();
 
-        if (!\Illuminate\Support\Facades\Schema::hasTable('datadiri')) {
-            return response()->json(['dataDiriList' => []]); // Kembalikan array kosong jika tabel tidak ada
-        }
+        $bulan = $bulan ?? now()->month;
+        $tahun = $tahun ?? now()->year;
 
-        $dataDiriList = DB::table('listdatadiri as l')
-            ->select('*')
+        // Data keuangan (pendapatan berdasarkan bulan/tahun)
+        $totalPendapatan = DB::table('pembayaran')
+            ->where('status', 'Lunas')
+            ->whereMonth('tanggal', '=', $bulan)
+            ->whereYear('tanggal', '=', $tahun)
+            ->sum('dibayar');
+
+        $bulanTersedia = DB::table('pembayaran')
+            ->where('status', 'Lunas')
+            ->whereMonth('tanggal', '=', $bulan)
+            ->whereYear('tanggal', '=', $tahun)
+            ->select('tanggal', 'dibayar')
+            ->orderBy('tanggal', 'asc')
+            ->get();
+
+        $riwayatBulan = DB::table('pembayaran')
+            ->selectRaw('YEAR(tanggal) as tahun, MONTH(tanggal) as bulan')
+            ->where('status', 'Lunas')
+            ->groupByRaw('YEAR(tanggal), MONTH(tanggal)')
+            ->orderBy('tahun', 'desc')
+            ->orderBy('bulan', 'desc')
+            ->take(3)
             ->get();
 
 
-        return view('Pengelola.Pendaftaran', compact('listKamar', 'dataDiriList'));
+        return view('Pengelola.dashboard', compact(
+            'permintaan',
+            'tagihan', 
+            'pesan',
+            'room',
+            'count', 
+            'totalPendapatan',
+            'bulanTersedia',
+            'riwayatBulan',
+            'bulan',
+            'tahun'
+        ));
     }
 
-    public function storeKontrak(Request $request) // tambah kontrak
+    public function pengaturan() 
     {
-        dd($request);
-
-        $existingUser  = DB::table('users')->where('no_telp', $request->no_telp)->where('status', 'Aktif')->first();
-
-        if ($existingUser) {
-            return back()->withErrors(['users' => 'Nomor Telepon sudah aktif terdaftar dalam kos.'])->withInput();
-        }
-
-        $uuid = Str::uuid();
-        $tempId = crc32($uuid->toString()) & 0xffffffff;
-
-        DB::beginTransaction();
-        // Insert data ke tabel users
-        DB::table('users')->insert([
-            'id' => $tempId,
-            'no_telp' => $request->telpon,
-            'password' => $request->password,
-            'email' => $request->email,
-            'nama' => $request->nama,
-            'status' => 'Aktif',
-            'idRole' => 2,
-        ]);
-
-        // Insert data ke tabel kontrak
-        DB::table('kontrak')->insert([
-            'idKontrak' => $tempId,
-            'idKamar' => $request->kamar,
-            'Users_id' => $tempId,
-            'harga' => $request->harga,
-            'rentang' => $request->kontrak,
-            'waktu' => $request->waktu,
-            'tgl_masuk' => $request->masuk,
-            'deposit' => $request->deposit,
-            'keterangan' => $request->keterangan,
-            'status' => 'Aktif',
-        ]);
-
-        // insert metodepembayaran
-        DB::table('metodePembayaran')->insert([
-            'metode' => $request->bank,
-            'nomor_tujuan' => $request->rekening,
-            'users_id' => $tempId,
-        ]);
-
-        // Insert data ke tabel datadiri (jika ada)
-        if ($request->has('idListDataDiri') && $request->has('deskripsi')) {
-            foreach ($request->idListDataDiri as $key => $idListDataDiri) {
-                DB::table('datadiri')->insert([
-                    'idListDataDiri' => $idListDataDiri,
-                    'Users_id' => $tempId,
-                    'deskripsi' => $request->deskripsi[$key],
-                ]);
-            }
-        }
-
-        // Commit transaksi jika semua berhasil
-        DB::commit();
-
-        return redirect()->route('penghuni.index')->with('success', 'Kontrak berhasil ditambahkan.');
+        
     }
 }

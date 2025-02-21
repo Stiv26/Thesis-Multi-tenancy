@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Illuminate\Support\Facades\Schema;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WelcomeController;
 // PENGELOLA
 use App\Http\Controllers\Pengelola\KosController;
 use App\Http\Controllers\Pengelola\PenghuniController;
@@ -19,6 +18,7 @@ use App\Http\Controllers\Pengelola\KaryawanController;
 use App\Http\Controllers\Pengelola\PemeliharaanController;
 use App\Http\Controllers\Pengelola\LayananTambahanController;
 use App\Http\Controllers\Pengelola\ProfilPengelolaController;
+use App\Http\Controllers\DashboardController;
 // PENGHUNI
 use App\Http\Controllers\Penghuni\KamarController;
 use App\Http\Controllers\Penghuni\TagihanController;
@@ -62,7 +62,7 @@ Route::middleware([
 
         tenancy()->initialize($tenant);
 
-        $controller = new DashboardController();
+        $controller = new WelcomeController();
         $listKamar = $controller->listKamar()->getData()['data'];
         $owner = $controller->whoIsTheOwner()->getData()['data'];
 
@@ -70,14 +70,14 @@ Route::middleware([
     });
 
     // routeing foto 
-    Route::get('/lihat/detail-kamar/{id}', [DashboardController::class, 'detailKamar']);
-    Route::get('/kamar/private-file/{filename}', [DashboardController::class, 'showFoto'])
+    Route::get('/lihat/detail-kamar/{id}', [WelcomeController::class, 'detailKamar']);
+    Route::get('/kamar/private-file/{filename}', [WelcomeController::class, 'showFoto'])
         ->where('filename', '.*')
         ->name('foto.file');
 
     // routeing register
-    Route::get('/pendaftaran', [DashboardController::class, 'pendaftaran'])->name('pengelola.pendaftaran');
-    Route::post('/pendaftaran/tambah-kontrak', [DashboardController::class, 'storeKontrak'])->name('pendaftaran.store');
+    Route::get('/pendaftaran', [WelcomeController::class, 'pendaftaran'])->name('pengelola.pendaftaran');
+    Route::post('/pendaftaran/tambah-kontrak', [WelcomeController::class, 'storeKontrak'])->name('pendaftaran.store');
 
     // login route
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -98,6 +98,17 @@ Route::middleware([
             Route::put('/update-profil', [ProfilPengelolaController::class, 'updateProfil'])->name('update.profilPengelola'); // update profil
             Route::post('/metode-pembayaran/store', [ProfilPengelolaController::class, 'storeMetode'])->name('metode.store'); // data metode ke page profil
             Route::delete('/metode-pembayaran/{id}', [ProfilPengelolaController::class, 'destroyMetode'])->name('metode.destroy'); // update metode
+
+
+
+
+            
+            // DASHBOARD 
+            Route::get('/dashboard/{bulan?}/{tahun?}', [DashboardController::class, 'index'])->name('dashboard.index'); // ui dashboard
+            // Route::get('/penghuni/detailAturanDenda/{id}', [PenghuniController::class, 'detailAturanDenda']); // show pengaturan sebelumnya
+            Route::post('/dashboard/aturan', [DashboardController::class, 'pengaturan'])->name('atur.pengaturan'); // update pengaturan
+
+
 
 
 

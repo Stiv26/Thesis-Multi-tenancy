@@ -94,7 +94,7 @@ class LoginController extends Controller
         // Check the user's role
         if ($user->idRole == 1) { // Assuming 1 is the role ID for "Pengelola"
             // Redirect "Pengelola" to /kos
-            return 'kos.index';
+            return 'dashboard.index';
         } elseif ($user->idRole == 2) { // Assuming 2 is the role ID for "Penghuni"
             // Redirect "Penghuni" to /info/kamar
             return 'penghuni.kamar';  // Make sure this route exists

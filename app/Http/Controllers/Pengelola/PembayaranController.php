@@ -69,23 +69,6 @@ class PembayaranController extends Controller
             ->orderBy('p.tanggal', 'desc')
             ->get();
 
-
-
-        // Data keuangan (pendapatan berdasarkan bulan/tahun)
-        $totalPendapatan = DB::table('pembayaran')
-            ->where('status', 'Lunas')
-            ->whereMonth('tanggal', '=', $bulan)
-            ->whereYear('tanggal', '=', $tahun)
-            ->sum('dibayar');
-
-        $bulanTersedia = DB::table('pembayaran')
-            ->where('status', 'Lunas')
-            ->whereMonth('tanggal', '=', $bulan)
-            ->whereYear('tanggal', '=', $tahun)
-            ->select('tanggal', 'dibayar')
-            ->orderBy('tanggal', 'asc')
-            ->get();
-
         $riwayatBulan = DB::table('pembayaran')
             ->selectRaw('YEAR(tanggal) as tahun, MONTH(tanggal) as bulan')
             ->where('status', 'Lunas')
@@ -101,11 +84,7 @@ class PembayaranController extends Controller
             'verifikasi',
             'pembayaran',
             'riwayatPembayaran',
-            'totalPendapatan',
-            'bulanTersedia',
             'riwayatBulan',
-            'bulan',
-            'tahun'
         ));
     }
 
@@ -219,25 +198,6 @@ class PembayaranController extends Controller
         ]);
     }
 
-    // public function editPembayaran($id)
-    // {
-    //     $data = DB::table('pembayaran as p')
-    //         ->join('kontrak as k', 'k.idkontrak', '=', 'p.idkontrak')
-    //         ->join('users as u', 'u.id', '=', 'k.users_id')
-    //         ->select('*', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran')
-    //         ->where('p.status', '=', 'Belum Lunas')
-    //         ->where('p.idPembayaran', '=', $id)
-    //         ->first();
-
-    //     $biayaList = DB::table('biayaLainnya as bl')
-    //         ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
-    //         ->select('*')
-    //         ->where('bl.idPembayaran', '=', $id)
-    //         ->get();
-
-    //     return view('pengelola.pembayaran.editPembayaran', compact('data', 'biayaList'));
-    // }
-
     public function updatePembayaran(Request $request) // ubah tagihan
     {
         DB::table('pembayaran')
@@ -327,7 +287,6 @@ class PembayaranController extends Controller
                     'dibayar' => $dibayar - $request->total_bayar,
                 ]);
 
-            // DB::table('dendaTambahan')->where('idPembayaran', $idPembayaran)->delete();
 
             $uuid = Str::uuid();
             $tempId = crc32($uuid->toString()) & 0xffffffff;
