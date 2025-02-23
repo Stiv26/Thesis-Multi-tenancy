@@ -164,6 +164,7 @@ Route::middleware([
 
                 $header = $controller->header()->getData()['data'];
                 $listKamar = $controller->listKamar()->getData()['listKamar'];
+                $permintaan = $controller->permintaan()->getData()['data'];
                 $penghuni = $controller->penghuni()->getData()['data'];
 
                 $biaya = $controller->biaya();
@@ -173,7 +174,7 @@ Route::middleware([
                 $dataDiriList = $dataDiri->dataDiriList ?? []; // Gunakan tanda panah untuk properti objek
 
 
-                return view('pengelola.Penghuni', compact('header', 'penghuni', 'listKamar', 'biayaList', 'dataDiriList'));
+                return view('pengelola.Penghuni', compact('header', 'permintaan', 'penghuni', 'listKamar', 'biayaList', 'dataDiriList'));
             })->name('penghuni.index');
 
             // routeing setting denda 
@@ -188,6 +189,7 @@ Route::middleware([
             Route::delete('/penghuni/hapus-dataDiri/{id}', [PenghuniController::class, 'destroyDataDiri'])->name('dataDiri.destroy'); // hapus saas datadiri
 
             // routeing tambah kontrak 
+            Route::post('/penghuni/terima-kontrak', [PenghuniController::class, 'terimaHunian'])->name('penghuni.store');
             Route::post('/penghuni/tambah-kontrak', [PenghuniController::class, 'storeKontrak'])->name('kontrak.store'); // main route function tambah kontrak
             Route::get('/penghuni/{id}', [PenghuniController::class, 'detailpenghuni']); // modal penghuni
 

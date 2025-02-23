@@ -10,8 +10,11 @@
             <div class="flex items-center justify-between px-3 py-3 rounded-lg">
                 <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                     <!-- Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" -->
+                    <a href="#permintaanPenghuni" id="btnPermintaan" onclick="switchPage('permintaanPenghuni')"
+                        class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20">Permintaan
+                        Hunian</a>
                     <a href="#tambahPenghuni" id="btnTambah" onclick="switchPage('tambahPenghuni')"
-                        class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20">Tambah
+                        class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">Tambah
                         Penghuni</a>
                     <a href="#listPenghuni" id="btnList" onclick="switchPage('listPenghuni')"
                         class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">Data
@@ -22,22 +25,34 @@
             {{-- JS --}}
             <script>
                 function switchPage(page) {
+                    const permintaanSection = document.getElementById('permintaanPenghuni');
                     const tambahSection = document.getElementById('tambahPenghuni');
                     const listSection = document.getElementById('listPenghuni');
+                    const btnPermintaan = document.getElementById('btnPermintaan');
                     const btnTambah = document.getElementById('btnTambah');
                     const btnList = document.getElementById('btnList');
 
                     // Menghilangkan semua section
+                    permintaanSection.classList.add('hidden');
                     tambahSection.classList.add('hidden');
                     listSection.classList.add('hidden');
 
                     // Menghilangkan aktifasi dari button
+                    btnPermintaan.classList.remove('bg-indigo-600', 'text-white');
+                    btnPermintaan.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
                     btnTambah.classList.remove('bg-indigo-600', 'text-white');
                     btnTambah.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
                     btnList.classList.remove('bg-indigo-600', 'text-white');
                     btnList.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
 
-                    if (page === 'tambahPenghuni') {
+
+                    if (page === 'permintaanPenghuni') {
+                        // Tampilkan halaman pesan dan set button aktif
+                        permintaanSection.classList.remove('hidden');
+                        btnPermintaan.classList.add('bg-indigo-600', 'text-white');
+                        btnPermintaan.classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300',
+                            'hover:bg-gray-50');
+                    } else if (page === 'tambahPenghuni') {
                         // Tampilkan halaman pesan dan set button aktif
                         tambahSection.classList.remove('hidden');
                         btnTambah.classList.add('bg-indigo-600', 'text-white');
@@ -61,8 +76,257 @@
             @endphp
         </section>
 
+        {{-- REQUEST --}}
+        <section id="permintaanPenghuni" class="block">
+            <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat Detail</p>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <table class="min-w-full table-auto">
+                    <thead class="bg-gray-100">
+                        <tr class="text-left text-sm text-gray-600">
+                            <th class="py-3 px-4">Kamar</th>
+                            <th class="py-3 px-4">Nama</th>
+                            <th class="py-3 px-4">No Telp</th>
+                            <th class="py-3 px-4">Kontrak</th>
+                            <th class="py-3 px-4">Tanggal Masuk</th>
+                            <th class="py-3 px-4">Status</th>
+                            <th class="py-2 px-4">Selengkapnya</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm text-gray-800">
+                        @forelse($permintaan as $item)
+                            <tr class="border-t hover:bg-gray-50 transition duration-200">
+                                <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
+                                <td class="py-3 px-4">{{ $item->nama }}</td>
+                                <td class="py-3 px-4">{{ $item->no_telp }}</td>
+                                <td class="py-3 px-4">{{ $item->rentang }}</td>
+                                <td class="py-3 px-4">{{ $item->tgl_masuk }}</td>
+                                <td class="py-3 px-4">{{ $item->status }}</td>
+                                <td class="py-3 px-4">
+                                    <a href="#" data-id="{{ $item->id }}" data-toggle="modal"
+                                        data-target="#ModalPermintaan"
+                                        class="lihat-detail-permintaan text-indigo-500 hover:text-indigo-700 transition">
+                                        Lihat Detail <span aria-hidden="true">→</span></a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="py-3 px-4 text-center text-gray-500">Belum ada data penghuni
+                                    untuk kos ini.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+
+                {{-- MODAL DATA --}}
+                <div class="modal fade p-4" id="ModalPermintaan" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                        <div class="modal-content rounded-lg shadow-lg bg-white">
+                            <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Data
+                                </h3>
+                                <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
+                                    aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <!-- AJAX -->
+                            <div class="modal-body p-6 space-y-2">
+                                <div class="flex items-center space-x-4">
+                                    <label for="nama" class="w-32 text-md font-medium text-gray-700">
+                                        Nama Penyewa:</label>
+                                    <input id="modal-permintaan-nama" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <label for="telp" class="w-32 text-md font-medium text-gray-700">
+                                        No Telp:</label>
+                                    <input id="modal-permintaan-telp" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <label for="email" class="w-32 text-md font-medium text-gray-700">
+                                        Email:</label>
+                                    <input id="modal-permintaan-email" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <label for="rekening" class="w-32 text-md font-medium text-gray-700">
+                                        Rekening:</label>
+                                    <input id="modal-permintaan-rekening" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <label for="kamar" class="w-32 text-md font-medium text-gray-700">
+                                        Kamar:</label>
+                                    <input id="modal-permintaan-kamar" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <label for="rentang" class="w-32 text-md font-medium text-gray-700">
+                                        Rentang:</label>
+                                    <input id="modal-permintaan-rentang" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <label for="tgl_masuk" class="w-32 text-md font-medium text-gray-700">
+                                        Tanggal Masuk:</label>
+                                    <input id="modal-permintaan-tgl_masuk" type="text" value=""
+                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                        readonly>
+                                </div>
+
+                                {{-- AJAX DATA DIRI --}}
+                                <div id="dataDiri-permintaan-container"></div>
+
+                            </div>
+                            <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                <button type="button" data-toggle="modal" data-target="#ModalTerima"
+                                    class="lihat-detail-permintaan rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                                    data-dismiss="modal">
+                                    Terima
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- MODAL TERIMA --}}
+                <div class="modal fade p-4" id="ModalTerima" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog max-w-4xl mx-auto mt-24">
+                        <div class="modal-content rounded-lg shadow-lg bg-white">
+                            <form action="{{ route('penghuni.store') }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                {{-- header --}}
+                                <div class="modal-header border-b border-gray-200 py-4 px-6">
+                                    <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Atur Penerimaan</h3>
+                                    <button type="button" class="text-gray-400 hover:text-gray-600"
+                                        data-dismiss="modal" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                {{-- content --}}
+                                <div class="modal-body p-6 space-y-2">
+                                    <!-- AJAX -->
+                                    <div class="flex items-center space-x-4">
+                                        <label for="kamar" class="w-32 text-md font-medium text-gray-700">Kamar:</label>
+                                        <input id="modal-atur-kamar" type="text" value="" name="idKamar" 
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
+                                            disabled>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
+                                        <label for="nama" class="w-32 text-md font-medium text-gray-700">
+                                            Nama Penyewa:</label>
+                                        <input id="modal-atur-nama" type="text" value=""
+                                            name="nama"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                            disabled>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <p class="text-gray-500 text-sm">Masukan Keterangan Kontrak</p>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
+                                        <label for="tempo" class="w-32 text-md font-medium text-gray-700">
+                                            Tanggal Tagihan:</label>
+                                        <input id="modal-atur-tgl_tagihan" type="date" value=""
+                                            name="tgl_tagihan"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                            required>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
+                                        <label for="tempo" class="w-32 text-md font-medium text-gray-700">
+                                            Tanggal Denda:</label>
+                                        <input id="modal-atur-tgl_denda" type="date" value=""
+                                            name="tgl_denda"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                            required>
+                                    </div>
+
+                                    {{-- Bagian biaya kontrak --}}
+                                    @if (!empty($biayaList))
+                                        <div class="text-center mt-2">
+                                            <p class="text-gray-500 text-sm">Masukan Biaya Pada Kontrak</p>
+                                        </div>
+
+                                        {{-- biaya --}}
+                                        <div id="tambah-biaya-container" class="flex">
+                                            <label for="biaya" class="w-32 text-md font-medium text-gray-700 mr-3">
+                                            Biaya Kontrak:</label>
+                                            <div id="biaya-container">
+                                                @foreach ($biayaList as $biaya)
+                                                    <div class="flex gap-x-2">
+                                                        <!-- Checkbox untuk biaya -->
+                                                        <input checked id="biaya_{{ $biaya->idBiaya }}" name="idBiaya[]"
+                                                            type="checkbox" value="{{ $biaya->idBiaya }}"
+                                                            class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+
+                                                        <!-- Label untuk checkbox -->
+                                                        <label for="biaya_{{ $biaya->idBiaya }}"
+                                                            class="text-md font-medium text-gray-900 pr-4">
+                                                            {{ $biaya->biaya }}
+                                                        </label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    {{-- keterangan --}}
+                                    <div class="flex items-center space-x-4 mt-4">
+                                        <label for="keterangan"
+                                            class="w-32 text-md font-medium text-gray-700">
+                                            Keterangan:</label>
+                                        <textarea id="modal-revisi-keterangan" type="text" value="" rows="2" name="keterangan"
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"></textarea>
+                                    </div>
+
+                                    <input type="hidden" id="modal-atur-idKontrak" name="idKontrak">
+
+                                </div>
+                                {{-- SUBMIT --}}
+                                <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                    <button type="submit" name="action" value="tolak" data-toggle="modal"
+                                        data-target="#ModalSuksesRevisiPembayaran"
+                                        class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                        Simpan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
         <!-- PAGE TAMBAH PENGHUNI -->
-        <section id="tambahPenghuni" class="block">
+        <section id="tambahPenghuni" class="hidden">
             {{-- Setting Denda --}}
             <div class="mb-4 flex items-center justify-between">
                 <h1 class="text-2xl font-bold tracking-tight text-gray-900">Form Pembuatan Kontrak</h1>
@@ -113,7 +377,8 @@
                                             <input type="hidden" name="idDenda" value="1">
 
                                             <div class="flex items-center space-x-4 pb-3">
-                                                <label for="jenis_denda" class="w-32 text-md font-medium text-gray-700">
+                                                <label for="jenis_denda"
+                                                    class="w-32 text-md font-medium text-gray-700">
                                                     Tipe Denda:</label>
                                                 <select required id="modal-buat-jenis_denda" name="jenis_denda"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
@@ -141,7 +406,8 @@
                                                     class="w-32 text-md font-medium text-gray-700">
                                                     Angka Kontrak Mingguan:</label>
                                                 <input required id="modal-buat-angka_mingguan" type="number"
-                                                    value="" name="angka_mingguan" placeholder="Nominal Rp atau %"
+                                                    value="" name="angka_mingguan"
+                                                    placeholder="Nominal Rp atau %"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                             </div>
 
@@ -150,7 +416,8 @@
                                                     class="w-32 text-md font-medium text-gray-700">
                                                     Angka Kontrak Harian:</label>
                                                 <input required id="modal-buat-angka_harian" type="number"
-                                                    value="" name="angka_harian" placeholder="Nominal Rp atau %"
+                                                    value="" name="angka_harian"
+                                                    placeholder="Nominal Rp atau %"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                             </div>
 
@@ -226,9 +493,9 @@
                                     class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition">
                                     @if ($listKamar && $listKamar->isNotEmpty())
                                         @foreach ($listKamar as $kamarId)
-                                            <option value="{{ $kamarId->idKamar }}" 
-                                                data-harga="{{ $kamarId->harga }}" 
-                                                data-mingguan="{{ $kamarId->harga_mingguan }}" 
+                                            <option value="{{ $kamarId->idKamar }}"
+                                                data-harga="{{ $kamarId->harga }}"
+                                                data-mingguan="{{ $kamarId->harga_mingguan }}"
                                                 data-harian="{{ $kamarId->harga_harian }}">
                                                 Kamar {{ $kamarId->idKamar }}
                                             </option>
@@ -280,14 +547,14 @@
                                         var hargaMingguan = selectedOption.getAttribute('data-mingguan');
                                         var hargaHarian = selectedOption.getAttribute('data-harian');
                                         var kontrakDropdown = document.getElementById('kontrak');
-                                
+
                                         // Reset dropdown kontrak
                                         kontrakDropdown.innerHTML = `
                                             <option value="Bulan">Bulan</option>
                                             <option value="Mingguan">Mingguan</option>
                                             <option value="Harian">Harian</option>
                                         `;
-                                
+
                                         // Hilangkan opsi "Mingguan" jika harga_mingguan null
                                         if (hargaMingguan === null || hargaMingguan === '') {
                                             var mingguanOption = kontrakDropdown.querySelector('option[value="Mingguan"]');
@@ -295,7 +562,7 @@
                                                 mingguanOption.remove();
                                             }
                                         }
-                                
+
                                         // Hilangkan opsi "Harian" jika harga_harian null
                                         if (hargaHarian === null || hargaHarian === '') {
                                             var harianOption = kontrakDropdown.querySelector('option[value="Harian"]');
@@ -373,7 +640,8 @@
                                         const waktuInput = document.getElementById('waktu'); // Input waktu tinggal
                                         const waktuContainer = document.getElementById('waktu-container'); // Container waktu tinggal
 
-                                        const waktuTagihanContainer = document.getElementById('waktu-tagihan-container'); // Container waktu tagihan
+                                        const waktuTagihanContainer = document.getElementById(
+                                            'waktu-tagihan-container'); // Container waktu tagihan
                                         const waktuDendaContainer = document.getElementById('waktu-denda-container'); // Container waktu denda
                                         const waktuTagihanInput = document.getElementById('waktu_tagihan');
                                         const waktuDendaInput = document.getElementById('waktu_denda');
@@ -419,9 +687,11 @@
                             {{-- waktu tagihan pertanggalnya --}}
                             <div id="waktu-tagihan-container" class="sm:col-span-1">
                                 <label for="waktu_tagihan"
-                                    class="block text-sm font-medium leading-6 text-gray-900">Pertanggal Tagihan</label>
+                                    class="block text-sm font-medium leading-6 text-gray-900">Pertanggal
+                                    Tagihan</label>
                                 <div class="mt-2">
-                                    <input required type="number" name="waktu_tagihan" id="waktu_tagihan" max="31" min="1"
+                                    <input required type="number" name="waktu_tagihan" id="waktu_tagihan"
+                                        max="31" min="1"
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
@@ -431,20 +701,22 @@
                                 <label for="waktu_denda"
                                     class="block text-sm font-medium leading-6 text-gray-900">Pertanggal Denda</label>
                                 <div class="mt-2">
-                                    <input required type="number" name="waktu_denda" id="waktu_denda" max="31" min="1"
+                                    <input required type="number" name="waktu_denda" id="waktu_denda"
+                                        max="31" min="1"
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                    <span id="error-message" class="text-red-500 text-sm hidden">Denda tidak boleh lebih kecil dari tanggal tagihan.</span>
+                                    <span id="error-message" class="text-red-500 text-sm hidden">Denda tidak boleh
+                                        lebih kecil dari tanggal tagihan.</span>
 
                                     {{-- CHECK PERTANGGAL TIDAK BOLEH KURANG --}}
                                     <script>
                                         const waktuTagihan = document.getElementById('waktu_tagihan');
                                         const waktuDenda = document.getElementById('waktu_denda');
                                         const errorMessage = document.getElementById('error-message');
-                                    
+
                                         function validateDates() {
                                             const tagihanValue = parseInt(waktuTagihan.value, 10);
                                             const dendaValue = parseInt(waktuDenda.value, 10);
-                                    
+
                                             // Check if dendaValue is smaller than tagihanValue
                                             if (dendaValue < tagihanValue) {
                                                 errorMessage.classList.remove('hidden'); // Show error message
@@ -454,20 +726,21 @@
                                                 waktuDenda.setCustomValidity(''); // Reset validity
                                             }
                                         }
-                                    
+
                                         // Attach event listeners
                                         waktuTagihan.addEventListener('input', validateDates);
                                         waktuDenda.addEventListener('input', validateDates);
                                     </script>
                                 </div>
                             </div>
-                            
+
                             {{-- tinggalnya (mingguan/harian) --}}
                             <div id="waktu-container" class="sm:col-span-2">
                                 <label for="waktu" class="block text-sm font-medium leading-6 text-gray-900">Waktu
                                     Tinggal (Minggu/Hari)</label>
                                 <div class="mt-2">
-                                    <input required id="waktu" name="waktu" type="number" placeholder="Masukkan jumlah minggu/hari"
+                                    <input required id="waktu" name="waktu" type="number"
+                                        placeholder="Masukkan jumlah minggu/hari"
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
@@ -531,7 +804,8 @@
                         <div class="border-b border-gray-900/10 pb-12">
                             <h2 class="text-base font-semibold leading-7 text-gray-900">Biaya Fasilitas Kontrak*</h2>
                             <p class="mt-1 text-sm leading-6 text-gray-600">Fasilitas yang terkandung dalam kontrak
-                                <i>(Nominal biaya akan ditambahan pada nota saat pembayaran).</i></p>
+                                <i>(Nominal biaya akan ditambahan pada nota saat pembayaran).</i>
+                            </p>
 
                             <div class="mt-3 mb-4 space-y-10">
                                 {{-- biaya --}}
@@ -953,7 +1227,7 @@
         if (confirm('Apakah Anda yakin ingin menghapus Data ini?')) {
             $.ajax({
                 url: '/penghuni/hapus-dataDiri/' +
-                idListDataDiri, // Sesuaikan URL untuk menghapus peraturan
+                    idListDataDiri, // Sesuaikan URL untuk menghapus peraturan
                 type: 'DELETE',
                 data: {
                     _token: '{{ csrf_token() }}' // Token CSRF untuk keamanan
@@ -991,6 +1265,44 @@
 {{-- AJAX DETAIL --}}
 <script>
     $(document).ready(function() {
+        $('.lihat-detail-permintaan').on('click', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+
+            $.ajax({
+                url: '/penghuni/' + id,
+                type: 'GET',
+                success: function(data) {
+                    $('#modal-permintaan-kamar').val('Kamar ' + data.data.idKamar);
+                    $('#modal-permintaan-nama').val(data.data.nama);
+                    $('#modal-permintaan-telp').val(data.data.no_telp);
+                    $('#modal-permintaan-email').val(data.data.email);
+                    $('#modal-permintaan-rekening').val(data.data.metode + ' - ' + data.data.nomor_tujuan);
+                    $('#modal-permintaan-rentang').val((data.data.waktu ? data.data.waktu : '') + ' ' + data.data.rentang);
+                    $('#modal-permintaan-tgl_masuk').val(data.data.tgl_masuk);
+
+                    // menambahkan data diri kedalaam modal
+                    $('#dataDiri-permintaan-container').empty();
+
+                    $.each(data.dataDiriList, function(index, dataDiri) {
+                        $('#dataDiri-permintaan-container').append(`
+                            <div class="mb-2 flex items-center space-x-4">
+                            <label for="${dataDiri.data_diri}" class="w-32 text-md font-medium text-gray-700">${dataDiri.data_diri}:</label>
+                                <input required type="text" id="${dataDiri.data_diri}" name="${dataDiri.data_diri}" 
+                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
+                                value="${dataDiri.deskripsi}">
+                            </div>
+                        `);
+                    });
+
+                    $('#modal-atur-kamar').val('Kamar ' + data.data.idKamar);
+                    $('#modal-atur-nama').val(data.data.nama);
+                    $('#modal-atur-tgl_masuk').val(data.data.tgl_masuk);
+                    $('#modal-atur-idKontrak').val(data.data.idKontrak);
+                }
+            });
+        });
+
         $('.lihat-detail-penghuni').on('click', function(e) {
             e.preventDefault();
             var id = $(this).data('id');

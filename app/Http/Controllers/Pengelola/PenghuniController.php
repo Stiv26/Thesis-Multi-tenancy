@@ -17,6 +17,16 @@ class PenghuniController extends Controller
         return view('Pengelola.penghuni', compact('data'));
     }
 
+    public function permintaan() // list permintaan
+    {
+        $data = DB::table('users as u')
+            ->join('kontrak as k', 'k.users_id', '=', 'u.id')
+            ->where('k.status', 'Permintaan')
+            ->get();
+
+        return view('Pengelola.Penghuni', compact('data'));
+    }
+
     public function penghuni() // list penghuni
     {
         $data = DB::table('users as u')
@@ -34,17 +44,14 @@ class PenghuniController extends Controller
         $data = DB::table('users as u')
             ->join('kontrak as k', 'k.users_id', '=', 'u.id')
             ->join('metodePembayaran as m', 'm.users_id', '=', 'u.id')
-            ->select('*')
-            ->where('u.status', '=', 'aktif')
-            ->where('u.id', '=', $id)
+            ->where('u.id', $id)
             ->first();
 
         $dataDiriList = [];
         if (Schema::hasTable('listdatadiri')) {
             $dataDiriList = DB::table('datadiri as dd')
                 ->join('listdatadiri as l', 'l.idListDataDiri', '=', 'dd.idListDataDiri')
-                ->select('*')
-                ->where('dd.users_id', '=', $id)
+                ->where('dd.users_id', $id)
                 ->get();
         }
 
@@ -54,6 +61,13 @@ class PenghuniController extends Controller
         ]);
     }
 
+    public function terimaHunian(Request $request)
+    {
+        dd($request->all());
+    }
+
+
+
 
     // TAMBAH KONTRAK //
     public function detailAturanDenda($id) // modal aturan denda - Settings
@@ -62,11 +76,11 @@ class PenghuniController extends Controller
             ->where('idDenda', $id)
             ->first();
 
-            if ($data) {
-                return response()->json(['data' => $data]);
-            } else {
-                return response()->json(['data' => null], 404); // Jika tidak ada data, kembalikan null
-            }
+        if ($data) {
+            return response()->json(['data' => $data]);
+        } else {
+            return response()->json(['data' => null], 404); // Jika tidak ada data, kembalikan null
+        }
     }
 
     public function aturanDenda(Request $request) // Buat aturan denda - Settings
@@ -83,8 +97,7 @@ class PenghuniController extends Controller
                     'angka_mingguan' => $request->angka_mingguan,
                     'angka_harian' => $request->angka_harian,
                 ]);
-        } 
-        else {
+        } else {
             // Jika idDenda belum ada, lakukan insert
             DB::table('denda')->insert([
                 'idDenda' => $request->idDenda,
@@ -94,7 +107,7 @@ class PenghuniController extends Controller
                 'angka_harian' => $request->angka_harian,
             ]);
         }
-    
+
         return redirect()->back()->with('Data berhasil ditambahkan');
     }
 
@@ -165,7 +178,7 @@ class PenghuniController extends Controller
         DB::table('listdatadiri')->insert([
             'data_diri' => $request->dataDiri,
         ]);
- 
+
         return redirect()->back()->with('success', 'Data Diri berhasil ditambahkan.');
     }
 
@@ -192,15 +205,30 @@ class PenghuniController extends Controller
         DB::beginTransaction();
             // Insert data ke tabel users
             DB::table('users')->insert([
-                'id' => $tempId, 'no_telp' => $request->telpon, 'password' => $request->password, 'email' => $request->email,
-                'nama' => $request->nama, 'status' => 'Aktif', 'idRole' => 2, ]);
+                'id' => $tempId,
+                'no_telp' => $request->telpon,
+                'password' => $request->password,
+                'email' => $request->email,
+                'nama' => $request->nama,
+                'status' => 'Aktif',
+                'idRole' => 2,
+            ]);
 
             // Insert data ke tabel kontrak
             DB::table('kontrak')->insert([
-                'idKontrak' => $tempId, 'idKamar' => $request->kamar, 'Users_id' => $tempId, 'harga' => $request->harga,
-                'rentang' => $request->kontrak, 'waktu' => $request->waktu, 'tgl_masuk' => $request->masuk,
-                'tgl_tagihan' => $request->tagihan, 'tgl_denda' => $request->denda, 'deposit' => $request->deposit,
-                'keterangan' => $request->keterangan, 'status' => 'Pembayaran Perdana', ]);
+                'idKontrak' => $tempId,
+                'idKamar' => $request->kamar,
+                'Users_id' => $tempId,
+                'harga' => $request->harga,
+                'rentang' => $request->kontrak,
+                'waktu' => $request->waktu,
+                'tgl_masuk' => $request->masuk,
+                'tgl_tagihan' => $request->tagihan,
+                'tgl_denda' => $request->denda,
+                'deposit' => $request->deposit,
+                'keterangan' => $request->keterangan,
+                'status' => 'Pembayaran Perdana',
+            ]);
 
             // insert metodepembayaran
             DB::table('metodePembayaran')->insert([

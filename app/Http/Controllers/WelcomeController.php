@@ -89,13 +89,15 @@ class WelcomeController extends Controller
         if (!\Illuminate\Support\Facades\Schema::hasTable('datadiri')) {
             return response()->json(['dataDiriList' => []]); // Kembalikan array kosong jika tabel tidak ada
         }
-
         $dataDiriList = DB::table('listdatadiri as l')
             ->select('*')
             ->get();
 
+        $default = DB::table('default')
+            ->where('idDefault', 1)
+            ->first();
 
-        return view('Pengelola.Pendaftaran', compact('listKamar', 'dataDiriList'));
+        return view('Pengelola.Pendaftaran', compact('listKamar', 'dataDiriList', 'default'));
     }
 
     public function storeKontrak(Request $request) // tambah kontrak
@@ -122,6 +124,7 @@ class WelcomeController extends Controller
             ]);
 
             // Insert data ke tabel kontrak
+            // tgl tagihan, denda, biaya lainnya, dan keterangan di inputkan oleh pengelola
             DB::table('kontrak')->insert([
                 'idKontrak' => $tempId,
                 'idKamar' => $request->kamar,
@@ -130,9 +133,17 @@ class WelcomeController extends Controller
                 'rentang' => $request->kontrak,
                 'waktu' => $request->waktu,
                 'tgl_masuk' => $request->masuk,
-                'deposit' => 0, // input default
+                'deposit' => $request->deposit,
                 'status' => 'Permintaan',
             ]);
+
+            if ($request->kontrak === 'Bulan') {
+                DB::table('pengaturan')->insert([
+                    'idKontrak' => $tempId,
+                    'waktu_tagihan' => $request->pertanggal_tagihan,
+                    'waktu_denda' => $request->pertanggal_denda,
+                ]);
+            }
 
             // insert metodepembayaran
             DB::table('metodePembayaran')->insert([

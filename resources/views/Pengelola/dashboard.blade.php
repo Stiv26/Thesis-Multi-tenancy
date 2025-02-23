@@ -186,8 +186,7 @@
                                     <td class="py-2 px-3 text-gray-500">{{ $data->waktu }} {{ $data->rentang }}</td>
                                     <td class="py-2 px-3 text-gray-500">{{ $data->tgl_masuk }}</td>
                                     <td class="py-2 px-3">
-                                        <a href="#" data-id="{{ $data->id }}" data-toggle="modal"
-                                            data-target="#ModalKontrak"
+                                        <a href="/penghuni" 
                                             class="lihat-detail-kontrak text-indigo-500 hover:text-indigo-700 transition">
                                             Lihat Detail <span aria-hidden="true">→</span></a>
                                     </td>
@@ -227,8 +226,8 @@
                                 <tr class="border-t hover:bg-gray-50 transition duration-200">
                                     <td class="py-2 pl-5 text-gray-500 text-center">{{ $data->nama }}</td>
                                     <td class="py-2 pl-5 text-gray-500 text-center">Kamar {{ $data->idKamar }}</td>
-                                    <td class="py-2 px-3">
-                                        <a href="/pembayaran" class="lihat-detail-kontrak text-indigo-500 hover:text-indigo-700 transition text-center">
+                                    <td class="py-2 px-3 text-center">
+                                        <a href="/pembayaran" class="lihat-detail-kontrak text-indigo-500 hover:text-indigo-700 transition">
                                             Lihat Detail <span aria-hidden="true">→</span></a>
                                     </td>
                                 </tr>
