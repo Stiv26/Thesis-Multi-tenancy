@@ -55,8 +55,8 @@
                     <div class="hidden sm:mb-8 sm:flex sm:justify-center">
                 </div>
                 <div class="text-center">
-                    <h1 class="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Tingkatkan Kualitas Manajemen Kos Anda</h1>
-                    <p class="mt-6 text-lg leading-8 text-gray-600">Sistem yaang membantu pengelola kos meningkatkan efisiensi manajemen penghuni, pembayaran, dan layanan. Dengan fitur digital terintegrasi, manajemen kos menjadi lebih mudah dan efektif.</p>
+                    <h1 class="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Temukan Kos Sesuai Kebutuhan Anda</h1>
+                    <p class="mt-6 text-lg leading-8 text-gray-600">Nikmati hunian dengan akses yang mudah. Dapatkan kenyamanan tinggal dengan sistem pembayaran yang fleksibel serta layanan kos yang responsif untuk pengalaman yang lebih tenang dan menyenangkan.</p>
                     <div class="mt-10 flex items-center justify-center gap-x-6">
                     <a href="#lihat-kamar" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Lihat Kamar</a>
                     <a href="/login" class="text-sm font-semibold leading-6 text-gray-900">Masuk <span aria-hidden="true">→</span></a>
@@ -119,10 +119,9 @@
     aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog max-w-4xl mx-auto mt-24">
         <div class="modal-content rounded-lg shadow-lg bg-white">
-            {{-- header --}}
-            <div class="modal-header border-b border-gray-200 py-4 px-6">
-                <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Kamar
-                </h3>
+            {{-- Header --}}
+            <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-center">
+                <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Kamar</h3>
                 <button type="button" class="text-gray-400 hover:text-gray-600"
                     data-dismiss="modal" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -132,51 +131,62 @@
                     </svg>
                 </button>
             </div>
-            {{-- content --}}
-            <div class="modal-body p-6 space-y-2">
-                <!-- AJAX -->
-                <div class="flex items-center space-x-4">
+
+            {{-- Content --}}
+            <div class="modal-body p-6 space-y-4">
+                <!-- Gambar Kamar -->
+                <div class="w-full h-64 overflow-hidden rounded-lg">
                     <img src="" id="modal-foto" alt="Foto Kamar" 
-                        class="w-full object-cover border border-gray-300 rounded-md">
+                        class="w-full h-full object-cover border border-gray-300 rounded-lg">
                 </div>
 
-                <div class="flex items-center justify-center space-x-4 mt-4">
-                    <div class="flex">
-                        <h3 class="text-gray-900 mr-2">Kamar </h3>
-                        <h3 id="modal-kamar" class="text-gray-900"></h3>
-                    </div>
+                <!-- Nama Kamar -->
+                <div class="text-center">
+                    <h3 class="text-xl font-semibold text-gray-900">
+                        Kamar <span id="modal-kamar" class="text-indigo-600"></span>
+                    </h3>
                 </div>
 
-                <div class="flex items-center space-x-4">
-                    <label for="keterangan_kamar" class="w-42 text-md font-medium text-gray-700">
-                        Keterangan:</label>
-                    <textarea id="modal-keterangan" type="text" value="" rows="1"
-                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
+                <!-- Daftar Fasilitas -->
+                <div id="daftar-fasilitas" class="space-y-2 hidden">
+                    <label class="block text-md font-medium text-gray-700">Fasilitas Kamar:</label>
+                    <div class="grid grid-cols-2 gap-2 text-center" id="fasilitas-list"></div>
                 </div>
 
-                <div class="flex items-center space-x-4">
-                    <button id="toggle-harga" class="text-indigo-600 font-medium focus:outline-none">
+                <!-- Toggle Harga -->
+                <div class="flex justify-center">
+                    <button id="toggle-harga" class="text-indigo-600 font-medium hover:text-indigo-500 focus:outline-none">
                         Lihat Harga &#9662; <!-- Tanda panah ke bawah -->
                     </button>
                 </div>
-                
-                <div id="daftar-harga" class="mt-2 space-y-2 hidden ml-4">
-                    <div class="flex">
-                        <span class="font-medium text-gray-700 mr-2">Harga Bulanan:</span>
+
+                <!-- Daftar Harga -->
+                <div id="daftar-harga" class="space-y-2 hidden">
+                    <div class="flex justify-between">
+                        <span class="font-medium text-gray-700">Harga Bulanan:</span>
                         <span id="modal-harga" class="text-gray-700"></span>
                     </div>
-                    <div class="flex">
-                        <span class="font-medium text-gray-700 mr-2">Harga Mingguan:</span>
+                    <div class="flex justify-between">
+                        <span class="font-medium text-gray-700">Harga Mingguan:</span>
                         <span id="modal-harga_mingguan" class="text-gray-700"></span>
                     </div>
-                    <div class="flex">
-                        <span class="font-medium text-gray-700 mr-2">Harga Harian:</span>
+                    <div class="flex justify-between">
+                        <span class="font-medium text-gray-700">Harga Harian:</span>
                         <span id="modal-harga_harian" class="text-gray-700"></span>
                     </div>
                 </div>
 
+                <!-- Keterangan Kamar -->
+                <div class="space-y-2 mt-4">
+                    <hr>
+                    <label class="block text-md font-medium text-gray-700">Keterangan:</label>
+                    <textarea id="modal-keterangan" rows="2"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0 resize-none" readonly></textarea>
+                </div>
             </div>
-            <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+
+            {{-- Footer --}}
+            <div class="modal-footer border-t border-gray-200 py-4 flex justify-end ">
                 <a href="{{ route('pengelola.pendaftaran') }}"
                     class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                     Pesan Kamar
@@ -234,7 +244,26 @@
                         $('#modal-harga_harian').parent().hide();
                     }
 
-                    $('#modal-keterangan').text(data.data.keterangan || 'Tidak ada keterangan.');     
+                    $('#modal-keterangan').text(data.data.keterangan || 'Tidak ada keterangan.');  
+                    
+                    // Tampilkan fasilitas kamar
+                    var fasilitasContainer = $('#daftar-fasilitas');
+                    var fasilitasList = $('#fasilitas-list');
+                    fasilitasList.empty(); // Kosongkan konten sebelumnya
+
+                    if (data.fasilitas && data.fasilitas.length > 0) {
+                        data.fasilitas.forEach(function(fasilitas) {
+                            fasilitasList.append(
+                                '<div class="text-gray-700 bg-gray-100 px-3 py-2 rounded-md">' + fasilitas.fasilitas + '</div>'
+                            );
+                        });
+                        fasilitasContainer.removeClass('hidden'); // Tampilkan container
+                    } else {
+                        fasilitasList.append(
+                            '<div class="text-gray-500">Pengelola belum menambahkan fasilitas kamar.</div>'
+                        );
+                        fasilitasContainer.removeClass('hidden');
+                    }
                 },
                 error: function(xhr) {
                     console.error('Error:', xhr.responseText);

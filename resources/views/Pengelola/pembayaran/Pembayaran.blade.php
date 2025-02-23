@@ -169,8 +169,7 @@
                                                 Harga:</label>
                                             <input id="modal-buat-total" type="number" value=""
                                                 name="total"
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                readonly>
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                         </div>
 
                                         {{-- deposit --}}
@@ -179,7 +178,7 @@
                                                 Deposit:</label>
                                             <input id="modal-buat-deposit" type="number" value=""
                                                 name="deposit"
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                class="flex-1 px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:ring-0"
                                                 readonly>
                                         </div>
 

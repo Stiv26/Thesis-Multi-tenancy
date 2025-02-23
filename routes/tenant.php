@@ -118,9 +118,10 @@ Route::middleware([
                 $kontrak = $controller->kontrak()->getData()['data'];
                 $kamar = $controller->kamar()->getData()['data'];
                 $fasilitas = $controller->fasilitas()->getData()['data'];
+                $fasilitasKamar = $controller->fasilitasKamar()->getData()['data'];
                 $peraturan = $controller->peraturan()->getData()['data'];
 
-                return view('Pengelola.kos.kos', compact('header', 'kontrak', 'kamar', 'fasilitas', 'peraturan'));
+                return view('Pengelola.kos.kos', compact('header', 'kontrak', 'kamar', 'fasilitas', 'fasilitasKamar', 'peraturan'));
             })->name('kos.index');
 
             // modal detail

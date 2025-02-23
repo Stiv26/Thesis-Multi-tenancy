@@ -262,7 +262,16 @@ class KosController extends Controller
             $gambarUrl = route('foto.kamar.file', ['filename' => $data->foto]);
         }
 
-        return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
+        $fasilitasKamar = DB::table('fasilitasKamar as f')
+            ->join('fasilitas as a', 'f.idFasilitas', 'a.idFasilitas')
+            ->where('f.idKamar', $id)
+            ->get();
+
+        $pilihFasilitas = DB::table('fasilitas')
+            ->where('jenis', 'Kamar')
+            ->get();
+
+        return response()->json(['data' => $data, 'gambar_url' => $gambarUrl, 'fasilitas' => $fasilitasKamar, 'pilihFasilitas' => $pilihFasilitas]);
     }
 
     public function showKamar($filename)
@@ -297,6 +306,26 @@ class KosController extends Controller
                 'foto' => $path,
             ]);
 
+        // Handle fasilitas kamar
+        $fasilitasIds = $request->input('fasilitas', []);
+
+        // Hapus semua fasilitas lama
+        DB::table('fasilitaskamar')
+            ->where('idkamar', $request->idKamar)
+            ->delete();
+
+        // Insert fasilitas baru jika ada
+        if (!empty($fasilitasIds)) {
+            $insertData = array_map(function ($idFasilitas) use ($request) {
+                return [
+                    'idkamar' => $request->idKamar,
+                    'idfasilitas' => $idFasilitas
+                ];
+            }, $fasilitasIds);
+
+            DB::table('fasilitaskamar')->insert($insertData);
+        }
+
         return redirect()->route('kos.index')->with('status', 'Data kamar berhasil diperbarui!');
     }
 
@@ -322,6 +351,15 @@ class KosController extends Controller
             'keterangan' => $request['keterangan'],
         ]);
 
+        if ($request->has('fasilitas')) {
+            foreach ($request->fasilitas as $idFasilitas) {
+                DB::table('fasilitasKamar')->insert([
+                    'idFasilitas' => $idFasilitas,
+                    'idKamar' => $request['kamar'], 
+                ]);
+            }
+        }
+
         return redirect()->route('kos.index')->with('success', 'Kamar berhasil ditambahkan.');
     }
 
@@ -330,6 +368,15 @@ class KosController extends Controller
         DB::table('kamar')->where('idKamar', $request->idKamar)->delete();
 
         return redirect()->route('kos.index')->with('message', 'Kamar berhasil dihapus.');
+    }
+
+    public function fasilitasKamar() // list fasilitas untuk kamar
+    {
+        $data = DB::table('fasilitas')
+            ->where('jenis', 'Kamar')
+            ->get();
+
+        return view('pengelola.kos.Kos', compact('data'));
     }
 
 

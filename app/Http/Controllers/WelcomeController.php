@@ -51,7 +51,16 @@ class WelcomeController extends Controller
             $gambarUrl = route('foto.file', ['filename' => $data->foto]);
         }
 
-        return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
+        $fasilitasKamar = DB::table('fasilitasKamar as f')
+            ->join('fasilitas as a', 'f.idFasilitas', 'a.idFasilitas')
+            ->where('f.idKamar', $id)
+            ->get();
+
+        return response()->json([
+            'data' => $data,
+            'gambar_url' => $gambarUrl,
+            'fasilitas' => $fasilitasKamar
+        ]);
     }
 
     public function showFoto($filename) // tampilkan porto kamar

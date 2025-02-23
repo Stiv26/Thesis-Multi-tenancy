@@ -61,9 +61,34 @@ class PenghuniController extends Controller
         ]);
     }
 
-    public function terimaHunian(Request $request)
+    public function terimaHunian(Request $request) // acc permintaan
     {
-        dd($request->all());
+        DB::table('users')
+            ->where('id', $request->idKontrak)
+            ->update([
+                'status' => 'Aktif',
+            ]);
+
+        DB::table('kontrak')
+            ->where('idKontrak', $request->idKontrak)
+            ->update([
+                'status' => 'Aktif',
+                'tgl_tagihan' => $request->tgl_tagihan,
+                'tgl_denda' => $request->tgl_denda,
+                'keterangan' => $request->keterangan,
+            ]);
+
+        // Insert data ke tabel biayaKontrak (jika ada)
+        if ($request->has('idBiaya')) {
+            foreach ($request->idBiaya as $idBiaya) {
+                DB::table('biayaKontrak')->insert([
+                    'idBiaya' => $idBiaya,
+                    'idKontrak' => $request->idKontrak,
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('Penghuni berhasil diterima');
     }
 
 

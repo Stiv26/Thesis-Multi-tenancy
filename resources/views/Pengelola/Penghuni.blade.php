@@ -214,7 +214,6 @@
                         <div class="modal-content rounded-lg shadow-lg bg-white">
                             <form action="{{ route('penghuni.store') }}" method="POST">
                                 @csrf
-                                @method('PUT')
                                 {{-- header --}}
                                 <div class="modal-header border-b border-gray-200 py-4 px-6">
                                     <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Atur Penerimaan</h3>
@@ -311,7 +310,7 @@
                                 </div>
                                 {{-- SUBMIT --}}
                                 <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                    <button type="submit" name="action" value="tolak" data-toggle="modal"
+                                    <button type="submit" name="action" data-toggle="modal"
                                         data-target="#ModalSuksesRevisiPembayaran"
                                         class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
                                         Simpan
