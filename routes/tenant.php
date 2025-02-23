@@ -67,7 +67,7 @@ Route::middleware([
         $owner = $controller->whoIsTheOwner()->getData()['data'];
 
         return view('pengelola.welcome', compact('listKamar', 'owner'));
-    });
+    })->name('welcome.index');
 
     // routeing foto 
     Route::get('/lihat/detail-kamar/{id}', [WelcomeController::class, 'detailKamar']);
@@ -105,7 +105,6 @@ Route::middleware([
             
             // DASHBOARD 
             Route::get('/dashboard/{bulan?}/{tahun?}', [DashboardController::class, 'index'])->name('dashboard.index'); // ui dashboard
-            // Route::get('/penghuni/detailAturanDenda/{id}', [PenghuniController::class, 'detailAturanDenda']); // show pengaturan sebelumnya
             Route::post('/dashboard/aturan', [DashboardController::class, 'pengaturan'])->name('atur.pengaturan'); // update pengaturan
 
 

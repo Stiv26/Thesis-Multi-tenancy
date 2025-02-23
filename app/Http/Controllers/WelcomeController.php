@@ -100,8 +100,6 @@ class WelcomeController extends Controller
 
     public function storeKontrak(Request $request) // tambah kontrak
     {
-        dd($request);
-
         $existingUser  = DB::table('users')->where('no_telp', $request->no_telp)->where('status', 'Aktif')->first();
 
         if ($existingUser) {
@@ -112,52 +110,51 @@ class WelcomeController extends Controller
         $tempId = crc32($uuid->toString()) & 0xffffffff;
 
         DB::beginTransaction();
-        // Insert data ke tabel users
-        DB::table('users')->insert([
-            'id' => $tempId,
-            'no_telp' => $request->telpon,
-            'password' => $request->password,
-            'email' => $request->email,
-            'nama' => $request->nama,
-            'status' => 'Aktif',
-            'idRole' => 2,
-        ]);
+            // Insert data ke tabel users
+            DB::table('users')->insert([
+                'id' => $tempId,
+                'no_telp' => $request->telpon,
+                'password' => $request->password,
+                'email' => $request->email,
+                'nama' => $request->nama,
+                'status' => 'Permintaan',
+                'idRole' => 2,
+            ]);
 
-        // Insert data ke tabel kontrak
-        DB::table('kontrak')->insert([
-            'idKontrak' => $tempId,
-            'idKamar' => $request->kamar,
-            'Users_id' => $tempId,
-            'harga' => $request->harga,
-            'rentang' => $request->kontrak,
-            'waktu' => $request->waktu,
-            'tgl_masuk' => $request->masuk,
-            'deposit' => $request->deposit,
-            'keterangan' => $request->keterangan,
-            'status' => 'Aktif',
-        ]);
+            // Insert data ke tabel kontrak
+            DB::table('kontrak')->insert([
+                'idKontrak' => $tempId,
+                'idKamar' => $request->kamar,
+                'Users_id' => $tempId,
+                'harga' => $request->harga,
+                'rentang' => $request->kontrak,
+                'waktu' => $request->waktu,
+                'tgl_masuk' => $request->masuk,
+                'deposit' => 0, // input default
+                'status' => 'Permintaan',
+            ]);
 
-        // insert metodepembayaran
-        DB::table('metodePembayaran')->insert([
-            'metode' => $request->bank,
-            'nomor_tujuan' => $request->rekening,
-            'users_id' => $tempId,
-        ]);
+            // insert metodepembayaran
+            DB::table('metodePembayaran')->insert([
+                'metode' => $request->bank,
+                'nomor_tujuan' => $request->rekening,
+                'users_id' => $tempId,
+            ]);
 
-        // Insert data ke tabel datadiri (jika ada)
-        if ($request->has('idListDataDiri') && $request->has('deskripsi')) {
-            foreach ($request->idListDataDiri as $key => $idListDataDiri) {
-                DB::table('datadiri')->insert([
-                    'idListDataDiri' => $idListDataDiri,
-                    'Users_id' => $tempId,
-                    'deskripsi' => $request->deskripsi[$key],
-                ]);
+            // Insert data ke tabel datadiri (jika ada)
+            if ($request->has('idListDataDiri') && $request->has('deskripsi')) {
+                foreach ($request->idListDataDiri as $key => $idListDataDiri) {
+                    DB::table('datadiri')->insert([
+                        'idListDataDiri' => $idListDataDiri,
+                        'Users_id' => $tempId,
+                        'deskripsi' => $request->deskripsi[$key],
+                    ]);
+                }
             }
-        }
 
         // Commit transaksi jika semua berhasil
         DB::commit();
 
-        return redirect()->route('penghuni.index')->with('success', 'Kontrak berhasil ditambahkan.');
+        return redirect()->route('pengelola.pendaftaran')->with('success', 'Kontrak berhasil ditambahkan.');
     }
 }

@@ -51,30 +51,30 @@
                                     </div>
 
                                     <div class="flex items-center space-x-4">
-                                        <label for="angka_mingguan"
+                                        <label for="modal-buat-deposit"
                                             class="w-48 text-md font-medium text-gray-700">
                                             Nominal Depoist:</label>
-                                        <input id="modal-buat-angka_mingguan" type="number"
-                                            value="" name="angka_mingguan" placeholder="Nominal Denda Kos"
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                        <input id="modal-buat-deposit" type="number"
+                                            value="{{ $pengaturan->nominal_deposit ?? '' }}" name="deposit" placeholder="Nominal Denda Kos"
+                                            class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                     </div>
 
                                     <div class="flex items-center space-x-4">
-                                        <label for="angka_mingguan"
+                                        <label for="modal-buat-tagihan_perbulan"
                                             class="w-48 text-md font-medium text-gray-700">
                                             Tanggal Tagihan Bulanan:</label>
-                                        <input id="modal-buat-angka_mingguan" type="number"
-                                            value="" name="angka_mingguan" placeholder="Tanggal Tiap Tagihan" min="1"
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                        <input id="modal-buat-tagihan_perbulan" type="number"
+                                            value="{{ $pengaturan->pertanggal_tagihan_bulan ?? '' }}" name="tagihan_perbulan" placeholder="Tanggal Tiap Tagihan" min="1" max="31"
+                                            class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                     </div>
 
                                     <div class="flex items-center space-x-4">
-                                        <label for="angka_mingguan"
+                                        <label for="modal-buat-denda_perbulan"
                                             class="w-48 text-md font-medium text-gray-700">
                                             Tanggal Denda Bulanan:</label>
-                                        <input id="modal-buat-angka_mingguan" type="number"
-                                            value="" name="angka_mingguan" placeholder="Tanggal Tiap Denda" min="1"
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                        <input id="modal-buat-denda_perbulan" type="number"
+                                            value="{{ $pengaturan->pertanggal_denda_bulan ?? '' }}" name="denda_perbulan" placeholder="Tanggal Tiap Denda" min="1" max="31"
+                                            class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                     </div>
 
                                     @if ($tabelDefault)
@@ -92,10 +92,11 @@
                                                     Tipe Denda:</label>
                                                 <select id="modal-buat-jenis_denda" name="jenis_denda"
                                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
-                                                    <option value="Nominal">Nominal</option>
-                                                    <option value="Perhari">Perhari</option>
-                                                    <option value="Persen">Persen</option>
+                                                    <option value="Nominal" {{ ($pengaturanDenda->jenis_denda ?? '') == 'Nominal' ? 'selected' : '' }}>Nominal</option>
+                                                    <option value="Perhari" {{ ($pengaturanDenda->jenis_denda ?? '') == 'Perhari' ? 'selected' : '' }}>Perhari</option>
+                                                    <option value="Persen" {{ ($pengaturanDenda->jenis_denda ?? '') == 'Persen' ? 'selected' : '' }}>Persen</option>
                                                 </select>
+                                                
                                             </div>
 
                                             <div class="text-center">
@@ -106,9 +107,9 @@
                                             <div class="flex items-center space-x-4 mb-2">
                                                 <label for="angka" class="w-48 text-md font-medium text-gray-700">
                                                     Denda Bulan:</label>
-                                                <input id="modal-buat-angka" type="number" value=""
-                                                    name="angka" placeholder="Nominal Rp atau %"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                                <input id="modal-buat-angka" type="number" 
+                                                    value="{{ $pengaturanDenda->angka ?? '' }}" name="angka" placeholder="Nominal Rp atau %"
+                                                    class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                             </div>
 
                                             <div class="flex items-center space-x-4 mb-2">
@@ -116,8 +117,8 @@
                                                     class="w-48 text-md font-medium text-gray-700">
                                                     Denda Mingguan:</label>
                                                 <input id="modal-buat-angka_mingguan" type="number"
-                                                    value="" name="angka_mingguan" placeholder="Nominal Rp atau %"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                                    value="{{ $pengaturanDenda->angka_mingguan ?? '' }}" name="angka_mingguan" placeholder="Nominal Rp atau %"
+                                                    class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                             </div>
 
                                             <div class="flex items-center space-x-4">
@@ -125,8 +126,8 @@
                                                     class="w-48 text-md font-medium text-gray-700">
                                                     Denda Harian:</label>
                                                 <input id="modal-buat-angka_harian" type="number"
-                                                    value="" name="angka_harian" placeholder="Nominal Rp atau %"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                                    value="{{ $pengaturanDenda->angka_harian ?? '' }}" name="angka_harian" placeholder="Nominal Rp atau %"
+                                                    class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                             </div>
                                         </div>
 

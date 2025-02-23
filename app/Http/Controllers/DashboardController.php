@@ -56,6 +56,20 @@ class DashboardController extends Controller
             ->where('n.status', 'Terkirim')
             ->get();
 
+
+
+        // PENGATURAN
+        $pengaturan = DB::table('default')
+            ->where('idDefault', 1)
+            ->first();
+            
+        $pengaturanDenda = DB::table('denda')
+            ->where('idDenda', 1)
+            ->first();
+
+
+
+        // KEUANGAN
         $bulan = $bulan ?? now()->month;
         $tahun = $tahun ?? now()->year;
 
@@ -83,7 +97,6 @@ class DashboardController extends Controller
             ->take(3)
             ->get();
 
-
         return view('Pengelola.dashboard', compact(
             'permintaan',
             'tagihan', 
@@ -91,6 +104,8 @@ class DashboardController extends Controller
             'room',
             'count', 
             'totalPendapatan',
+            'pengaturan',
+            'pengaturanDenda',
             'bulanTersedia',
             'riwayatBulan',
             'bulan',
@@ -98,8 +113,52 @@ class DashboardController extends Controller
         ));
     }
 
-    public function pengaturan() 
+    public function pengaturan(Request $request) 
     {
-        
+        $exist = DB::table('default')->where('idDefault', 1)->exists();
+
+        if ($exist) {
+            DB::table('default')
+                ->where('idDefault', 1)
+                ->update([
+                    'nominal_deposit' => $request->deposit,
+                    'pertanggal_tagihan_bulan' => $request->tagihan_perbulan,
+                    'pertanggal_denda_bulan' => $request->denda_perbulan,
+                ]);
+        }
+        else {
+            DB::table('default')->insert([
+                'idDefault' => 1,
+                'nominal_deposit' => $request->deposit,
+                'pertanggal_tagihan_bulan' => $request->tagihan_perbulan,
+                'pertanggal_denda_bulan' => $request->denda_perbulan,
+            ]);
+        }
+
+        $exists = DB::table('denda')->where('idDenda', $request->idDenda)->exists();
+
+        if ($exists) {
+            // Jika idDenda sudah ada, lakukan update
+            DB::table('denda')
+                ->where('idDenda', $request->idDenda)
+                ->update([
+                    'jenis_denda' => $request->jenis_denda,
+                    'angka' => $request->angka,
+                    'angka_mingguan' => $request->angka_mingguan,
+                    'angka_harian' => $request->angka_harian,
+                ]);
+        } 
+        else {
+            // Jika idDenda belum ada, lakukan insert
+            DB::table('denda')->insert([
+                'idDenda' => $request->idDenda,
+                'jenis_denda' => $request->jenis_denda,
+                'angka' => $request->angka,
+                'angka_mingguan' => $request->angka_mingguan,
+                'angka_harian' => $request->angka_harian,
+            ]);
+        }
+
+        return redirect()->back()->with('Pengaturan berhasil ditambahkan');
     }
 }

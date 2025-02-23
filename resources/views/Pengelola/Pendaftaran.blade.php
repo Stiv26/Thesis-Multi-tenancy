@@ -917,10 +917,10 @@
 
                                     {{-- KONFIRMASI KATA SANDI --}}
                                     <div class="sm:col-span-4">
-                                        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">
+                                        <label for="confirm" class="block text-sm font-medium leading-6 text-gray-900">
                                             Konfirmasi Sandi</label>
                                         <div class="mt-2">
-                                            <input required type="password" name="password" id="password"
+                                            <input required type="password" name="confirm" id="confirm"
                                                 class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         </div>
                                     </div>
@@ -1142,7 +1142,7 @@
                                     <div class="mt-10 mb-3 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                         {{-- data diri --}}
                                         @foreach ($dataDiriList as $data)
-                                            <div class="sm:col-span-3 sm:col-start-1">
+                                            <div class="sm:col-span-4 sm:col-start-1">
                                                 <label for="deskripsi_{{ $data->idListDataDiri }}"
                                                     class="block text-sm font-medium leading-6 text-gray-900">{{ $data->data_diri }}</label>
                                                 <div class="mt-2 flex">
