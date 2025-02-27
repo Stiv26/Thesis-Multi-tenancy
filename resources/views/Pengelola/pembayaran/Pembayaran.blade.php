@@ -102,8 +102,7 @@
                                     @csrf
                                     {{-- header --}}
                                     <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Buat
-                                            Pembayaran</h3>
+                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">BUAT TAGIHAN</h3>
                                         <button type="button" class="text-gray-400 hover:text-gray-600"
                                             data-dismiss="modal" aria-hidden="true">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -299,151 +298,133 @@
                                         @csrf
                                         @method('PUT')
                                         {{-- header --}}
-                                        <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                            <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">
-                                                Verifikasi Pembayaran</h3>
+                                        <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-items-start">
+                                            <div>
+                                                <h3 class="text-2xl font-bold text-gray-800">VERIFIKASI PEMBAYARAN</h3>
+                                            </div>
                                             <button type="button" class="text-gray-400 hover:text-gray-600"
                                                 data-dismiss="modal" aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
+                                        
                                         {{-- content --}}
-                                        <div class="modal-body p-6 space-y-2">
-                                            <!-- AJAX -->
-                                            <div class="flex items-center space-x-4">
-                                                <label for="kamar" class="w-32 text-md font-medium text-gray-700">
-                                                    Kamar:</label>
-                                                <input id="modal-bukti-kamar" type="text" value=""
-                                                    name="idKamar"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    disabled>
+                                        <div class="modal-body p-6">
+                                            <!-- Informasi Utama -->
+                                            <div class="flex flex-col gap-4 mb-6">
+                                                <div class="flex justify-between items-center border-b pb-2">
+                                                    <span class="font-medium text-gray-600">Kamar</span>
+                                                    <input id="modal-bukti-kamar" type="text" name="idKamar"
+                                                        class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none" 
+                                                        disabled>
+                                                </div>
+                                                
+                                                <div class="flex justify-between items-center border-b pb-2">
+                                                    <span class="font-medium text-gray-600">Nama Penyewa</span>
+                                                    <input id="modal-bukti-nama" type="text" name="nama"
+                                                        class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
+                                                        disabled>
+                                                </div>
                                             </div>
-
-                                            <div class="flex items-center space-x-4">
-                                                <label for="nama" class="w-32 text-md font-medium text-gray-700">
-                                                    Nama Penyewa:</label>
-                                                <input id="modal-bukti-nama" type="text" value=""
-                                                    name="nama"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    disabled>
+                        
+                                            <!-- Detail Waktu -->
+                                            <div class="flex flex-col gap-4 mb-6">
+                                                <div class="flex justify-between items-center">
+                                                    <span class="font-medium text-gray-600">Tanggal Tagihan</span>
+                                                    <input id="modal-bukti-tagihanPembayaran" type="date" name="tgl_tagihan"
+                                                        class="w-1/2 text-right bg-transparent border-none" readonly>
+                                                </div>
+                                                
+                                                <div class="flex justify-between items-center">
+                                                    <span class="font-medium text-gray-600">Tanggal Denda</span>
+                                                    <input id="modal-bukti-dendaPembayaran" type="date" name="tgl_denda"
+                                                        class="w-1/2 text-right bg-transparent border-none" readonly>
+                                                </div>
                                             </div>
-
-                                            <div class="flex items-center space-x-4">
-                                                <label for="tagihan" class="w-32 text-md font-medium text-gray-700">
-                                                    Tanggal Tagihan:</label>
-                                                <input id="modal-bukti-tagihanPembayaran" type="date"
-                                                    value="" name="tgl_tagihan"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                        
+                                            <!-- Rentang Waktu -->
+                                            <div class="flex justify-between items-center mb-6 px-4 py-2 bg-blue-50 rounded-lg">
+                                                <span class="font-medium text-blue-600">Rentang Pembayaran</span>
+                                                <input id="modal-bukti-rentang" type="text" name="rentang"
+                                                    class="text-right font-semibold text-blue-700 bg-transparent border-none" 
                                                     readonly>
                                             </div>
-
-                                            <div class="flex items-center space-x-4">
-                                                <label for="tempo" class="w-32 text-md font-medium text-gray-700">
-                                                    Tanggal Denda:</label>
-                                                <input id="modal-bukti-dendaPembayaran" type="date" value=""
-                                                    name="tgl_denda"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    readonly>
+                        
+                                            <!-- Detail Pembayaran -->
+                                            <div class="border rounded-lg p-4 mb-6">
+                                                <h4 class="text-lg font-bold mb-4">Rincian Pembayaran</h4>
+                                                
+                                                <div class="space-y-3">
+                                                    <div class="flex justify-between" id="bukti-harga">
+                                                        <span class="font-medium">Harga Sewa:</span>
+                                                        <input id="modal-bukti-harga" type="text" name="harga"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                    </div>
+                        
+                                                    <div class="flex justify-between" id="bukti-deposit">
+                                                        <span class="font-medium">Deposit:</span>
+                                                        <input id="modal-bukti-deposit" type="text" name="deposit"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                    </div>
+                        
+                                                    <div id="bukti-biaya-container" class="space-y-3"></div>
+                        
+                                                    <div class="flex justify-between" id="bukti-denda">
+                                                        <span class="font-medium">Denda:</span>
+                                                        <input id="modal-bukti-denda" type="text" name="denda"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                    </div>
+                        
+                                                    <div class="flex justify-between border-t pt-3">
+                                                        <span class="font-bold">Total Pembayaran:</span>
+                                                        <input id="modal-bukti-total" type="number" name="total_bayar"
+                                                            class="w-1/3 text-right px-2 font-bold bg-transparent" readonly>
+                                                    </div>
+                                                </div>
                                             </div>
-
-                                            <div class="flex items-center space-x-4">
-                                                <label for="rentang" class="w-32 text-md font-medium text-gray-700">
-                                                    Rentang:</label>
-                                                <input id="modal-bukti-rentang" type="text" value=""
-                                                    name="rentang"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    readonly>
+                        
+                                            <!-- Bukti Pembayaran -->
+                                            <div class="mb-6">
+                                                <div class="flex flex-col items-center space-y-2">
+                                                    <span class="font-medium text-gray-600">Bukti Pembayaran</span>
+                                                    <img src="" id="modal-bukti-foto" alt="Bukti Pembayaran"
+                                                        class="h-72 object-contain border border-gray-200 rounded-lg p-2">
+                                                </div>
                                             </div>
-
-                                            <div class="text-center">
-                                                <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
+                        
+                                            <!-- Detail Tambahan -->
+                                            <div class="space-y-4">
+                                                <div class="flex justify-between items-center border-b pb-2">
+                                                    <span class="font-medium text-gray-600">Metode Pembayaran</span>
+                                                    <input id="modal-bukti-metode" type="text" name="metode"
+                                                        class="w-1/2 text-right bg-transparent border-none" readonly>
+                                                </div>
+                        
+                                                <div class="flex justify-between items-center border-b pb-2">
+                                                    <span class="font-medium text-gray-600">Keterangan</span>
+                                                    <textarea id="modal-bukti-keterangan" rows="2" name="keterangan"
+                                                        class="w-1/2 text-right bg-transparent border-none resize-none" readonly></textarea>
+                                                </div>
                                             </div>
-
-                                            <div class="flex items-center space-x-4" id="bukti-harga">
-                                                <label for="harga" class="w-32 text-md font-medium text-gray-700">
-                                                    Harga:</label>
-                                                <input id="modal-bukti-harga" type="text" value=""
-                                                    name="harga"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    readonly>
-                                            </div>
-
-                                            <div class="flex items-center space-x-4" id="bukti-deposit">
-                                                <label for="deposit" class="w-32 text-md font-medium text-gray-700">
-                                                    Deposit:</label>
-                                                <input id="modal-bukti-deposit" type="text" value=""
-                                                    name="deposit"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    readonly>
-                                            </div>
-
-                                            <!-- Container untuk biayaList yang akan diisi melalui AJAX -->
-                                            <div id="bukti-biaya-container"></div>
-
-                                            <div class="flex items-center space-x-4" id="bukti-denda">
-                                                <label for="denda" class="w-32 text-md font-medium text-gray-700">
-                                                    Denda:</label>
-                                                <input id="modal-bukti-denda" type="text" value=""
-                                                    name="denda"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    readonly>
-                                            </div>
-
-                                            <div class="flex items-center space-x-4">
-                                                <label for="bukti" class="w-32 text-md font-medium text-gray-700">
-                                                    Bukti Pembayaran:</label>
-                                                <img src="" id="modal-bukti-foto" alt="Bukti Pembayaran"
-                                                    class="w-80 h-80 object-cover border border-gray-300 rounded-md">
-                                            </div>
-                                            
-                                            {{-- total bayar --}}
-                                            <div class="flex items-center space-x-4 mt-4">
-                                                <label for="total_bayar"
-                                                    class="w-32 text-md font-medium text-gray-700">
-                                                    Total Bayar:</label>
-                                                <input id="modal-bukti-total" type="number" value=""
-                                                    name="total_bayar"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    readonly>
-                                            </div>
-
-                                            {{-- metode pembayaran --}}
-                                            <div class="flex items-center space-x-4 mt-4">
-                                                <label for="metode" class="w-32 text-md font-medium text-gray-700">
-                                                    Metode Pembayaran:</label>
-                                                <input id="modal-bukti-metode" type="text" value=""
-                                                    name="metode"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    readonly>
-                                            </div>
-
-                                            {{-- keterangan --}}
-                                            <div class="flex items-center space-x-4 mt-4">
-                                                <label for="keterangan"
-                                                    class="w-32 text-md font-medium text-gray-700">
-                                                    Keterangan:</label>
-                                                <textarea id="modal-bukti-keterangan" type="text" value="" rows="2" name="keterangan"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
-                                            </div>
-
+                        
                                             <input type="hidden" id="modal-bukti-idPembayaran" name="idPembayaran">
                                             <input type="hidden" id="modal-bukti-idKontrak" name="idKontrak">
-
                                         </div>
+                        
                                         {{-- SUBMIT --}}
-                                        <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                        <div class="modal-footer border-t border-gray-200 py-4 px-6 flex justify-end space-x-3">
                                             <button type="button" name="action" value="tolak" data-toggle="modal"
                                                 data-target="#ModalTolakPembayaran" data-dismiss="modal"
-                                                class="verifikasi-pembayaran rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600">
+                                                class="verifikasi-pembayaran px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
                                                 Pembayaran Salah
                                             </button>
                                             <button type="submit" name="action" value="verifikasi"
                                                 data-toggle="modal" data-target="#ModalSuksesVerifikasiBukti"
-                                                class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
                                                 Verifikasi
                                             </button>
                                         </div>
@@ -608,9 +589,10 @@
                     <div class="modal-dialog max-w-4xl mx-auto mt-24">
                         <div class="modal-content rounded-lg shadow-lg bg-white">
                             {{-- header --}}
-                            <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Pembayaran
-                                </h3>
+                            <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-gray-800">INVOICE TAGIHAN</h3>
+                                </div>
                                 <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
                                     aria-hidden="true">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -620,112 +602,106 @@
                                     </svg>
                                 </button>
                             </div>
+
                             {{-- content --}}
-                            <div class="modal-body p-6 space-y-2">
-                                <!-- AJAX -->
-                                <div class="flex items-center space-x-4">
-                                    <label for="kamar" class="w-32 text-md font-medium text-gray-700">
-                                        Kamar:</label>
-                                    <input id="modal-kamar" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                            <div class="modal-body p-6">
+                                <!-- Informasi Utama -->
+                                <div class="flex flex-col gap-4 mb-6">
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span class="font-medium text-gray-600">Kamar</span>
+                                        <input id="modal-kamar" type="text" 
+                                            class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none" 
+                                            readonly>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span class="font-medium text-gray-600">Nama Penyewa</span>
+                                        <input id="modal-nama" type="text" 
+                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
+                                            readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Detail Status -->
+                                <div class="flex flex-col gap-4 mb-6">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium text-gray-600">Status</span>
+                                        <input id="modal-status" type="text" 
+                                            class="w-1/2 text-right px-2 py-1 bg-gray-100 rounded-md border-none" 
+                                            readonly>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium text-gray-600">Tanggal Tagihan</span>
+                                        <input id="modal-tagihan" type="text" 
+                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
+                                            readonly>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium text-gray-600">Tanggal Denda</span>
+                                        <input id="modal-tempo" type="text" 
+                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
+                                            readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Rentang Waktu -->
+                                <div class="flex justify-between items-center mb-6 px-4 py-2 bg-blue-50 rounded-lg">
+                                    <span class="font-medium text-blue-600">Rentang Pembayaran</span>
+                                    <input id="modal-rentang" type="text" 
+                                        class="text-right font-semibold text-blue-700 bg-transparent border-none" 
                                         readonly>
                                 </div>
 
-                                <div class="flex items-center space-x-4">
-                                    <label for="nama" class="w-32 text-md font-medium text-gray-700">
-                                        Nama Penyewa:</label>
-                                    <input id="modal-nama" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
+                                <!-- Detail Pembayaran -->
+                                <div class="border rounded-lg p-4 mb-6">
+                                    <h4 class="text-lg font-bold mb-4">Rincian Pembayaran</h4>
+                                    
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between" id="harga-kontrak">
+                                            <span class="font-medium">Harga Sewa:</span>
+                                            <input id="modal-harga" type="text" value=""
+                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                        </div>
+
+                                        <div class="flex justify-between" id="deposit-kontrak">
+                                            <span class="font-medium">Deposit:</span>
+                                            <input id="modal-deposit" type="text" value=""
+                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                        </div>
+
+                                        <div id="biaya-container" class="space-y-3"></div>
+
+                                        <div class="flex justify-between" id="denda-kontrak">
+                                            <span class="font-medium">Denda:</span>
+                                            <input id="modal-denda" type="text" value=""
+                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                        </div>
+
+                                        <div class="flex justify-between border-t pt-3">
+                                            <span class="font-bold">Total Pembayaran:</span>
+                                            <input id="modal-total" type="text" value=""
+                                                class="w-1/3 text-right px-2 font-bold bg-transparent" readonly>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="flex items-center space-x-4">
-                                    <label for="status" class="w-32 text-md font-medium text-gray-700">
-                                        Status:</label>
-                                    <input id="modal-status" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
+                                <!-- Keterangan -->
+                                <div class="mb-4">
+                                    <p class="font-medium text-gray-700">Keterangan:</p>
+                                    <textarea id="modal-keterangan" rows="2"
+                                        class="w-full px-3 py-2 border rounded-md focus:outline-none" readonly></textarea>
                                 </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="tagihan" class="w-32 text-md font-medium text-gray-700">
-                                        Tanggal Tagihan:</label>
-                                    <input id="modal-tagihan" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="tempo" class="w-32 text-md font-medium text-gray-700">
-                                        Tanggal Denda:</label>
-                                    <input id="modal-tempo" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="rentang" class="w-32 text-md font-medium text-gray-700">
-                                        Rentang:</label>
-                                    <input id="modal-rentang" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="text-center">
-                                    <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
-                                </div>
-
-                                <div class="flex items-center space-x-4" id="harga-kontrak">
-                                    <label for="harga" class="w-32 text-md font-medium text-gray-700">
-                                        Harga:</label>
-                                    <input id="modal-harga" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="flex items-center space-x-4" id="deposit-kontrak">
-                                    <label for="deposit" class="w-32 text-md font-medium text-gray-700">
-                                        Deposit:</label>
-                                    <input id="modal-deposit" type="text" value="" name="deposit"
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <!-- Container untuk biayaList yang akan diisi melalui AJAX -->
-                                <div id="biaya-container"></div>
-
-                                <div class="flex items-center space-x-4" id="denda-kontrak">
-                                    <label for="denda" class="w-32 text-md font-medium text-gray-700">
-                                        Denda:</label>
-                                    <input id="modal-denda" type="text" value="" name="denda"
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="total" class="w-32 text-md font-medium text-gray-700">
-                                        Total Bayar:</label>
-                                    <input id="modal-total" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
-                                        Keterangan:</label>
-                                    <textarea id="modal-keterangan" type="text" value="" rows="2"
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
-                                </div>
-
                             </div>
-                            <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
-                                <button type="button" data-toggle="modal" data-target="#ModalUbahPembayaran"
-                                    data-dismiss="modal"
-                                    class="rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+
+                            <div class="modal-footer border-t border-gray-200 py-2 px-6 flex justify-end space-x-3">
+                                <button type="button" data-toggle="modal" data-target="#ModalUbahPembayaran" data-dismiss="modal"
+                                    class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
                                     Ubah Pembayaran
                                 </button>
                                 <button type="button"
-                                    class=" rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                                    class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
                                     data-dismiss="modal">
                                     Tutup
                                 </button>
@@ -880,9 +856,11 @@
                     aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog max-w-4xl mx-auto mt-24">
                         <div class="modal-content rounded-lg shadow-lg bg-white">
-                            <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">Detail Pembayaran
-                                </h3>
+                            {{-- Header --}}
+                            <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-gray-800">DETAIL RIWAYAT PEMBAYARAN</h3>
+                                </div>
                                 <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal"
                                     aria-hidden="true">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -892,125 +870,120 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="modal-body p-6 space-y-2">
-                                <!-- AJAX -->
-                                <div class="flex items-center space-x-4">
-                                    <label for="kamar" class="w-32 text-md font-medium text-gray-700">
-                                        Kamar:</label>
-                                    <input id="modal-riwayat-kamar" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
+                
+                            {{-- Content --}}
+                            <div class="modal-body p-6">
+                                <!-- Informasi Utama -->
+                                <div class="flex flex-col gap-4 mb-6">
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span class="font-medium text-gray-600">Kamar</span>
+                                        <input id="modal-riwayat-kamar" type="text"
+                                            class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none" readonly>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span class="font-medium text-gray-600">Nama Penyewa</span>
+                                        <input id="modal-riwayat-nama" type="text"
+                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" readonly>
+                                    </div>
                                 </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="nama" class="w-32 text-md font-medium text-gray-700">
-                                        Nama Penyewa:</label>
-                                    <input id="modal-riwayat-nama" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
+                
+                                <!-- Detail Waktu -->
+                                <div class="flex flex-col gap-4 mb-6">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium text-gray-600">Tanggal Tagihan</span>
+                                        <input id="modal-riwayat-tgl_tagihan" type="text"
+                                            class="w-1/2 text-right bg-transparent border-none" readonly>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium text-gray-600">Tanggal Denda</span>
+                                        <input id="modal-riwayat-tgl_denda" type="text"
+                                            class="w-1/2 text-right bg-transparent border-none" readonly>
+                                    </div>
                                 </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="tgl_tagihan" class="w-32 text-md font-medium text-gray-700">
-                                        Tanggal Tagihan:</label>
-                                    <input id="modal-riwayat-tgl_tagihan" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
+                
+                                <!-- Rentang Waktu -->
+                                <div class="flex justify-between items-center mb-6 px-4 py-2 bg-blue-50 rounded-lg">
+                                    <span class="font-medium text-blue-600">Rentang Pembayaran</span>
+                                    <input id="modal-riwayat-rentang" type="text"
+                                        class="text-right font-semibold text-blue-700 bg-transparent border-none" readonly>
                                 </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="tgl_denda" class="w-32 text-md font-medium text-gray-700">
-                                        Tanggal Denda:</label>
-                                    <input id="modal-riwayat-tgl_denda" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
+                
+                                <!-- Detail Pembayaran -->
+                                <div class="border rounded-lg p-4 mb-6">
+                                    <h4 class="text-lg font-bold mb-4">Rincian Pembayaran</h4>
+                                    
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between">
+                                            <span class="font-medium">Harga Sewa:</span>
+                                            <input id="modal-riwayat-harga" type="text"
+                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                        </div>
+                
+                                        <div class="flex justify-between" id="riwayat-deposit">
+                                            <span class="font-medium">Deposit:</span>
+                                            <input id="modal-riwayat-deposit" type="text"
+                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                        </div>
+                
+                                        <div id="riwayat-container" class="space-y-3"></div>
+                
+                                        <div class="flex justify-between" id="riwayat-denda">
+                                            <span class="font-medium">Denda:</span>
+                                            <input id="modal-riwayat-denda" type="text"
+                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                        </div>
+                
+                                        <div class="flex justify-between border-t pt-3">
+                                            <span class="font-bold">Total Pembayaran:</span>
+                                            <input id="modal-riwayat-total" type="text"
+                                                class="w-1/3 text-right px-2 font-bold bg-transparent" readonly>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="rentang" class="w-32 text-md font-medium text-gray-700">
-                                        Rentang:</label>
-                                    <input id="modal-riwayat-rentang" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
+                
+                                <!-- Bukti Pembayaran -->
+                                <div class="mb-6">
+                                    <div class="flex flex-col items-center space-y-2">
+                                        <span class="font-medium text-gray-600">Bukti Pembayaran</span>
+                                        <img src="" id="modal-riwayat-foto" alt="Bukti Pembayaran"
+                                            class="h-72 object-contain border border-gray-200 rounded-lg p-2">
+                                    </div>
                                 </div>
-
-                                <div class="text-center">
-                                    <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
+                
+                                <!-- Detail Tambahan -->
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span class="font-medium text-gray-600">Metode Pembayaran</span>
+                                        <input id="modal-riwayat-metode" type="text"
+                                            class="w-1/2 text-right bg-transparent border-none" readonly>
+                                    </div>
+                
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span class="font-medium text-gray-600">Tanggal Pembayaran</span>
+                                        <input id="modal-riwayat-tanggal" type="text"
+                                            class="w-1/2 text-right bg-transparent border-none" readonly>
+                                    </div>
+                
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span class="font-medium text-gray-600">Status</span>
+                                        <input id="modal-riwayat-status" type="text"
+                                            class="w-1/2 text-right bg-transparent border-none" readonly>
+                                    </div>
+                
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <span class="font-medium text-gray-600">Keterangan</span>
+                                        <textarea id="modal-riwayat-keterangan" rows="2"
+                                            class="w-1/2 text-right bg-transparent border-none resize-none" readonly></textarea>
+                                    </div>
                                 </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="harga" class="w-32 text-md font-medium text-gray-700">
-                                        Harga:</label>
-                                    <input id="modal-riwayat-harga" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="flex items-center space-x-4" id="riwayat-deposit">
-                                    <label for="deposit" class="w-32 text-md font-medium text-gray-700">
-                                        Deposit:</label>
-                                    <input id="modal-riwayat-deposit" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <!-- Container untuk biayaList yang akan diisi melalui AJAX -->
-                                <div id="riwayat-container"></div>
-
-                                <div class="flex items-center space-x-4" id="riwayat-denda">
-                                    <label for="denda" class="w-32 text-md font-medium text-gray-700">
-                                        Denda:</label>
-                                    <input id="modal-riwayat-denda" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="total" class="w-32 text-md font-medium text-gray-700">
-                                        Total Bayar:</label>
-                                    <input id="modal-riwayat-total" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="text-center">
-                                    <p class="text-gray-500 text-sm">Bukti Pembayaran</p>
-                                </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="bukti" class="w-32 text-md font-medium text-gray-700">
-                                        Bukti Pembayaran:</label>
-                                    <img src="" id="modal-riwayat-foto" alt="Bukti Pembayaran"
-                                        class="w-80 h-80 object-cover border border-gray-300 rounded-md">
-                                </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
-                                        Tanggal Pembayaran:</label>
-                                    <input id="modal-riwayat-tanggal" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="status" class="w-32 text-md font-medium text-gray-700">
-                                        Status:</label>
-                                    <input id="modal-riwayat-status" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
-
-                                <div class="flex items-center space-x-4">
-                                    <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
-                                        Keterangan:</label>
-                                    <textarea id="modal-riwayat-keterangan" type="text" value="" rows="2"
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
-                                </div>
-
                             </div>
-                            <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                
+                            {{-- Footer --}}
+                            <div class="modal-footer border-t border-gray-200 py-4 px-6 flex justify-end">
                                 <button type="button"
-                                    class=" rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                                    class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
                                     data-dismiss="modal">
                                     Tutup
                                 </button>
@@ -1051,19 +1024,13 @@
                         $('#waktu_tagihan_denda_update').show();
 
                         /// Hitung tanggal tagihan berikutnya
-                        const tglTagihan = new Date(data.data
-                            .tgl_tagihan); // Konversi ke objek Date
-                        const waktuTagihan = parseInt(data.pengaturan.waktu_tagihan) ||
-                            tglTagihan
-                            .getDate(); // Ambil waktu_tagihan atau default tanggal tagihan saat ini
+                        const tglTagihan = new Date(data.data.tgl_tagihan); // Konversi ke objek Date
+                        const waktuTagihan = parseInt(data.pengaturan.waktu_tagihan) || tglTagihan.getDate(); // Ambil waktu_tagihan atau default tanggal tagihan saat ini
 
                         tglTagihan.setMonth(tglTagihan.getMonth() + 1); // Tambahkan 1 bulan
-                        const lastDayOfNextMonth = new Date(tglTagihan.getFullYear(),
-                            tglTagihan.getMonth() + 1, 0).getDate();
-                        tglTagihan.setDate(Math.min(waktuTagihan,
-                            lastDayOfNextMonth)); // Atur tanggal sesuai waktu_tagihan
-                        const nextTagihan = tglTagihan.toISOString().split('T')[
-                            0]; // Format YYYY-MM-DD
+                        const lastDayOfNextMonth = new Date(tglTagihan.getFullYear(), tglTagihan.getMonth() + 1, 0).getDate();
+                        tglTagihan.setDate(Math.min(waktuTagihan,lastDayOfNextMonth)); // Atur tanggal sesuai waktu_tagihan
+                        const nextTagihan = tglTagihan.toISOString().split('T')[0]; // Format YYYY-MM-DD
 
                         $('#modal-buat-tagihanBerikutnya').val(nextTagihan);
 
@@ -1283,21 +1250,21 @@
                     $('#biaya-container').empty();
                     $.each(data.biayaList, function(index, biaya) {
                         $('#biaya-container').append(`
-                        <div class="mb-2 flex items-center space-x-4">
-                            <label for="${biaya.biaya}" class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
-                                <input type="text" id="${biaya.biaya}" name="${biaya.biaya}" 
-                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
+                        <div class="flex justify-between">
+                            <span class="font-medium">${biaya.biaya}:</span>
+                            <input type="text" id="${biaya.biaya}" name="${biaya.biaya}" 
+                                class="w-1/3 text-right px-2 bg-transparent" 
                                 value="${biaya.harga}" readonly>
-                            </div>
+                        </div>
                         `);
                     });
 
                     // DEPOSIT KONTRAK
                     if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data.deposit !== null) {
-                        $('#deposit-kontrak').show();
+                        $('#deposit-kontrak').removeClass('hidden');
                         $('#modal-deposit').val(data.data.deposit);
                     } else {
-                        $('#deposit-kontrak').hide();
+                        $('#deposit-kontrak').addClass('hidden');
                     }
 
                     // REVISI
@@ -1307,8 +1274,13 @@
                         $('#harga-kontrak').addClass('hidden');
                     } else {
                         $('#harga-kontrak').removeClass('hidden');
-                        $('#deposit-kontrak').removeClass('hidden');
-                        $('#modal-deposit').val(data.data.deposit);
+                        // Hanya tampilkan deposit jika ada nilai deposit
+                        if (data.data.deposit !== null) {
+                            $('#deposit-kontrak').removeClass('hidden');
+                            $('#modal-deposit').val(data.data.deposit);
+                        } else {
+                            $('#deposit-kontrak').addClass('hidden');
+                        }
                     }
 
                     // Logika untuk denda
@@ -1336,7 +1308,7 @@
                                 if (jenisDenda === 'Nominal') {
                                     denda = nilaiDenda;
                                 } else if (jenisDenda === 'Persen') {
-                                    denda = ((totalBayar - deposit) * nilaiDenda) / 100;
+                                    denda = (totalBayar * nilaiDenda) / 100;
                                 } else {
                                     const hari = Math.abs(today - dendaDate);
                                     const formatHari = Math.ceil(hari / (1000 * 60 * 60 *

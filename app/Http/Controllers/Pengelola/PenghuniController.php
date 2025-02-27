@@ -91,6 +91,12 @@ class PenghuniController extends Controller
         return redirect()->back()->with('Penghuni berhasil diterima');
     }
 
+    public function tolakHunian(Request $request)
+    {
+        DB::table('users')->where('id', $request->idKontrak)->delete();
+
+        return redirect()->back()->with('Penghuni berhasil tertolak');
+    }
 
 
 

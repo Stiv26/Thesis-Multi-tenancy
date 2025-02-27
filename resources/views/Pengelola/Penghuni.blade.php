@@ -194,9 +194,18 @@
 
                                 {{-- AJAX DATA DIRI --}}
                                 <div id="dataDiri-permintaan-container"></div>
-
+                                
                             </div>
                             <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
+                                <form action="{{ route('penghuni.delete') }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="hidden" id="modal-tolak-idKontrak" name="idKontrak">
+                                    <button type="submit"
+                                        class="rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600">
+                                        Tolak
+                                    </button>
+                                </form>
                                 <button type="button" data-toggle="modal" data-target="#ModalTerima"
                                     class="lihat-detail-permintaan rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
                                     data-dismiss="modal">
@@ -1298,6 +1307,7 @@
                     $('#modal-atur-nama').val(data.data.nama);
                     $('#modal-atur-tgl_masuk').val(data.data.tgl_masuk);
                     $('#modal-atur-idKontrak').val(data.data.idKontrak);
+                    $('#modal-tolak-idKontrak').val(data.data.idKontrak);
                 }
             });
         });

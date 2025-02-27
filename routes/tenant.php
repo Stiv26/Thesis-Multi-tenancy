@@ -105,8 +105,17 @@ Route::middleware([
             
             // DASHBOARD 
             Route::get('/dashboard/{bulan?}/{tahun?}', [DashboardController::class, 'index'])->name('dashboard.index'); // ui dashboard
-            Route::post('/dashboard/aturan', [DashboardController::class, 'pengaturan'])->name('atur.pengaturan'); // update pengaturan
 
+            Route::post('/dashboard/aturan', [DashboardController::class, 'pengaturan'])->name('atur.pengaturan'); // update pengaturan
+            Route::post('/dashboard/denda', [DashboardController::class, 'denda'])->name('atur.denda'); // update denda
+            // Data diri routes
+            Route::post('/dashboard/tambah-dataDiri', [DashboardController::class, 'storeDataDiri'])->name('dashboard.dataDiri.store'); // create data
+            Route::put('/dashboard/ubah-dataDiri', [DashboardController::class, 'updateDataDiri'])->name('dashboard.dataDiri.update'); // update data
+            Route::delete('/dashboard/hapus-dataDiri', [DashboardController::class, 'destroyDataDiri'])->name('dashboard.dataDiri.destroy'); // delete data
+            // Biaya Routes
+            Route::post('/dashboard/tambah-biaya', [DashboardController::class, 'storeBiaya'])->name('dashboard.biaya.store');
+            Route::put('/dashboard/ubah-biaya', [DashboardController::class, 'updateBiaya'])->name('dashboard.biaya.update');
+            Route::delete('/dashboard/hapus-biaya', [DashboardController::class, 'destroyBiaya'])->name('dashboard.biaya.destroy');
 
 
 
@@ -191,8 +200,9 @@ Route::middleware([
 
             // routeing tambah kontrak 
             Route::post('/penghuni/terima-kontrak', [PenghuniController::class, 'terimaHunian'])->name('penghuni.store');
-            Route::post('/penghuni/tambah-kontrak', [PenghuniController::class, 'storeKontrak'])->name('kontrak.store'); // main route function tambah kontrak
             Route::get('/penghuni/{id}', [PenghuniController::class, 'detailpenghuni']); // modal penghuni
+            Route::delete('/penghuni/tolak-kontrak', [PenghuniController::class, 'tolakHunian'])->name('penghuni.delete');
+            Route::post('/penghuni/tambah-kontrak', [PenghuniController::class, 'storeKontrak'])->name('kontrak.store'); // main route function tambah kontrak
 
 
 

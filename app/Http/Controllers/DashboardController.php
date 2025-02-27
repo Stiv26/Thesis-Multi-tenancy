@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DashboardController extends Controller
 {
@@ -31,10 +33,16 @@ class DashboardController extends Controller
             ->count();
 
             
+        $currentDate = Carbon::now();
+        $threeDaysBefore = $currentDate->copy()->subDays(3)->toDateString();
+        $startOfMonth = $currentDate->copy()->startOfMonth()->toDateString();
+        $endOfMonth = $currentDate->copy()->endOfMonth()->toDateString();
+
         $today = now(); // Tanggal hari ini
         $startDate = $today->copy()->subDays(7); // 7 hari sebelum hari ini
         $endDate = $today->copy()->addDays(7); // 7  hari setelah hari ini
 
+        // menampilkan tagihan yang harus dibuat
         $tagihan = DB::table('kontrak as k')
             ->join('users as u', 'u.id', '=', 'k.Users_id') // Gabungkan dengan tabel users
             ->whereBetween('k.tgl_tagihan', [$startDate, $endDate]) // Filter rentang tanggal tagihan
@@ -55,19 +63,6 @@ class DashboardController extends Controller
             ->select('*')
             ->where('n.status', 'Terkirim')
             ->get();
-
-
-
-        // PENGATURAN
-        $pengaturan = DB::table('default')
-            ->where('idDefault', 1)
-            ->first();
-            
-        $pengaturanDenda = DB::table('denda')
-            ->where('idDenda', 1)
-            ->first();
-
-
 
         // KEUANGAN
         $bulan = $bulan ?? now()->month;
@@ -97,6 +92,36 @@ class DashboardController extends Controller
             ->take(3)
             ->get();
 
+        // PENGATURAN
+        $pengaturan = DB::table('default')
+            ->where('idDefault', 1)
+            ->first();
+
+        $pengaturanDenda = null;
+        $biayaList = collect();
+        $dataDiriList = collect();
+
+        // Cek tabel denda
+        if (Schema::hasTable('denda')) {
+            $pengaturanDenda = DB::table('denda')
+                ->where('idDenda', 1)
+                ->first();
+        }
+
+        // Cek tabel biaya
+        if (Schema::hasTable('biaya')) {
+            $biayaList = DB::table('biaya as b')
+                ->select('*')
+                ->get();
+        }
+
+        // Cek tabel listdatadiri
+        if (Schema::hasTable('listdatadiri')) {
+            $dataDiriList = DB::table('listdatadiri as l')
+                ->select('*')
+                ->get();
+        }
+
         return view('Pengelola.dashboard', compact(
             'permintaan',
             'tagihan', 
@@ -109,7 +134,9 @@ class DashboardController extends Controller
             'bulanTersedia',
             'riwayatBulan',
             'bulan',
-            'tahun'
+            'tahun',
+            'biayaList',
+            'dataDiriList'
         ));
     }
 
@@ -135,6 +162,11 @@ class DashboardController extends Controller
             ]);
         }
 
+        return redirect()->back()->with('Pengaturan berhasil ditambahkan');
+    }
+
+    public function denda(Request $request)
+    {
         $exists = DB::table('denda')->where('idDenda', $request->idDenda)->exists();
 
         if ($exists) {
@@ -160,5 +192,59 @@ class DashboardController extends Controller
         }
 
         return redirect()->back()->with('Pengaturan berhasil ditambahkan');
+    }
+
+    // DATA DIRI
+    public function storeDataDiri(Request $request) // tambah data diri - Saas
+    {
+        DB::table('listdatadiri')->insert([
+            'data_diri' => $request->dataDiri,
+        ]);
+
+        return redirect()->back()->with('success', 'Data Diri berhasil ditambahkan.');
+    }
+
+    public function updateDataDiri(Request $request) // update data diri - Saas
+    {
+        DB::table('listDataDiri')
+            ->where('idListDataDiri', $request->idDataDiri)
+            ->update([
+                'data_diri' => $request->dataDiri,
+            ]);
+
+        return redirect()->back()->with('success', 'Data Diri berhasil diperbaruhi.');
+    }
+
+    public function destroyDataDiri(Request $request) // hapus data diri - SaaS
+    {
+        DB::table('listDataDiri')->where('idListDataDiri', $request->idDataDiri)->delete();
+
+        return redirect()->back()->with('success', 'Data Diri berhasil dihapus.');
+    }
+
+    // BIAYA
+    public function storeBiaya(Request $request) // tambah biaya - SaaS
+    {
+        DB::table('biaya')->insert([
+            'biaya' => $request->biaya,
+        ]);
+
+        return redirect()->back()->with('success', 'Biaya berhasil ditambahkan.');
+    }
+
+    public function updateBiaya(Request $request)
+    {
+        DB::table('biaya')
+            ->where('idBiaya', $request->idBiaya)
+            ->update(['biaya' => $request->biaya]);
+
+        return redirect()->back()->with('success', 'Biaya berhasil diupdate');
+    }
+
+    public function destroyBiaya(Request $request) // hapus biaya - SaaS
+    {
+        DB::table('biaya')->where('idBiaya', $request->idBiaya)->delete();
+
+        return redirect()->back()->with('success', 'Biaya berhasil dihapus.');
     }
 }

@@ -592,37 +592,7 @@
                                     </div>
                                 </div>
 
-                                {{-- Fasilitas --}}
-                                <div class="sm:col-span-3 sm:col-start-1">
-                                    <label class="block text-sm font-medium leading-6 text-gray-900">Fasilitas</label>
-                                    <div class="mt-2">
-                                        @foreach ($fasilitasKamar as $item)
-                                            <div class="flex items-center">
-                                                <input type="checkbox" checked name="fasilitas[]"
-                                                    value="{{ $item->idFasilitas }}"
-                                                    id="fasilitas_{{ $item->idFasilitas }}"
-                                                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                                                <label for="fasilitas_{{ $item->idFasilitas }}"
-                                                    class="ml-2 block text-sm text-gray-900">
-                                                    {{ $item->fasilitas }}
-                                                </label>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-
-
-                                {{-- Keterangan --}}
-                                <div class="sm:col-span-3 sm:col-start-1">
-                                    <label for="keterangan"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Keterangan</label>
-                                    <div class="mt-2">
-                                        <textarea id="keterangan" name="keterangan" rows="2"
-                                            class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            required></textarea>
-                                    </div>
-                                </div>
-
+                                
                                 {{-- HARGA MINGGUAN DAN HARIAN --}}
                                 <div class="sm:col-span-3 sm:col-start-1">
                                     <button type="button" id="toggle-harga"
@@ -671,6 +641,41 @@
                                             }
                                         });
                                     </script>
+                                </div>
+
+                                {{-- Fasilitas --}}
+                                <div class="sm:col-span-3 sm:col-start-1">
+                                    <label class="block text-sm font-medium leading-6 text-gray-900">Fasilitas</label>
+                                    <div class="mt-2">
+                                        @if ($fasilitasKamar->isNotEmpty())
+                                            @foreach ($fasilitasKamar as $item)
+                                                <div class="flex items-center">
+                                                    <input type="checkbox" checked name="fasilitas[]"
+                                                        value="{{ $item->idFasilitas }}"
+                                                        id="fasilitas_{{ $item->idFasilitas }}"
+                                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                                    <label for="fasilitas_{{ $item->idFasilitas }}"
+                                                        class="ml-2 block text-sm text-gray-900">
+                                                        {{ $item->fasilitas }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <p class="text-sm text-gray-500">Anda belum menambahkan fasilitas.</p>
+                                        @endif
+                                    </div>
+                                </div>
+
+
+                                {{-- Keterangan --}}
+                                <div class="sm:col-span-3 sm:col-start-1">
+                                    <label for="keterangan"
+                                        class="block text-sm font-medium leading-6 text-gray-900">Keterangan</label>
+                                    <div class="mt-2">
+                                        <textarea id="keterangan" name="keterangan" rows="2"
+                                            class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            required></textarea>
+                                    </div>
                                 </div>
 
                             </div>
@@ -752,7 +757,7 @@
                                         <div class="flex items-center space-x-4">
                                             <label for="fasilitas" class="w-32 text-md font-medium text-gray-700">
                                                 Fasilitas:</label>
-                                            <input id="modal-fasilitas" type="text" value=""
+                                            <input id="modal-fasilitas-nama" type="text" value=""
                                                 class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                 readonly>
                                         </div>
@@ -1040,7 +1045,7 @@
                         </form>
                     </div>
                 </div>
-
+ 
                 <!-- MODAL UBAH DATA -->
                 <div class="modal fade p-4" id="ModalDetailAturan" tabindex="-1" role="dialog"
                     aria-labelledby="myModalLabel" aria-hidden="true">
@@ -1340,7 +1345,7 @@
                 url: '/fasilitas/' + id,
                 type: 'GET',
                 success: function(data) {
-                    $('#modal-fasilitas').val(data.fasilitas);
+                    $('#modal-fasilitas-nama').val(data.fasilitas);
                     $('#modal-jumlah').val(data.jumlah);
                     $('#modal-jenis').val(data.jenis);
 

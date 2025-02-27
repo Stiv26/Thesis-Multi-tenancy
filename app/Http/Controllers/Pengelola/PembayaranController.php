@@ -40,6 +40,44 @@ class PembayaranController extends Controller
             ->orderBy('k.tgl_tagihan', 'asc')
             ->get();
 
+        // $currentDate = Carbon::now();
+        // $threeDaysBefore = $currentDate->copy()->subDays(3)->toDateString();
+        // $startOfMonth = $currentDate->copy()->startOfMonth()->toDateString();
+        // $endOfMonth = $currentDate->copy()->endOfMonth()->toDateString();
+
+        // $tagihan = DB::table('kontrak as k')
+        //     ->join('users as u', 'u.id', '=', 'k.Users_id')
+        //     ->where('k.status', '!=', 'Nonaktif')
+        //     ->where(function ($query) use ($currentDate, $startOfMonth, $endOfMonth, $threeDaysBefore) {
+        //         // Kondisi untuk tagihan BULANAN
+        //         $query->where(function ($q) use ($currentDate, $startOfMonth, $endOfMonth) {
+        //             $q->where('k.rentang', 'Bulan')
+        //                 ->whereBetween('k.tgl_tagihan', [$startOfMonth, $endOfMonth])
+        //                 ->whereDate('k.tgl_tagihan', '>=', $currentDate->copy()->subDays(3))
+        //                 ->whereDate('k.tgl_tagihan', '<=', $currentDate)
+        //                 ->whereNotExists(function ($sub) {
+        //                     $sub->select(DB::raw(1))
+        //                         ->from('pembayaran as p')
+        //                         ->whereRaw('p.idKontrak = k.idKontrak')
+        //                         ->whereMonth('p.tgl_tagihan', '=', DB::raw('MONTH(k.tgl_tagihan)'))
+        //                         ->whereYear('p.tgl_tagihan', '=', DB::raw('YEAR(k.tgl_tagihan)'));
+        //                 });
+        //         })
+        //         // Kondisi untuk MINGGUAN/HARIAN
+        //         ->orWhere(function ($q) use ($currentDate) {
+        //             $q->whereIn('k.rentang', ['Mingguan', 'Harian'])
+        //                 ->whereDate('k.tgl_tagihan', '>=', $currentDate->copy()->subDays(3))
+        //                 ->whereDate('k.tgl_tagihan', '<=', $currentDate)
+        //                 ->whereNotExists(function ($sub) {
+        //                     $sub->select(DB::raw(1))
+        //                         ->from('pembayaran as p')
+        //                         ->whereRaw('p.idKontrak = k.idKontrak');
+        //                 });
+        //         });
+        //     })
+        //     ->orderBy('k.tgl_tagihan', 'asc')
+        //     ->get();
+
         // menampilkan tagihan yang sudah di bayarkan 
         $verifikasi = DB::table('pembayaran as p')
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
