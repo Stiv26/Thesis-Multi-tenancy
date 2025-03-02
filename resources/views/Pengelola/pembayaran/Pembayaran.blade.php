@@ -811,7 +811,7 @@
             </div>
         </section>
 
-        {{-- PAGE RIWAYAT --}}
+    {{-- PAGE RIWAYAT --}}
         <section id="riwayat" class="hidden">
             {{-- LIST --}}
             <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat Detail</p>

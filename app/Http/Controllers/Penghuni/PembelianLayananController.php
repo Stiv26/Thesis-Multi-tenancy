@@ -151,11 +151,16 @@ class PembelianLayananController extends Controller
 
     public function storeRevisiPembayaran(Request $request) // revisi pembayaran
     {
+        $path = $request->file('bukti')->store(
+            tenancy()->tenant->id . '/pembelian', // Folder tujuan
+            'private'     // Nama disk yang digunakan
+        );
+
         DB::table('transaksi')
             ->where('idTransaksi', $request->idTransaksi)
             ->update([
                 'status' => 'Verifikasi',
-                'bukti' => $request->bukti,
+                'bukti' => $path,
                 'dibayar' => $request->total_bayar,
             ]);
 
