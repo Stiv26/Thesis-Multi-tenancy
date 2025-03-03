@@ -538,13 +538,83 @@
             <section class="flex justify-between items-start">
                 {{-- ROOM'S --}}
                 <div class="bg-white p-3 rounded-xl shadow-md mr-4 w-72">
-                    <p class="text-center text-xl font-semibold text-gray-800 mb-3">Kamar Kosong</p>
-                    <h2 class="text-center text-2xl font-semibold text-gray-700">{{ $room }}</h2>
+                    <a href="" data-toggle="modal" data-target="#ModalKamarKosong">
+                        <p class="text-center text-xl font-semibold text-gray-800 mb-3">Kamar Kosong</p>
+                        <h2 class="text-center text-2xl font-semibold text-gray-700">{{ $room }}</h2>
+                    </a>
+
+                    <!-- MODAL DATA -->
+                    <div class="modal fade p-4" id="ModalKamarKosong" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog max-w-4xl mx-auto mt-24"> <!-- Lebar lebih besar -->
+                            <div class="modal-content rounded-lg shadow-lg bg-white">
+                                <!-- Header -->
+                                <div
+                                    class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-center">
+                                    <h3 class="text-2xl font-semibold text-gray-800">Kamar Kosong</h3>
+                                    <button type="button" class="text-gray-400 hover:text-gray-600"
+                                        data-dismiss="modal" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- Content -->
+                                <div class="modal-body p-6 space-y-4"> 
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-600">Daftar Kamar Kosong</label>
+                                        <div class="space-y-2 mt-2">
+                                            @foreach ($kamarKosong as $item)
+                                                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100" value="Kamar {{ $item->idKamar }}" readonly>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {{-- ROOM'S --}}
                 <div class="bg-white p-3 rounded-xl shadow-md mr-4 w-72">
-                    <p class="text-center text-xl font-semibold text-gray-800 mb-3">Kamar Terisi</p>
-                    <h2 class="text-center text-2xl font-semibold text-gray-700">{{ $count }}</h2>
+                    <a href="" data-toggle="modal" data-target="#ModalKamarTerisi">
+                        <p class="text-center text-xl font-semibold text-gray-800 mb-3">Kamar Terisi</p>
+                        <h2 class="text-center text-2xl font-semibold text-gray-700">{{ $count }}</h2>
+                    </a>
+
+                    <!-- MODAL DATA -->
+                    <div class="modal fade p-4" id="ModalKamarTerisi" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog max-w-4xl mx-auto mt-24"> <!-- Lebar lebih besar -->
+                            <div class="modal-content rounded-lg shadow-lg bg-white">
+                                <!-- Header -->
+                                <div
+                                    class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-center">
+                                    <h3 class="text-2xl font-semibold text-gray-800">Kamar Terisi</h3>
+                                    <button type="button" class="text-gray-400 hover:text-gray-600"
+                                        data-dismiss="modal" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- Content -->
+                                <div class="modal-body p-6 space-y-4"> 
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-600">Daftar Kamar Terisi</label>
+                                        <div class="space-y-2 mt-2">
+                                            @foreach ($kamarTerisi as $item)
+                                                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100" value="Kamar {{ $item->idKamar }}" readonly>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {{-- CREATE PAYMENT --}}
                 <div class="bg-white py-3 rounded-xl shadow-md w-full">

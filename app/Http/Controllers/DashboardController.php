@@ -24,6 +24,21 @@ class DashboardController extends Controller
             ->orWhere('k.status', 'Pembayaran Perdana')
             ->count();
 
+        $kamarKosong = DB::table('kamar')
+            ->whereNotIn('idKamar', function($query) {
+                $query->select('idkamar')
+                      ->from('kontrak')
+                      ->whereIn('status', ['Aktif', 'Pembayaran Perdana']);
+            })
+            ->orderBy('idKamar')
+            ->get('idKamar');
+
+        $kamarTerisi = DB::table('kamar as a')
+            ->join('kontrak as k', 'k.idkamar', 'a.idKamar')
+            ->whereIn('k.status', ['Aktif', 'Pembayaran Perdana'])
+            ->orderBy('k.idKamar')
+            ->get('k.idKamar');
+
         $room = DB::table('kamar as a')
             ->leftJoin('kontrak as k', function ($join) {
                 $join->on('a.idKamar', '=', 'k.idKamar')
@@ -128,6 +143,8 @@ class DashboardController extends Controller
             'pesan',
             'room',
             'count', 
+            'kamarKosong',
+            'kamarTerisi',
             'totalPendapatan',
             'pengaturan',
             'pengaturanDenda',
