@@ -192,9 +192,9 @@ class DashboardController extends Controller
                 ->where('idDenda', $request->idDenda)
                 ->update([
                     'jenis_denda' => $request->jenis_denda,
-                    'angka' => $request->angka,
-                    'angka_mingguan' => $request->angka_mingguan,
-                    'angka_harian' => $request->angka_harian,
+                    'angka' => $request->angka ?? 0,
+                    'angka_mingguan' => $request->angka_mingguan ?? 0,
+                    'angka_harian' => $request->angka_harian ?? 0,
                 ]);
         } 
         else {
@@ -202,9 +202,9 @@ class DashboardController extends Controller
             DB::table('denda')->insert([
                 'idDenda' => $request->idDenda,
                 'jenis_denda' => $request->jenis_denda,
-                'angka' => $request->angka,
-                'angka_mingguan' => $request->angka_mingguan,
-                'angka_harian' => $request->angka_harian,
+                'angka' => $request->angka ?? 0,
+                'angka_mingguan' => $request->angka_mingguan ?? 0,
+                'angka_harian' => $request->angka_harian ?? 0,
             ]);
         }
 

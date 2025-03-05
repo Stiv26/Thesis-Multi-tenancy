@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('default', function (Blueprint $table) {
             $table->id('idDefault');
-            $table->integer('pertanggal_tagihan_bulan');
-            $table->integer('pertanggal_denda_bulan');
-            $table->integer('nominal_deposit');
+            $table->integer('pertanggal_tagihan_bulan')->nullable();
+            $table->integer('pertanggal_denda_bulan')->nullable();
+            $table->integer('nominal_deposit')->nullable();
         });
     }
 

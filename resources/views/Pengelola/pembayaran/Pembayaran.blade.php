@@ -149,7 +149,12 @@
                                                 readonly>
                                         </div>
 
-                                        <div class="flex items-center space-x-4">
+                                        <div class="text-center">
+                                            <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
+                                        </div>
+
+                                        {{-- rentang --}}
+                                        <div class="flex items-center space-x-4 mt-4">
                                             <label for="rentang" class="w-32 text-md font-medium text-gray-700">
                                                 Rentang:</label>
                                             <input id="modal-buat-rentang" type="text" value=""
@@ -158,12 +163,8 @@
                                                 readonly>
                                         </div>
 
-                                        <div class="text-center">
-                                            <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
-                                        </div>
-
                                         {{-- harga --}}
-                                        <div class="flex items-center space-x-4 mt-4">
+                                        <div class="flex items-center space-x-4">
                                             <label for="harga" class="w-32 text-md font-medium text-gray-700">
                                                 Harga:</label>
                                             <input id="modal-buat-total" type="number" value=""

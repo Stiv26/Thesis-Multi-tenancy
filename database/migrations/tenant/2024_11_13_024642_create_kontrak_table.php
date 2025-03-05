@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('tgl_tagihan')->nullable();
             $table->date('tgl_denda')->nullable();
             $table->integer('deposit')->nullable();
-            $table->string('keterangan', 255);
+            $table->string('keterangan', 255)->nullable();
             $table->enum('status', ['Aktif', 'Nonaktif', 'Pembayaran Perdana', 'Permintaan'])->nullable(false);
         });        
     }
