@@ -141,11 +141,19 @@ class PembayaranController extends Controller
             ->where('p.idKontrak', '=', $id)
             ->first();
 
-        $biayaKontrak = DB::table('biayakontrak as bk')
-            ->join('biaya as b', 'b.idBiaya', '=', 'bk.idBiaya')
-            ->select('*')
-            ->where('bk.idKontrak', '=', $id)
-            ->get();
+        $biayaKontrak = [];
+
+        if (\Illuminate\Support\Facades\Schema::hasTable('biayakontrak')) {
+            try {
+                $biayaKontrak = DB::table('biayakontrak as bk')
+                    ->join('biaya as b', 'b.idBiaya', '=', 'bk.idBiaya')
+                    ->select('*')
+                    ->where('bk.idKontrak', '=', $id)
+                    ->get();
+            } catch (\Exception $e) {
+                $biayaKontrak = []; // Jika terjadi error, tetap kembalikan array kosong
+            }
+        }
 
         $metode = DB::table('metodepembayaran')
             ->select('*')
@@ -219,15 +227,30 @@ class PembayaranController extends Controller
             ->where('p.idPembayaran', '=', $id)
             ->first();
 
-        $biayaList = DB::table('biayaLainnya as bl')
-            ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
-            ->select('*')
-            ->where('bl.idPembayaran', '=', $id)
-            ->get();
+        $biayaList = [];
+        $denda = null;
 
-        $denda = DB::table('denda as d')
-            ->select('*')
-            ->first();
+        if (\Illuminate\Support\Facades\Schema::hasTable('biayaLainnya')) {
+            try {
+                $biayaList = DB::table('biayaLainnya as bl')
+                    ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
+                    ->select('*')
+                    ->where('bl.idPembayaran', '=', $id)
+                    ->get();
+            } catch (\Exception $e) {
+                $biayaList = []; // Jika terjadi error, tetap kembalikan array kosong
+            }
+        }
+
+        if (\Illuminate\Support\Facades\Schema::hasTable('denda')) {
+            try {
+                $denda = DB::table('denda as d')
+                    ->select('*')
+                    ->first();
+            } catch (\Exception $e) {
+                $denda = null; // Jika terjadi error, tetap kembalikan null
+            }
+        }    
 
         return response()->json([
             'data' => $data,
@@ -271,17 +294,32 @@ class PembayaranController extends Controller
             ->where('p.idPembayaran', $id)
             ->first();
 
-        $biayaList = DB::table('biayaLainnya as bl')
-            ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
-            ->select('*')
-            ->where('bl.idPembayaran', $id)
-            ->get();
+        $biayaList = [];
+        $denda = null;
 
-        $denda = DB::table('denda as d')
-            ->join('dendatambahan as dt', 'd.iddenda', 'dt.iddenda')
-            ->select('*')
-            ->where('dt.idpembayaran', $id)
-            ->first();
+        if (\Illuminate\Support\Facades\Schema::hasTable('biayaLainnya')) {
+            try {
+                $biayaList = DB::table('biayaLainnya as bl')
+                    ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
+                    ->select('*')
+                    ->where('bl.idPembayaran', '=', $id)
+                    ->get();
+            } catch (\Exception $e) {
+                $biayaList = []; // Jika terjadi error, tetap kembalikan array kosong
+            }
+        }
+
+        if (\Illuminate\Support\Facades\Schema::hasTable('denda') && \Illuminate\Support\Facades\Schema::hasTable('dendatambahan')) {
+            try {
+                $denda = DB::table('denda as d')
+                    ->join('dendatambahan as dt', 'd.iddenda', '=', 'dt.iddenda')
+                    ->select('*')
+                    ->where('dt.idpembayaran', $id)
+                    ->first();
+            } catch (\Exception $e) {
+                $denda = null; // Jika terjadi error, tetap kembalikan null
+            }
+        }
 
         $gambarUrl = null;
         if ($data->bukti) {
@@ -355,18 +393,33 @@ class PembayaranController extends Controller
             ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrak')
             ->where('P.idPembayaran', '=', $id)
             ->first();
+        
+        $biayaList = [];
+        $denda = null;
 
-        $biayaList = DB::table('biayaLainnya as bl')
-            ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
-            ->select('*')
-            ->where('bl.idPembayaran', '=', $id)
-            ->get();
+        if (\Illuminate\Support\Facades\Schema::hasTable('biayaLainnya') && \Illuminate\Support\Facades\Schema::hasTable('biaya')) {
+            try {
+                $biayaList = DB::table('biayaLainnya as bl')
+                    ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
+                    ->select('*')
+                    ->where('bl.idPembayaran', '=', $id)
+                    ->get();
+            } catch (\Exception $e) {
+                $biayaList = []; // Jika terjadi error, tetap kembalikan array kosong
+            }
+        }
 
-        $denda = DB::table('denda as d')
-            ->join('dendatambahan as dt', 'd.iddenda', 'dt.iddenda')
-            ->select('*')
-            ->where('dt.idpembayaran', $id)
-            ->first();
+        if (\Illuminate\Support\Facades\Schema::hasTable('denda') && \Illuminate\Support\Facades\Schema::hasTable('dendatambahan')) {
+            try {
+                $denda = DB::table('denda as d')
+                    ->join('dendatambahan as dt', 'd.iddenda', '=', 'dt.iddenda')
+                    ->select('*')
+                    ->where('dt.idpembayaran', $id)
+                    ->first();
+            } catch (\Exception $e) {
+                $denda = null; // Jika terjadi error, tetap kembalikan null
+            }
+        }
 
         $gambarUrl = null;
         if ($data->bukti) {

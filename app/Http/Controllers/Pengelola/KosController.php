@@ -78,6 +78,7 @@ class KosController extends Controller
         $penghuniList = DB::table('users')
             ->where('idrole', '=', 2)
             ->where('status', '=', 'aktif')
+            ->where('status', '=', 'Pembayaran perdana')
             ->pluck('nama');
 
         $kamarList = DB::table('kamar')

@@ -788,7 +788,7 @@
                                 <label for="deposit"
                                     class="block text-sm font-medium leading-6 text-gray-900">Nominal Deposit</label>
                                 <div class="mt-2">
-                                    <input id="deposit" name="deposit" type="number"
+                                    <input id="deposit" name="deposit" type="number" value="{{ $default->nominal_deposit ?? null }}"
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
@@ -1362,5 +1362,62 @@
                 }
             });
         });
+    });
+</script>
+
+{{-- batas tgl --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        const tglTagihanInput = document.getElementById('modal-atur-tgl_tagihan');
+        const tglDendaInput = document.getElementById('modal-atur-tgl_denda');
+
+        // Set minimum date for tanggal tagihan to today
+        tglTagihanInput.setAttribute('min', today);
+
+        tglTagihanInput.addEventListener('change', function() {
+            const selectedTglTagihan = tglTagihanInput.value;
+
+            // Set minimum date for tanggal denda to selected tanggal tagihan
+            tglDendaInput.setAttribute('min', selectedTglTagihan);
+        });
+
+        tglDendaInput.addEventListener('change', function() {
+            const selectedTglDenda = tglDendaInput.value;
+            const selectedTglTagihan = tglTagihanInput.value;
+
+            if (selectedTglDenda < selectedTglTagihan) {
+                alert('Tanggal denda tidak boleh kurang dari tanggal tagihan.');
+                tglDendaInput.value = ''; // Clear the input
+            }
+        });
+    });
+</script>
+
+{{-- SETTING HARGA DROPDOWN RENTANG --}}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const kamarDropdown = document.getElementById('kamar'); // Dropdown kamar
+        const kontrakDropdown = document.getElementById('kontrak'); // Dropdown kontrak
+
+        // Fungsi untuk memperbarui opsi rentang kontrak berdasarkan kamar yang dipilih
+        const updateRentangKontrak = () => {
+            const selectedKamar = kamarDropdown.options[kamarDropdown.selectedIndex]; // Opsi kamar terpilih
+            const hargaMingguan = selectedKamar.getAttribute('data-mingguan'); // Ambil harga mingguan
+            const hargaHarian = selectedKamar.getAttribute('data-harian'); // Ambil harga harian
+
+            // Reset dropdown kontrak ke opsi default
+            kontrakDropdown.innerHTML = `
+                <option value="Bulan">Bulan</option>
+                ${hargaMingguan ? '<option value="Mingguan">Mingguan</option>' : ''}
+                ${hargaHarian ? '<option value="Harian">Harian</option>' : ''}
+            `;
+        };
+
+        // Jalankan fungsi saat dropdown kamar berubah
+        kamarDropdown.addEventListener('change', updateRentangKontrak);
+
+        // Jalankan fungsi saat halaman dimuat untuk inisialisasi
+        updateRentangKontrak();
     });
 </script>

@@ -1115,7 +1115,7 @@
                                         <label for="deposit"
                                             class="block text-sm font-medium leading-6 text-gray-900">Nominal Deposit</label>
                                         <div class="mt-2">
-                                            <input id="deposit" name="deposit" type="number" value="{{ $default->nominal_deposit ?? 0 }}" disabled
+                                            <input id="deposit" name="deposit" type="number" value="{{ $default->nominal_deposit ?? null }}" disabled
                                                 class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         </div>
                                     </div>
@@ -1243,3 +1243,56 @@
     rekeningInput.addEventListener('input', allowOnlyNumbers);
     telponInput.addEventListener('input', allowOnlyNumbers);
 </script>
+
+{{-- RENTANG BULAN HILANGKAN WAKTU --}}
+<script>
+    // Dapatkan elemen dropdown dan container waktu
+    const kontrakDropdown = document.getElementById('kontrak');
+    const waktuContainer = document.getElementById('waktu-container');
+    const waktuInput = document.getElementById('waktu');
+
+    // Fungsi untuk menampilkan/menyembunyikan input waktu
+    function toggleWaktuInput() {
+        if (kontrakDropdown.value === 'Bulan') {
+            waktuContainer.style.display = 'none';
+            waktuInput.removeAttribute('required');
+        } else {
+            waktuContainer.style.display = 'block';
+            waktuInput.setAttribute('required', 'required');
+        }
+    }
+
+    // Jalankan fungsi saat halaman dimuat pertama kali
+    toggleWaktuInput();
+
+    // Tambahkan event listener untuk perubahan dropdown
+    kontrakDropdown.addEventListener('change', toggleWaktuInput);
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Fungsi update opsi kontrak
+        const updateKontrakOptions = () => {
+            const kamarSelect = document.getElementById('kamar');
+            const kontrakSelect = document.getElementById('kontrak');
+            const selectedKamar = kamarSelect.options[kamarSelect.selectedIndex];
+            
+            // Ambil harga dari atribut data
+            const hasMingguan = selectedKamar.dataset.mingguan && selectedKamar.dataset.mingguan !== '0';
+            const hasHarian = selectedKamar.dataset.harian && selectedKamar.dataset.harian !== '0';
+    
+            // Bangun opsi kontrak
+            let options = '<option value="Bulan">Bulan</option>';
+            if(hasMingguan) options += '<option value="Mingguan">Mingguan</option>';
+            if(hasHarian) options += '<option value="Harian">Harian</option>';
+            
+            kontrakSelect.innerHTML = options;
+        };
+    
+        // Jalankan saat kamar berubah
+        document.getElementById('kamar').addEventListener('change', updateKontrakOptions);
+        
+        // Jalankan pertama kali saat halaman dimuat
+        updateKontrakOptions();
+    });
+    </script>

@@ -169,11 +169,12 @@
                                                 Harga:</label>
                                             <input id="modal-buat-total" type="number" value=""
                                                 name="total"
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                readonly>
                                         </div>
 
                                         {{-- deposit --}}
-                                        <div class="flex items-center space-x-4 mt-4" id="deposit-container">
+                                        <div class="flex items-center space-x-4" id="deposit-container">
                                             <label for="deposit" class="w-32 text-md font-medium text-gray-700">
                                                 Deposit:</label>
                                             <input id="modal-buat-deposit" type="number" value=""

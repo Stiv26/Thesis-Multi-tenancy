@@ -40,15 +40,30 @@ class TagihanController extends Controller
             ->where('p.idPembayaran', '=', $id)
             ->first();
 
-        $biayaList = DB::table('biayaLainnya as bl')
-            ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
-            ->select('*')
-            ->where('bl.idPembayaran', '=', $id)
-            ->get();
+        $biayaList = [];
+        $denda = null;
 
-        $denda = DB::table('denda')
-            ->select('*')
-            ->first();
+        if (\Illuminate\Support\Facades\Schema::hasTable('biayaLainnya') && \Illuminate\Support\Facades\Schema::hasTable('biaya')) {
+            try {
+                $biayaList = DB::table('biayaLainnya as bl')
+                    ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
+                    ->select('*')
+                    ->where('bl.idPembayaran', '=', $id)
+                    ->get();
+            } catch (\Exception $e) {
+                $biayaList = []; // Jika terjadi error, tetap kembalikan array kosong
+            }
+        }
+
+        if (\Illuminate\Support\Facades\Schema::hasTable('denda')) {
+            try {
+                $denda = DB::table('denda')
+                    ->select('*')
+                    ->first();
+            } catch (\Exception $e) {
+                $denda = null; // Jika terjadi error, tetap kembalikan null
+            }
+        }
 
         $metode = DB::table('metodePembayaran')
             ->where('users_id', 1)
@@ -114,16 +129,31 @@ class TagihanController extends Controller
             ->where('p.idPembayaran', $id)
             ->first();
 
-        $biayaList = DB::table('biayaLainnya as bl')
-            ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
-            ->select('*')
-            ->where('bl.idPembayaran', $id)
-            ->get();
+        $biayaList = [];
+        $denda = null;  
 
-        $denda = DB::table('dendaTambahan')
-            ->select('*')
-            ->where('idPembayaran', $id)
-            ->first();
+        if (\Illuminate\Support\Facades\Schema::hasTable('biayaLainnya') && \Illuminate\Support\Facades\Schema::hasTable('biaya')) {
+            try {
+                $biayaList = DB::table('biayaLainnya as bl')
+                    ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
+                    ->select('*')
+                    ->where('bl.idPembayaran', '=', $id)
+                    ->get();
+            } catch (\Exception $e) {
+                $biayaList = []; // Jika terjadi error, tetap kembalikan array kosong
+            }
+        }
+
+        if (\Illuminate\Support\Facades\Schema::hasTable('dendaTambahan')) {
+            try {
+                $denda = DB::table('dendaTambahan')
+                    ->select('*')
+                    ->where('idPembayaran', $id)
+                    ->first();
+            } catch (\Exception $e) {
+                $denda = null; // Jika terjadi error, tetap kembalikan null
+            }
+        }
 
         $gambarUrl = null;
         if ($data->bukti) {
@@ -167,17 +197,32 @@ class TagihanController extends Controller
             ->where('P.idPembayaran', '=', $id)
             ->first();
 
-        $biayaList = DB::table('biayaLainnya as bl')
-            ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
-            ->select('*')
-            ->where('bl.idPembayaran', '=', $id)
-            ->get();
+        $biayaList = [];
+        $denda = null;
 
-        $denda = DB::table('denda as d')
-            ->join('dendatambahan as dt', 'd.iddenda', 'dt.iddenda')
-            ->select('*')
-            ->where('dt.idpembayaran', $id)
-            ->first();
+        if (\Illuminate\Support\Facades\Schema::hasTable('biayaLainnya') && \Illuminate\Support\Facades\Schema::hasTable('biaya')) {
+            try {
+                $biayaList = DB::table('biayaLainnya as bl')
+                    ->join('biaya as b', 'b.idBiaya', '=', 'bl.idBiaya')
+                    ->select('*')
+                    ->where('bl.idPembayaran', '=', $id)
+                    ->get();
+            } catch (\Exception $e) {
+                $biayaList = []; // Jika terjadi error, tetap kembalikan array kosong
+            }
+        }
+
+        if (\Illuminate\Support\Facades\Schema::hasTable('denda') && \Illuminate\Support\Facades\Schema::hasTable('dendatambahan')) {
+            try {
+                $denda = DB::table('denda as d')
+                    ->join('dendatambahan as dt', 'd.iddenda', '=', 'dt.iddenda')
+                    ->select('*')
+                    ->where('dt.idpembayaran', $id)
+                    ->first();
+            } catch (\Exception $e) {
+                $denda = null; // Jika terjadi error, tetap kembalikan null
+            }
+        }
 
         $gambarUrl = null;
         if ($data->bukti) {

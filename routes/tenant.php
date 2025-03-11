@@ -176,6 +176,7 @@ Route::middleware([
                 $listKamar = $controller->listKamar()->getData()['listKamar'];
                 $permintaan = $controller->permintaan()->getData()['data'];
                 $penghuni = $controller->penghuni()->getData()['data'];
+                $default  = $controller->checkDefault()->getData()['data'];
 
                 $biaya = $controller->biaya();
                 $biayaList = $biaya->biayaList ?? [];
@@ -184,7 +185,7 @@ Route::middleware([
                 $dataDiriList = $dataDiri->dataDiriList ?? []; // Gunakan tanda panah untuk properti objek
 
 
-                return view('pengelola.Penghuni', compact('header', 'permintaan', 'penghuni', 'listKamar', 'biayaList', 'dataDiriList'));
+                return view('pengelola.Penghuni', compact('header', 'permintaan', 'penghuni', 'listKamar', 'biayaList', 'dataDiriList', 'default'));
             })->name('penghuni.index');
 
             // routeing setting denda 

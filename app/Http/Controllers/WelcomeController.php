@@ -95,12 +95,16 @@ class WelcomeController extends Controller
             })
             ->get();
 
-        if (!\Illuminate\Support\Facades\Schema::hasTable('datadiri')) {
-            return response()->json(['dataDiriList' => []]); // Kembalikan array kosong jika tabel tidak ada
+        $dataDiriList = []; // Default array kosong jika tabel tidak ditemukan
+
+        // Cek apakah tabel 'listdatadiri' ada sebelum melakukan query
+        if (\Illuminate\Support\Facades\Schema::hasTable('listdatadiri')) {
+            try {
+                $dataDiriList = DB::table('listdatadiri as l')->select('*')->get();
+            } catch (\Exception $e) {
+                $dataDiriList = []; // Jika terjadi error, tetap kembalikan array kosong
+            }
         }
-        $dataDiriList = DB::table('listdatadiri as l')
-            ->select('*')
-            ->get();
 
         $default = DB::table('default')
             ->where('idDefault', 1)
@@ -151,6 +155,12 @@ class WelcomeController extends Controller
                     'idKontrak' => $tempId,
                     'waktu_tagihan' => $request->pertanggal_tagihan,
                     'waktu_denda' => $request->pertanggal_denda,
+                ]);
+            } else {
+                DB::table('pengaturan')->insert([
+                    'idKontrak' => $tempId,
+                    'waktu_tagihan' => 0,
+                    'waktu_denda' => 0,
                 ]);
             }
 

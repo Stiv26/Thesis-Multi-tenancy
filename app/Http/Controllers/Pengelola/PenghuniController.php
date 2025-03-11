@@ -72,7 +72,7 @@ class PenghuniController extends Controller
         DB::table('kontrak')
             ->where('idKontrak', $request->idKontrak)
             ->update([
-                'status' => 'Aktif',
+                'status' => 'Pembayaran Perdana',
                 'tgl_tagihan' => $request->tgl_tagihan,
                 'tgl_denda' => $request->tgl_denda,
                 'keterangan' => $request->keterangan,
@@ -101,6 +101,15 @@ class PenghuniController extends Controller
 
 
     // TAMBAH KONTRAK //
+    public function checkDefault()
+    {
+        $data = DB::table('default')
+            ->where('idDefault', 1)
+            ->first();
+
+        return view('Pengelola.Penghuni', compact('data'));
+    }
+    
     public function detailAturanDenda($id) // modal aturan denda - Settings
     {
         $data = DB::table('denda')
