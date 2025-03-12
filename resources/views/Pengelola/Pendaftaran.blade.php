@@ -1105,7 +1105,7 @@
                                     <div id="waktu-container" class="sm:col-span-2">
                                         <label for="waktu" class="block text-sm font-medium leading-6 text-gray-900">Waktu Tinggal</label>
                                         <div class="mt-2">
-                                            <input required id="waktu" name="waktu" type="number" value="1"
+                                            <input required id="waktu" name="waktu" type="number" value="1" min="1"
                                                 class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         </div>
                                     </div>
@@ -1189,12 +1189,10 @@
             const selectedKamar = kamarDropdown.options[kamarDropdown.selectedIndex];
             const selectedKontrak = kontrakDropdown.value;
 
-            // Ambil nilai harga dari atribut data
             const hargaBulan = parseFloat(selectedKamar.getAttribute('data-harga')) || 0;
             const hargaMingguan = parseFloat(selectedKamar.getAttribute('data-mingguan')) || 0;
             const hargaHarian = parseFloat(selectedKamar.getAttribute('data-harian')) || 0;
 
-            // Tentukan harga sesuai pilihan kontrak
             let harga;
             if (selectedKontrak === 'Mingguan') {
                 harga = hargaMingguan;
@@ -1204,24 +1202,24 @@
                 harga = hargaBulan;
             }
 
-            // Ambil nilai waktu dan deposit
-            const waktu = Math.max(parseFloat(waktuInput.value) || 1, 1); // Default waktu 1 jika kosong
+            // Reset waktu ke 1 jika kontrak berubah
+            const waktu = Math.max(parseFloat(waktuInput.value) || 1, 1);
             const deposit = Math.max(parseFloat(depositInput.value) || 0, 0);
 
-            // Hitung total harga
             const totalHarga = (harga * waktu) + deposit;
-
-            // Perbarui input pembayaran
             pembayaranInput.value = totalHarga;
         };
 
-        // Event listener untuk dropdown kontrak, kamar, waktu, dan deposit
-        kontrakDropdown.addEventListener('change', updateHarga);
+        // Tambahkan event listener untuk reset waktu saat kontrak berubah
+        kontrakDropdown.addEventListener('change', () => {
+            waktuInput.value = 1; // Reset waktu ke 1
+            updateHarga();
+        });
+
         kamarDropdown.addEventListener('change', updateHarga);
         waktuInput.addEventListener('input', updateHarga);
         depositInput.addEventListener('input', updateHarga);
 
-        // Perbarui harga saat halaman dimuat
         updateHarga();
     });
 </script>
@@ -1268,7 +1266,7 @@
     // Tambahkan event listener untuk perubahan dropdown
     kontrakDropdown.addEventListener('change', toggleWaktuInput);
 </script>
-
+{{-- HARGA MINGGUAN HARIAN SET SESUAI DENGAN KAMAR SEDIAKAN GA --}}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Fungsi update opsi kontrak
@@ -1295,4 +1293,4 @@
         // Jalankan pertama kali saat halaman dimuat
         updateKontrakOptions();
     });
-    </script>
+</script>
