@@ -90,7 +90,7 @@
                                     <td class="py-3 px-4">Kamar {{ $item->idKamar }}</td>
                                     <td class="py-3 px-4">{{ $item->nama_item }}</td>
                                     <td class="py-3 px-4">{{ $item->jumlah }}</td>
-                                    <td class="py-3 px-4">{{ $item->total_bayar }}</td>
+                                    <td class="py-3 px-4">{{ number_format($item->total_bayar, 0, ',', '.') }}</td>
                                     <td class="py-3 px-4">{{ $item->status_pembayaran }}</td>
                                     <td class="text-right py-3 px-4">
                                         <a href="#" data-id="{{ $item->idTransaksi }}" data-toggle="modal"
@@ -583,7 +583,7 @@
                             @forelse ($layananTambahan as $item)
                                 <tr class="border-t hover:bg-gray-50 transition duration-200">
                                     <td class="py-3 px-4">{{ $item->nama_item }}</td>
-                                    <td class="py-3 px-4">{{ $item->harga }}</td>
+                                    <td class="py-3 px-4">{{ number_format($item->harga, 0, ',', '.') }}</td>
                                     <td class="py-3 px-4">{{ $item->stok }}</td>
                                     <td class="py-3 px-4">{{ $item->keterangan }}</td>
                                     <td class="py-3 px-4">
@@ -1083,13 +1083,17 @@
                 url: '/detailLayanan/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     $('#modal-nama').val(data.nama_item);
-                    $('#modal-harga').val(data.harga);
+                    $('#modal-harga').val(formatRupiah(data.harga));
                     $('#modal-jumlah').val(data.stok);
                     $('#modal-keterangan').val(data.keterangan);
 
                     $('#modal-layanan-nama').val(data.nama_item);
-                    $('#modal-layanan-harga').val(data.harga);
+                    $('#modal-layanan-harga').val(formatRupiah(data.harga));
                     $('#modal-layanan-stok').val(data.stok);
                     $('#modal-layanan-keterangan').val(data.keterangan);
                     $('#modal-layanan-idLayananTambahan').val(id);
@@ -1107,13 +1111,17 @@
                 url: '/detailTransaksi/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     $('#modal-detail-pembeli').val(data.data.idKamar);
                     $('#modal-detail-nama').val(data.data.nama_item);
                     $('#modal-detail-tanggal').val(data.data.tanggal);
                     $('#modal-detail-jumlah').val(data.data.jumlah);
                     $('#modal-detail-tgl_terima').val(data.data.tgl_terima);
                     $('#modal-detail-pengantaran').val(data.data.pengantaran);
-                    $('#modal-detail-total').val(data.data.dibayar);
+                    $('#modal-detail-total').val(formatRupiah(data.data.dibayar));
                     $('#modal-detail-status').val(data.data.status_pembelian);
                     $('#modal-detail-pesan').val(data.data.pesan);
                     $('#modal-detail-foto').attr('src', data.gambar_url);

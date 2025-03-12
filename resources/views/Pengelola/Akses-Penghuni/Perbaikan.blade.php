@@ -483,17 +483,16 @@
             e.preventDefault();
             var id = $(this).data('id'); 
 
-            // AJAX untuk mengambil data kamar
             $.ajax({
                 url: '/detailPerbaikanRiwayat/' + id,
                 type: 'GET',
                 success: function(data) {
-                    $('#modal-detail-kamar').val('Kamar ' + data.data.idKamar);
-                    $('#modal-detail-tanggal').val(data.data.tanggal);
-                    $('#modal-detail-fasilitas').val(data.data.fasilitas);
-                    $('#modal-detail-jadwal').val(data.data.tgl_pemeliharaan);
-                    $('#modal-detail-pesan').val(data.data.pesan);
-                    $('#modal-detail-status').val(data.data.status_pemeliharaan);
+                    $('#modal-detail-kamar').val('Kamar ' + data.idKamar);
+                    $('#modal-detail-tanggal').val(data.tanggal);
+                    $('#modal-detail-fasilitas').val(data.fasilitas);
+                    $('#modal-detail-jadwal').val(data.tgl_pemeliharaan);
+                    $('#modal-detail-pesan').val(data.pesan);
+                    $('#modal-detail-status').val(data.status_pemeliharaan);
                 }
             });
         });

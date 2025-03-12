@@ -260,7 +260,7 @@
                             @forelse ($kamar as $item)
                                 <tr class="border-t hover:bg-gray-50 transition duration-200">
                                     <td class="py-3 px-4">Kamar {{ $item->idKamar }}</td>
-                                    <td class="py-3 px-4">{{ $item->harga }}</td>
+                                    <td class="py-3 px-4">{{ number_format($item->harga, 0, ',', '.') }}</td>
                                     <td class="py-3 px-4">{{ $item->keterangan }}</td>
                                     <td class="py-3 px-4">
                                         <a href="#" data-id="{{ $item->idKamar }}" data-toggle="modal"
@@ -591,7 +591,6 @@
                                             required>
                                     </div>
                                 </div>
-
                                 
                                 {{-- HARGA MINGGUAN DAN HARIAN --}}
                                 <div class="sm:col-span-3 sm:col-start-1">
@@ -1163,14 +1162,18 @@
                 url: '/kontrak/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     $('#modal-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-nama').val(data.data.nama);
-                    $('#modal-harga').val(data.data.harga);
+                    $('#modal-harga').val(formatRupiah(data.data.harga));
                     $('#modal-rentang').val(data.data.rentang);
                     $('#modal-masuk').val(data.data.tgl_masuk);
                     $('#modal-tagihan').val(data.data.tgl_tagihan);
                     $('#modal-denda').val(data.data.tgl_denda);
-                    $('#modal-deposit').val(data.data.deposit);
+                    $('#modal-deposit').val(formatRupiah(data.data.deposit));
                     $('#modal-waktu').val(data.data.waktu);
 
                     $('#modal-tanggal-tagihan').val(data.pengaturan.waktu_tagihan);
@@ -1191,7 +1194,7 @@
 
                     if (data.data.deposit !== null) {
                         $('#modal-show-deposit').show();
-                        $('#modal-deposit').val(data.data.deposit);
+                        $('#modal-deposit').val(formatRupiah(data.data.deposit));
                     } else {
                         $('#modal-show-deposit').hide();
                     }
@@ -1215,8 +1218,12 @@
                 url: '/kamar/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     $('#modal-no_kamar').val('Kamar ' + data.data.idKamar);
-                    $('#modal-harga_kamar').val(data.data.harga);
+                    $('#modal-harga_kamar').val(formatRupiah(data.data.harga));
                     $('#modal-harga_mingguan').val(data.data.harga_mingguan);
                     $('#modal-harga_harian').val(data.data.harga_harian);
                     $('#modal-keterangan_kamar').val(data.data.keterangan);
@@ -1239,10 +1246,8 @@
 
                     $('#toggle-mingguan-harian').removeClass('hidden').removeAttr('style');
                     $('#modal-mingguan-harian').removeClass('hidden').removeAttr('style');
-                    $('#modal-harga_mingguan').parent().removeClass('hidden').removeAttr(
-                        'style');
-                    $('#modal-harga_harian').parent().removeClass('hidden').removeAttr(
-                        'style');
+                    $('#modal-harga_mingguan').parent().removeClass('hidden').removeAttr('style');
+                    $('#modal-harga_harian').parent().removeClass('hidden').removeAttr('style');
 
                     const hasMingguan = data.data.harga_mingguan !== null;
                     const hasHarian = data.data.harga_harian !== null;

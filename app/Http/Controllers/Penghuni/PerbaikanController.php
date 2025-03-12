@@ -105,10 +105,8 @@ class PerbaikanController extends Controller
     public function detailRiwayat($id)
     {
         $data = DB::table('pemeliharaan as p')
-            ->join('fasilitas as f', 'f.idfasilitas', '=', 'p.idfasilitas')
             ->join('kontrak as k', 'k.idKontrak', '=', 'p.idKontrak')
             ->select('*', 'p.status as status_pemeliharaan')
-            ->where('p.status', '=', 'Selesai')
             ->where('p.idPemeliharaan', '=', $id)
             ->first();
 
