@@ -463,6 +463,7 @@ Route::middleware([
                 $controller = new PembelianLayananController();
 
                 $header = $controller->header()->getData()['data'];
+                $whoIsTheOwner = $controller->whoIsTheOwner()->getData()['data'];
                 $listTransaksi = $controller->listTransaksi()->getData()['data'];
                 $konfirmLIst = $controller->konfirmLIst()->getData()['data'];
                 $revisiPembayaran = $controller->revisiPembayaran()->getData()['data'];
@@ -470,7 +471,7 @@ Route::middleware([
                 $layananTambahan = $controller->layananTambahan()->getData()['data'];
                 $riwayatTransaksi = $controller->riwayatTransaksi()->getData()['data'];
 
-                return view('pengelola.Akses-Penghuni.pembelianlayanan', compact('header', 'listTransaksi', 'revisiPembayaran', 'konfirmLIst', 'layananTambahan', 'pesanan', 'riwayatTransaksi'));
+                return view('pengelola.Akses-Penghuni.pembelianlayanan', compact('header','whoIsTheOwner', 'listTransaksi', 'revisiPembayaran', 'konfirmLIst', 'layananTambahan', 'pesanan', 'riwayatTransaksi'));
             })->name('penghuni.pembelian');
 
             // modal detail

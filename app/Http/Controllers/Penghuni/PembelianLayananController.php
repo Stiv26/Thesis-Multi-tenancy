@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\GenericEmailNotification;
+use Illuminate\Support\Facades\Mail;
 
 class PembelianLayananController extends Controller
 {
@@ -15,6 +17,16 @@ class PembelianLayananController extends Controller
         $data = 'Pembelian Layanan Tambahan';
         return view('Pengelola.akses-penghuni.pembelianlayanan', compact('data'));
     }
+
+    public function whoIsTheOwner() // list owner
+    {
+        $data = DB::table('users as u')
+            ->select('*')
+            ->where('u.idRole', 1)
+            ->first();
+    
+        return view('pengelola.akses-penghuni.pelaporan', compact('data'));
+    }  
 
 
     
@@ -46,26 +58,60 @@ class PembelianLayananController extends Controller
             'private'     // Nama disk yang digunakan
         );
 
-        DB::table('transaksi')->insert([
-            'idLayananTambahan' => $request->idLayanan,
-            'idKontrak' => Auth::user()->id,
-            'jumlah' => $request->jumlah,
-            'total_bayar' => $request->total,
-            'bukti' => $path,
-            'tanggal' => now(),
-            'tgl_terima' => $request->tgl_terima,
-            'pengantaran' => $request->pengantaran,
-            'status_pengantaran' => $request->pengantaran === 'Diantar' ? 'Menunggu' : 'Ambil Sendiri',
-            'pesan' => $request->pesan,
-            'status' => 'Verifikasi', 
-            'dibayar' => $request->total,
-        ]);
-
-        DB::table('layananTambahan')
-            ->where('idLayananTambahan', $request->idLayanan)
-            ->update([
-                'stok' => $request->stok - $request->jumlah,
+        DB::beginTransaction();
+            DB::table('transaksi')->insert([
+                'idLayananTambahan' => $request->idLayanan,
+                'idKontrak' => Auth::user()->id,
+                'jumlah' => $request->jumlah,
+                'total_bayar' => $request->total,
+                'bukti' => $path,
+                'tanggal' => now(),
+                'tgl_terima' => $request->tgl_terima,
+                'pengantaran' => $request->pengantaran,
+                'status_pengantaran' => $request->pengantaran === 'Diantar' ? 'Menunggu' : 'Ambil Sendiri',
+                'pesan' => $request->pesan,
+                'status' => 'Verifikasi', 
+                'dibayar' => $request->total,
             ]);
+
+            DB::table('layananTambahan')
+                ->where('idLayananTambahan', $request->idLayanan)
+                ->update([
+                    'stok' => $request->stok - $request->jumlah,
+                ]);
+
+            $userBuy = DB::table('kontrak as k')
+                ->join('users as u', 'k.users_id', '=', 'u.id') 
+                ->where('k.idkontrak', Auth::user()->id)
+                ->select('u.email', 'u.nama', 'k.idKamar')
+                ->first();
+
+            $pesanan = DB::table('layanantambahan')
+                ->where('idLayananTambahan', $request->idLayanan)
+                ->select('nama_item')
+                ->first();
+
+            $emailData = [
+                'subject' => 'Pembelian Layanan Tambahan',
+                'title' => 'Kamu mendapatkan pesanan pembelian layanan tambahan',
+                'greeting' => 'Halo '.$request->whatName.',',
+                'message' => 'Kamu mendapatkan pesanan pembelian layanan tambahan dari penghuni. Detail pembelian:',
+                'data' => [
+                    'Kamar' => 'Kamar ' . $userBuy->idKamar,
+                    'Pesanan' => $pesanan->nama_item,
+                    'Jumlah' => $request->jumlah,
+                    'total_bayar' => $request->total,
+                    'tanggal' => now(),
+                    'tgl_terima' => $request->tgl_terima,
+                    'pengantaran' => $request->pengantaran,
+                    'status_pengantaran' => $request->pengantaran === 'Diantar' ? 'Menunggu' : 'Ambil Sendiri',
+                    'Status' => 'Verifikasi',
+                ]
+            ];
+
+            Mail::to($request->whoIsTheOwner)->send(new GenericEmailNotification($emailData));
+
+        DB::commit();
 
         return redirect()->back()->with('status', 'Transaksi berhasil ditambahkan!');
     }

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\FuncCall;
+use App\Mail\GenericEmailNotification;
+use Illuminate\Support\Facades\Mail;
 use Psy\TabCompletion\Matcher\FunctionsMatcher;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,7 +15,7 @@ class LayananTambahanController extends Controller
 {
     public function header()
     {
-        $data = 'Daftar Layanan Tambahan'; 
+        $data = 'Daftar Layanan Tambahan';
         return view('pengelola.layanan-tambahan.LayananTambahan', compact('data'));
     }
 
@@ -23,7 +25,7 @@ class LayananTambahanController extends Controller
         $data = DB::table('transaksi as t')
             ->join('layanantambahan as i', 't.idLayananTambahan', '=', 'i.idLayananTambahan')
             ->join('kontrak as k', 't.idKontrak', '=', 'k.idKontrak')
-            ->select('*', 't.status as status_pembayaran')   
+            ->select('*', 't.status as status_pembayaran')
             ->where('t.status', 'Verifikasi')
             ->get();
 
@@ -36,7 +38,7 @@ class LayananTambahanController extends Controller
             ->join('layanantambahan as i', 't.idLayananTambahan', 'i.idLayananTambahan')
             ->join('kontrak as k', 't.idKontrak', 'k.idKontrak')
             ->join('users as u', 'k.users_id', 'u.id')
-            ->select('*', 't.status as status_pembayaran') 
+            ->select('*', 't.status as status_pembayaran')
             ->where('t.idTransaksi', $id)
             ->first();
 
@@ -49,28 +51,39 @@ class LayananTambahanController extends Controller
         return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
     }
 
-    public function verifikasiPembayaran(Request $request) // verifikais transaksi
+    public function verifikasiPembayaran(Request $request) // verifikasi pembayaran
     {
+        $transaksi = DB::table('transaksi')->where('idTransaksi', $request->idTransaksi)->first();
+        $idKontrak = $transaksi->idKontrak;
+    
+        // Ambil data user berdasarkan kontrak
+        $userBuy = DB::table('kontrak as k')
+            ->join('users as u', 'k.users_id', '=', 'u.id')
+            ->where('k.idkontrak', $idKontrak)
+            ->select('u.email', 'u.nama', 'k.idKamar')
+            ->first();
+    
         if ($request->action === 'verifikasi') {
             DB::table('transaksi')
                 ->where('idTransaksi', $request->idTransaksi)
-                ->update([
-                    'status' => 'Lunas',
-            ]);
-
-            return redirect()->back()->with('success', 'Pembayaran berhasil diverifikasi.');
-        } 
-        elseif ($request->action === 'tolak') {
-            $dibayar = DB::table('transaksi')->where('idTransaksi', $request->idTransaksi)->value('dibayar');
-
+                ->update(['status' => 'Lunas']);
+    
+            $emailSubject = 'Pembayaran Diterima';
+            $status = 'Lunas';
+            $message = 'Pembayaran berhasil diverifikasi.';
+        } elseif ($request->action === 'tolak') {
+            $dibayar = $transaksi->dibayar;
+            
+            // Update transaksi utama
             DB::table('transaksi')
                 ->where('idTransaksi', $request->idTransaksi)
                 ->update([
                     'status' => 'Lunas',
                     'status_pengantaran' => 'Selesai',
                     'dibayar' => $dibayar - $request->nominal,
-            ]);
-
+                ]);
+    
+            // Buat transaksi baru untuk sisa pembayaran
             DB::table('transaksi')->insert([
                 'idLayananTambahan' => $request->idLayanan,
                 'idKontrak' => $request->idKontrak,
@@ -81,11 +94,62 @@ class LayananTambahanController extends Controller
                 'pengantaran' => $request->pengantaran,
                 'status_pengantaran' => $request->status_pengantaran,
                 'pesan' => $request->pesan,
-                'status' => 'Belum Lunas', 
+                'status' => 'Belum Lunas',
             ]);
-            
-            return redirect()->back()->with('error', 'Pembayaran telah ditolak.');
+    
+            $emailSubject = 'Pembayaran Ditolak';
+            $status = 'Ditolak';
+            $message = 'Pembayaran ditolak. Silakan cek transaksi baru.';
         }
+    
+        // Bangun data email berdasarkan jenis transaksi
+        if ($transaksi->idLayananTambahan || $request->idLayanan) {
+            $idLayanan = $transaksi->idLayananTambahan ?? $request->idLayanan;
+            $pesanan = DB::table('layanantambahan')
+                ->where('idLayananTambahan', $idLayanan)
+                ->select('nama_item')
+                ->first();
+    
+            $emailData = [
+                'subject' => $emailSubject,
+                'title' => "Pembayaran Layanan Tambahan $status",
+                'greeting' => 'Halo ' . $userBuy->nama . ',',
+                'message' => $request->action === 'verifikasi' 
+                    ? 'Pembayaran layanan tambahan telah diverifikasi.' 
+                    : 'Pembayaran ditolak, silakan lunasi transaksi baru.',
+                'data' => [
+                    'Kamar' => 'Kamar ' . $userBuy->idKamar,
+                    'Pesanan' => $pesanan->nama_item,
+                    'Jumlah' => $transaksi->jumlah ?? $request->jumlah,
+                    'Total' => $transaksi->total_bayar ?? $request->nominal,
+                    'Status' => $status,
+                    'Tanggal' => now()->format('d-m-Y H:i'),
+                ]
+            ];
+        } else {
+            $kontrak = DB::table('kontrak')->where('idkontrak', $idKontrak)->first();
+            
+            $emailData = [
+                'subject' => $emailSubject,
+                'title' => "Pembayaran Kamar $status",
+                'greeting' => 'Halo ' . $userBuy->nama . ',',
+                'message' => $request->action === 'verifikasi' 
+                    ? 'Pembayaran kamar telah diverifikasi.' 
+                    : 'Pembayaran kamar ditolak.',
+                'data' => [
+                    'Kamar' => 'Kamar ' . $userBuy->idKamar,
+                    'Jenis Kontrak' => $kontrak->jenis_kontrak,
+                    'Tanggal Masuk' => $kontrak->tanggal_masuk,
+                    'Status' => $status,
+                    'Total' => $transaksi->total_bayar,
+                ]
+            ];
+        }
+    
+        // Kirim email
+        Mail::to($userBuy->email)->send(new GenericEmailNotification($emailData));
+    
+        return redirect()->back()->with('Pembayaran telah di verifikasi');
     }
 
 
@@ -109,7 +173,7 @@ class LayananTambahanController extends Controller
 
         if ($transaksi) {
             DB::table('transaksi')->where('idTransaksi', $id)->update(['status_pengantaran' => 'Sudah diantar']);
-        } 
+        }
 
         return redirect()->back()->with('success', 'Pesanan Terantar.');
     }
@@ -139,7 +203,7 @@ class LayananTambahanController extends Controller
             ->join('layanantambahan as i', 't.idLayananTambahan', 'i.idLayananTambahan')
             ->join('kontrak as k', 't.idKontrak', 'k.idKontrak')
             ->join('users as u', 'k.users_id', 'u.id')
-            ->select('*', 't.status as status_pembayaran') 
+            ->select('*', 't.status as status_pembayaran')
             ->where('t.idTransaksi', $id)
             ->first();
 
@@ -152,7 +216,7 @@ class LayananTambahanController extends Controller
             ->where('idTransaksi', $request->idTransaksi)
             ->update([
                 'status_pengantaran' => 'Selesai',
-        ]);
+            ]);
 
         return redirect()->back()->with('Selesaikan pesanan');
     }
@@ -166,9 +230,9 @@ class LayananTambahanController extends Controller
         $data = DB::table('layanantambahan')
             ->select('*')
             ->get();
-    
+
         return view('pengelola.layanan-tambahan.LayananTambahan', compact('data'));
-    }  
+    }
 
     public function detailLayanan($id) // modal layanan tambahan
     {
@@ -188,9 +252,9 @@ class LayananTambahanController extends Controller
             'stok' => $request->jumlah,
             'keterangan' => $request->keterangan,
         ]);
-    
+
         return redirect()->back()->with('success', 'Layanan tambahan berhasil ditambahkan.');
-    } 
+    }
 
     public function updateLayanan(Request $request) // ubah layanan tambahan
     {
@@ -217,7 +281,7 @@ class LayananTambahanController extends Controller
 
 
     // RIWAYAT //
-    public function riwayatTransaksi() 
+    public function riwayatTransaksi()
     {
         $data = DB::table('transaksi as t')
             ->join('layanantambahan as i', 't.idLayananTambahan', '=', 'i.idLayananTambahan')
@@ -227,10 +291,10 @@ class LayananTambahanController extends Controller
             ->where('t.status', 'Lunas')
             ->orderBy('t.tgl_terima', 'desc')
             ->get();
-    
+
         return view('pengelola.layanan-tambahan.LayananTambahan', compact('data'));
-    }  
-    
+    }
+
     public function detailTransaksi($id)
     {
         $data = DB::table('transaksi as t')
@@ -247,7 +311,7 @@ class LayananTambahanController extends Controller
         }
 
         return response()->json(['data' => $data, 'gambar_url' => $gambarUrl]);
-    }  
+    }
 
     // show foto //
     public function showPembelian($filename)

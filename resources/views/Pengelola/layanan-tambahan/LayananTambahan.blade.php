@@ -1093,7 +1093,7 @@
                     $('#modal-keterangan').val(data.keterangan);
 
                     $('#modal-layanan-nama').val(data.nama_item);
-                    $('#modal-layanan-harga').val(formatRupiah(data.harga));
+                    $('#modal-layanan-harga').val(data.harga);
                     $('#modal-layanan-stok').val(data.stok);
                     $('#modal-layanan-keterangan').val(data.keterangan);
                     $('#modal-layanan-idLayananTambahan').val(id);

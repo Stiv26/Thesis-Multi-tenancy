@@ -65,7 +65,7 @@ class PemeliharaanController extends Controller
                 'greeting' => 'Halo '.$userData->nama.',',
                 'message' => 'Permintaan perbaikan pemeliharaan kamu sudah mendapatkan jawaban:',
                 'data' => [
-                    'Status' => $request->status,
+                    'Status Permintaan' => $request->status,
                 ]
             ];
 

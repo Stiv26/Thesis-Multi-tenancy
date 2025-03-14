@@ -244,6 +244,8 @@
 
                                     {{-- Hidden idLayanan --}}
                                     <input type="hidden" name="idLayanan" id="modal-idLayanan">
+                                    <input type="hidden" name="whoIsTheOwner" value="{{ $whoIsTheOwner->email }}">
+                                    <input type="hidden" name="whatName" value="{{ $whoIsTheOwner->nama }}">
 
                                 </div>
                                 {{-- FOOTER --}}
