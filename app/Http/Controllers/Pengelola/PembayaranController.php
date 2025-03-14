@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\GenericEmailNotification;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class PembayaranController extends Controller
 {
@@ -186,33 +189,56 @@ class PembayaranController extends Controller
         $tempId = crc32($uuid->toString()) & 0xffffffff;
 
         DB::beginTransaction();
-        DB::table('pembayaran')->insert([
-            'idPembayaran' => $tempId,
-            'idKontrak' => $request->idKontrak,
-            'tgl_tagihan' => $request->buatTagihan,
-            'tgl_denda' => $request->buatDenda,
-            'total_bayar' => $request->total_bayar,
-            'status' => 'Belum Lunas',
-            'keterangan' => $request->keterangan,
-            'status_kontrak' => $cekStatus ? 'Aktif' : 'Pembayaran Perdana',
-        ]);
-
-        DB::table('kontrak')
-            ->where('idkontrak', $request->idKontrak)
-            ->update([
-                'tgl_tagihan' => $request->tagihanBerikutnya,
-                'tgl_denda' => $request->dendaBerikutnya,
+            DB::table('pembayaran')->insert([
+                'idPembayaran' => $tempId,
+                'idKontrak' => $request->idKontrak,
+                'tgl_tagihan' => $request->buatTagihan,
+                'tgl_denda' => $request->buatDenda,
+                'total_bayar' => $request->total_bayar,
+                'status' => 'Belum Lunas',
+                'keterangan' => $request->keterangan,
+                'status_kontrak' => $cekStatus ? 'Aktif' : 'Pembayaran Perdana',
             ]);
 
-        if ($request->has('idBiaya') && $request->has('harga_biaya')) {
-            foreach ($request->idBiaya as $key => $idBiaya) {
-                DB::table('biayalainnya')->insert([
-                    'idBiaya' => $idBiaya,
-                    'idPembayaran' => $tempId,
-                    'harga' => $request->harga_biaya[$key] ?? 0,
+            DB::table('kontrak')
+                ->where('idkontrak', $request->idKontrak)
+                ->update([
+                    'tgl_tagihan' => $request->tagihanBerikutnya,
+                    'tgl_denda' => $request->dendaBerikutnya,
                 ]);
+
+            if ($request->has('idBiaya') && $request->has('harga_biaya')) {
+                foreach ($request->idBiaya as $key => $idBiaya) {
+                    DB::table('biayalainnya')->insert([
+                        'idBiaya' => $idBiaya,
+                        'idPembayaran' => $tempId,
+                        'harga' => $request->harga_biaya[$key] ?? 0,
+                    ]);
+                }
             }
-        }
+
+            $userData = DB::table('kontrak as k')
+                ->join('users as u', 'k.users_id', '=', 'u.id') 
+                ->where('k.idkontrak', $request->idKontrak)
+                ->select('u.email', 'u.nama')
+                ->first();
+
+            if ($userData) {
+                $emailData = [
+                    'subject' => 'Tagihan Baru',
+                    'title' => 'Notifikasi Tagihan',
+                    'greeting' => 'Halo '.$userData->nama.',',
+                    'message' => 'Anda memiliki tagihan baru:',
+                    'data' => [
+                        'Tanggal Tagihan' => $request->buatTagihan,
+                        'Jumlah Tagihan' => 'Rp '.number_format($request->total_bayar, 0, ',', '.'),
+                        'Keterangan' => $request->keterangan ?? '-',
+                        'Batas Pembayaran' => $request->buatDenda
+                    ]
+                ];
+        
+                Mail::to($userData->email)->send(new GenericEmailNotification($emailData));
+            }
         DB::commit();
 
         return redirect()->back()->with('success', 'Pembayaran berhasil ditambahkan.');

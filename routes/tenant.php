@@ -33,7 +33,8 @@ use App\Http\Controllers\PengelolaART\PemeliharaanKosController;
 use App\Http\Controllers\PengelolaART\PengantaranKosController;
 use App\Http\Controllers\PengelolaART\PesanKosController;
 use App\Http\Controllers\PengelolaART\ProfilARTController;
-
+use App\Mail\GenericEmailNotification;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -409,10 +410,11 @@ Route::middleware([
                 $controller = new PelaporanController();
 
                 $header = $controller->header()->getData()['data'];
+                $whoIsTheOwner = $controller->whoIsTheOwner()->getData()['data'];
                 $pelaporan = $controller->pelaporan()->getData()['data'];
                 $riwayatPelaporan = $controller->riwayatPelaporan()->getData()['data'];
 
-                return view('pengelola.Akses-Penghuni.pelaporan', compact('header',  'pelaporan', 'riwayatPelaporan'));
+                return view('pengelola.Akses-Penghuni.pelaporan', compact('header', 'whoIsTheOwner', 'pelaporan', 'riwayatPelaporan'));
             })->name('penghuni.pelaporan');
 
             // modal detail
@@ -430,10 +432,11 @@ Route::middleware([
 
                 $header = $controller->header()->getData()['data'];
                 $perbaikan = $controller->perbaikan()->getData()['data'];
+                $whoIsTheOwner = $controller->whoIsTheOwner()->getData()['data'];
                 $listFasilitas = $controller->listFasilitas()->getData()['data'];
                 $riwayatPemeliharaan = $controller->riwayatPemeliharaan()->getData()['data'];
 
-                return view('pengelola.Akses-Penghuni.perbaikan', compact('header', 'riwayatPemeliharaan', 'listFasilitas', 'perbaikan'));
+                return view('pengelola.Akses-Penghuni.perbaikan', compact('header', 'whoIsTheOwner', 'riwayatPemeliharaan', 'listFasilitas', 'perbaikan'));
             })->name('penghuni.perbaikan');
 
             // modal detail

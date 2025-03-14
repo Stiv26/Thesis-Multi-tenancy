@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Penghuni;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Mail\GenericEmailNotification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 class PelaporanController extends Controller
@@ -15,6 +17,16 @@ class PelaporanController extends Controller
         return view('Pengelola.akses-penghuni.pelaporan', compact('data'));
     }
 
+    public function whoIsTheOwner() // list owner
+    {
+        $data = DB::table('users as u')
+            ->select('*')
+            ->where('u.idRole', 1)
+            ->first();
+    
+        return view('pengelola.akses-penghuni.pelaporan', compact('data'));
+    }  
+
     public function pelaporan() // list pelaporan tabel
     {
         $data = DB::table('notifikasi as n')
@@ -23,7 +35,7 @@ class PelaporanController extends Controller
             ->where('n.status', '=', 'Terkirim')
             ->where('n.users_pengirim', '=', Auth::user()->id)
             ->get();
-    
+
         return view('pengelola.akses-penghuni.pelaporan', compact('data'));
     }  
 
@@ -35,6 +47,28 @@ class PelaporanController extends Controller
             'tanggal' => now(),
             'status'=> 'Terkirim',
         ]);
+
+        $userData = DB::table('kontrak as k')
+            ->join('users as u', 'k.users_id', '=', 'u.id') 
+            ->where('k.idkontrak', Auth::user()->id)
+            ->select('u.email', 'u.nama')
+            ->first();
+
+        if ($userData) {
+            $emailData = [
+                'subject' => 'Pelaporan Penghuni',
+                'title' => 'Pesan pelaporan',
+                'greeting' => 'Halo '.$request->whatName.',',
+                'message' => 'Kamu mendapatkan pesan pelaporan dari penghuni:',
+                'data' => [
+                    'Kamar' => $userData->nama,
+                    'Pesan' => $request->pesan,
+                    'Status' => 'Belum Dibaca',
+                ]
+            ];
+
+            Mail::to($request->whoIsTheOwner)->send(new GenericEmailNotification($emailData));
+        }
 
         return redirect()->back()->with('success', 'Pelaporan berhasil dikirim.');
     }

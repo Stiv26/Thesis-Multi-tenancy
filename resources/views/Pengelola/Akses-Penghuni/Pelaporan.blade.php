@@ -70,7 +70,10 @@
                             Kirim
                         </button>                
                     </div>
-    
+
+                    <input type="hidden" name="whoIsTheOwner" value="{{ $whoIsTheOwner->email }}">
+                    <input type="hidden" name="whatName" value="{{ $whoIsTheOwner->nama }}">
+
                     <main id="modal-bagian-konfirmasi-pelaporan">
                         <!-- Modal Konfirmasi -->
                         <div class="modal fade p-4" id="ModalConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Penghuni;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Mail\GenericEmailNotification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 class PerbaikanController extends Controller
@@ -14,6 +16,16 @@ class PerbaikanController extends Controller
         $data = 'Permintaan Perbaikan Fasilitas';
         return view('Pengelola.akses-penghuni.perbaikan', compact('data'));
     }
+
+    public function whoIsTheOwner() // list owner
+    {
+        $data = DB::table('users as u')
+            ->select('*')
+            ->where('u.idRole', 1)
+            ->first();
+    
+            return view('pengelola.akses-penghuni.pembelianlayanan', compact('data'));
+    }  
 
     public function perbaikan() // tabel list perbaikan waiting list
     {
@@ -83,6 +95,30 @@ class PerbaikanController extends Controller
             'tanggal' => now(),
             'status'=> 'Permintaan',
         ]);
+
+        $userData = DB::table('kontrak as k')
+            ->join('users as u', 'k.users_id', '=', 'u.id') 
+            ->where('k.idkontrak', Auth::user()->id)
+            ->select('u.email', 'u.nama', 'k.idKamar')
+            ->first();
+
+        if ($userData) {
+            $emailData = [
+                'subject' => 'Permintaan Perbaikan Fasilitas',
+                'title' => 'Kamu mendapatkan permintaan perbaikan fasilitas kos',
+                'greeting' => 'Halo '.$request->whatName.',',
+                'message' => 'Kamu mendapatkan permintaan perbaikan fasilitas dari penghuni. Detail permintaan:',
+                'data' => [
+                    'Nomor Kamar' => 'Kamar ' . $userData->idKamar,
+                    'Nama' => $userData->nama,
+                    'Pesan' => $request->pesan,
+                    'tanggal' => now(),
+                    'Status' => 'Permintaaan',
+                ]
+            ];
+
+            Mail::to($request->whoIsTheOwner)->send(new GenericEmailNotification($emailData));
+        }
 
         return redirect()->back()->with('success', 'Pelaporan berhasil dikirim.');
     }

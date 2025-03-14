@@ -1161,6 +1161,8 @@
                             <input type="hidden" name="deposit" value="{{ $default->nominal_deposit ?? 0 }}">
                             <input type="hidden" name="pertanggal_tagihan" value="{{ $default->pertanggal_tagihan_bulan ?? 1 }}">
                             <input type="hidden" name="pertanggal_denda" value="{{ $default->pertanggal_denda_bulan ?? 1 }}">
+                            <input type="hidden" name="whoIsTheOwner" value="{{ $owner->email }}">
+                            <input type="hidden" name="whatName" value="{{ $owner->nama }}">
 
                             {{-- Bagian Submit --}}
                             <div class="mt-6 flex items-center justify-end gap-x-6">

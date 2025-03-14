@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Renter;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\GenericEmailNotification;
 use Illuminate\Support\Str;
 
 class TenantController extends Controller
@@ -67,6 +69,22 @@ class TenantController extends Controller
                 'nomor_tujuan' => $request->rekening,
                 'users_id' => 1,
             ]);
+
+            $emailData = [
+                'subject' => 'Registrasi Tenant Berhasil',
+                'title' => 'Selamat Datang di Sistem Kami',
+                'greeting' => 'Halo '.$request->nama.',',
+                'message' => 'Registrasi tenant Anda berhasil. Berikut detail akun Anda:',
+                'data' => [
+                    'Nama Tenant' => $request->id,
+                    'Domain' => $domain,
+                    'Email' => $request->email,
+                    'Password' => $request->password,
+                    'Login URL' => 'http://'.$domain.':8000'
+                ]
+            ];
+
+            Mail::to($request->email)->send(new GenericEmailNotification($emailData));
         DB::commit();
 
         return redirect()->back();

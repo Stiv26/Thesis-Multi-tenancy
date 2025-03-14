@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
+use App\Mail\GenericEmailNotification;
+use Illuminate\Support\Facades\Mail;
 
 class PenghuniController extends Controller
 {
@@ -85,6 +87,26 @@ class PenghuniController extends Controller
                     'idBiaya' => $idBiaya,
                     'idKontrak' => $request->idKontrak,
                 ]);
+            }
+        }
+
+        $user = DB::table('users')
+            ->where('id', $request->idKontrak)
+            ->select('email', 'nama')
+            ->first();
+
+        if ($user) {
+            try {
+                $emailData = [
+                    'subject' => 'Permintaan Kamar Diterima',
+                    'title' => 'Selamat! Permintaan Kamar Anda Diterima',
+                    'greeting' => 'Halo ' . $user->nama . ',',
+                    'message' => 'Permintaan kamar Anda telah diterima. Silakan lakukan pembayaran perdana melalui sistem.',
+                ];
+    
+                Mail::to($user->email)->send(new GenericEmailNotification($emailData));
+            } catch (\Exception $e) {
+                return redirect()->back()->with('Penghuni gagal berhasil diterima');
             }
         }
 
@@ -306,6 +328,15 @@ class PenghuniController extends Controller
                     ]);
                 }
             }
+
+            $emailData = [
+                'subject' => 'Akun SuperKos telah terbuat',
+                'title' => 'Selamat! Akun SuperKos anda sudah terbuat',
+                'greeting' => 'Halo ' . $request->nama . ',',
+                'message' => 'Akun anda telah terbuat. Silakan login dna lakukan pembayaran perdana melalui sistem.',
+            ];
+
+            Mail::to($request->email)->send(new GenericEmailNotification($emailData));
 
         // Commit transaksi jika semua berhasil
         DB::commit();

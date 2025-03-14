@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\GenericEmailNotification;
+use Illuminate\Support\Facades\Mail;
 
 class WelcomeController extends Controller
 {
@@ -109,8 +111,13 @@ class WelcomeController extends Controller
         $default = DB::table('default')
             ->where('idDefault', 1)
             ->first();
+            
+        $owner = DB::table('users as u')
+            ->select('*')
+            ->where('u.idRole', 1)
+            ->first();
 
-        return view('Pengelola.Pendaftaran', compact('listKamar', 'dataDiriList', 'default'));
+        return view('Pengelola.Pendaftaran', compact('listKamar', 'dataDiriList', 'default', 'owner'));
     }
 
     public function storeKontrak(Request $request) // tambah kontrak
@@ -181,6 +188,21 @@ class WelcomeController extends Controller
                     ]);
                 }
             }
+
+            $emailData = [
+                'subject' => 'Pemesanan Kamar Penghuni',
+                'title' => 'Kamu memiliki penghuni baru',
+                'greeting' => 'Halo '.$request->whatName.',',
+                'message' => 'Kamu mendapatkan pemesanan kamar dari penghuni. Detail pemesanan:',
+                'data' => [
+                    'Nomor Kamar' => 'Kamar ' . $request->kamar,
+                    'Jenis Kontrak' => $request->waktu . ' ' . $request->kontrak,
+                    'Tanggal Masuk' => $request->masuk,
+                    'Status' => 'Permintaaan',
+                ]
+            ];
+    
+            Mail::to($request->whoIsTheOwner)->send(new GenericEmailNotification($emailData));
 
         // Commit transaksi jika semua berhasil
         DB::commit();

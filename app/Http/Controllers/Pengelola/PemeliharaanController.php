@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Pengelola;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Mail\GenericEmailNotification;
+use Illuminate\Support\Facades\Mail;
 
 class PemeliharaanController extends Controller
 {
@@ -47,6 +50,27 @@ class PemeliharaanController extends Controller
                 'status' => $request->status,
                 'tgl_pemeliharaan' => $request->tgl_pemeliharaan,
             ]);
+
+        $userData = DB::table('kontrak as k')
+            ->join('pemeliharaan as p', 'k.idKontrak', '=', 'p.idKontrak') 
+            ->join('users as u', 'k.users_id', '=', 'u.id') 
+            ->where('p.idPemeliharaan', Auth::user()->id)
+            ->select('u.email', 'u.nama')
+            ->first();
+
+        if ($userData) {
+            $emailData = [
+                'subject' => 'Permintaan Pemeliharaan',
+                'title' => 'Pesan Permintaan Perbaikan',
+                'greeting' => 'Halo '.$userData->nama.',',
+                'message' => 'Permintaan perbaikan pemeliharaan kamu sudah mendapatkan jawaban:',
+                'data' => [
+                    'Status' => $request->status,
+                ]
+            ];
+
+            Mail::to($userData->email)->send(new GenericEmailNotification($emailData));
+        }
     
         return response()->json(['message' => 'Pemeliharaan berhasil diperbarui!'], 200);
     }
