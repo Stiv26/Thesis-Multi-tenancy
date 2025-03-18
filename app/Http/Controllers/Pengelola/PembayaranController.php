@@ -361,38 +361,55 @@ class PembayaranController extends Controller
         ]);
     }
 
-    public function verifikasiPembayaran(Request $request) // modal verifikasi atau menolak bukti tagihan
+    public function verifikasiPembayaran(Request $request)
     {
         $idPembayaran = $request->idPembayaran;
-
+    
+        // Ambil data user berdasarkan kontrak
+        $user = DB::table('kontrak as k')
+            ->join('users as u', 'k.Users_id', '=', 'u.id')
+            ->where('k.idKontrak', $request->idKontrak)
+            ->select('u.email', 'u.nama', 'k.idKamar', 'k.harga')
+            ->first();
+    
         if ($request->action === 'verifikasi') {
             DB::table('pembayaran')
                 ->where('idPembayaran', $idPembayaran)
-                ->update([
-                    'status' => 'Lunas',
-                ]);
-
+                ->update(['status' => 'Lunas']);
+    
             DB::table('kontrak')
                 ->where('idKontrak', $request->idKontrak)
-                ->update([
-                    'status' => 'Aktif',
-                ]);
-
-            return redirect()->back()->with('success', 'Pembayaran berhasil diverifikasi.');
+                ->update(['status' => 'Aktif']);
+    
+            $emailData = [
+                'subject' => 'Pembayaran Diverifikasi',
+                'title' => 'Pembayaran Berhasil Diverifikasi',
+                'greeting' => 'Halo ' . $user->nama . ',',
+                'message' => 'Pembayaran tagihan Anda telah berhasil diverifikasi:',
+                'data' => [
+                    'Kamar' => 'Kamar ' . $user->idKamar,
+                    'Jumlah Pembayaran' => $request->total_bayar,
+                    'Metode Pembayaran' => $request->metode,
+                    'Tanggal Tagihan' => $request->tgl_tagihan,
+                    'Status' => 'Lunas'
+                ]
+            ];
+    
         } elseif ($request->action === 'tolak') {
             $dibayar = DB::table('pembayaran')->where('idPembayaran', $idPembayaran)->value('dibayar');
-
+    
+            // Update pembayaran
             DB::table('pembayaran')
                 ->where('idPembayaran', $idPembayaran)
                 ->update([
                     'status' => 'Lunas',
                     'dibayar' => $dibayar - $request->total_bayar,
                 ]);
-
-
+    
+            // Buat pembayaran baru
             $uuid = Str::uuid();
             $tempId = crc32($uuid->toString()) & 0xffffffff;
-
+    
             DB::table('pembayaran')->insert([
                 'idPembayaran' => $tempId,
                 'idKontrak' => $request->idKontrak,
@@ -403,11 +420,30 @@ class PembayaranController extends Controller
                 'status_kontrak' => 'Revisi',
                 'keterangan' => $request->keterangan,
             ]);
-
-            return redirect()->back()->with('error', 'Pembayaran telah ditolak.');
+    
+            $emailData = [
+                'subject' => 'Pembayaran Ditolak',
+                'title' => 'Perlu Revisi Pembayaran',
+                'greeting' => 'Halo ' . $user->nama . ',',
+                'message' => 'Pembayaran Anda memerlukan revisi:',
+                'data' => [
+                    'Kamar' => 'Kamar ' . $user->idKamar,
+                    'Jumlah Seharusnya' => 'Rp ' . number_format($user->harga, 0, ',', '.'),
+                    'Jumlah Dibayar' => $request->total_bayar,
+                    'Keterangan' => $request->keterangan ?? 'Terdapat kesalahan dalam pembayaran',
+                    'Batas Waktu' => $request->tgl_denda
+                ]
+            ];
         }
-
-        return redirect()->back()->with('warning', 'Aksi tidak dikenali.');
+    
+        Mail::to($user->email)->send(new GenericEmailNotification($emailData));
+    
+        return redirect()->back()->with(
+            $request->action === 'verifikasi' ? 'success' : 'error',
+            $request->action === 'verifikasi' 
+                ? 'Pembayaran berhasil diverifikasi.' 
+                : 'Pembayaran telah ditolak.'
+        );
     }
 
     public function detailRiwayat($id) // modal riwayat

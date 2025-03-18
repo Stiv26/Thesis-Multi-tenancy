@@ -1017,12 +1017,16 @@
                 url: '/selesaikan-pesanan/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     $('#modal-selesaikan-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-selesaikan-pembeli').val(data.data.nama);
                     $('#modal-selesaikan-nama').val(data.data.nama_item);
                     $('#modal-selesaikan-jumlah').val(data.data.jumlah);
                     $('#modal-selesaikan-tanggal').val(data.data.tanggal);
-                    $('#modal-selesaikan-total').val(data.data.total_bayar);
+                    $('#modal-selesaikan-total').val(formatRupiah(data.data.total_bayar));
                     $('#modal-selesaikan-tgl_terima').val(data.data.tgl_terima);
                     $('#modal-selesaikan-status_pengantaran').val(data.data.status_pengantaran);
                     $('#modal-selesaikan-status').val(data.data.status_pembayaran);
@@ -1043,13 +1047,17 @@
                 url: '/layanan-tambahan/verifikasi/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     // ACTION SUCCESS
                     $('#modal-bukti-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-bukti-nama').val(data.data.nama);
                     $('#modal-bukti-item').val(data.data.nama_item);
                     $('#modal-bukti-jumlah').val(data.data.jumlah);
                     $('#modal-bukti-tanggal').val(data.data.tanggal);
-                    $('#modal-bukti-total_bayar').val(data.data.total_bayar);
+                    $('#modal-bukti-total_bayar').val(formatRupiah(data.data.total_bayar));
                     $('#modal-bukti-status').val(data.data.status_pembayaran);
                     $('#modal-bukti-pengantaran').val(data.data.pengantaran);
                     $('#modal-bukti-pengambilan').val(data.data.tgl_terima);

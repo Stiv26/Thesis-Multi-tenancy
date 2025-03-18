@@ -1131,12 +1131,16 @@
                 url: '/pembelian/listPesanan/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     $('#modal-list-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-list-pembeli').val(data.data.nama);
                     $('#modal-list-nama').val(data.data.nama_item);
                     $('#modal-list-tanggal').val(data.data.tanggal);
                     $('#modal-list-jumlah').val(data.data.jumlah);
-                    $('#modal-list-total').val(data.data.total_bayar);
+                    $('#modal-list-total').val(formatRupiah(data.data.total_bayar));
                     $('#modal-list-tgl_terima').val(data.data.tgl_terima);
                     $('#modal-list-status_pengantaran').val(data.data.status_pengantaran);
                     $('#modal-list-status').val(data.data.status_pembayaran);
@@ -1158,12 +1162,16 @@
                 url: '/pembelian/revisiPembayaran/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     $('#modal-revisi-kamar').val('Kamar ' + data.idKamar);
                     $('#modal-revisi-pembeli').val(data.nama);
                     $('#modal-revisi-nama').val(data.nama_item);
                     $('#modal-revisi-tanggal').val(data.tanggal);
                     $('#modal-revisi-jumlah').val(data.jumlah);
-                    $('#modal-revisi-total').val(data.total_bayar);
+                    $('#modal-revisi-total').val(formatRupiah(data.total_bayar));
                     $('#modal-revisi-pesan').val(data.pesan);
 
                     $('#modal-revisi-idTransaksi').val(data.idTransaksi);
@@ -1179,12 +1187,16 @@
                 url: '/detailPengantaran/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     $('#modal-pengantaran-kamar').val('Kamar ' + data.idKamar);
                     $('#modal-pengantaran-pembeli').val(data.nama);
                     $('#modal-pengantaran-nama').val(data.nama_item);
                     $('#modal-pengantaran-tanggal').val(data.tanggal);
                     $('#modal-pengantaran-jumlah').val(data.jumlah);
-                    $('#modal-pengantaran-total').val(data.total_bayar);
+                    $('#modal-pengantaran-total').val(formatRupiah(data.total_bayar));
                     $('#modal-pengantaran-tgl_terima').val(data.tgl_terima);
                     $('#modal-pengantaran-status_pengantaran').val(data.status_pengantaran);
                     $('#modal-pengantaran-status').val(data.status_pembayaran);
@@ -1205,13 +1217,17 @@
                 url: '/detailRiwayatPembelian/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     $('#modal-detail-pembeli').val('Kamar ' + data.data.idKamar);
                     $('#modal-detail-nama').val(data.data.nama_item);
                     $('#modal-detail-tanggal').val(data.data.tanggal);
                     $('#modal-detail-jumlah').val(data.data.jumlah);
                     $('#modal-detail-tgl_terima').val(data.data.tgl_terima);
                     $('#modal-detail-pengantaran').val(data.data.pengantaran);
-                    $('#modal-detail-total').val(data.data.dibayar);
+                    $('#modal-detail-total').val(formatRupiah(data.data.dibayar));
                     $('#modal-detail-status').val(data.data.status_pembelian);
                     $('#modal-detail-pesan').val(data.data.pesan);
                     $('#modal-detail-foto').attr('src', data.gambar_url);

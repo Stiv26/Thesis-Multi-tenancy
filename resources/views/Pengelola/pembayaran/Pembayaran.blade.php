@@ -383,7 +383,7 @@
                         
                                                     <div class="flex justify-between border-t pt-3">
                                                         <span class="font-bold">Total Pembayaran:</span>
-                                                        <input id="modal-bukti-total" type="number" name="total_bayar"
+                                                        <input id="modal-bukti-total" type="text" name="total_bayar"
                                                             class="w-1/3 text-right px-2 font-bold bg-transparent" readonly>
                                                     </div>
                                                 </div>
@@ -1173,12 +1173,15 @@
                     // menambahkan biaya lainnya kedalaam modal
                     $('#bukti-biaya-container').empty();
                     $.each(data.biayaList, function(index, biaya) {
-                        $('#bukti-biaya-container').append(`
-                        <div class="mb-2 flex items-center space-x-4">
-                            <label for="${biaya.biaya}" class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
-                                <input type="text" id="${biaya.biaya}" name="${biaya.biaya}" 
-                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
-                                value="${formatRupiah(biaya.harga)}" readonly>
+                    $('#bukti-biaya-container').append(`
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">${biaya.biaya}:</span>
+                                <input type="text" 
+                                    id="${biaya.biaya}" 
+                                    name="${biaya.biaya}" 
+                                    class="w-1/3 text-right px-2 bg-transparent"
+                                    value="${formatRupiah(biaya.harga)}" 
+                                    readonly>
                             </div>
                         `);
                     });
@@ -1258,12 +1261,12 @@
                     $('#biaya-container').empty();
                     $.each(data.biayaList, function(index, biaya) {
                         $('#biaya-container').append(`
-                        <div class="flex justify-between">
-                            <span class="font-medium">${biaya.biaya}:</span>
-                            <input type="text" id="${biaya.biaya}" name="${biaya.biaya}" 
-                                class="w-1/3 text-right px-2 bg-transparent" 
-                                value="${formatRupiah(biaya.harga)}" readonly>
-                        </div>
+                            <div class="flex justify-between">
+                                <span class="font-medium">${biaya.biaya}:</span>
+                                <input type="text" id="${biaya.biaya}" name="${biaya.biaya}" 
+                                    class="w-1/3 text-right px-2 bg-transparent" 
+                                    value="${formatRupiah(biaya.harga)}" readonly>
+                            </div>
                         `);
                     });
 
@@ -1443,12 +1446,15 @@
                     $('#riwayat-container').empty();
 
                     $.each(data.biayaList, function(index, biaya) {
-                        $('#riwayat-container').append(`
-                        <div class="mb-2 flex items-center space-x-4">
-                            <label for="${biaya.biaya}" class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
-                                <input type="text" id="${biaya.biaya}" name="${biaya.biaya}" 
-                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
-                                value="${formatRupiah(biaya.harga)}" readonly>
+                        $('#bukti-biaya-container').append(`
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">${biaya.biaya}:</span>
+                                <input type="text" 
+                                    id="${biaya.biaya}" 
+                                    name="${biaya.biaya}" 
+                                    class="w-1/3 text-right px-2 bg-transparent"
+                                    value="${formatRupiah(biaya.harga)}" 
+                                    readonly>
                             </div>
                         `);
                     });

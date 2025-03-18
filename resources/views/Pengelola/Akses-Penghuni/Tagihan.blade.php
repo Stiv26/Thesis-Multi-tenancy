@@ -632,6 +632,10 @@
                 url: '/detailTagihan/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     $('#modal-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-nama').val(data.data.nama);
                     $('#modal-total').val(data.data.total_bayar);
@@ -639,7 +643,7 @@
                     $('#modal-tagihan').val(data.data.tagihan);
                     $('#modal-status').val(data.data.status_pembayaran);
                     $('#modal-rentang').val(data.data.waktu + " " + data.data.rentang);
-                    $('#modal-harga').val(data.data.harga);
+                    $('#modal-harga').val(formatRupiah(data.data.harga));
                     $('#modal-keterangan').val(data.data.keterangan_pembayaran);
                     $('#modal-idPembayaran').val(data.data.idPembayaran);
 
@@ -647,11 +651,11 @@
                     $('#biaya-container').empty();
                     $.each(data.biayaList, function(index, biaya) {
                         $('#biaya-container').append(`
-                        <div class="mb-2 flex items-center space-x-4">
-                            <label for="${biaya.biaya}" class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
+                            <div class="flex justify-between mb-2">
+                                <span class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</span>
                                 <input type="text" id="${biaya.biaya}" name="${biaya.biaya}" 
-                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
-                                value="${biaya.harga}" readonly>
+                                    class="w-1/3 px-2 text-right bg-transparent"
+                                    value="${ formatRupiah(biaya.harga) }" readonly>
                             </div>
                         `);
                     });
@@ -666,7 +670,7 @@
                     // DEPOSIT KONTRAK
                     if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data.deposit !== null) {
                         $('#deposit-kontrak').show();
-                        $('#modal-deposit').val(data.data.deposit);
+                        $('#modal-deposit').val(formatRupiah(data.data.deposit));
                     } else {
                         $('#deposit-kontrak').hide();
                     }
@@ -679,7 +683,7 @@
                     } else {
                         $('#harga-kontrak').removeClass('hidden');
                         $('#deposit-kontrak').removeClass('hidden');
-                        $('#modal-deposit').val(data.data.deposit);
+                        $('#modal-deposit').val(formatRupiah(data.data.deposit));
                     }
 
                     // Logika untuk denda
@@ -770,16 +774,18 @@
                 url: '/detailMenungguVerifikasi/' + id,
                 type: 'GET',
                 success: function(data) {
+                    function formatRupiah(angka) {
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+
                     $('#modal-verifikasi-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-verifikasi-nama').val(data.data.nama);
-                    $('#modal-verifikasi-total').val(data.data.dibayar);
+                    $('#modal-verifikasi-total').val(formatRupiah(data.data.dibayar));
                     $('#modal-verifikasi-tempo').val(data.data.denda);
                     $('#modal-verifikasi-tagihan').val(data.data.tagihan);
                     $('#modal-verifikasi-status').val(data.data.status_pembayaran);
-                    $('#modal-verifikasi-rentang').val(data.data.waktu + " " + data.data
-                        .rentang);
-                    $('#modal-verifikasi-metode').val(data.data.metode + " - " + data.data
-                        .nomor_tujuan);
+                    $('#modal-verifikasi-rentang').val(data.data.waktu + " " + data.data.rentang);
+                    $('#modal-verifikasi-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
                     $('#modal-verifikasi-keterangan').val(data.data.keterangan_pembayaran);
                     $('#modal-verifikasi-idPembayaran').val(data.data.idPembayaran);
                     $('#modal-verifikasi-foto').attr('src', data.gambar_url)
@@ -788,11 +794,11 @@
                     $('#biaya-verifikasi-container').empty();
                     $.each(data.biayaList, function(index, biaya) {
                         $('#biaya-verifikasi-container').append(`
-                        <div class="mb-2 flex items-center space-x-4">
-                            <label for="${biaya.biaya}" class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
+                            <div class="flex justify-between mb-2" id="harga-verifikasi-kontrak">
+                                <span class="font-medium">${biaya.biaya}:</span>
                                 <input type="text" id="${biaya.biaya}" name="${biaya.biaya}" 
-                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
-                                value="${biaya.harga}" readonly>
+                                    class="w-1/3 text-right px-2 bg-transparent"
+                                    value="${ formatRupiah(biaya.harga) }" readonly>
                             </div>
                         `);
                     });
@@ -802,7 +808,7 @@
                         $('#harga-verifikasi-kontrak').addClass('hidden');
                     } else {
                         $('#harga-verifikasi-kontrak').removeClass('hidden');
-                        $('#modal-verifikasi-harga').val(data.data.harga);
+                        $('#modal-verifikasi-harga').val(formatRupiah(data.data.harga));
                     }
 
                     // DEPOSIT KONTRAK
@@ -811,7 +817,7 @@
                         $('#deposit-verifikasi-kontrak').addClass('hidden');
                     } else {
                         $('#deposit-verifikasi-kontrak').removeClass('hidden');
-                        $('#modal-verifikasi-deposit').val(data.data.deposit);
+                        $('#modal-verifikasi-deposit').val(formatRupiah(data.data.deposit));
                     }
 
                     // DENDA KONTRAK
@@ -819,7 +825,7 @@
                         $('#denda-verifikasi-kontrak').addClass('hidden');
                     } else {
                         $('#denda-verifikasi-kontrak').removeClass('hidden');
-                        $('#modal-verifikasi-denda').val(data.denda.nominal_denda);
+                        $('#modal-verifikasi-denda').val(formatRupiah(data.denda.nominal_denda));
                     }
                 }
             });
@@ -837,14 +843,18 @@
             url: '/detailRiwayatTagihan/' + id,
             type: 'GET',
             success: function(data) {
+                function formatRupiah(angka) {
+                    return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }
+
                 $('#modal-riwayat-kamar').val('Kamar ' + data.data.idKamar);
                 $('#modal-riwayat-nama').val(data.data.nama);
                 $('#modal-riwayat-tgl_tagihan').val(data.data.tgl_tagihan);
                 $('#modal-riwayat-tgl_denda').val(data.data.tgl_denda);
                 $('#modal-riwayat-rentang').val(data.data.waktu + " " + data.data.rentang);
-                $('#modal-riwayat-harga').val(data.data.harga);
-                $('#modal-riwayat-deposit').val(data.data.deposit);
-                $('#modal-riwayat-total').val(data.data.dibayar);
+                $('#modal-riwayat-harga').val(formatRupiah(data.data.harga));
+                $('#modal-riwayat-deposit').val(formatRupiah(data.data.deposit));
+                $('#modal-riwayat-total').val(formatRupiah(data.data.dibayar));
                 $('#modal-riwayat-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
                 $('#modal-riwayat-tanggal').val(data.data.tanggal);
                 $('#modal-riwayat-status').val(data.data.status_pembayaran);
@@ -856,20 +866,24 @@
 
                 $.each(data.biayaList, function(index, biaya) {
                     $('#riwayat-container').append(`
-                    <div class="mb-2 flex items-center space-x-4">
-                        <label for="${biaya.biaya}" class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
-                            <input type="text" id="${biaya.biaya}" name="${biaya.biaya}" 
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
-                            value="${biaya.harga}" readonly>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">${biaya.biaya}:</span>
+                            <input type="text" 
+                                id="${biaya.biaya}" 
+                                name="${biaya.biaya}" 
+                                class="w-1/3 text-right px-2 bg-transparent"
+                                value="${formatRupiah(biaya.harga)}" 
+                                readonly>
                         </div>
                     `);
                 });
+                
 
                 if (!data.denda || data.denda.nominal_denda === null) {
                     $('#riwayat-denda').addClass('hidden');
                 } else {
                     $('#riwayat-denda').removeClass('hidden');
-                    $('#modal-riwayat-denda').val(data.denda.nominal_denda);
+                    $('#modal-riwayat-denda').val(formatRupiah(data.denda.nominal_denda));
                 }
             }
         });
