@@ -1171,7 +1171,7 @@
                     $('#modal-revisi-nama').val(data.nama_item);
                     $('#modal-revisi-tanggal').val(data.tanggal);
                     $('#modal-revisi-jumlah').val(data.jumlah);
-                    $('#modal-revisi-total').val(formatRupiah(data.total_bayar));
+                    $('#modal-revisi-total').val(data.total_bayar);
                     $('#modal-revisi-pesan').val(data.pesan);
 
                     $('#modal-revisi-idTransaksi').val(data.idTransaksi);

@@ -7,6 +7,7 @@ use App\Models\Kontrak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class KosController extends Controller
@@ -62,7 +63,7 @@ class KosController extends Controller
         ]);
     } 
 
-    public function editKontrak($id) // masukan data kontrak ke edit kontrak
+    public function editKontrak($id) // masukan data kontrak ke view edit kontrak
     {
         $data = DB::table('kontrak as k')
             ->join('users as u', 'k.users_id', '=', 'u.id')
@@ -181,7 +182,7 @@ class KosController extends Controller
         return redirect()->route('kos.index')->with('status', 'Data kontrak berhasil diperbarui!');
     }
 
-    public function pembatalanKontrak($id) // masukan data kontrakk ke hapus kontrak
+    public function pembatalanKontrak($id) // masukan data kontrak ke view hapus kontrak
     {
         $data = DB::table('kontrak as k')
             ->join('users as u', 'k.users_id', '=', 'u.id')
@@ -197,23 +198,22 @@ class KosController extends Controller
         $PembayaranBelumLunas = DB::table('kontrak as k')
             ->join('pembayaran as p', 'k.idKontrak', 'p.idKontrak')
             ->where('k.idKontrak', $id)
-            ->where('p.status', 'Belum Lunas')
-            ->orWhere('p.status', 'Verifikasi')
+            ->whereIn('p.status', ['Belum Lunas', 'Verifikasi'])
             ->exists();
 
         $PembelianBelumLunas = DB::table('kontrak as k')
             ->join('transaksi as t', 'k.idKontrak', 't.idKontrak')
             ->where('t.idKontrak', $id)
-            ->where('t.status', 'Belum Lunas')
-            ->orWhere('t.status', 'Verifikasi')
-            ->orWhere('t.status_pengantaran', '!=', 'Selesai')
+            ->where(function ($query) {
+                $query->whereIn('t.status', ['Belum Lunas', 'Verifikasi'])
+                      ->orWhere('t.status_pengantaran', '!=', 'Selesai');
+            })
             ->exists();
 
         if ($PembayaranBelumLunas) {
             return redirect()->route('kos.index')
                 ->with('error', 'Kontrak tidak dapat dihapus karena terdapat pembayaran yang belum lunas.');
-        } 
-        elseif ($PembelianBelumLunas) {
+        } elseif ($PembelianBelumLunas) {
             return redirect()->route('kos.index')
                 ->with('error', 'Kontrak tidak dapat dihapus karena terdapat pembelian yang belum selesai.');
         }
@@ -226,7 +226,6 @@ class KosController extends Controller
                 'u.status' => 'nonaktif',
         ]);
 
-
         DB::table('pembatalan')->insert([
             'idKontrak' => $id,
             'deposit' => $request->deposit ?? 0,
@@ -234,6 +233,26 @@ class KosController extends Controller
             'tanggal' => now(),
             'alasan' => $request->alasan,
         ]);
+
+        $uuid = Str::uuid();
+        $tempId = crc32($uuid->toString()) & 0xffffffff;
+
+        if ($request->deposit === 'Potong') {
+            $nominal_dikembalikan = 0 - $request->pengembalian;
+
+            DB::table('pembayaran')->insert([
+                'idPembayaran' => $tempId,
+                'idKontrak' => $id,
+                'tgl_tagihan' => now(),
+                'tgl_denda' => now(),
+                'tanggal' => now(),
+                'total_bayar' => $nominal_dikembalikan,
+                'status' => 'Lunas',
+                'status_kontrak' => 'Aktif',
+                'keterangan' => 'Pengembalian deposit penghuni',
+                'dibayar' => $nominal_dikembalikan,
+            ]);
+        }
 
         return redirect()->route('kos.index')->with('status', 'Berhasil membatalkan kontrak!');
     }
