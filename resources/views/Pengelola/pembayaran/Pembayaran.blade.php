@@ -180,7 +180,7 @@
                                         {{-- harga --}}
                                         <div class="flex items-center space-x-4">
                                             <label for="harga" class="w-32 text-md font-medium text-gray-700">
-                                                Harga:</label>
+                                                Harga Kamar:</label>
                                             <input id="modal-buat-total" type="number" value=""
                                                 name="total"
                                                 class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
@@ -931,7 +931,7 @@
                                     <h4 class="text-lg font-bold mb-4">Rincian Pembayaran</h4>
                                     
                                     <div class="space-y-3">
-                                        <div class="flex justify-between">
+                                        <div class="flex justify-between" id="riwayat-harga">
                                             <span class="font-medium">Harga Sewa:</span>
                                             <input id="modal-riwayat-harga" type="text"
                                                 class="w-1/3 text-right px-2 bg-transparent" readonly>
@@ -1222,11 +1222,11 @@
                         $('#bukti-harga').addClass('hidden');
                     } else {
                         $('#bukti-harga').removeClass('hidden');
-                        $('#modal-bukti-harga').val(formatRupiah(data.data.harga));
+                        $('#modal-bukti-harga').val(formatRupiah(data.data.harga * data.data.waktu));
                     }
 
                     $('#modal-revisi-kamar').val('Kamar ' + data.data.idKamar);
-                    $('#modal-revisi-nama').val(data.data.idKamar);
+                    $('#modal-revisi-nama').val(data.data.nama);
                     $('#modal-revisi-idKontrak').val(data.data.idKontrak);
                     $('#modal-revisi-tgl_tagihan').val(data.data.tagihanPembayaran);
                     $('#modal-revisi-idPembayaran').val(data.data.idPembayaran);
@@ -1258,8 +1258,8 @@
                     $('#modal-tagihan').val(data.data.tagihanPembayaran);
                     $('#modal-tempo').val(data.data.dendaPembayaran);
                     $('#modal-rentang').val(data.data.waktu + " " + data.data.rentang);
-                    $('#modal-harga').val(formatRupiah(data.data.harga));
-                    $('#modal-deposit').val(formatRupiah(data.data.deposit));
+                    $('#modal-harga').val(formatRupiah(data.data.harga * data.data.waktu));
+                    // $('#modal-deposit').val(formatRupiah(data.data.deposit));
                     $('#modal-keterangan').val(data.data.keterangan_pembayaran);
 
                     // ubah pembayaran
@@ -1296,9 +1296,10 @@
                     if (data.data.status_pembayaran === 'Revisi') {
                         $('#deposit-kontrak').addClass('hidden');
                         $('#denda-kontrak').addClass('hidden');
-                        $('#harga-kontrak').addClass('hidden');
+                        // $('#harga-kontrak').addClass('hidden');
+                        $('#modal-harga').val(formatRupiah(data.data.total_bayar));
                     } else {
-                        $('#harga-kontrak').removeClass('hidden');
+                        // $('#harga-kontrak').removeClass('hidden');
                         // Hanya tampilkan deposit jika ada nilai deposit
                         if (data.data.deposit !== null) {
                             $('#deposit-kontrak').removeClass('hidden');
@@ -1447,8 +1448,6 @@
                     $('#modal-riwayat-tgl_tagihan').val(data.data.tgl_tagihan);
                     $('#modal-riwayat-tgl_denda').val(data.data.tgl_denda);
                     $('#modal-riwayat-rentang').val(data.data.waktu + ' ' + data.data.rentang);
-                    $('#modal-riwayat-harga').val(formatRupiah(data.data.harga));
-                    $('#modal-riwayat-deposit').val(formatRupiah(data.data.deposit));
                     $('#modal-riwayat-total').val(formatRupiah(data.data.dibayar));
                     $('#modal-riwayat-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
                     $('#modal-riwayat-tanggal').val(data.data.tanggal);
@@ -1473,11 +1472,28 @@
                         `);
                     });
 
+                    // denda
                     if (!data.denda || data.denda.nominal_denda === null) {
                         $('#riwayat-denda').addClass('hidden');
                     } else {
                         $('#riwayat-denda').removeClass('hidden');
                         $('#modal-riwayat-denda').val(formatRupiah(data.denda.nominal_denda));
+                    }
+
+                    // deposit
+                    if (data.data.status_kontrak_pembayarannya === 'Pembayaran Perdana') {
+                        $('#riwayat-deposit').removeClass('hidden');
+                        $('#modal-riwayat-deposit').val(formatRupiah(data.data.deposit));
+                    } else {
+                        $('#riwayat-deposit').addClass('hidden');
+                    }
+
+                    // revisi
+                    if (data.data.status_kontrak_pembayarannya === 'Revisi') {
+                        $('#riwayat-harga').addClass('hidden');
+                    } else {
+                        $('#riwayat-harga').removeClass('hidden');
+                        $('#modal-riwayat-harga').val(formatRupiah(data.data.harga));
                     }
                 }
             });

@@ -182,24 +182,25 @@
                                                 {{-- SETTING DATE --}}
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', () => {
-                                                        const tanggalInput = document.getElementById('modal-terima'); // Input tanggal
-
-                                                        // Fungsi untuk mendapatkan tanggal hari ini dalam format YYYY-MM-DD
-                                                        const getTodayDate = () => {
+                                                        const tanggalInput = document.getElementById('modal-terima');
+                                                
+                                                        const getTodayDateTime = () => {
                                                             const today = new Date();
                                                             const year = today.getFullYear();
-                                                            const month = String(today.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0, jadi +1
+                                                            const month = String(today.getMonth() + 1).padStart(2, '0');
                                                             const day = String(today.getDate()).padStart(2, '0');
-                                                            return `${year}-${month}-${day}`;
+                                                            const hours = String(today.getHours()).padStart(2, '0');
+                                                            const minutes = String(today.getMinutes()).padStart(2, '0');
+                                                            return `${year}-${month}-${day}T${hours}:${minutes}`;
                                                         };
-
-                                                        // Set default tanggal menjadi hari ini
-                                                        tanggalInput.value = getTodayDate();
-
-                                                        // Set atribut min agar tidak bisa memilih tanggal sebelum hari ini
-                                                        tanggalInput.setAttribute('min', getTodayDate());
+                                                
+                                                        // Set default value & min attribute ke hari ini + jam sekarang
+                                                        const todayDateTime = getTodayDateTime();
+                                                        tanggalInput.value = todayDateTime;
+                                                        tanggalInput.setAttribute('min', todayDateTime);
                                                     });
                                                 </script>
+                                                
                                             </div>
                                         </div>
                                     </div>

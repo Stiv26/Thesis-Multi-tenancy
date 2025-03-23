@@ -442,7 +442,7 @@ class PembayaranController extends Controller
             ->join('kontrak as k', 'p.idkontrak', '=', 'k.idkontrak')
             ->join('users as u', 'u.id', '=', 'k.users_id')
             ->join('metodepembayaran as m', 'm.idmetodepembayaran', '=', 'p.idmetodepembayaran')
-            ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrak')
+            ->select('*', 'p.status as status_pembayaran', 'p.keterangan as keterangan_pembayaran', 'p.tgl_tagihan as tagihanPembayaran', 'p.tgl_denda as dendaPembayaran', 'k.status as status_kontrak', 'p.status_kontrak as status_kontrak_pembayarannya')
             ->where('P.idPembayaran', '=', $id)
             ->first();
 

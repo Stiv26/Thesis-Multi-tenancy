@@ -46,7 +46,7 @@
                             
                             <div class="modal-body p-6 space-y-2">
                                 {{-- content --}}
-                                @if ($tabelDefault && $tabelDataDiri && $tabelBiaya)
+                                @if ($tabelDefault || $tabelDataDiri || $tabelBiaya)
                                     <section class="flex justify-center items-center mb-2">
                                         <div class="flex items-center justify-between px-3 py-3 rounded-lg">
                                             <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">

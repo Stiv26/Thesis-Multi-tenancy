@@ -122,7 +122,7 @@ class WelcomeController extends Controller
 
     public function storeKontrak(Request $request) // tambah kontrak
     {
-        $existingUser  = DB::table('users')->where('no_telp', $request->no_telp)->where('status', 'Aktif')->first();
+        $existingUser  = DB::table('users')->where('no_telp', $request->telpon)->where('status', 'Aktif')->first();
 
         if ($existingUser) {
             return back()->withErrors(['users' => 'Nomor Telepon sudah aktif terdaftar dalam kos.'])->withInput();

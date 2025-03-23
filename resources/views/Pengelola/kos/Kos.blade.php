@@ -1173,7 +1173,6 @@
                     $('#modal-masuk').val(data.data.tgl_masuk);
                     $('#modal-tagihan').val(data.data.tgl_tagihan);
                     $('#modal-denda').val(data.data.tgl_denda);
-                    $('#modal-deposit').val(formatRupiah(data.data.deposit));
                     $('#modal-waktu').val(data.data.waktu);
 
                     $('#modal-tanggal-tagihan').val(data.pengaturan.waktu_tagihan);

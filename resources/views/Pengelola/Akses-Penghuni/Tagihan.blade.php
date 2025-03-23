@@ -502,7 +502,7 @@
                                     <h4 class="text-lg font-bold mb-4">Rincian Pembayaran</h4>
                                     
                                     <div class="space-y-3">
-                                        <div class="flex justify-between">
+                                        <div class="flex justify-between" id="riwayat-harga">
                                             <span class="font-medium">Harga Sewa:</span>
                                             <input id="modal-riwayat-harga" type="text"
                                                 class="w-1/3 text-right px-2 bg-transparent" readonly>
@@ -643,7 +643,7 @@
                     $('#modal-tagihan').val(data.data.tagihan);
                     $('#modal-status').val(data.data.status_pembayaran);
                     $('#modal-rentang').val(data.data.waktu + " " + data.data.rentang);
-                    $('#modal-harga').val(formatRupiah(data.data.harga));
+                    $('#modal-harga').val(formatRupiah(data.data.harga * data.data.waktu));
                     $('#modal-keterangan').val(data.data.keterangan_pembayaran);
                     $('#modal-idPembayaran').val(data.data.idPembayaran);
 
@@ -679,11 +679,12 @@
                     if (data.data.status_pembayaran === 'Revisi') {
                         $('#deposit-kontrak').addClass('hidden');
                         $('#denda-kontrak').addClass('hidden');
-                        $('#harga-kontrak').addClass('hidden');
+                        // $('#harga-kontrak').addClass('hidden');
+                        $('#modal-harga').val(formatRupiah(data.data.total_bayar));
                     } else {
-                        $('#harga-kontrak').removeClass('hidden');
+                        // $('#harga-kontrak').removeClass('hidden');
                         $('#deposit-kontrak').removeClass('hidden');
-                        $('#modal-deposit').val(formatRupiah(data.data.deposit));
+                        $('#modal-deposit').val(data.data.deposit);
                     }
 
                     // Logika untuk denda
@@ -808,7 +809,7 @@
                         $('#harga-verifikasi-kontrak').addClass('hidden');
                     } else {
                         $('#harga-verifikasi-kontrak').removeClass('hidden');
-                        $('#modal-verifikasi-harga').val(formatRupiah(data.data.harga));
+                        $('#modal-verifikasi-harga').val(formatRupiah(data.data.harga * data.data.waktu));
                     }
 
                     // DEPOSIT KONTRAK
@@ -826,6 +827,14 @@
                     } else {
                         $('#denda-verifikasi-kontrak').removeClass('hidden');
                         $('#modal-verifikasi-denda').val(formatRupiah(data.denda.nominal_denda));
+                    }
+
+                    // revisi
+                    if (data.data.status_kontrak_pembayarannya === 'Revisi') {
+                        $('#riwayat-harga').addClass('hidden');
+                    } else {
+                        $('#riwayat-harga').removeClass('hidden');
+                        $('#modal-riwayat-harga').val(formatRupiah(data.data.harga));
                     }
                 }
             });
@@ -852,8 +861,6 @@
                 $('#modal-riwayat-tgl_tagihan').val(data.data.tgl_tagihan);
                 $('#modal-riwayat-tgl_denda').val(data.data.tgl_denda);
                 $('#modal-riwayat-rentang').val(data.data.waktu + " " + data.data.rentang);
-                $('#modal-riwayat-harga').val(formatRupiah(data.data.harga));
-                $('#modal-riwayat-deposit').val(formatRupiah(data.data.deposit));
                 $('#modal-riwayat-total').val(formatRupiah(data.data.dibayar));
                 $('#modal-riwayat-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
                 $('#modal-riwayat-tanggal').val(data.data.tanggal);
@@ -884,6 +891,14 @@
                 } else {
                     $('#riwayat-denda').removeClass('hidden');
                     $('#modal-riwayat-denda').val(formatRupiah(data.denda.nominal_denda));
+                }
+
+                if (data.data.status_kontrak_pembayarannya === 'Pembayaran Perdana')
+                {
+                    $('#riwayat-deposit').removeClass('hidden');
+                    $('#modal-riwayat-deposit').val(formatRupiah(data.data.deposit));
+                } else {
+                    $('#riwayat-deposit').addClass('hidden');
                 }
             }
         });

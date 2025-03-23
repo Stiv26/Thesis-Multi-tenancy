@@ -43,14 +43,74 @@
                                     value="{{ $data->harga }}" readonly>
                             </li>
                             {{-- rentang --}}
-                            <li class="mb-4">
+                            {{-- <li class="mb-4">
                                 <label for="rentang" class="block font-medium mb-2">Rentang:</label>
                                 <select id="rentang" name="rentang" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition">
                                     <option value="bulan" @selected($data->rentang == 'Bulan')>Bulan</option>
                                     <option value="mingguan" @selected($data->rentang == 'Mingguan')>Mingguan</option>
                                     <option value="harian" @selected($data->rentang == 'Harian')>Harian</option>
                                 </select>                            
+                            </li> --}}
+
+                            <li class="mb-4">
+                                <label for="rentang" class="block font-medium mb-2">Rentang:</label>
+                                <select id="rentang" name="rentang" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                    <option value="bulan" @selected($data->rentang == 'Bulan')>Bulan</option>
+                                    @php
+                                        // Cek kamar yang dipilih awal
+                                        $selectedKamar = $kamarList->firstWhere('idKamar', $data->idKamar ?? null);
+                                        $showMingguan = $selectedKamar && !is_null($selectedKamar->harga_mingguan);
+                                        $showHarian = $selectedKamar && !is_null($selectedKamar->harga_harian);
+                                    @endphp
+                                    @if($showMingguan)
+                                        <option value="mingguan" @selected($data->rentang == 'Mingguan')>Mingguan</option>
+                                    @endif
+                                    @if($showHarian)
+                                        <option value="harian" @selected($data->rentang == 'Harian')>Harian</option>
+                                    @endif
+                                </select>                            
                             </li>
+                            
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const kamarSelect = document.getElementById('kamar');
+                                    const rentangSelect = document.getElementById('rentang');
+                                
+                                    function updateRentang() {
+                                        // Ambil data dari kamar yang dipilih
+                                        const selectedOption = kamarSelect.options[kamarSelect.selectedIndex];
+                                        const hasMingguan = selectedOption.dataset.mingguan !== '';
+                                        const hasHarian = selectedOption.dataset.harian !== '';
+                                
+                                        // Update opsi mingguan
+                                        let mingguanOption = rentangSelect.querySelector('option[value="mingguan"]');
+                                        if(hasMingguan && !mingguanOption) {
+                                            rentangSelect.innerHTML += '<option value="mingguan">Mingguan</option>';
+                                        } else if(!hasMingguan && mingguanOption) {
+                                            mingguanOption.remove();
+                                        }
+                                
+                                        // Update opsi harian
+                                        let harianOption = rentangSelect.querySelector('option[value="harian"]');
+                                        if(hasHarian && !harianOption) {
+                                            rentangSelect.innerHTML += '<option value="harian">Harian</option>';
+                                        } else if(!hasHarian && harianOption) {
+                                            harianOption.remove();
+                                        }
+                                
+                                        // Reset ke bulan jika opsi tidak valid
+                                        if(!rentangSelect.querySelector(`option[value="${rentangSelect.value}"]`)) {
+                                            rentangSelect.value = 'bulan';
+                                        }
+                                    }
+                                
+                                    // Update saat pertama kali load
+                                    updateRentang();
+                                    
+                                    // Update saat kamar berubah
+                                    kamarSelect.addEventListener('change', updateRentang);
+                                });
+                            </script>
 
                             {{-- UPDATE HARGA KAMAR --}}
                             <script>

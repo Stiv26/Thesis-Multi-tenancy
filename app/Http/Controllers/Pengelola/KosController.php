@@ -201,14 +201,18 @@ class KosController extends Controller
             ->whereIn('p.status', ['Belum Lunas', 'Verifikasi'])
             ->exists();
 
-        $PembelianBelumLunas = DB::table('kontrak as k')
-            ->join('transaksi as t', 'k.idKontrak', 't.idKontrak')
-            ->where('t.idKontrak', $id)
-            ->where(function ($query) {
-                $query->whereIn('t.status', ['Belum Lunas', 'Verifikasi'])
-                      ->orWhere('t.status_pengantaran', '!=', 'Selesai');
-            })
-            ->exists();
+        $PembelianBelumLunas = false;
+
+        if (Schema::hasTable('transaksi')) {
+            $PembelianBelumLunas = DB::table('kontrak as k')
+                ->join('transaksi as t', 'k.idKontrak', 't.idKontrak')
+                ->where('t.idKontrak', $id)
+                ->where(function ($query) {
+                    $query->whereIn('t.status', ['Belum Lunas', 'Verifikasi'])
+                        ->orWhere('t.status_pengantaran', '!=', 'Selesai');
+                })
+                ->exists();
+        }
 
         if ($PembayaranBelumLunas) {
             return redirect()->route('kos.index')
@@ -228,8 +232,8 @@ class KosController extends Controller
 
         DB::table('pembatalan')->insert([
             'idKontrak' => $id,
-            'deposit' => $request->deposit ?? 0,
-            'pengembalian_deposit' => $request->pengembalian ?? 'Kembalikan',
+            'deposit' => $request->deposit ?? 'Kembalikan', 
+            'pengembalian_deposit' => $request->pengembalian ?? 0,
             'tanggal' => now(),
             'alasan' => $request->alasan,
         ]);

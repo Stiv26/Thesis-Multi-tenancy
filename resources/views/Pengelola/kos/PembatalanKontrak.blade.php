@@ -42,9 +42,25 @@
                             </li>
                             <li class="mb-4">
                                 <label for="pengembalian" class="block font-medium mb-2">Nominal Pengembalian Deposit:</label>
-                                <input required type="number" id="pengembalian" name="pengembalian" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
+                                <input readonly required type="number" id="pengembalian" name="pengembalian" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
                                     value="{{ $data->deposit }}">                         
                             </li>
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const depositSelect = document.getElementById('deposit');
+                                    const pengembalianInput = document.getElementById('pengembalian');
+                        
+                                    depositSelect.addEventListener('change', () => {
+                                        if (depositSelect.value === 'Potong') {
+                                            pengembalianInput.removeAttribute('readonly');
+                                        } else {
+                                            pengembalianInput.setAttribute('readonly', true);
+                                            pengembalianInput.value = "{{ $data->deposit }}"; 
+                                        }
+                                    });
+                                });
+                            </script>
                         @endif
                         <li class="mb-4">
                             <label for="alasan" class="block font-medium mb-2">Alasan:</label>

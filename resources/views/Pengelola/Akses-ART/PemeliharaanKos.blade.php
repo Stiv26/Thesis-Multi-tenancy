@@ -89,12 +89,6 @@
                                 </div>
 
                                 <div class="flex items-center space-x-4">
-                                    <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
-                                        Tanggal Penjadwalan:</label>
-                                    <input id="modal-jadwal" type="text" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
-                                </div>
-
-                                <div class="flex items-center space-x-4">
                                     <label for="pesan" class="w-32 text-md font-medium text-gray-700">
                                         Pesan:</label>
                                     <textarea id="modal-pesan" type="text" value="" rows="2" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly></textarea>
@@ -108,7 +102,6 @@
                                         Status:</label>
                                     <select id="modal-status" name="status" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                         <option value="Permintaan" disabled>Permintaan</option>
-                                        <option value="Penjadwalan">Penjadwalan</option>
                                         <option value="Pengerjaan">Pengerjaan</option>
                                         <option value="Tolak">Tolak</option>
                                     </select>
@@ -119,6 +112,20 @@
                                         Penjadwalan:</label>
                                     <input required id="modal-jadwalkan" name="jadwalkan" type="datetime-local" value="" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                 </div>
+
+                                <script>
+                                    const input = document.getElementById('modal-jadwalkan');
+                                    const now = new Date();
+                                
+                                    const pad = num => num.toString().padStart(2, '0');
+                                    const formattedNow = now.getFullYear() + '-' +
+                                        pad(now.getMonth() + 1) + '-' +
+                                        pad(now.getDate()) + 'T' +
+                                        pad(now.getHours()) + ':' +
+                                        pad(now.getMinutes());
+                                
+                                    input.min = formattedNow;
+                                </script>
                                 
                             </div>
                             <div class="modal-footer border-t border-gray-200 py-2 px-6 flex">
@@ -132,37 +139,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Modal Konfirmasi -->
-            <div class="modal fade p-4" id="ModalConfirmResponPemeliharaan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog max-w-4xl mx-auto mt-24">
-                    <div class="modal-content rounded-lg shadow-lg bg-white">
-                        <div class="modal-body p-6 space-y-2">
-                            <div class="flex items-center space-x-4">
-                                <!-- Icon Warning -->
-                                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-                                    <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-                                    </svg>
-                                </div>
-                                <!-- Modal Title & Description -->
-                                <div class="text-left">
-                                    <h3 class="text-lg font-semibold text-gray-900" id="modal-title">Konfirmasi Permintaan Pemeliharaan</h3>
-                                    <p class="mt-2 text-sm text-gray-500">Apakah anda yakin dengan respon permintaan pemeliharaan ini?</p>
-                                </div>
-                            </div>
-    
-                            <!-- Footer: Tombol Aksi -->
-                            <div class="mt-6 flex justify-end space-x-4">
-                                <button type="button" data-dismiss="modal" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition">Batal</button>
-                                <button type="submit" id="ubah-pemeliharaan-btn" class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition">Kirim</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-            
         </section>
 
         <!-- PAGE RIWAYAT -->
@@ -318,7 +296,7 @@
                     $('#modal-kamar').val('Kamar ' + data.idKamar);
                     $('#modal-tanggal').val(data.tanggal);
                     $('#modal-fasilitas').val(data.fasilitas);
-                    $('#modal-jadwal').val(data.tgl_pemeliharaan);
+                    // $('#modal-jadwal').val(data.tgl_pemeliharaan);
                     $('#modal-pesan').val(data.pesan);
 
                     $('#modal-status').val(data.status_pemeliharaan);
