@@ -62,7 +62,7 @@
         <!-- PAGE PEMBAYARAN -->
         <section id="list" class="block">
             {{-- BUAT TAGIHAN --}}
-            @if ($tagihan->isNotEmpty())
+            @if ($tagihanBulanan->isNotEmpty() || $tagihanNonBulanan->isNotEmpty())
                 <div>
                     <p class="text-sm text-gray-500 mb-3 px-3">Buat tagihan pembayaran kos</p>
                     <table class="min-w-full table-auto bg-white rounded-lg shadow-md mb-5">
@@ -76,7 +76,21 @@
                             </tr>
                         </thead>
                         <tbody class="text-sm text-gray-800">
-                            @foreach ($tagihan as $item)
+                            @foreach ($tagihanBulanan as $item)
+                                <tr class="border-t hover:bg-gray-50 transition duration-200">
+                                    <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
+                                    <td class="py-3 px-4">{{ $item->nama }}</td>
+                                    <td class="py-3 px-4">{{ $item->tgl_tagihan }}</td>
+                                    <td class="py-3 px-4">{{ $item->tgl_denda }}</td>
+                                    <td class="py-3 px-4">
+                                        <a href="#" data-id="{{ $item->idKontrak }}" data-toggle="modal"
+                                            data-target="#ModalBuatTagihan"
+                                            class="buat-pembayaran text-indigo-500 hover:text-indigo-700 transition">
+                                            Buat Pembayaran <span aria-hidden="true">→</span></a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            @foreach ($tagihanNonBulanan as $item)
                                 <tr class="border-t hover:bg-gray-50 transition duration-200">
                                     <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
                                     <td class="py-3 px-4">{{ $item->nama }}</td>
