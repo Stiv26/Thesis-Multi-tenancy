@@ -65,6 +65,38 @@ class PenghuniController extends Controller
 
     public function terimaHunian(Request $request) // acc permintaan
     {
+        $kontrak = DB::table('kontrak')
+            ->where('idKontrak', $request->idKontrak)
+            ->first();
+
+        if ($kontrak) {
+            $idKamar = $kontrak->idKamar;
+
+            $kontrakLain = DB::table('kontrak')
+                ->where('idKamar', $idKamar)
+                ->where('status', 'Permintaan')
+                ->where('idKontrak', '!=', $request->idKontrak)
+                ->get();
+
+            foreach ($kontrakLain as $kontrak) {
+                
+                $userTertolak = DB::table('users')
+                ->where('id', $request->idKontrak)
+                ->select('email', 'nama')
+                ->first();
+                
+                $emailDataTertolak = [
+                    'subject' => 'Permintaan Kamar Ditolak',
+                    'title' => 'Mohon Maaf, Permintaan Kamar Anda Ditolak',
+                    'greeting' => 'Halo ' . $userTertolak->nama . ',',
+                    'message' => 'Permintaan kamar Anda Ditolak. Silakan hubungi pengelola lebih lanjut.',
+                ];
+                
+                Mail::to($userTertolak->email)->send(new GenericEmailNotification($emailDataTertolak));
+                $this->tolakHunian(new Request(['idKontrak' => $kontrak->idKontrak]));
+            }
+        }
+
         DB::table('users')
             ->where('id', $request->idKontrak)
             ->update([
@@ -103,7 +135,7 @@ class PenghuniController extends Controller
                     'greeting' => 'Halo ' . $user->nama . ',',
                     'message' => 'Permintaan kamar Anda telah diterima. Silakan lakukan pembayaran perdana melalui sistem.',
                 ];
-    
+
                 Mail::to($user->email)->send(new GenericEmailNotification($emailData));
             } catch (\Exception $e) {
                 return redirect()->back()->with('Penghuni gagal berhasil diterima');
@@ -131,7 +163,7 @@ class PenghuniController extends Controller
 
         return view('Pengelola.Penghuni', compact('data'));
     }
-    
+
     public function detailAturanDenda($id) // modal aturan denda - Settings
     {
         $data = DB::table('denda')
@@ -265,78 +297,78 @@ class PenghuniController extends Controller
         $tempId = crc32($uuid->toString()) & 0xffffffff;
 
         DB::beginTransaction();
-            // Insert data ke tabel users
-            DB::table('users')->insert([
-                'id' => $tempId,
-                'no_telp' => $request->telpon,
-                'password' => $request->password,
-                'email' => $request->email,
-                'nama' => $request->nama,
-                'status' => 'Aktif',
-                'idRole' => 2,
-            ]);
+        // Insert data ke tabel users
+        DB::table('users')->insert([
+            'id' => $tempId,
+            'no_telp' => $request->telpon,
+            'password' => $request->password,
+            'email' => $request->email,
+            'nama' => $request->nama,
+            'status' => 'Aktif',
+            'idRole' => 2,
+        ]);
 
-            // Insert data ke tabel kontrak
-            DB::table('kontrak')->insert([
+        // Insert data ke tabel kontrak
+        DB::table('kontrak')->insert([
+            'idKontrak' => $tempId,
+            'idKamar' => $request->kamar,
+            'Users_id' => $tempId,
+            'harga' => $request->harga,
+            'rentang' => $request->kontrak,
+            'waktu' => $request->waktu,
+            'tgl_masuk' => $request->masuk,
+            'tgl_tagihan' => $request->tagihan,
+            'tgl_denda' => $request->denda,
+            'deposit' => $request->deposit,
+            'keterangan' => $request->keterangan,
+            'status' => 'Pembayaran Perdana',
+        ]);
+
+        // insert metodepembayaran
+        DB::table('metodePembayaran')->insert([
+            'metode' => $request->bank,
+            'nomor_tujuan' => $request->rekening,
+            'users_id' => $tempId,
+        ]);
+
+        // Insert data ke tabel pengaturan (jika ada)
+        if ($request->waktu_tagihan != 0) {
+            DB::table('pengaturan')->insert([
                 'idKontrak' => $tempId,
-                'idKamar' => $request->kamar,
-                'Users_id' => $tempId,
-                'harga' => $request->harga,
-                'rentang' => $request->kontrak,
-                'waktu' => $request->waktu,
-                'tgl_masuk' => $request->masuk,
-                'tgl_tagihan' => $request->tagihan,
-                'tgl_denda' => $request->denda,
-                'deposit' => $request->deposit,
-                'keterangan' => $request->keterangan,
-                'status' => 'Pembayaran Perdana',
+                'waktu_tagihan' => $request->waktu_tagihan,
+                'waktu_denda' => $request->waktu_denda,
             ]);
+        }
 
-            // insert metodepembayaran
-            DB::table('metodePembayaran')->insert([
-                'metode' => $request->bank,
-                'nomor_tujuan' => $request->rekening,
-                'users_id' => $tempId,
-            ]);
-
-            // Insert data ke tabel pengaturan (jika ada)
-            if ($request->waktu_tagihan != 0) {
-                DB::table('pengaturan')->insert([
+        // Insert data ke tabel biayaKontrak (jika ada)
+        if ($request->has('idBiaya')) {
+            foreach ($request->idBiaya as $idBiaya) {
+                DB::table('biayaKontrak')->insert([
+                    'idBiaya' => $idBiaya,
                     'idKontrak' => $tempId,
-                    'waktu_tagihan' => $request->waktu_tagihan,
-                    'waktu_denda' => $request->waktu_denda,
                 ]);
             }
+        }
 
-            // Insert data ke tabel biayaKontrak (jika ada)
-            if ($request->has('idBiaya')) {
-                foreach ($request->idBiaya as $idBiaya) {
-                    DB::table('biayaKontrak')->insert([
-                        'idBiaya' => $idBiaya,
-                        'idKontrak' => $tempId,
-                    ]);
-                }
+        // Insert data ke tabel datadiri (jika ada)
+        if ($request->has('idListDataDiri') && $request->has('deskripsi')) {
+            foreach ($request->idListDataDiri as $key => $idListDataDiri) {
+                DB::table('datadiri')->insert([
+                    'idListDataDiri' => $idListDataDiri,
+                    'Users_id' => $tempId,
+                    'deskripsi' => $request->deskripsi[$key],
+                ]);
             }
+        }
 
-            // Insert data ke tabel datadiri (jika ada)
-            if ($request->has('idListDataDiri') && $request->has('deskripsi')) {
-                foreach ($request->idListDataDiri as $key => $idListDataDiri) {
-                    DB::table('datadiri')->insert([
-                        'idListDataDiri' => $idListDataDiri,
-                        'Users_id' => $tempId,
-                        'deskripsi' => $request->deskripsi[$key],
-                    ]);
-                }
-            }
+        $emailData = [
+            'subject' => 'Akun SuperKos telah terbuat',
+            'title' => 'Selamat! Akun SuperKos anda sudah terbuat',
+            'greeting' => 'Halo ' . $request->nama . ',',
+            'message' => 'Akun anda telah terbuat. Silakan login dna lakukan pembayaran perdana melalui sistem.',
+        ];
 
-            $emailData = [
-                'subject' => 'Akun SuperKos telah terbuat',
-                'title' => 'Selamat! Akun SuperKos anda sudah terbuat',
-                'greeting' => 'Halo ' . $request->nama . ',',
-                'message' => 'Akun anda telah terbuat. Silakan login dna lakukan pembayaran perdana melalui sistem.',
-            ];
-
-            Mail::to($request->email)->send(new GenericEmailNotification($emailData));
+        Mail::to($request->email)->send(new GenericEmailNotification($emailData));
 
         // Commit transaksi jika semua berhasil
         DB::commit();

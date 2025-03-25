@@ -78,32 +78,43 @@ class TagihanController extends Controller
         ]);
     }
 
-    public function storePembayaran(Request $request) // buat permintaan perbaikan
+    public function storePembayaran(Request $request)
     {
+        $parseCurrency = function ($value) {
+            if (is_null($value)) return null;
+            return (int) str_replace(['Rp ', '.', ' '], '', $value);
+        };
+    
+        $dibayar = $parseCurrency($request->total);
+        $denda = $parseCurrency($request->denda);
+    
+        // Upload file
         $path = $request->file('bukti')->store(
-            tenancy()->tenant->id . '/pembayaran', // Folder tujuan
-            'private'     // Nama disk yang digunakan
+            tenancy()->tenant->id . '/pembayaran',
+            'private'
         );
-
+    
+        // Update pembayaran
         DB::table('pembayaran')
             ->where('idPembayaran', $request->idPembayaran)
             ->update([
                 'tanggal' => now(),
-                'dibayar' => $request->total,
+                'dibayar' => $dibayar, // Gunakan nilai yang sudah di-parse
                 'bukti' => $path,
                 'status' => 'Verifikasi',
                 'idMetodePembayaran' => $request->metode,
             ]);
-
-        if ($request->has('denda') && !is_null($request->denda) && $request->denda > 0) {
+    
+        // Handle denda
+        if ($denda > 0) {
             DB::table('dendaTambahan')->insert([
                 'idPembayaran' => $request->idPembayaran,
                 'idDenda' => 1,
-                'nominal_denda' => $request->denda,
+                'nominal_denda' => $denda,
             ]);
         }
-
-        return redirect()->back()->with('Transaksi berhasil ditambahkan!');
+    
+        return redirect()->back()->with('success', 'Transaksi berhasil ditambahkan!');
     }
 
     public function verifikasi() // list waiting verifikasi

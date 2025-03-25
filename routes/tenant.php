@@ -100,6 +100,10 @@ Route::middleware([
             Route::post('/metode-pembayaran/store', [ProfilPengelolaController::class, 'storeMetode'])->name('metode.store'); // data metode ke page profil
             Route::delete('/metode-pembayaran/{id}', [ProfilPengelolaController::class, 'destroyMetode'])->name('metode.destroy'); // update metode
 
+            // MODUL
+            Route::get('/modul', [ProfilPengelolaController::class, 'modulKos'])->name('login.index'); 
+            Route::post('/addModul', [ProfilPengelolaController::class, 'addModules'])->name('modul.add'); 
+
 
 
 

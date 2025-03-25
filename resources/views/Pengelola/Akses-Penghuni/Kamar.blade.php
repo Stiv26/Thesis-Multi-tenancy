@@ -5,6 +5,10 @@
         {{-- header dari page yang diberikan x-slot + data dari route dan dikirim ke header --}}
         <x-header>{{ $header }}</x-header>
 
+            @php
+                $tabelDenda = Schema::hasTable('denda');
+            @endphp
+
             @if ($pengumuman->isNotEmpty())
                 <section class="bg-white p-3 rounded-xl shadow-lg w-full mt-5">
                     <h2 class="text-center text-xl font-semibold text-gray-800 mb-8">Pengumuman</h2>
@@ -36,7 +40,9 @@
                             <p class="text-md font-medium text-gray-600">Durasi: <span class="text-gray-800">{{ $kontrakPenghuni->rentang }}</span></p>
                             <p class="text-md font-medium text-gray-600">Tanggal Masuk: <span class="text-gray-800">{{ $kontrakPenghuni->tgl_masuk }}</span></p>
                             <p class="text-md font-medium text-gray-600">Tanggal Tagihan: <span class="text-gray-800">{{ $kontrakPenghuni->tgl_tagihan }}</span></p>
-                            <p class="text-md font-medium text-gray-600">Tanggal Denda: <span class="text-gray-800">{{ $kontrakPenghuni->tgl_denda }}</span></p>
+                            @if ($tabelDenda)
+                                <p class="text-md font-medium text-gray-600">Tanggal Denda: <span class="text-gray-800">{{ $kontrakPenghuni->tgl_denda }}</span></p>
+                            @endif
                             <p class="text-md font-medium text-gray-600">Deposit: <span class="text-gray-800">{{ $kontrakPenghuni->deposit }}</span></p>
                             <p class="text-md font-medium text-gray-600">Keterangan: <span class="text-gray-800">{{ $kontrakPenghuni->keterangan }}</span></p>
                         </div>

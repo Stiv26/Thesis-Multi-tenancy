@@ -17,6 +17,10 @@
                         Pembayaran</a>
                 </nav>
             </div>
+
+            @php
+                $tabelDenda = Schema::hasTable('denda');
+            @endphp
         </section>
 
         <!-- PAGE PEMBAYARAN -->
@@ -32,7 +36,7 @@
                                     <th class="py-3 px-4">Kamar</th>
                                     <th class="py-3 px-4">Penyewa</th>
                                     <th class="py-3 px-4">Nominal</th>
-                                    <th class="py-3 px-4">Tanggal Denda</th>
+                                    <th class="py-3 px-4">Rentang Waktu</th>
                                     <th class="py-3 px-4">Status</th>
                                     <th class="py-2 px-4">Lihat Detail</th>
                                 </tr>
@@ -42,8 +46,8 @@
                                     <tr class="border-t hover:bg-gray-50 transition duration-200">
                                         <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
                                         <td class="py-3 px-4">{{ $item->nama }}</td>
-                                        <td class="py-3 px-4">{{ $item->total_bayar }}</td>
-                                        <td class="py-3 px-4">{{ $item->dendanya }}</td>
+                                        <td class="py-3 px-4">{{ number_format($item->total_bayar, 0, ',', '.') }}</td>
+                                        <td class="py-3 px-4">{{ $item->waktu . ' ' . $item->rentang }}</td>
                                         <td class="py-3 px-4">{{ $item->status_pembayaran }}</td>
                                         <td class="py-3 px-4">
                                             <a href="#" data-id="{{ $item->idPembayaran }}" data-toggle="modal"
@@ -116,12 +120,14 @@
                                                     readonly>
                                             </div>
                                             
-                                            <div class="flex justify-between items-center">
-                                                <span class="font-medium text-gray-600">Tanggal Denda</span>
-                                                <input id="modal-verifikasi-tempo" type="text" 
-                                                    class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
-                                                    readonly>
-                                            </div>
+                                            @if ($tabelDenda)
+                                                <div class="flex justify-between items-center">
+                                                    <span class="font-medium text-gray-600">Tanggal Denda</span>
+                                                    <input id="modal-verifikasi-tempo" type="text" 
+                                                        class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
+                                                        readonly>
+                                                </div>
+                                            @endif
                                         </div>
                         
                                         <!-- Rentang Waktu -->
@@ -216,7 +222,7 @@
                             <th class="py-3 px-4">Kamar</th>
                             <th class="py-3 px-4">Penyewa</th>
                             <th class="py-3 px-4">Nominal</th>
-                            <th class="py-3 px-4">Tanggal Denda</th>
+                            <th class="py-3 px-4">Rentang Waktu</th>
                             <th class="py-3 px-4">Status</th>
                             <th class="py-2 px-4">Pembayaran</th>
                         </tr>
@@ -226,8 +232,8 @@
                             <tr class="border-t hover:bg-gray-50 transition duration-200">
                                 <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
                                 <td class="py-3 px-4">{{ $item->nama }}</td>
-                                <td class="py-3 px-4">{{ $item->total_bayar }}</td>
-                                <td class="py-3 px-4">{{ $item->dendanya }}</td>
+                                <td class="py-3 px-4">{{ number_format($item->total_bayar, 0, ',', '.') }}</td>
+                                <td class="py-3 px-4">{{ $item->waktu . ' ' . $item->rentang }}</td>
                                 <td class="py-3 px-4">{{ $item->status_pembayaran }}</td>
                                 <td class="py-3 px-4">
                                     <a href="#" data-id="{{ $item->idPembayaran }}" data-toggle="modal"
@@ -303,12 +309,14 @@
                                                     readonly>
                                             </div>
                                             
-                                            <div class="flex justify-between items-center">
-                                                <span class="font-medium text-gray-600">Tanggal Denda</span>
-                                                <input id="modal-tempo" type="text" 
-                                                    class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
-                                                    readonly>
-                                            </div>
+                                            @if ($tabelDenda)
+                                                <div class="flex justify-between items-center">
+                                                    <span class="font-medium text-gray-600">Tanggal Denda</span>
+                                                    <input id="modal-tempo" type="text" 
+                                                        class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
+                                                        readonly>
+                                                </div>
+                                            @endif
                                         </div>
                     
                                         <!-- Rentang Waktu -->
@@ -419,7 +427,7 @@
                             <tr class="border-t hover:bg-gray-50 transition duration-200">
                                 <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
                                 <td class="py-3 px-4">{{ $item->nama }}</td>
-                                <td class="py-3 px-4">{{ $item->dibayar }}</td>
+                                <td class="py-3 px-4">{{ number_format($item->dibayar, 0, ',', '.') }}</td>
                                 <td class="py-3 px-4">{{ $item->tanggal }}</td>
                                 <td class="py-3 px-4">{{ $item->status_pembayaran }}</td>
                                 <td class="py-3 px-4">
@@ -483,11 +491,13 @@
                                             class="w-1/2 text-right bg-transparent border-none" readonly>
                                     </div>
                                     
-                                    <div class="flex justify-between items-center">
-                                        <span class="font-medium text-gray-600">Tanggal Denda</span>
-                                        <input id="modal-riwayat-tgl_denda" type="text"
-                                            class="w-1/2 text-right bg-transparent border-none" readonly>
-                                    </div>
+                                    @if ($tabelDenda)
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-medium text-gray-600">Tanggal Denda</span>
+                                            <input id="modal-riwayat-tgl_denda" type="text"
+                                                class="w-1/2 text-right bg-transparent border-none" readonly>
+                                        </div>
+                                    @endif
                                 </div>
                 
                                 <!-- Rentang Waktu -->
@@ -684,7 +694,7 @@
                     } else {
                         // $('#harga-kontrak').removeClass('hidden');
                         $('#deposit-kontrak').removeClass('hidden');
-                        $('#modal-deposit').val(data.data.deposit);
+                        $('#modal-deposit').val(formatRupiah(data.data.deposit));
                     }
 
                     // Logika untuk denda
@@ -751,12 +761,13 @@
                         }
 
                         // Atur nilai denda
-                        $('#modal-denda').val(denda);
-                        $('#modal-total').val(totalBayar + denda);
+                        $('#modal-denda').val(formatRupiah(denda));
+                        $('#modal-denda').val(formatRupiah(denda));
+                        $('#modal-total').val(formatRupiah(totalBayar + denda));
                     } else {
                         $('#denda-kontrak').addClass('hidden');
                         $('#modal-denda').val('');
-                        $('#modal-total').val(data.data.total_bayar);
+                        $('#modal-total').val(formatRupiah(data.data.total_bayar));
                     }
 
                   

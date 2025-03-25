@@ -19,6 +19,10 @@
                 </nav>
             </div>
 
+            @php
+                $tabelDenda = Schema::hasTable('denda');
+            @endphp
+
             {{-- JS --}}
             <script>
                 function switchPage(page) {
@@ -71,7 +75,7 @@
                                 <th class="py-3 px-4">Kamar</th>
                                 <th class="py-3 px-4">Nama</th>
                                 <th class="py-3 px-4">Tanggal Tagihan</th>
-                                <th class="py-3 px-4">Tanggal Denda</th>
+                                <th class="py-3 px-4">Rentang Waktu</th>
                                 <th class="py-2 px-4">Tagihan</th>
                             </tr>
                         </thead>
@@ -81,7 +85,7 @@
                                     <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
                                     <td class="py-3 px-4">{{ $item->nama }}</td>
                                     <td class="py-3 px-4">{{ $item->tgl_tagihan }}</td>
-                                    <td class="py-3 px-4">{{ $item->tgl_denda }}</td>
+                                    <td class="py-3 px-4">{{ $item->waktu . ' ' . $item->rentang }}</td>
                                     <td class="py-3 px-4">
                                         <a href="#" data-id="{{ $item->idKontrak }}" data-toggle="modal"
                                             data-target="#ModalBuatTagihan"
@@ -95,7 +99,7 @@
                                     <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
                                     <td class="py-3 px-4">{{ $item->nama }}</td>
                                     <td class="py-3 px-4">{{ $item->tgl_tagihan }}</td>
-                                    <td class="py-3 px-4">{{ $item->tgl_denda }}</td>
+                                    <td class="py-3 px-4">{{ $item->waktu . ' ' . $item->rentang }}</td>
                                     <td class="py-3 px-4">
                                         <a href="#" data-id="{{ $item->idKontrak }}" data-toggle="modal"
                                             data-target="#ModalBuatTagihan"
@@ -154,14 +158,16 @@
                                                 readonly>
                                         </div>
 
-                                        <div class="flex items-center space-x-4">
-                                            <label for="tempo" class="w-32 text-md font-medium text-gray-700">
-                                                Tanggal Denda:</label>
-                                            <input id="modal-buat-denda" type="date" value=""
-                                                name="buatDenda"
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                readonly>
-                                        </div>
+                                        @if ($tabelDenda)
+                                            <div class="flex items-center space-x-4">
+                                                <label for="tempo" class="w-32 text-md font-medium text-gray-700">
+                                                    Tanggal Denda:</label>
+                                                <input id="modal-buat-denda" type="date" value=""
+                                                    name="buatDenda"
+                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                    readonly>
+                                            </div>
+                                        @endif
 
                                         <div class="text-center">
                                             <p class="text-gray-500 text-sm">Nominal Pembayaran</p>
@@ -242,14 +248,16 @@
                                                     required readonly>
                                             </div>
 
-                                            <div class="flex items-center space-x-4">
-                                                <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
-                                                    Denda Berikutnya:</label>
-                                                <input id="modal-buat-dendaBerikutnya" type="date" value=""
-                                                    name="dendaBerikutnya"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    required readonly>
-                                            </div>
+                                            @if ($tabelDenda)
+                                                <div class="flex items-center space-x-4">
+                                                    <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
+                                                        Denda Berikutnya:</label>
+                                                    <input id="modal-buat-dendaBerikutnya" type="date" value=""
+                                                        name="dendaBerikutnya"
+                                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                        readonly>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                     {{-- SUBMIT --}}
@@ -282,6 +290,7 @@
                                 <th class="py-3 px-4">Kamar</th>
                                 <th class="py-3 px-4">Nama</th>
                                 <th class="py-3 px-4">Tanggal</th>
+                                <th class="py-3 px-4">Rentang Waktu</th>
                                 <th class="py-3 px-4">Status</th>
                                 <th class="py-2 px-4">Verifikasi</th>
                             </tr>
@@ -292,6 +301,7 @@
                                     <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
                                     <td class="py-3 px-4">{{ $item->nama }}</td>
                                     <td class="py-3 px-4">{{ $item->tanggal }}</td>
+                                    <td class="py-3 px-4">{{ $item->waktu . ' ' . $item->rentang }}</td>
                                     <td class="py-3 px-4">{{ $item->status_pembayaran }}</td>
                                     <td class="py-3 px-4">
                                         <a href="#" data-id="{{ $item->idPembayaran }}" data-toggle="modal"
@@ -355,11 +365,13 @@
                                                         class="w-1/2 text-right bg-transparent border-none" readonly>
                                                 </div>
                                                 
-                                                <div class="flex justify-between items-center">
-                                                    <span class="font-medium text-gray-600">Tanggal Denda</span>
-                                                    <input id="modal-bukti-dendaPembayaran" type="date" name="tgl_denda"
-                                                        class="w-1/2 text-right bg-transparent border-none" readonly>
-                                                </div>
+                                                @if ($tabelDenda)
+                                                    <div class="flex justify-between items-center">
+                                                        <span class="font-medium text-gray-600">Tanggal Denda</span>
+                                                        <input id="modal-bukti-dendaPembayaran" type="date" name="tgl_denda"
+                                                            class="w-1/2 text-right bg-transparent border-none" readonly>
+                                                    </div>
+                                                @endif
                                             </div>
                         
                                             <!-- Rentang Waktu -->
@@ -505,14 +517,15 @@
                                                     required>
                                             </div>
 
-                                            <div class="flex items-center space-x-4">
-                                                <label for="tempo" class="w-32 text-md font-medium text-gray-700">
-                                                    Tanggal Denda:</label>
-                                                <input id="modal-revisi-tgl_denda" type="date" value=""
-                                                    name="tgl_denda"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    required>
-                                            </div>
+                                            @if ($tabelDenda)
+                                                <div class="flex items-center space-x-4">
+                                                    <label for="tempo" class="w-32 text-md font-medium text-gray-700">
+                                                        Tanggal Denda:</label>
+                                                    <input id="modal-revisi-tgl_denda" type="date" value=""
+                                                        name="tgl_denda"
+                                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                                </div>
+                                            @endif
 
                                             {{-- ATUR TANGGAL --}}
                                             <script>
@@ -570,7 +583,7 @@
                             <th class="py-3 px-4">Kamar</th>
                             <th class="py-3 px-4">Penyewa</th>
                             <th class="py-3 px-4">Total Bayar</th>
-                            <th class="py-3 px-4">Jatuh Tempo</th>
+                            <th class="py-3 px-4">Rentang Waktu</th>
                             <th class="py-3 px-4">Status</th>
                             <th class="py-2 px-4">Lihat Detail</th>
                         </tr>
@@ -581,7 +594,7 @@
                                 <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
                                 <td class="py-3 px-4">{{ $item->nama }}</td>
                                 <td class="py-3 px-4">{{ number_format($item->total_bayar, 0, ',', '.') }}</td>
-                                <td class="py-3 px-4">{{ $item->dendaPembayaran }}</td>
+                                <td class="py-3 px-4">{{ $item->waktu . ' ' . $item->rentang }}</td>
                                 <td class="py-3 px-4">{{ $item->status_pembayaran }}</td>
                                 <td class="py-3 px-4">
                                     <a href="#" data-id="{{ $item->idPembayaran }}" data-toggle="modal"
@@ -838,7 +851,8 @@
                             <th class="py-3 px-4">Kamar</th>
                             <th class="py-3 px-4">Penyewa</th>
                             <th class="py-3 px-4">Nominal</th>
-                            <th class="py-3 px-4">Jatuh Tempo</th>
+                            <th class="py-3 px-4">Rentang Waktu</th>
+                            <th class="py-3 px-4">Tanggal Pembayaran</th>
                             <th class="py-3 px-4">Status</th>
                             <th class="py-2 px-4">Lihat Detail</th>
                         </tr>
@@ -849,7 +863,8 @@
                                 <td class="py-3 px-4">{{ 'Kamar ' . $item->idKamar }}</td>
                                 <td class="py-3 px-4">{{ $item->nama }}</td>
                                 <td class="py-3 px-4">{{ number_format($item->dibayar, 0, ',', '.') }}</td>
-                                <td class="py-3 px-4">{{ $item->tgl_denda }}</td>
+                                <td class="py-3 px-4">{{ $item->waktu . ' ' . $item->rentang }}</td>
+                                <td class="py-3 px-4">{{ $item->tanggal }}</td>
                                 <td class="py-3 px-4">{{ $item->status_pembayaran }}</td>
                                 <td class="py-3 px-4">
                                     <a href="#" data-id="{{ $item->idPembayaran }}" data-toggle="modal"
@@ -912,11 +927,13 @@
                                             class="w-1/2 text-right bg-transparent border-none" readonly>
                                     </div>
                                     
-                                    <div class="flex justify-between items-center">
-                                        <span class="font-medium text-gray-600">Tanggal Denda</span>
-                                        <input id="modal-riwayat-tgl_denda" type="text"
-                                            class="w-1/2 text-right bg-transparent border-none" readonly>
-                                    </div>
+                                    @if ($tabelDenda)
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-medium text-gray-600">Tanggal Denda</span>
+                                            <input id="modal-riwayat-tgl_denda" type="text"
+                                                class="w-1/2 text-right bg-transparent border-none" readonly>
+                                        </div>
+                                    @endif
                                 </div>
                 
                                 <!-- Rentang Waktu -->
@@ -1035,6 +1052,7 @@
 
                     // CEK RENTANG BUAT SELANJUTNYA
                     const rentang = data.data.rentang;
+                    const modulDenda = data.data.tgl_denda;
 
                     if (rentang === 'Bulan') {
                         $('#waktu_tagihan_denda_update').show();

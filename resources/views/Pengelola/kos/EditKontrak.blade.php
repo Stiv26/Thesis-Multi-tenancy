@@ -5,6 +5,11 @@
             ← Kembali
         </button></a>
 
+        @php
+            $tabelDenda = Schema::hasTable('denda');
+            $tabelBiaya = Schema::hasTable('biaya');
+        @endphp
+
         <form action="{{ route('kos.updateKontrak', $data->idKontrak) }}" method="POST">
             @csrf
             @method('PUT')
@@ -163,11 +168,13 @@
                             <input type="date" id="tgl_tagihan" name="tgl_tagihan" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
                                 value="{{ $data->tgl_tagihan }}" required>
                         </li>
-                        <li class="mb-4">
-                            <label for="tgl_denda" class="block font-medium mb-2">Tanggal Denda:</label>
-                            <input type="date" id="tgl_denda" name="tgl_denda" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
-                                value="{{ $data->tgl_denda }}" required>
-                        </li>
+                        @if ($tabelDenda)
+                            <li class="mb-4">
+                                <label for="tgl_denda" class="block font-medium mb-2">Tanggal Denda:</label>
+                                <input type="date" id="tgl_denda" name="tgl_denda" class="border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" 
+                                    value="{{ $data->tgl_denda }}" required>
+                            </li>
+                        @endif
 
                         {{-- BERDASARKAN RENTANG --}}
                         <li class="mb-4">
@@ -177,11 +184,13 @@
                                     <input type="number" id="waktu_tagihan" name="waktu_tagihan" class="text-center border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" min="1"
                                         value="{{ $pengaturan->waktu_tagihan }}" required>
                                 </div>
-                                <div class="w-50">
-                                    <label for="waktu_denda" class="block font-medium mb-2">Pertanggal Denda:</label>
-                                    <input type="number" id="waktu_denda" name="waktu_denda" class="text-center border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" min="1"
-                                        value="{{ $pengaturan->waktu_denda }}" required>
-                                </div>
+                                @if ($tabelDenda)
+                                    <div class="w-50">
+                                        <label for="waktu_denda" class="block font-medium mb-2">Pertanggal Denda:</label>
+                                        <input type="number" id="waktu_denda" name="waktu_denda" class="text-center border border-gray-300 rounded-lg p-3 pl-3 w-full focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition" min="1"
+                                            value="{{ $pengaturan->waktu_denda }}" required>
+                                    </div>
+                                @endif
                             </div>
                         </li>
                         
@@ -191,27 +200,29 @@
                                 value="{{ $data->waktu }}" required>
                         </li>
                         
-                        <label for="biaya_kontrak" class="block font-medium mb-4">Biaya Kontrak:</label>
-                        @foreach ($biayaList as $biaya)
-                            <li>
-                                <div class="flex flex-wrap gap-x-2">
-                                    <div class="w-1/8 mb-2"> 
-                                        <input type="hidden" name="biaya[{{ $biaya->idBiaya }}][idKontrak]" value="{{ $data->idKontrak }}">
-                                        <input type="hidden" name="biaya[{{ $biaya->idBiaya }}][idbiaya]" value="{{ $biaya->idBiaya }}">
-                                        
-                                        <input 
-                                            id="{{ $biaya->biaya }}" 
-                                            name="idBiaya[]" 
-                                            type="checkbox" 
-                                            value="{{ $biaya->idBiaya }}" 
-                                            class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            @if(in_array($biaya->idBiaya, $biayaKontrakId)) checked @endif
-                                        >
-                                        <label for="{{ $biaya->biaya }}" class="w-32 text-md font-medium text-gray-700">{{ $biaya->biaya }}</label>
-                                    </div>
-                                </div>                            
-                            </li>                        
-                        @endforeach
+                        @if ($tabelBiaya)
+                            <label for="biaya_kontrak" class="block font-medium mb-4">Biaya Kontrak:</label>
+                            @foreach ($biayaList as $biaya)
+                                <li>
+                                    <div class="flex flex-wrap gap-x-2">
+                                        <div class="w-1/8 mb-2"> 
+                                            <input type="hidden" name="biaya[{{ $biaya->idBiaya }}][idKontrak]" value="{{ $data->idKontrak }}">
+                                            <input type="hidden" name="biaya[{{ $biaya->idBiaya }}][idbiaya]" value="{{ $biaya->idBiaya }}">
+                                            
+                                            <input 
+                                                id="{{ $biaya->biaya }}" 
+                                                name="idBiaya[]" 
+                                                type="checkbox" 
+                                                value="{{ $biaya->idBiaya }}" 
+                                                class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                @if(in_array($biaya->idBiaya, $biayaKontrakId)) checked @endif
+                                            >
+                                            <label for="{{ $biaya->biaya }}" class="w-32 text-md font-medium text-gray-700">{{ $biaya->biaya }}</label>
+                                        </div>
+                                    </div>                            
+                                </li>                        
+                            @endforeach
+                        @endif
                     </ul> 
                 </div>
             </div>

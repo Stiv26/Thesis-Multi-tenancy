@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('idPembayaran');
             $table->foreignId('idKontrak')->references('idKontrak')->on('kontrak')->onDelete('cascade');
             $table->date('tgl_tagihan')->nullable(false);
-            $table->date('tgl_denda')->nullable(false);
+            $table->date('tgl_denda')->nullable();
             $table->date('tanggal')->nullable();
             $table->integer('total_bayar')->nullable(false);
             $table->enum('status', ['Belum Lunas', 'Verifikasi', 'Revisi', 'Lunas'])->nullable(false);

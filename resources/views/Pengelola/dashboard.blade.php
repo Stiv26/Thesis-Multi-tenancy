@@ -134,7 +134,7 @@
 
                                         <div class="flex items-center space-x-4 mb-2">
                                             <label for="modal-buat-deposit" class="w-48 text-md font-medium text-gray-700">
-                                                Nominal Depoist:</label>
+                                                Nominal Deposit:</label>
                                             <input id="modal-buat-deposit" type="number"
                                                 value="{{ $pengaturan->nominal_deposit ?? '' }}" name="deposit"
                                                 placeholder="Nominal Denda Kos"
@@ -152,16 +152,18 @@
                                                 class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                         </div>
 
-                                        <div class="flex items-center space-x-4 mb-3">
-                                            <label for="modal-buat-denda_perbulan"
-                                                class="w-48 text-md font-medium text-gray-700">
-                                                Tanggal Denda Bulanan:</label>
-                                            <input id="modal-buat-denda_perbulan" type="number"
-                                                value="{{ $pengaturan->pertanggal_denda_bulan ?? '' }}"
-                                                name="denda_perbulan" placeholder="Tanggal Tiap Denda" min="1"
-                                                max="31"
-                                                class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
-                                        </div>
+                                        @if ($tabelDefault)
+                                            <div class="flex items-center space-x-4 mb-3">
+                                                <label for="modal-buat-denda_perbulan"
+                                                    class="w-48 text-md font-medium text-gray-700">
+                                                    Tanggal Denda Bulanan:</label>
+                                                <input id="modal-buat-denda_perbulan" type="number"
+                                                    value="{{ $pengaturan->pertanggal_denda_bulan ?? '' }}"
+                                                    name="denda_perbulan" placeholder="Tanggal Tiap Denda" min="1"
+                                                    max="31"
+                                                    class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                            </div>
+                                        @endif
 
                                         {{-- SUBMIT --}}
                                         <div class="modal-footer border-t border-gray-200 flex">

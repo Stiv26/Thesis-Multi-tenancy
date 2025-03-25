@@ -184,7 +184,7 @@ class PembayaranController extends Controller
             'idPembayaran' => $tempId,
             'idKontrak' => $request->idKontrak,
             'tgl_tagihan' => $request->buatTagihan,
-            'tgl_denda' => $request->buatDenda,
+            'tgl_denda' => $request->buatDenda ?? null,
             'total_bayar' => $request->total_bayar,
             'status' => 'Belum Lunas',
             'keterangan' => $request->keterangan,

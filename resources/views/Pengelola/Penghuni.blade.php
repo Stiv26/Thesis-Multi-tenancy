@@ -267,14 +267,15 @@
                                             required>
                                     </div>
 
-                                    <div class="flex items-center space-x-4">
-                                        <label for="tempo" class="w-32 text-md font-medium text-gray-700">
-                                            Tanggal Denda:</label>
-                                        <input id="modal-atur-tgl_denda" type="date" value=""
-                                            name="tgl_denda"
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                            required>
-                                    </div>
+                                    @if ($tabelDenda)
+                                        <div class="flex items-center space-x-4">
+                                            <label for="tempo" class="w-32 text-md font-medium text-gray-700">
+                                                Tanggal Denda:</label>
+                                            <input id="modal-atur-tgl_denda" type="date" value=""
+                                                name="tgl_denda"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                        </div>
+                                    @endif
 
                                     {{-- Bagian biaya kontrak --}}
                                     @if (!empty($biayaList))
@@ -705,42 +706,44 @@
                             </div>
 
                             {{-- tanggal denda pertanggalnya  --}}
-                            <div id="waktu-denda-container" class="sm:col-span-1">
-                                <label for="waktu_denda"
-                                    class="block text-sm font-medium leading-6 text-gray-900">Pertanggal Denda</label>
-                                <div class="mt-2">
-                                    <input required type="number" name="waktu_denda" id="waktu_denda"
-                                        max="31" min="1"
-                                        class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                    <span id="error-message" class="text-red-500 text-sm hidden">Denda tidak boleh
-                                        lebih kecil dari tanggal tagihan.</span>
+                            @if ($tabelDenda)
+                                <div id="waktu-denda-container" class="sm:col-span-1">
+                                    <label for="waktu_denda"
+                                        class="block text-sm font-medium leading-6 text-gray-900">Pertanggal Denda</label>
+                                    <div class="mt-2">
+                                        <input type="number" name="waktu_denda" id="waktu_denda"
+                                            max="31" min="1"
+                                            class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <span id="error-message" class="text-red-500 text-sm hidden">Denda tidak boleh
+                                            lebih kecil dari tanggal tagihan.</span>
 
-                                    {{-- CHECK PERTANGGAL TIDAK BOLEH KURANG --}}
-                                    <script>
-                                        const waktuTagihan = document.getElementById('waktu_tagihan');
-                                        const waktuDenda = document.getElementById('waktu_denda');
-                                        const errorMessage = document.getElementById('error-message');
+                                        {{-- CHECK PERTANGGAL TIDAK BOLEH KURANG --}}
+                                        <script>
+                                            const waktuTagihan = document.getElementById('waktu_tagihan');
+                                            const waktuDenda = document.getElementById('waktu_denda');
+                                            const errorMessage = document.getElementById('error-message');
 
-                                        function validateDates() {
-                                            const tagihanValue = parseInt(waktuTagihan.value, 10);
-                                            const dendaValue = parseInt(waktuDenda.value, 10);
+                                            function validateDates() {
+                                                const tagihanValue = parseInt(waktuTagihan.value, 10);
+                                                const dendaValue = parseInt(waktuDenda.value, 10);
 
-                                            // Check if dendaValue is smaller than tagihanValue
-                                            if (dendaValue < tagihanValue) {
-                                                errorMessage.classList.remove('hidden'); // Show error message
-                                                waktuDenda.setCustomValidity('Tanggal denda tidak boleh lebih kecil dari tanggal tagihan.');
-                                            } else {
-                                                errorMessage.classList.add('hidden'); // Hide error message
-                                                waktuDenda.setCustomValidity(''); // Reset validity
+                                                // Check if dendaValue is smaller than tagihanValue
+                                                if (dendaValue < tagihanValue) {
+                                                    errorMessage.classList.remove('hidden'); // Show error message
+                                                    waktuDenda.setCustomValidity('Tanggal denda tidak boleh lebih kecil dari tanggal tagihan.');
+                                                } else {
+                                                    errorMessage.classList.add('hidden'); // Hide error message
+                                                    waktuDenda.setCustomValidity(''); // Reset validity
+                                                }
                                             }
-                                        }
 
-                                        // Attach event listeners
-                                        waktuTagihan.addEventListener('input', validateDates);
-                                        waktuDenda.addEventListener('input', validateDates);
-                                    </script>
+                                            // Attach event listeners
+                                            waktuTagihan.addEventListener('input', validateDates);
+                                            waktuDenda.addEventListener('input', validateDates);
+                                        </script>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
                             {{-- tinggalnya (mingguan/harian) --}}
                             <div id="waktu-container" class="sm:col-span-2">
@@ -774,14 +777,16 @@
                             </div>
 
                             {{-- tgl denda --}}
-                            <div class="sm:col-span-1">
-                                <label for="denda"
-                                    class="block text-sm font-medium leading-6 text-gray-900">Tanggal Denda</label>
-                                <div class="mt-2">
-                                    <input required type="date" name="denda" id="denda"
-                                        class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            @if ($tabelDenda)
+                                <div class="sm:col-span-1">
+                                    <label for="denda"
+                                        class="block text-sm font-medium leading-6 text-gray-900">Tanggal Denda</label>
+                                    <div class="mt-2">
+                                        <input type="date" name="denda" id="denda"
+                                            class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
                             {{-- nominal deposit --}}
                             <div class="sm:col-span-1 sm:col-start-1">

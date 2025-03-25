@@ -22,6 +22,11 @@
                         class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">
                         SOP Kos</a>
                 </nav>
+
+                @php
+                    $tabelDenda = Schema::hasTable('denda');
+                    $tabelBiaya = Schema::hasTable('biaya');
+                @endphp
             </div>
 
             <script>
@@ -183,13 +188,15 @@
                                         readonly>
                                 </div>
                                 {{-- tgl denda --}}
-                                <div class="flex items-center space-x-4">
-                                    <label for="denda" class="w-32 text-md font-medium text-gray-700">
-                                        Tanggal Denda:</label>
-                                    <input id="modal-denda" type="text" value=""
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                        readonly>
-                                </div>
+                                @if ($tabelDenda)
+                                    <div class="flex items-center space-x-4">
+                                        <label for="denda" class="w-32 text-md font-medium text-gray-700">
+                                            Tanggal Denda:</label>
+                                        <input id="modal-denda" type="text" value=""
+                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                            readonly>
+                                    </div>
+                                @endif
                                 {{-- deposit --}}
                                 <div class="flex items-center space-x-4" id="modal-show-deposit">
                                     <label for="deposit" class="w-32 text-md font-medium text-gray-700">
@@ -200,12 +207,14 @@
                                 </div>
 
                                 {{-- biaya kontrak --}}
-                                <div class="flex items-center space-x-4">
-                                    <label for="deposit" class="w-32 text-md font-medium text-gray-700">
-                                        Biaya Kontrak:</label>
-                                    {{-- AJAX --}}
-                                    <div id="biaya-container"></div>
-                                </div>
+                                @if ($tabelBiaya)
+                                    <div class="flex items-center space-x-4">
+                                        <label for="deposit" class="w-32 text-md font-medium text-gray-700">
+                                            Biaya Kontrak:</label>
+                                        {{-- AJAX --}}
+                                        <div id="biaya-container"></div>
+                                    </div>
+                                @endif
                                 {{-- keterangan --}}
                                 <div class="flex items-center space-x-4">
                                     <label for="keterangan" class="w-32 text-md font-medium text-gray-700">
