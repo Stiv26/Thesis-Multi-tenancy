@@ -120,7 +120,8 @@
                                     @csrf
                                     {{-- header --}}
                                     <div class="modal-header border-b border-gray-200 py-4 px-6">
-                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">BUAT TAGIHAN</h3>
+                                        <h3 class="text-2xl font-semibold text-gray-800" id="myModalLabel">BUAT TAGIHAN
+                                        </h3>
                                         <button type="button" class="text-gray-400 hover:text-gray-600"
                                             data-dismiss="modal" aria-hidden="true">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -185,9 +186,8 @@
 
                                         {{-- harga --}}
                                         <div class="flex items-center space-x-4">
-                                            <label for="harga" class="w-32 text-md font-medium text-gray-700">
-                                                Harga Kamar:</label>
-                                            <input id="modal-buat-total" type="number" value=""
+                                            <label for="harga" class="w-32 text-md font-medium text-gray-700">Harga Kamar:</label>
+                                            <input id="modal-buat-total" type="text" 
                                                 name="total"
                                                 class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                 readonly>
@@ -195,9 +195,8 @@
 
                                         {{-- deposit --}}
                                         <div class="flex items-center space-x-4" id="deposit-container">
-                                            <label for="deposit" class="w-32 text-md font-medium text-gray-700">
-                                                Deposit:</label>
-                                            <input id="modal-buat-deposit" type="number" value=""
+                                            <label for="deposit" class="w-32 text-md font-medium text-gray-700">Deposit:</label>
+                                            <input id="modal-buat-deposit" type="text" 
                                                 name="deposit"
                                                 class="flex-1 px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:ring-0"
                                                 readonly>
@@ -210,9 +209,9 @@
                                         <div class="flex items-center space-x-4 mt-4">
                                             <label for="total_bayar" class="w-32 text-md font-medium text-gray-700">
                                                 Total Bayar:</label>
-                                            <input id="total_bayar" type="number" value=""
+                                            <input id="total_bayar" type="text" value=""
                                                 class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                disabled>
+                                                readonly data-type="currency">
                                             <input id="hidden_total_bayar" type="hidden" name="total_bayar"
                                                 value="">
                                         </div>
@@ -250,10 +249,11 @@
 
                                             @if ($tabelDenda)
                                                 <div class="flex items-center space-x-4">
-                                                    <label for="tanggal" class="w-32 text-md font-medium text-gray-700">
+                                                    <label for="tanggal"
+                                                        class="w-32 text-md font-medium text-gray-700">
                                                         Denda Berikutnya:</label>
-                                                    <input id="modal-buat-dendaBerikutnya" type="date" value=""
-                                                        name="dendaBerikutnya"
+                                                    <input id="modal-buat-dendaBerikutnya" type="date"
+                                                        value="" name="dendaBerikutnya"
                                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                                         readonly>
                                                 </div>
@@ -324,20 +324,21 @@
                                         @csrf
                                         @method('PUT')
                                         {{-- header --}}
-                                        <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-items-start">
+                                        <div
+                                            class="modal-header border-b border-gray-200 py-4 px-6 flex justify-items-start">
                                             <div>
                                                 <h3 class="text-2xl font-bold text-gray-800">VERIFIKASI PEMBAYARAN</h3>
                                             </div>
                                             <button type="button" class="text-gray-400 hover:text-gray-600"
                                                 data-dismiss="modal" aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
-                                        
+
                                         {{-- content --}}
                                         <div class="modal-body p-6">
                                             <!-- Informasi Utama -->
@@ -345,76 +346,82 @@
                                                 <div class="flex justify-between items-center border-b pb-2">
                                                     <span class="font-medium text-gray-600">Kamar</span>
                                                     <input id="modal-bukti-kamar" type="text" name="idKamar"
-                                                        class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none" 
+                                                        class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none"
                                                         disabled>
                                                 </div>
-                                                
+
                                                 <div class="flex justify-between items-center border-b pb-2">
                                                     <span class="font-medium text-gray-600">Nama Penyewa</span>
                                                     <input id="modal-bukti-nama" type="text" name="nama"
-                                                        class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
+                                                        class="w-1/2 text-right text-gray-700 bg-transparent border-none"
                                                         disabled>
                                                 </div>
                                             </div>
-                        
+
                                             <!-- Detail Waktu -->
                                             <div class="flex flex-col gap-4 mb-6">
                                                 <div class="flex justify-between items-center">
                                                     <span class="font-medium text-gray-600">Tanggal Tagihan</span>
-                                                    <input id="modal-bukti-tagihanPembayaran" type="date" name="tgl_tagihan"
+                                                    <input id="modal-bukti-tagihanPembayaran" type="date"
+                                                        name="tgl_tagihan"
                                                         class="w-1/2 text-right bg-transparent border-none" readonly>
                                                 </div>
-                                                
+
                                                 @if ($tabelDenda)
                                                     <div class="flex justify-between items-center">
                                                         <span class="font-medium text-gray-600">Tanggal Denda</span>
-                                                        <input id="modal-bukti-dendaPembayaran" type="date" name="tgl_denda"
-                                                            class="w-1/2 text-right bg-transparent border-none" readonly>
+                                                        <input id="modal-bukti-dendaPembayaran" type="date"
+                                                            name="tgl_denda"
+                                                            class="w-1/2 text-right bg-transparent border-none"
+                                                            readonly>
                                                     </div>
                                                 @endif
                                             </div>
-                        
+
                                             <!-- Rentang Waktu -->
-                                            <div class="flex justify-between items-center mb-6 px-4 py-2 bg-blue-50 rounded-lg">
+                                            <div
+                                                class="flex justify-between items-center mb-6 px-4 py-2 bg-blue-50 rounded-lg">
                                                 <span class="font-medium text-blue-600">Rentang Pembayaran</span>
                                                 <input id="modal-bukti-rentang" type="text" name="rentang"
-                                                    class="text-right font-semibold text-blue-700 bg-transparent border-none" 
+                                                    class="text-right font-semibold text-blue-700 bg-transparent border-none"
                                                     readonly>
                                             </div>
-                        
+
                                             <!-- Detail Pembayaran -->
                                             <div class="border rounded-lg p-4 mb-6">
                                                 <h4 class="text-lg font-bold mb-4">Rincian Pembayaran</h4>
-                                                
+
                                                 <div class="space-y-3">
                                                     <div class="flex justify-between" id="bukti-harga">
                                                         <span class="font-medium">Harga Sewa:</span>
                                                         <input id="modal-bukti-harga" type="text" name="harga"
                                                             class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
-                        
+
                                                     <div class="flex justify-between" id="bukti-deposit">
                                                         <span class="font-medium">Deposit:</span>
                                                         <input id="modal-bukti-deposit" type="text" name="deposit"
                                                             class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
-                        
+
                                                     <div id="bukti-biaya-container" class="space-y-3"></div>
-                        
+
                                                     <div class="flex justify-between" id="bukti-denda">
                                                         <span class="font-medium">Denda:</span>
                                                         <input id="modal-bukti-denda" type="text" name="denda"
                                                             class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
-                        
+
                                                     <div class="flex justify-between border-t pt-3">
                                                         <span class="font-bold">Total Pembayaran:</span>
-                                                        <input id="modal-bukti-total" type="text" name="total_bayar"
-                                                            class="w-1/3 text-right px-2 font-bold bg-transparent" readonly>
+                                                        <input id="modal-bukti-total" type="text"
+                                                            name="total_bayar"
+                                                            class="w-1/3 text-right px-2 font-bold bg-transparent"
+                                                            readonly>
                                                     </div>
                                                 </div>
                                             </div>
-                        
+
                                             <!-- Bukti Pembayaran -->
                                             <div class="mb-6">
                                                 <div class="flex flex-col items-center space-y-2">
@@ -423,7 +430,7 @@
                                                         class="h-72 object-contain border border-gray-200 rounded-lg p-2">
                                                 </div>
                                             </div>
-                        
+
                                             <!-- Detail Tambahan -->
                                             <div class="space-y-4">
                                                 <div class="flex justify-between items-center border-b pb-2">
@@ -431,20 +438,21 @@
                                                     <input id="modal-bukti-metode" type="text" name="metode"
                                                         class="w-1/2 text-right bg-transparent border-none" readonly>
                                                 </div>
-                        
+
                                                 <div class="flex justify-between items-center border-b pb-2">
                                                     <span class="font-medium text-gray-600">Keterangan</span>
                                                     <textarea id="modal-bukti-keterangan" rows="2" name="keterangan"
                                                         class="w-1/2 text-right bg-transparent border-none resize-none" readonly></textarea>
                                                 </div>
                                             </div>
-                        
+
                                             <input type="hidden" id="modal-bukti-idPembayaran" name="idPembayaran">
                                             <input type="hidden" id="modal-bukti-idKontrak" name="idKontrak">
                                         </div>
-                        
+
                                         {{-- SUBMIT --}}
-                                        <div class="modal-footer border-t border-gray-200 py-4 px-6 flex justify-end space-x-3">
+                                        <div
+                                            class="modal-footer border-t border-gray-200 py-4 px-6 flex justify-end space-x-3">
                                             <button type="button" name="action" value="tolak" data-toggle="modal"
                                                 data-target="#ModalTolakPembayaran" data-dismiss="modal"
                                                 class="verifikasi-pembayaran px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
@@ -519,7 +527,8 @@
 
                                             @if ($tabelDenda)
                                                 <div class="flex items-center space-x-4">
-                                                    <label for="tempo" class="w-32 text-md font-medium text-gray-700">
+                                                    <label for="tempo"
+                                                        class="w-32 text-md font-medium text-gray-700">
                                                         Tanggal Denda:</label>
                                                     <input id="modal-revisi-tgl_denda" type="date" value=""
                                                         name="tgl_denda"
@@ -618,7 +627,8 @@
                     <div class="modal-dialog max-w-4xl mx-auto mt-24">
                         <div class="modal-content rounded-lg shadow-lg bg-white">
                             {{-- header --}}
-                            <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
+                            <div
+                                class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
                                 <div>
                                     <h3 class="text-2xl font-bold text-gray-800">INVOICE TAGIHAN</h3>
                                 </div>
@@ -638,16 +648,15 @@
                                 <div class="flex flex-col gap-4 mb-6">
                                     <div class="flex justify-between items-center border-b pb-2">
                                         <span class="font-medium text-gray-600">Kamar</span>
-                                        <input id="modal-kamar" type="text" 
-                                            class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none" 
+                                        <input id="modal-kamar" type="text"
+                                            class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none"
                                             readonly>
                                     </div>
-                                    
+
                                     <div class="flex justify-between items-center border-b pb-2">
                                         <span class="font-medium text-gray-600">Nama Penyewa</span>
-                                        <input id="modal-nama" type="text" 
-                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
-                                            readonly>
+                                        <input id="modal-nama" type="text"
+                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" readonly>
                                     </div>
                                 </div>
 
@@ -655,38 +664,36 @@
                                 <div class="flex flex-col gap-4 mb-6">
                                     <div class="flex justify-between items-center">
                                         <span class="font-medium text-gray-600">Status</span>
-                                        <input id="modal-status" type="text" 
-                                            class="w-1/2 text-right px-2 py-1 bg-gray-100 rounded-md border-none" 
+                                        <input id="modal-status" type="text"
+                                            class="w-1/2 text-right px-2 py-1 bg-gray-100 rounded-md border-none"
                                             readonly>
                                     </div>
-                                    
+
                                     <div class="flex justify-between items-center">
                                         <span class="font-medium text-gray-600">Tanggal Tagihan</span>
-                                        <input id="modal-tagihan" type="text" 
-                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
-                                            readonly>
+                                        <input id="modal-tagihan" type="text"
+                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" readonly>
                                     </div>
-                                    
+
                                     <div class="flex justify-between items-center">
                                         <span class="font-medium text-gray-600">Tanggal Denda</span>
-                                        <input id="modal-tempo" type="text" 
-                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
-                                            readonly>
+                                        <input id="modal-tempo" type="text"
+                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" readonly>
                                     </div>
                                 </div>
 
                                 <!-- Rentang Waktu -->
                                 <div class="flex justify-between items-center mb-6 px-4 py-2 bg-blue-50 rounded-lg">
                                     <span class="font-medium text-blue-600">Rentang Pembayaran</span>
-                                    <input id="modal-rentang" type="text" 
-                                        class="text-right font-semibold text-blue-700 bg-transparent border-none" 
+                                    <input id="modal-rentang" type="text"
+                                        class="text-right font-semibold text-blue-700 bg-transparent border-none"
                                         readonly>
                                 </div>
 
                                 <!-- Detail Pembayaran -->
                                 <div class="border rounded-lg p-4 mb-6">
                                     <h4 class="text-lg font-bold mb-4">Rincian Pembayaran</h4>
-                                    
+
                                     <div class="space-y-3">
                                         <div class="flex justify-between" id="harga-kontrak">
                                             <span class="font-medium">Harga Sewa:</span>
@@ -719,13 +726,14 @@
                                 <!-- Keterangan -->
                                 <div class="mb-4">
                                     <p class="font-medium text-gray-700">Keterangan:</p>
-                                    <textarea id="modal-keterangan" rows="2"
-                                        class="w-full px-3 py-2 border rounded-md focus:outline-none" readonly></textarea>
+                                    <textarea id="modal-keterangan" rows="2" class="w-full px-3 py-2 border rounded-md focus:outline-none"
+                                        readonly></textarea>
                                 </div>
                             </div>
 
                             <div class="modal-footer border-t border-gray-200 py-2 px-6 flex justify-end space-x-3">
-                                <button type="button" data-toggle="modal" data-target="#ModalUbahPembayaran" data-dismiss="modal"
+                                <button type="button" data-toggle="modal" data-target="#ModalUbahPembayaran"
+                                    data-dismiss="modal"
                                     class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
                                     Ubah Pembayaran
                                 </button>
@@ -790,14 +798,16 @@
                                             required>
                                     </div>
 
-                                    <div class="flex items-center space-x-4">
-                                        <label for="tgl_denda" class="w-32 text-md font-medium text-gray-700">
-                                            Tanggal Denda:</label>
-                                        <input id="modal-ubahTagihan-tgl_denda" type="date" value=""
-                                            name="tgl_denda" min="1"
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                            required>
-                                    </div>
+                                    @if ($tabelDenda)
+                                        <div class="flex items-center space-x-4">
+                                            <label for="tgl_denda" class="w-32 text-md font-medium text-gray-700">
+                                                Tanggal Denda:</label>
+                                            <input id="modal-ubahTagihan-tgl_denda" type="date" value=""
+                                                name="tgl_denda" min="1"
+                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                required>
+                                        </div>
+                                    @endif
 
                                     <!-- Container untuk biayaList yang akan diisi melalui AJAX -->
                                     <div id="ubah-biaya-container"></div>
@@ -805,7 +815,7 @@
                                     <div class="flex items-center space-x-4">
                                         <label for="tgl_denda" class="w-32 text-md font-medium text-gray-700">
                                             Total Pembayaran:</label>
-                                        <input id="modal-ubahTagihan-total" type="number" value=""
+                                        <input id="modal-ubahTagihan-total" type="text" value=""
                                             name="total" min="0"
                                             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                             required>
@@ -888,7 +898,8 @@
                     <div class="modal-dialog max-w-4xl mx-auto mt-24">
                         <div class="modal-content rounded-lg shadow-lg bg-white">
                             {{-- Header --}}
-                            <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
+                            <div
+                                class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
                                 <div>
                                     <h3 class="text-2xl font-bold text-gray-800">DETAIL RIWAYAT PEMBAYARAN</h3>
                                 </div>
@@ -901,7 +912,7 @@
                                     </svg>
                                 </button>
                             </div>
-                
+
                             {{-- Content --}}
                             <div class="modal-body p-6">
                                 <!-- Informasi Utama -->
@@ -909,16 +920,17 @@
                                     <div class="flex justify-between items-center border-b pb-2">
                                         <span class="font-medium text-gray-600">Kamar</span>
                                         <input id="modal-riwayat-kamar" type="text"
-                                            class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none" readonly>
+                                            class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none"
+                                            readonly>
                                     </div>
-                                    
+
                                     <div class="flex justify-between items-center border-b pb-2">
                                         <span class="font-medium text-gray-600">Nama Penyewa</span>
                                         <input id="modal-riwayat-nama" type="text"
                                             class="w-1/2 text-right text-gray-700 bg-transparent border-none" readonly>
                                     </div>
                                 </div>
-                
+
                                 <!-- Detail Waktu -->
                                 <div class="flex flex-col gap-4 mb-6">
                                     <div class="flex justify-between items-center">
@@ -926,7 +938,7 @@
                                         <input id="modal-riwayat-tgl_tagihan" type="text"
                                             class="w-1/2 text-right bg-transparent border-none" readonly>
                                     </div>
-                                    
+
                                     @if ($tabelDenda)
                                         <div class="flex justify-between items-center">
                                             <span class="font-medium text-gray-600">Tanggal Denda</span>
@@ -935,39 +947,40 @@
                                         </div>
                                     @endif
                                 </div>
-                
+
                                 <!-- Rentang Waktu -->
                                 <div class="flex justify-between items-center mb-6 px-4 py-2 bg-blue-50 rounded-lg">
                                     <span class="font-medium text-blue-600">Rentang Pembayaran</span>
                                     <input id="modal-riwayat-rentang" type="text"
-                                        class="text-right font-semibold text-blue-700 bg-transparent border-none" readonly>
+                                        class="text-right font-semibold text-blue-700 bg-transparent border-none"
+                                        readonly>
                                 </div>
-                
+
                                 <!-- Detail Pembayaran -->
                                 <div class="border rounded-lg p-4 mb-6">
                                     <h4 class="text-lg font-bold mb-4">Rincian Pembayaran</h4>
-                                    
+
                                     <div class="space-y-3">
                                         <div class="flex justify-between" id="riwayat-harga">
                                             <span class="font-medium">Harga Sewa:</span>
                                             <input id="modal-riwayat-harga" type="text"
                                                 class="w-1/3 text-right px-2 bg-transparent" readonly>
                                         </div>
-                
+
                                         <div class="flex justify-between" id="riwayat-deposit">
                                             <span class="font-medium">Deposit:</span>
                                             <input id="modal-riwayat-deposit" type="text"
                                                 class="w-1/3 text-right px-2 bg-transparent" readonly>
                                         </div>
-                
+
                                         <div id="riwayat-container" class="space-y-3"></div>
-                
+
                                         <div class="flex justify-between" id="riwayat-denda">
                                             <span class="font-medium">Denda:</span>
                                             <input id="modal-riwayat-denda" type="text"
                                                 class="w-1/3 text-right px-2 bg-transparent" readonly>
                                         </div>
-                
+
                                         <div class="flex justify-between border-t pt-3">
                                             <span class="font-bold">Total Pembayaran:</span>
                                             <input id="modal-riwayat-total" type="text"
@@ -975,7 +988,7 @@
                                         </div>
                                     </div>
                                 </div>
-                
+
                                 <!-- Bukti Pembayaran -->
                                 <div class="mb-6">
                                     <div class="flex flex-col items-center space-y-2">
@@ -984,7 +997,7 @@
                                             class="h-72 object-contain border border-gray-200 rounded-lg p-2">
                                     </div>
                                 </div>
-                
+
                                 <!-- Detail Tambahan -->
                                 <div class="space-y-4">
                                     <div class="flex justify-between items-center border-b pb-2">
@@ -992,19 +1005,19 @@
                                         <input id="modal-riwayat-metode" type="text"
                                             class="w-1/2 text-right bg-transparent border-none" readonly>
                                     </div>
-                
+
                                     <div class="flex justify-between items-center border-b pb-2">
                                         <span class="font-medium text-gray-600">Tanggal Pembayaran</span>
                                         <input id="modal-riwayat-tanggal" type="text"
                                             class="w-1/2 text-right bg-transparent border-none" readonly>
                                     </div>
-                
+
                                     <div class="flex justify-between items-center border-b pb-2">
                                         <span class="font-medium text-gray-600">Status</span>
                                         <input id="modal-riwayat-status" type="text"
                                             class="w-1/2 text-right bg-transparent border-none" readonly>
                                     </div>
-                
+
                                     <div class="flex justify-between items-center border-b pb-2">
                                         <span class="font-medium text-gray-600">Keterangan</span>
                                         <textarea id="modal-riwayat-keterangan" rows="2"
@@ -1012,7 +1025,7 @@
                                     </div>
                                 </div>
                             </div>
-                
+
                             {{-- Footer --}}
                             <div class="modal-footer border-t border-gray-200 py-4 px-6 flex justify-end">
                                 <button type="button"
@@ -1032,6 +1045,28 @@
 {{-- BUAT PEMBAYARAN --}}
 <script>
     $(document).ready(function() {
+        
+        const cleaveTotalBayar = new Cleave('#total_bayar', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
+
+        const cleaveDeposit = new Cleave('#modal-buat-deposit', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
+
+        const cleaveHargaKamar = new Cleave('#modal-buat-total', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
+
         $('.buat-pembayaran').on('click', function(e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -1040,6 +1075,9 @@
                 url: '/tagihan/' + id,
                 type: 'GET',
                 success: function(data) {
+                    cleaveHargaKamar.setRawValue(data.data.harga.toString());
+                    cleaveDeposit.setRawValue(data.data.deposit?.toString() || '0');
+
                     $('#modal-buat-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-buat-nama').val(data.data.nama);
                     $('#modal-buat-tagihan').val(data.data.tgl_tagihan);
@@ -1058,13 +1096,19 @@
                         $('#waktu_tagihan_denda_update').show();
 
                         /// Hitung tanggal tagihan berikutnya
-                        const tglTagihan = new Date(data.data.tgl_tagihan); // Konversi ke objek Date
-                        const waktuTagihan = parseInt(data.pengaturan.waktu_tagihan) || tglTagihan.getDate(); // Ambil waktu_tagihan atau default tanggal tagihan saat ini
+                        const tglTagihan = new Date(data.data
+                            .tgl_tagihan); // Konversi ke objek Date
+                        const waktuTagihan = parseInt(data.pengaturan.waktu_tagihan) ||
+                            tglTagihan
+                            .getDate(); // Ambil waktu_tagihan atau default tanggal tagihan saat ini
 
                         tglTagihan.setMonth(tglTagihan.getMonth() + 1); // Tambahkan 1 bulan
-                        const lastDayOfNextMonth = new Date(tglTagihan.getFullYear(), tglTagihan.getMonth() + 1, 0).getDate();
-                        tglTagihan.setDate(Math.min(waktuTagihan,lastDayOfNextMonth)); // Atur tanggal sesuai waktu_tagihan
-                        const nextTagihan = tglTagihan.toISOString().split('T')[0]; // Format YYYY-MM-DD
+                        const lastDayOfNextMonth = new Date(tglTagihan.getFullYear(),
+                            tglTagihan.getMonth() + 1, 0).getDate();
+                        tglTagihan.setDate(Math.min(waktuTagihan,
+                            lastDayOfNextMonth)); // Atur tanggal sesuai waktu_tagihan
+                        const nextTagihan = tglTagihan.toISOString().split('T')[
+                            0]; // Format YYYY-MM-DD
 
                         $('#modal-buat-tagihanBerikutnya').val(nextTagihan);
 
@@ -1091,9 +1135,9 @@
 
                     }
 
-
                     // CEK SHOW DEPOSIT/BIAYA
-                    if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data.deposit !== null) {
+                    if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data
+                        .deposit !== null) {
                         $('#buat-biaya-container').hide(); // Sembunyikan biaya tambahan
 
                         $('#deposit-container').show(); // Tampilkan deposit
@@ -1107,15 +1151,25 @@
                         $('#buat-biaya-container').empty(); // Kosongkan biaya sebelumnya
 
                         $.each(data.biayaKontrak, function(index, biaya) {
+                            const inputId = `biaya-${index}`;
                             $('#buat-biaya-container').append(`
-                                <divx class="mb-2 flex items-center space-x-4">
+                                <div class="mb-2 flex items-center space-x-4">
                                     <label class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
-                                    <input type="number" name="harga_biaya[]" 
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" 
+                                    <input id="${inputId}" 
+                                        type="text" 
+                                        name="harga_biaya[]" 
+                                        class="biaya-input flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                         value="0">
                                     <input type="hidden" name="idBiaya[]" value="${biaya.idBiaya}">
-                                </divx>
+                                </div>
                             `);
+
+                            new Cleave(`#${inputId}`, {
+                                numeral: true,
+                                numeralThousandsGroupStyle: 'thousand',
+                                numeralDecimalMark: ',',
+                                delimiter: '.'
+                            });
                         });
                     }
                     updateTotalBayar();
@@ -1127,29 +1181,25 @@
         const updateTotalBayar = () => {
             let total = 0;
 
-            // Ambil nilai harga kamar
-            const hargaKamar = parseFloat($('#modal-buat-total').val()) || 0;
-            total += hargaKamar;
+            // Ambil nilai harga kamar (sudah diformat)
+            total += parseFloat(cleaveHargaKamar.getRawValue()) || 0;
 
             const waktu = parseFloat($('#modal-buat-waktu').val()) || 1;
             total *= waktu;
 
-            // Ambil nilai deposit (jika ada)
-            const deposit = parseFloat($('#modal-buat-deposit').val()) || 0;
-            total += deposit;
+            // Ambil nilai deposit
+            total += parseFloat(cleaveDeposit.getRawValue()) || 0;
 
-            // Ambil semua input biaya dan tambahkan ke total
-            $('#buat-biaya-container input[name="harga_biaya[]"]').each(function() {
-                const biaya = parseFloat($(this).val()) || 0;
-                total += biaya;
+            // Ambil nilai dari input biaya dinamis
+            $('.biaya-input').each(function() {
+                const rawValue = new Cleave(this).getRawValue();
+                total += parseFloat(rawValue) || 0;
             });
 
-            // Update input total bayar
-            $('#total_bayar').val(total);
-            $('#hidden_total_bayar').val(total); // Untuk submit
+            // Update total bayar
+            cleaveTotalBayar.setRawValue(total.toString());
+            $('#hidden_total_bayar').val(total);
         };
-
-
 
         // Tambahkan event listener pada input deposit
         $('#modal-buat-deposit').on('input', function() {
@@ -1186,16 +1236,19 @@
                 type: 'GET',
                 success: function(data) {
                     function formatRupiah(angka) {
-                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,
+                            ".");
                     }
 
                     $('#modal-bukti-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-bukti-nama').val(data.data.nama);
                     $('#modal-bukti-tagihanPembayaran').val(data.data.tagihanPembayaran);
                     $('#modal-bukti-dendaPembayaran').val(data.data.dendaPembayaran);
-                    $('#modal-bukti-rentang').val(data.data.waktu + " " + data.data.rentang);
+                    $('#modal-bukti-rentang').val(data.data.waktu + " " + data.data
+                        .rentang);
                     $('#modal-bukti-total').val(formatRupiah(data.data.dibayar));
-                    $('#modal-bukti-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
+                    $('#modal-bukti-metode').val(data.data.metode + " - " + data.data
+                        .nomor_tujuan);
                     $('#modal-bukti-keterangan').val(data.data.keterangan_pembayaran);
                     $('#modal-bukti-idPembayaran').val(data.data.idPembayaran);
                     $('#modal-bukti-idKontrak').val(data.data.idKontrak);
@@ -1205,7 +1258,7 @@
                     // menambahkan biaya lainnya kedalaam modal
                     $('#bukti-biaya-container').empty();
                     $.each(data.biayaList, function(index, biaya) {
-                    $('#bukti-biaya-container').append(`
+                        $('#bukti-biaya-container').append(`
                             <div class="flex justify-between mb-2">
                                 <span class="font-medium">${biaya.biaya}:</span>
                                 <input type="text" 
@@ -1240,7 +1293,8 @@
                         $('#bukti-harga').addClass('hidden');
                     } else {
                         $('#bukti-harga').removeClass('hidden');
-                        $('#modal-bukti-harga').val(formatRupiah(data.data.harga * data.data.waktu));
+                        $('#modal-bukti-harga').val(formatRupiah(data.data.harga * data.data
+                            .waktu));
                     }
 
                     $('#modal-revisi-kamar').val('Kamar ' + data.data.idKamar);
@@ -1266,7 +1320,8 @@
                 type: 'GET',
                 success: function(data) {
                     function formatRupiah(angka) {
-                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,
+                            ".");
                     }
 
                     $('#modal-kamar').val('Kamar ' + data.data.idKamar);
@@ -1303,7 +1358,8 @@
                     });
 
                     // DEPOSIT KONTRAK
-                    if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data.deposit !== null) {
+                    if (data.data.status_kontrak === 'Pembayaran Perdana' && data.data
+                        .deposit !== null) {
                         $('#deposit-kontrak').removeClass('hidden');
                         $('#modal-deposit').val(formatRupiah(data.data.deposit));
                     } else {
@@ -1340,7 +1396,8 @@
                         const angkaMingguan = parseFloat(data.denda.angka_mingguan);
                         const angkaHarian = parseFloat(data.denda.angka_harian);
                         const rentang = data.data.rentang;
-                        const nilaiDenda = rentang === 'Bulan' ? angka : rentang === 'Mingguan' ? angkaMingguan : angkaHarian;
+                        const nilaiDenda = rentang === 'Bulan' ? angka : rentang ===
+                            'Mingguan' ? angkaMingguan : angkaHarian;
 
                         let denda = 0;
 
@@ -1398,13 +1455,20 @@
                         $('#modal-total').val(formatRupiah(data.data.total_bayar));
                     }
 
-                
+
 
                     // BAGIAN UBAH //
-                    if (data.data.status_pembayaran === 'Revisi' || data.data.rentang !== 'Bulan') {
+                    const claveUbahHargaKamar = new Cleave('#modal-ubahTagihan-total', {
+                        numeral: true,
+                        numeralThousandsGroupStyle: 'thousand',
+                        numeralDecimalMark: ',',
+                        delimiter: '.'
+                    });
+
+                    if (data.data.status_pembayaran === 'Revisi' || data.data.rentang !==
+                        'Bulan') {
                         $('#modal-ubahTagihan-total').val(data.data.total_bayar);
-                    }
-                    else {
+                    } else {
                         // Mengubah biaya lainnya ke dalam modal
                         $('#ubah-biaya-container').empty();
                         $.each(data.biayaList, function(index, biaya) {
@@ -1420,11 +1484,13 @@
                         });
 
                         // Simpan harga dasar ke atribut data untuk perhitungan real-time
-                        $('#modal-ubahTagihan-total').data('base-price', parseFloat(data.data.harga) || 0);
+                        $('#modal-ubahTagihan-total').data('base-price', parseFloat(data
+                            .data.harga) || 0);
 
                         // Fungsi untuk update total bayar secara real-time
                         const updateTotal = () => {
-                            let total = parseFloat($('#modal-ubahTagihan-total').data('base-price')) || 0;
+                            let total = parseFloat($('#modal-ubahTagihan-total').data(
+                                'base-price')) || 0;
                             $('#ubah-biaya-container .biaya-input').each(function() {
                                 total += parseFloat($(this).val()) || 0;
                             });
@@ -1435,9 +1501,10 @@
                         updateTotal();
 
                         // Event listener untuk perubahan nilai input biaya
-                        $('#ubah-biaya-container').off('input').on('input', '.biaya-input', function() {
-                            updateTotal();
-                        });                    
+                        $('#ubah-biaya-container').off('input').on('input', '.biaya-input',
+                            function() {
+                                updateTotal();
+                            });
                     }
 
                 }
@@ -1458,16 +1525,19 @@
                 type: 'GET',
                 success: function(data) {
                     function formatRupiah(angka) {
-                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,
+                            ".");
                     }
 
                     $('#modal-riwayat-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-riwayat-nama').val(data.data.nama);
                     $('#modal-riwayat-tgl_tagihan').val(data.data.tgl_tagihan);
                     $('#modal-riwayat-tgl_denda').val(data.data.tgl_denda);
-                    $('#modal-riwayat-rentang').val(data.data.waktu + ' ' + data.data.rentang);
+                    $('#modal-riwayat-rentang').val(data.data.waktu + ' ' + data.data
+                        .rentang);
                     $('#modal-riwayat-total').val(formatRupiah(data.data.dibayar));
-                    $('#modal-riwayat-metode').val(data.data.metode + " - " + data.data.nomor_tujuan);
+                    $('#modal-riwayat-metode').val(data.data.metode + " - " + data.data
+                        .nomor_tujuan);
                     $('#modal-riwayat-tanggal').val(data.data.tanggal);
                     $('#modal-riwayat-status').val(data.data.status_pembayaran);
                     $('#modal-riwayat-keterangan').val(data.data.keterangan_pembayaran);
@@ -1495,7 +1565,8 @@
                         $('#riwayat-denda').addClass('hidden');
                     } else {
                         $('#riwayat-denda').removeClass('hidden');
-                        $('#modal-riwayat-denda').val(formatRupiah(data.denda.nominal_denda));
+                        $('#modal-riwayat-denda').val(formatRupiah(data.denda
+                            .nominal_denda));
                     }
 
                     // deposit

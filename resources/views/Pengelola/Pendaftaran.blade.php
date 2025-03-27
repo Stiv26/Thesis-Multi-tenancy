@@ -837,6 +837,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
 
 </head>
 
@@ -1112,21 +1113,25 @@
 
                                     {{-- nominal deposit --}}
                                     <div class="sm:col-span-1 sm:col-start-1">
-                                        <label for="deposit"
-                                            class="block text-sm font-medium leading-6 text-gray-900">Nominal Deposit</label>
+                                        <label for="deposit" class="block text-sm font-medium leading-6 text-gray-900">Nominal Deposit</label>
                                         <div class="mt-2">
-                                            <input id="deposit" name="deposit" type="number" value="{{ $default->nominal_deposit ?? null }}" disabled
-                                                class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <input id="deposit" 
+                                                   name="deposit" 
+                                                   type="text" 
+                                                   value="{{ $default->nominal_deposit ?? 0 }}" 
+                                                   class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         </div>
                                     </div>
 
                                     {{-- total pembayaran --}}
                                     <div class="sm:col-span-3">
-                                        <label for="pembayaran"
-                                            class="block text-sm font-medium leading-6 text-gray-900">Total Nominal Pembayaran Perdana</label>
+                                        <label for="pembayaran" class="block text-sm font-medium leading-6 text-gray-900">Total Nominal Pembayaran Perdana</label>
                                         <div class="mt-2">
-                                            <input disabled id="pembayaran" value="" name="pembayaran" type="number"
-                                                class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <input readonly 
+                                                   id="pembayaran" 
+                                                   name="pembayaran" 
+                                                   type="text"
+                                                   class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         </div>
                                     </div>
 
@@ -1181,50 +1186,66 @@
 {{-- HARGA --}}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Inisialisasi Cleave
+        const cleaveDeposit = new Cleave('#deposit', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
+        
+        const cleavePembayaran = new Cleave('#pembayaran', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
+    
+        // Set nilai awal deposit
+        cleaveDeposit.setRawValue("{{ $default->nominal_deposit ?? 0 }}");
+    
         const kontrakDropdown = document.getElementById('kontrak');
         const kamarDropdown = document.getElementById('kamar');
         const waktuInput = document.getElementById('waktu');
-        const depositInput = document.getElementById('deposit');
-        const pembayaranInput = document.getElementById('pembayaran');
-
+    
         const updateHarga = () => {
             const selectedKamar = kamarDropdown.options[kamarDropdown.selectedIndex];
             const selectedKontrak = kontrakDropdown.value;
-
+    
             const hargaBulan = parseFloat(selectedKamar.getAttribute('data-harga')) || 0;
             const hargaMingguan = parseFloat(selectedKamar.getAttribute('data-mingguan')) || 0;
             const hargaHarian = parseFloat(selectedKamar.getAttribute('data-harian')) || 0;
-
-            let harga;
-            if (selectedKontrak === 'Mingguan') {
-                harga = hargaMingguan;
-            } else if (selectedKontrak === 'Harian') {
-                harga = hargaHarian;
-            } else {
-                harga = hargaBulan;
-            }
-
-            // Reset waktu ke 1 jika kontrak berubah
+    
+            let harga = hargaBulan;
+            if (selectedKontrak === 'Mingguan') harga = hargaMingguan;
+            if (selectedKontrak === 'Harian') harga = hargaHarian;
+    
             const waktu = Math.max(parseFloat(waktuInput.value) || 1, 1);
-            const deposit = Math.max(parseFloat(depositInput.value) || 0, 0);
-
+            
+            // Ambil nilai deposit dari Cleave
+            const deposit = parseFloat(cleaveDeposit.getRawValue()) || 0;
+    
             const totalHarga = (harga * waktu) + deposit;
-            pembayaranInput.value = totalHarga;
+            
+            // Update total pembayaran dengan Cleave
+            cleavePembayaran.setRawValue(totalHarga.toString());
         };
-
-        // Tambahkan event listener untuk reset waktu saat kontrak berubah
+    
+        // Event listeners
         kontrakDropdown.addEventListener('change', () => {
-            waktuInput.value = 1; // Reset waktu ke 1
+            waktuInput.value = 1;
             updateHarga();
         });
-
+    
         kamarDropdown.addEventListener('change', updateHarga);
         waktuInput.addEventListener('input', updateHarga);
-        depositInput.addEventListener('input', updateHarga);
-
+        
+        // Tambahkan event listener untuk deposit
+        document.getElementById('deposit').addEventListener('input', updateHarga);
+    
         updateHarga();
     });
-</script>
+    </script>
 
 {{-- SET TELP + REKENING TIDAK BOLEH NOMOR --}}
 <script>
@@ -1294,5 +1315,15 @@
         
         // Jalankan pertama kali saat halaman dimuat
         updateKontrakOptions();
+    });
+</script>
+
+
+<script>
+    const cleaveDeposit = new Cleave('#deposit', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
     });
 </script>

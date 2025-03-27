@@ -705,11 +705,12 @@
                                             </div>
 
                                             <div class="flex items-center space-x-4">
-                                                <label for="harga" class="w-32 text-md font-medium text-gray-700">
-                                                    Harga:</label>
-                                                <input id="modal-layanan-harga" type="number" value="" name="harga"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    required>
+                                                <label for="harga" class="w-32 text-md font-medium text-gray-700">Harga:</label>
+                                                <input id="modal-layanan-harga-display" 
+                                                       type="text" 
+                                                       class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                       required>
+                                                <input type="hidden" id="modal-layanan-harga" name="harga">
                                             </div>
 
                                             <div class="flex items-center space-x-4">
@@ -810,11 +811,27 @@
                                     <label for="harga"
                                         class="block text-sm font-medium leading-6 text-gray-900">Harga</label>
                                     <div class="mt-2">
-                                        <input type="number" name="harga" id="harga"
-                                            class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            required>
+                                        <input type="text" id="harga-display" 
+                                            class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+
+                                        <input type="hidden" name="harga" id="harga">
                                     </div>
                                 </div>
+
+                                <script>
+                                    const cleaveHarga = new Cleave('#harga-display', {
+                                        numeral: true,
+                                        numeralThousandsGroupStyle: 'thousand',
+                                        numeralDecimalMark: ',',
+                                        delimiter: '.'
+                                    });
+
+                                    // Update nilai hidden saat input berubah
+                                    document.getElementById('harga-display').addEventListener('input', function() {
+                                        document.getElementById('harga').value = cleaveHarga.getRawValue();
+                                    });
+                                </script>
+                                
                                 <!-- Jumlah -->
                                 <div class="sm:col-span-1">
                                     <label for="jumlah"
@@ -1087,6 +1104,17 @@
             e.preventDefault();
             var id = $(this).data('id');
 
+            const cleaveEditHarga = new Cleave('#modal-layanan-harga-display', {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            });
+
+            document.getElementById('modal-layanan-harga-display').addEventListener('input', function() {
+                document.getElementById('modal-layanan-harga').value = cleaveEditHarga.getRawValue();
+            });
+
             $.ajax({
                 url: '/detailLayanan/' + id,
                 type: 'GET',
@@ -1094,6 +1122,8 @@
                     function formatRupiah(angka) {
                         return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                     }
+
+                    cleaveEditHarga.setRawValue(data.harga.toString());
 
                     $('#modal-nama').val(data.nama_item);
                     $('#modal-harga').val(formatRupiah(data.harga));

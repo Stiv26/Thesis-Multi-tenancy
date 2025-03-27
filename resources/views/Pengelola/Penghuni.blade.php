@@ -800,11 +800,12 @@
 
                             {{-- total pembayaran --}}
                             <div class="sm:col-span-3">
-                                <label for="pembayaran"
-                                    class="block text-sm font-medium leading-6 text-gray-900">Total Nominal Pembayaran
-                                    Perdana</label>
+                                <label for="pembayaran" class="block text-sm font-medium leading-6 text-gray-900">Total Nominal Pembayaran</label>
                                 <div class="mt-2">
-                                    <input disabled id="pembayaran" value="" name="pembayaran" type="number"
+                                    <input readonly 
+                                        id="pembayaran" 
+                                        name="pembayaran" 
+                                        type="text"
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 </div>
                             </div>
@@ -1118,50 +1119,92 @@
 {{-- HARGA --}}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Inisialisasi Cleave untuk format currency
+        const cleaveDeposit = new Cleave('#deposit', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
+
+        const cleavePembayaran = new Cleave('#pembayaran', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
+
+        // Set nilai awal dari PHP
+        cleaveDeposit.setRawValue("{{ $default->nominal_deposit ?? 0 }}");
+        
         const kontrakDropdown = document.getElementById('kontrak');
         const kamarDropdown = document.getElementById('kamar');
         const waktuInput = document.getElementById('waktu');
-        const depositInput = document.getElementById('deposit');
-        const pembayaranInput = document.getElementById('pembayaran');
 
         const updateHarga = () => {
             const selectedKamar = kamarDropdown.options[kamarDropdown.selectedIndex];
             const selectedKontrak = kontrakDropdown.value;
 
-            // Ambil nilai harga dari atribut data
+            // Ambil nilai numerik dari atribut data
             const hargaBulan = parseFloat(selectedKamar.getAttribute('data-harga')) || 0;
             const hargaMingguan = parseFloat(selectedKamar.getAttribute('data-mingguan')) || 0;
             const hargaHarian = parseFloat(selectedKamar.getAttribute('data-harian')) || 0;
 
-            // Tentukan harga sesuai pilihan kontrak
-            let harga;
-            if (selectedKontrak === 'Mingguan') {
-                harga = hargaMingguan;
-            } else if (selectedKontrak === 'Harian') {
-                harga = hargaHarian;
-            } else {
-                harga = hargaBulan;
-            }
+            // Tentukan harga sesuai kontrak
+            let harga = hargaBulan;
+            if (selectedKontrak === 'Mingguan') harga = hargaMingguan;
+            if (selectedKontrak === 'Harian') harga = hargaHarian;
 
             // Ambil nilai waktu dan deposit
-            const waktu = Math.max(parseFloat(waktuInput.value) || 1, 1); // Default waktu 1 jika kosong
-            const deposit = Math.max(parseFloat(depositInput.value) || 0, 0);
+            const waktu = Math.max(parseFloat(waktuInput.value) || 1, 1);
+            const deposit = parseFloat(cleaveDeposit.getRawValue()) || 0;
 
-            // Hitung total harga
+            // Hitung total
             const totalHarga = (harga * waktu) + deposit;
 
-            // Perbarui input pembayaran
-            pembayaranInput.value = totalHarga;
+            // Update dengan format currency
+            cleavePembayaran.setRawValue(totalHarga.toString());
+            
+            // Untuk kebutuhan form submission
+            document.getElementById('pembayaran').dataset.rawValue = totalHarga;
         };
 
-        // Event listener untuk dropdown kontrak, kamar, waktu, dan deposit
-        kontrakDropdown.addEventListener('change', updateHarga);
-        kamarDropdown.addEventListener('change', updateHarga);
-        waktuInput.addEventListener('input', updateHarga);
-        depositInput.addEventListener('input', updateHarga);
+        // Event listeners
+        [kontrakDropdown, kamarDropdown, waktuInput].forEach(element => {
+            element.addEventListener('change', updateHarga);
+        });
 
-        // Perbarui harga saat halaman dimuat
+        document.getElementById('deposit').addEventListener('input', updateHarga);
+        
+        // Inisialisasi pertama kali
         updateHarga();
+    });
+</script>
+
+{{-- Format Currency untuk Input Lain --}}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Format untuk input dinamis biaya
+        $(document).on('DOMNodeInserted', '.biaya-input', function() {
+            new Cleave(this, {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                numeralDecimalMark: ',',
+                delimiter: '.'
+            });
+        });
+
+        // Format untuk input lainnya
+        const cleaveConfig = {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        };
+        
+        new Cleave('#modal-kamar-harga', cleaveConfig);
+        new Cleave('#modal-kamar-mingguan', cleaveConfig);
+        new Cleave('#modal-kamar-harian', cleaveConfig);
     });
 </script>
 
@@ -1424,5 +1467,20 @@
 
         // Jalankan fungsi saat halaman dimuat untuk inisialisasi
         updateRentangKontrak();
+    });
+</script>
+
+<script>
+    const cleaveDeposit = new Cleave('#deposit', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+    const cleavePembayaran = new Cleave('#pembayaran', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
     });
 </script>

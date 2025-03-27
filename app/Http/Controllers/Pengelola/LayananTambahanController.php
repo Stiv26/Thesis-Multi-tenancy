@@ -246,9 +246,11 @@ class LayananTambahanController extends Controller
 
     public function storeLayanan(Request $request) // tambah layanan tambahan
     {
+        $harga = (int) $request->harga;
+
         DB::table('layanantambahan')->insert([
             'nama_item' => $request->nama,
-            'harga' => $request->harga,
+            'harga' => $harga,
             'stok' => $request->jumlah,
             'keterangan' => $request->keterangan,
         ]);
@@ -258,11 +260,13 @@ class LayananTambahanController extends Controller
 
     public function updateLayanan(Request $request) // ubah layanan tambahan
     {
+        $harga = (int) $request->harga;
+    
         DB::table('layanantambahan')
             ->where('idlayanantambahan', $request->idLayanan)
             ->update([
                 'nama_item' => $request->nama_item,
-                'harga' => $request->harga,
+                'harga' => $harga,
                 'stok' => $request->stok,
                 'keterangan' => $request->keterangan,
             ]);

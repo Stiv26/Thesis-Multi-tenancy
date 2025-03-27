@@ -589,13 +589,13 @@
                                     </div>
                                 </div>
 
-                                {{-- Harga --}}
+                                {{-- Harga Bulanan --}}
                                 <div class="sm:col-span-3 sm:col-start-1">
                                     <label for="harga"
                                         class="block text-sm font-medium leading-6 text-gray-900">Harga
                                         (Per-Bulan)</label>
                                     <div class="mt-2">
-                                        <input type="number" name="harga" id="harga"
+                                        <input type="text" name="harga" id="harga"
                                             class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             required>
                                     </div>
@@ -617,7 +617,7 @@
                                             class="block text-sm font-medium leading-6 text-gray-900">Harga
                                             (Per-Minggu)</label>
                                         <div class="mt-2">
-                                            <input type="number" name="harga_mingguan" id="harga_mingguan"
+                                            <input type="text" name="harga_mingguan" id="harga_mingguan"
                                                 class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         </div>
                                     </div>
@@ -628,7 +628,7 @@
                                             class="block text-sm font-medium leading-6 text-gray-900">Harga
                                             (Per-Hari)</label>
                                         <div class="mt-2">
-                                            <input type="number" name="harga_harian" id="harga_harian"
+                                            <input type="text" name="harga_harian" id="harga_harian"
                                                 class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         </div>
                                     </div>
@@ -1292,11 +1292,30 @@
 
 
                     // UBAH KAMAR
+                    const cleaveModalHargaKamar = new Cleave('#modal-kamar-harga', {
+                        numeral: true,
+                        numeralThousandsGroupStyle: 'thousand',
+                        numeralDecimalMark: ',',
+                        delimiter: '.'
+                    });
+                    const cleaveModalHargaMingguan = new Cleave('#modal-kamar-mingguan', {
+                        numeral: true,
+                        numeralThousandsGroupStyle: 'thousand',
+                        numeralDecimalMark: ',',
+                        delimiter: '.'
+                    });
+                    const cleaveModalHargaHarian = new Cleave('#modal-kamar-harian', {
+                        numeral: true,
+                        numeralThousandsGroupStyle: 'thousand',
+                        numeralDecimalMark: ',',
+                        delimiter: '.'
+                    });
+
                     $('#modal-kamar-nomor').val(data.data.idKamar);
-                    $('#modal-kamar-harga').val(data.data.harga);
+                    cleaveModalHargaKamar.setRawValue(data.data.harga.toString()); // <-- Ini yang diubah
                     $('#modal-kamar-keterangan').val(data.data.keterangan);
-                    $('#modal-kamar-mingguan').val(data.data.harga_mingguan);
-                    $('#modal-kamar-harian').val(data.data.harga_harian);
+                    cleaveModalHargaMingguan.setRawValue(data.data.harga_mingguan?.toString() || '0'); // <-- Ini
+                    cleaveModalHargaHarian.setRawValue(data.data.harga_harian?.toString() || '0'); // <-- Ini
 
                     var existingFasilitasIds = data.fasilitas.map(function(f) {
                         return f.idFasilitas;
@@ -1321,6 +1340,26 @@
             });
         });
     });
+    
+    const claveHargaKamar = new Cleave('#harga', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+    const claveHargaMingguan = new Cleave('#harga_mingguan', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+    const claveHargaHarian = new Cleave('#harga_harian', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
 
     // TOOGLE SELENGKAPNYA HARGA
     $(document).on('click', '#toggle-mingguan-harian', function() {

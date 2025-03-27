@@ -83,7 +83,7 @@
                         @forelse ($layananTambahan as $item)
                             <tr class="border-t hover:bg-gray-50 transition duration-200">
                                 <td class="py-3 px-4">{{ $item->nama_item }}</td>
-                                <td class="py-3 px-4">{{ $item->harga }}</td>
+                                <td class="py-3 px-4">{{ number_format($item->harga, 0, ',', '.') }}</td>
                                 <td class="py-3 px-4">{{ $item->stok }}</td>
                                 <td class="py-3 px-4">{{ $item->keterangan }}</td>
                                 <td class="py-3 px-4">
@@ -207,12 +207,12 @@
 
                                     {{-- TOTAL BAYAR --}}
                                     <div class="w-full text-center mt-2 pb-3">
-                                        <label for="bayar"
-                                            class="text-sm text-center font-medium text-gray-500">Total Bayar</label>
+                                        <label for="bayar" class="text-sm text-center font-medium text-gray-500">Total Bayar</label>
                                         <div>
-                                            <input required readonly id="modal-bayar" type="number" value=""
-                                                name="total"
+                                            <input required readonly id="modal-bayar" type="text" name="total"
                                                 class="w-full text-center px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                            <!-- Tambahkan input hidden untuk menyimpan nilai numerik -->
+                                            <input type="hidden" id="hidden-total-bayar" name="total_bayar">
                                         </div>
                                     </div>
 
@@ -1245,43 +1245,54 @@
         const hargaInput = document.getElementById('modal-harga');
         const stokInput = document.getElementById('modal-stok');
         const totalBayarInput = document.getElementById('modal-bayar');
+        
+        // Inisialisasi Cleave untuk format currency
+        const cleaveTotalBayar = new Cleave('#modal-bayar', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
 
-        // Fungsi untuk memperbarui total bayar
+        // Fungsi untuk memperbarui total bayar dengan format currency
         const updateTotalBayar = () => {
-            const jumlah = parseInt(jumlahInput.value) || 0; // Nilai jumlah (default 0 jika kosong)
-            const harga = parseFloat(hargaInput.value) || 0; // Nilai harga (default 0 jika kosong)
-            const stok = parseInt(stokInput.value) || 0; // Nilai stok (default 0 jika kosong)
+            const jumlah = parseInt(jumlahInput.value) || 0;
+            const harga = parseFloat(hargaInput.value) || 0;
+            const stok = parseInt(stokInput.value) || 0;
 
-            // Batasi nilai jumlah agar tidak melebihi stok
             if (jumlah > stok) {
                 jumlahInput.value = stok;
             }
 
-            // Hitung ulang total bayar
-            const validJumlah = Math.min(jumlah, stok); // Pastikan jumlah tidak lebih dari stok
+            const validJumlah = Math.min(jumlah, stok);
             const totalBayar = validJumlah * harga;
 
-            // Tetapkan nilai total bayar
-            totalBayarInput.value = totalBayar.toFixed(0); // Format menjadi dua desimal
+            // Update nilai dengan format currency
+            cleaveTotalBayar.setRawValue(totalBayar.toString());
+            
+            // Simpan nilai numerik di hidden input
+            document.getElementById('hidden-total-bayar').value = totalBayar;
         };
 
-        // Event listener untuk perubahan jumlah
+        // Event listener untuk input harga dengan format currency
+        new Cleave('#modal-harga', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.'
+        });
+
         jumlahInput.addEventListener('input', () => {
             const jumlah = parseInt(jumlahInput.value) || 0;
-
-            // Cegah nilai negatif
-            if (jumlah < 0) {
-                jumlahInput.value = 0;
-            }
-
+            if (jumlah < 0) jumlahInput.value = 0;
             updateTotalBayar();
         });
 
-        // Event listener untuk perubahan stok atau harga, jika diperlukan
+        // Tambahkan event listener untuk input harga
+        document.getElementById('modal-harga').addEventListener('input', updateTotalBayar);
         stokInput.addEventListener('input', updateTotalBayar);
-        hargaInput.addEventListener('input', updateTotalBayar);
 
-        // Inisialisasi total bayar saat halaman dimuat
+        // Inisialisasi pertama kali
         updateTotalBayar();
     });
 </script>

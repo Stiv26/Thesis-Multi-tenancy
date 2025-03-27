@@ -58,12 +58,14 @@ class PembelianLayananController extends Controller
             'private'     // Nama disk yang digunakan
         );
 
+        $totalBayar = (int) $request->total_bayar;
+
         DB::beginTransaction();
             DB::table('transaksi')->insert([
                 'idLayananTambahan' => $request->idLayanan,
                 'idKontrak' => Auth::user()->id,
                 'jumlah' => $request->jumlah,
-                'total_bayar' => $request->total,
+                'total_bayar' => $totalBayar,
                 'bukti' => $path,
                 'tanggal' => now(),
                 'tgl_terima' => $request->tgl_terima,
@@ -71,7 +73,7 @@ class PembelianLayananController extends Controller
                 'status_pengantaran' => $request->pengantaran === 'Diantar' ? 'Menunggu' : 'Ambil Sendiri',
                 'pesan' => $request->pesan,
                 'status' => 'Verifikasi', 
-                'dibayar' => $request->total,
+                'dibayar' => $totalBayar,
             ]);
 
             DB::table('layananTambahan')
@@ -100,7 +102,7 @@ class PembelianLayananController extends Controller
                     'Kamar' => 'Kamar ' . $userBuy->idKamar,
                     'Pesanan' => $pesanan->nama_item,
                     'Jumlah' => $request->jumlah,
-                    'total_bayar' => $request->total,
+                    'total_bayar' => $totalBayar,
                     'tanggal' => now(),
                     'tgl_terima' => $request->tgl_terima,
                     'pengantaran' => $request->pengantaran,
