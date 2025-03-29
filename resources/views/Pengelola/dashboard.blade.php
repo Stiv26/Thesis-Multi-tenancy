@@ -165,6 +165,40 @@
                                             </div>
                                         @endif
 
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                const tagihanInput = document.getElementById("modal-buat-tagihan_perbulan");
+                                                const dendaInput = document.getElementById("modal-buat-denda_perbulan");
+                                        
+                                                function validateDenda() {
+                                                    let tagihanValue = parseInt(tagihanInput.value) || 1;
+                                                    let dendaValue = parseInt(dendaInput.value) || 1;
+                                        
+                                                    // Pastikan tagihan tidak lebih dari 31
+                                                    if (tagihanValue > 31) {
+                                                        tagihanInput.value = 31;
+                                                    }
+                                        
+                                                    // Pastikan denda tidak lebih dari 31
+                                                    if (dendaValue > 31) {
+                                                        dendaInput.value = 31;
+                                                    }
+                                        
+                                                    // Pastikan denda tidak lebih kecil dari tagihan
+                                                    if (dendaValue < tagihanValue) {
+                                                        alert("Tanggal Denda tidak boleh kurang dari Tanggal Tagihan!");
+                                                        dendaInput.value = tagihanValue; // Set ke nilai tagihan jika salah
+                                                    }
+                                                }
+                                        
+                                                if (tagihanInput && dendaInput) {
+                                                    tagihanInput.addEventListener("input", validateDenda);
+                                                    dendaInput.addEventListener("input", validateDenda);
+                                                }
+                                            });
+                                        </script>
+                                        
+
                                         {{-- SUBMIT --}}
                                         <div class="modal-footer border-t border-gray-200 flex">
                                             <button type="submit"

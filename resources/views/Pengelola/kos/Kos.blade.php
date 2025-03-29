@@ -434,11 +434,10 @@
                                             </div>
 
                                             <div>
-                                                <label for="modal-kamar-harga"
-                                                    class="block text-sm font-medium text-gray-600">Harga
-                                                    (Per-Bulan)</label>
-                                                <input id="modal-kamar-harga" type="text" name="harga"
-                                                    class="text-center mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                <label for="modal-kamar-harga-display" class="block text-sm font-medium text-gray-600">Harga (Per-Bulan)</label>
+                                                <input id="modal-kamar-harga-display" type="text" 
+                                                       class="text-center mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                <input type="hidden" id="modal-kamar-harga" name="harga">
                                             </div>
 
                                             <div class="flex justify-center mt-4">
@@ -451,16 +450,18 @@
                                             <div id="modal-ubah-mingguan-harian" class="hidden mt-4 space-y-4">
                                                 <!-- Harga Per-Minggu -->
                                                 <div>
-                                                    <label for="modal-kamar-mingguan" class="block text-sm font-medium text-gray-600">Harga (Per-Minggu)</label>
-                                                    <input id="modal-kamar-mingguan" type="text" name="harga_mingguan"
-                                                        class="text-center mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                    <label for="modal-kamar-mingguan-display" class="block text-sm font-medium text-gray-600">Harga (Per-Minggu)</label>
+                                                    <input id="modal-kamar-mingguan-display" type="text" 
+                                                           class="text-center mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                    <input type="hidden" id="modal-kamar-mingguan" name="harga_mingguan">
                                                 </div>
                                             
                                                 <!-- Harga Per-Harian -->
                                                 <div>
-                                                    <label for="modal-kamar-harian" class="block text-sm font-medium text-gray-600">Harga (Per-Harian)</label>
-                                                    <input id="modal-kamar-harian" type="text" name="harga_harian"
-                                                        class="text-center mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                    <label for="modal-kamar-harian-display" class="block text-sm font-medium text-gray-600">Harga (Per-Harian)</label>
+                                                    <input id="modal-kamar-harian-display" type="text" 
+                                                           class="text-center mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                                                    <input type="hidden" id="modal-kamar-harian" name="harga_harian">
                                                 </div>
                                             </div>
 
@@ -591,15 +592,14 @@
 
                                 {{-- Harga Bulanan --}}
                                 <div class="sm:col-span-3 sm:col-start-1">
-                                    <label for="harga"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Harga
-                                        (Per-Bulan)</label>
+                                    <label for="harga" class="block text-sm font-medium leading-6 text-gray-900">Harga (Per-Bulan)</label>
                                     <div class="mt-2">
-                                        <input type="text" name="harga" id="harga"
-                                            class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            required>
+                                        <input type="text" id="harga-display" 
+                                               class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                               required>
+                                        <input type="hidden" name="harga" id="harga">
                                     </div>
-                                </div>
+                                </div>  
                                 
                                 {{-- HARGA MINGGUAN DAN HARIAN --}}
                                 <div class="sm:col-span-3 sm:col-start-1">
@@ -611,25 +611,21 @@
                                 <div id="hargaContainer" class="hidden sm:col-span-3 sm:col-start-1">
                                     <!-- Harga Mingguan -->
                                     <div class="sm:col-span-3 sm:col-start-1">
-                                        <p class="text-sm leading-6 text-gray-600">Bagian ini digunakan untuk harga
-                                            mingguan dan harian</p>
-                                        <label for="harga_mingguan"
-                                            class="block text-sm font-medium leading-6 text-gray-900">Harga
-                                            (Per-Minggu)</label>
+                                        <label for="harga_mingguan" class="block text-sm font-medium leading-6 text-gray-900">Harga (Per-Minggu)</label>
                                         <div class="mt-2">
-                                            <input type="text" name="harga_mingguan" id="harga_mingguan"
-                                                class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <input type="text" id="harga_mingguan-display" 
+                                                   class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <input type="hidden" name="harga_mingguan" id="harga_mingguan">
                                         </div>
                                     </div>
 
                                     <!-- Harga Harian -->
                                     <div class="sm:col-span-3 sm:col-start-1 mt-4">
-                                        <label for="harga_harian"
-                                            class="block text-sm font-medium leading-6 text-gray-900">Harga
-                                            (Per-Hari)</label>
+                                        <label for="harga_harian" class="block text-sm font-medium leading-6 text-gray-900">Harga (Per-Hari)</label>
                                         <div class="mt-2">
-                                            <input type="text" name="harga_harian" id="harga_harian"
-                                                class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <input type="text" id="harga_harian-display" 
+                                                   class="text-center block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <input type="hidden" name="harga_harian" id="harga_harian">
                                         </div>
                                     </div>
 
@@ -1230,6 +1226,18 @@
                         return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                     }
 
+                    cleaveHarga.setRawValue(data.data.harga.toString());
+                    $('#harga').val(data.data.harga);
+                    
+                    if(data.data.harga_mingguan) {
+                        cleaveHargaMingguan.setRawValue(data.data.harga_mingguan.toString());
+                        $('#harga_mingguan').val(data.data.harga_mingguan);
+                    }
+                    if(data.data.harga_harian) {
+                        cleaveHargaHarian.setRawValue(data.data.harga_harian.toString());
+                        $('#harga_harian').val(data.data.harga_harian);
+                    }
+
                     $('#modal-no_kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-harga_kamar').val(formatRupiah(data.data.harga));
                     $('#modal-harga_mingguan').val(data.data.harga_mingguan);
@@ -1289,9 +1297,6 @@
                         $('#modal-mingguan-harian').addClass('hidden');
                     }
 
-
-
-                    // UBAH KAMAR
                     const cleaveModalHargaKamar = new Cleave('#modal-kamar-harga', {
                         numeral: true,
                         numeralThousandsGroupStyle: 'thousand',
@@ -1317,6 +1322,20 @@
                     cleaveModalHargaMingguan.setRawValue(data.data.harga_mingguan?.toString() || '0'); // <-- Ini
                     cleaveModalHargaHarian.setRawValue(data.data.harga_harian?.toString() || '0'); // <-- Ini
 
+                    // UBAH KAMAR
+                    cleaveEditHarga.setRawValue(data.data.harga.toString());
+                    $('#modal-kamar-harga').val(data.data.harga);
+                    
+                    if(data.data.harga_mingguan) {
+                        cleaveEditMingguan.setRawValue(data.data.harga_mingguan.toString());
+                        $('#modal-kamar-mingguan').val(data.data.harga_mingguan);
+                    }
+                    
+                    if(data.data.harga_harian) {
+                        cleaveEditHarian.setRawValue(data.data.harga_harian.toString());
+                        $('#modal-kamar-harian').val(data.data.harga_harian);
+                    }
+
                     var existingFasilitasIds = data.fasilitas.map(function(f) {
                         return f.idFasilitas;
                     });
@@ -1341,25 +1360,67 @@
         });
     });
     
-    const claveHargaKamar = new Cleave('#harga', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralDecimalMark: ',',
-        delimiter: '.'
-    });
-    const claveHargaMingguan = new Cleave('#harga_mingguan', {
-        numeral: true,
-        numeralThousandsGroupStyle: 'thousand',
-        numeralDecimalMark: ',',
-        delimiter: '.'
-    });
-    const claveHargaHarian = new Cleave('#harga_harian', {
+    const cleaveHarga = new Cleave('#harga-display', {
         numeral: true,
         numeralThousandsGroupStyle: 'thousand',
         numeralDecimalMark: ',',
         delimiter: '.'
     });
 
+    const cleaveHargaMingguan = new Cleave('#harga_mingguan-display', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
+    const cleaveHargaHarian = new Cleave('#harga_harian-display', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
+    document.getElementById('harga-display').addEventListener('input', function() {
+        document.getElementById('harga').value = cleaveHarga.getRawValue();
+    });
+    document.getElementById('harga_mingguan-display').addEventListener('input', function() {
+        document.getElementById('harga_mingguan').value = cleaveHargaMingguan.getRawValue();
+    });
+    document.getElementById('harga_harian-display').addEventListener('input', function() {
+        document.getElementById('harga_harian').value = cleaveHargaHarian.getRawValue();
+    });
+
+    const cleaveEditHarga = new Cleave('#modal-kamar-harga-display', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
+    const cleaveEditMingguan = new Cleave('#modal-kamar-mingguan-display', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
+    const cleaveEditHarian = new Cleave('#modal-kamar-harian-display', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand',
+        numeralDecimalMark: ',',
+        delimiter: '.'
+    });
+
+    document.getElementById('modal-kamar-harga-display').addEventListener('input', function() {
+        document.getElementById('modal-kamar-harga').value = cleaveEditHarga.getRawValue();
+    });
+    document.getElementById('modal-kamar-mingguan-display').addEventListener('input', function() {
+        document.getElementById('modal-kamar-mingguan').value = cleaveEditMingguan.getRawValue();
+    });
+    document.getElementById('modal-kamar-harian-display').addEventListener('input', function() {
+        document.getElementById('modal-kamar-harian').value = cleaveEditHarian.getRawValue();
+    });
 
     // TOOGLE SELENGKAPNYA HARGA
     $(document).on('click', '#toggle-mingguan-harian', function() {

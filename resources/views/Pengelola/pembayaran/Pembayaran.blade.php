@@ -188,18 +188,18 @@
                                         <div class="flex items-center space-x-4">
                                             <label for="harga" class="w-32 text-md font-medium text-gray-700">Harga Kamar:</label>
                                             <input id="modal-buat-total" type="text" 
-                                                name="total"
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                readonly>
+                                                   name="total"
+                                                   class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                   readonly>
                                         </div>
 
                                         {{-- deposit --}}
                                         <div class="flex items-center space-x-4" id="deposit-container">
                                             <label for="deposit" class="w-32 text-md font-medium text-gray-700">Deposit:</label>
                                             <input id="modal-buat-deposit" type="text" 
-                                                name="deposit"
-                                                class="flex-1 px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:ring-0"
-                                                readonly>
+                                                   name="deposit"
+                                                   class="flex-1 px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:ring-0"
+                                                   readonly>
                                         </div>
 
                                         <!-- Container untuk biayaList yang akan diisi melalui AJAX -->
@@ -207,13 +207,11 @@
 
                                         {{-- total bayar --}}
                                         <div class="flex items-center space-x-4 mt-4">
-                                            <label for="total_bayar" class="w-32 text-md font-medium text-gray-700">
-                                                Total Bayar:</label>
-                                            <input id="total_bayar" type="text" value=""
-                                                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                readonly data-type="currency">
-                                            <input id="hidden_total_bayar" type="hidden" name="total_bayar"
-                                                value="">
+                                            <label for="total_bayar" class="w-32 text-md font-medium text-gray-700">Total Bayar:</label>
+                                            <input id="total_bayar" type="text" 
+                                                   class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                   readonly>
+                                            <input id="hidden_total_bayar" type="hidden" name="total_bayar">
                                         </div>
 
                                         {{-- Input Hidden idkontrak insert db + waktu buat update harga --}}
@@ -732,11 +730,11 @@
                             </div>
 
                             <div class="modal-footer border-t border-gray-200 py-2 px-6 flex justify-end space-x-3">
-                                <button type="button" data-toggle="modal" data-target="#ModalUbahPembayaran"
+                                {{-- <button type="button" data-toggle="modal" data-target="#ModalUbahPembayaran"
                                     data-dismiss="modal"
                                     class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
                                     Ubah Pembayaran
-                                </button>
+                                </button> --}}
                                 <button type="button"
                                     class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
                                     data-dismiss="modal">
@@ -1045,27 +1043,16 @@
 {{-- BUAT PEMBAYARAN --}}
 <script>
     $(document).ready(function() {
-        
-        const cleaveTotalBayar = new Cleave('#total_bayar', {
+        const cleaveConfig = {
             numeral: true,
             numeralThousandsGroupStyle: 'thousand',
             numeralDecimalMark: ',',
             delimiter: '.'
-        });
+        };
 
-        const cleaveDeposit = new Cleave('#modal-buat-deposit', {
-            numeral: true,
-            numeralThousandsGroupStyle: 'thousand',
-            numeralDecimalMark: ',',
-            delimiter: '.'
-        });
-
-        const cleaveHargaKamar = new Cleave('#modal-buat-total', {
-            numeral: true,
-            numeralThousandsGroupStyle: 'thousand',
-            numeralDecimalMark: ',',
-            delimiter: '.'
-        });
+        const cleaveTotalBayar = new Cleave('#total_bayar', cleaveConfig);
+        const cleaveDeposit = new Cleave('#modal-buat-deposit', cleaveConfig);
+        const cleaveHargaKamar = new Cleave('#modal-buat-total', cleaveConfig);
 
         $('.buat-pembayaran').on('click', function(e) {
             e.preventDefault();
@@ -1075,14 +1062,12 @@
                 url: '/tagihan/' + id,
                 type: 'GET',
                 success: function(data) {
-                    cleaveHargaKamar.setRawValue(data.data.harga.toString());
-                    cleaveDeposit.setRawValue(data.data.deposit?.toString() || '0');
-
                     $('#modal-buat-kamar').val('Kamar ' + data.data.idKamar);
                     $('#modal-buat-nama').val(data.data.nama);
                     $('#modal-buat-tagihan').val(data.data.tgl_tagihan);
                     $('#modal-buat-denda').val(data.data.tgl_denda);
-                    $('#modal-buat-total').val(data.data.harga);
+                    // $('#modal-buat-total').val(data.data.harga);
+                    cleaveHargaKamar.setRawValue(data.data.harga.toString());
                     $('#modal-buat-rentang').val(data.data.waktu + " " + data.data.rentang);
                     // hidden
                     $('#modal-buat-kontrak').val(data.data.idKontrak);
@@ -1096,19 +1081,12 @@
                         $('#waktu_tagihan_denda_update').show();
 
                         /// Hitung tanggal tagihan berikutnya
-                        const tglTagihan = new Date(data.data
-                            .tgl_tagihan); // Konversi ke objek Date
-                        const waktuTagihan = parseInt(data.pengaturan.waktu_tagihan) ||
-                            tglTagihan
-                            .getDate(); // Ambil waktu_tagihan atau default tanggal tagihan saat ini
+                        const tglTagihan = new Date(data.data.tgl_tagihan); // Konversi ke objek Date
+                        const waktuTagihan = parseInt(data.pengaturan.waktu_tagihan) || tglTagihan.getDate(); // Ambil waktu_tagihan atau default tanggal tagihan saat ini
 
                         tglTagihan.setMonth(tglTagihan.getMonth() + 1); // Tambahkan 1 bulan
-                        const lastDayOfNextMonth = new Date(tglTagihan.getFullYear(),
-                            tglTagihan.getMonth() + 1, 0).getDate();
-                        tglTagihan.setDate(Math.min(waktuTagihan,
-                            lastDayOfNextMonth)); // Atur tanggal sesuai waktu_tagihan
-                        const nextTagihan = tglTagihan.toISOString().split('T')[
-                            0]; // Format YYYY-MM-DD
+                        const lastDayOfNextMonth = new Date(tglTagihan.getFullYear(),tglTagihan.getMonth() + 1, 0).getDate();tglTagihan.setDate(Math.min(waktuTagihan,lastDayOfNextMonth)); // Atur tanggal sesuai waktu_tagihan
+                        const nextTagihan = tglTagihan.toISOString().split('T')[0]; // Format YYYY-MM-DD
 
                         $('#modal-buat-tagihanBerikutnya').val(nextTagihan);
 
@@ -1141,7 +1119,8 @@
                         $('#buat-biaya-container').hide(); // Sembunyikan biaya tambahan
 
                         $('#deposit-container').show(); // Tampilkan deposit
-                        $('#modal-buat-deposit').val(data.data.deposit);
+                        // $('#modal-buat-deposit').val(data.data.deposit);
+                        cleaveDeposit.setRawValue(data.data.deposit?.toString() || '0');
                     } else {
                         $('#deposit-container').hide(); // Sembunyikan deposit jika null
                     }
@@ -1157,18 +1136,20 @@
                                     <label class="w-32 text-md font-medium text-gray-700">${biaya.biaya}:</label>
                                     <input id="${inputId}" 
                                         type="text" 
-                                        name="harga_biaya[]" 
                                         class="biaya-input flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
                                         value="0">
+                                    <input type="hidden" name="harga_biaya[]" id="hidden-${inputId}" value="0">
                                     <input type="hidden" name="idBiaya[]" value="${biaya.idBiaya}">
                                 </div>
                             `);
 
-                            new Cleave(`#${inputId}`, {
-                                numeral: true,
-                                numeralThousandsGroupStyle: 'thousand',
-                                numeralDecimalMark: ',',
-                                delimiter: '.'
+                            // Buat instance Cleave dengan callback untuk update hidden field
+                            const cleaveInstance = new Cleave(`#${inputId}`, {
+                                ...cleaveConfig,
+                                onValueChanged: function(e) {
+                                    // Update hidden input dengan raw value (tanpa formatting)
+                                    $(`#hidden-${inputId}`).val(e.target.rawValue);
+                                }
                             });
                         });
                     }
@@ -1180,26 +1161,29 @@
         // method untuk update total bayar
         const updateTotalBayar = () => {
             let total = 0;
-
-            // Ambil nilai harga kamar (sudah diformat)
-            total += parseFloat(cleaveHargaKamar.getRawValue()) || 0;
-
+            
+            // Hitung harga kamar
+            const hargaKamar = parseFloat(cleaveHargaKamar.getRawValue()) || 0;
             const waktu = parseFloat($('#modal-buat-waktu').val()) || 1;
-            total *= waktu;
+            total += hargaKamar * waktu;
 
-            // Ambil nilai deposit
+            // Tambahkan deposit
             total += parseFloat(cleaveDeposit.getRawValue()) || 0;
 
-            // Ambil nilai dari input biaya dinamis
-            $('.biaya-input').each(function() {
-                const rawValue = new Cleave(this).getRawValue();
-                total += parseFloat(rawValue) || 0;
+            // Hitung biaya tambahan (gunakan nilai dari hidden input)
+            $('input[name="harga_biaya[]"]').each(function() {
+                total += parseFloat($(this).val()) || 0;
             });
 
-            // Update total bayar
+            // Update total
             cleaveTotalBayar.setRawValue(total.toString());
             $('#hidden_total_bayar').val(total);
         };
+
+        // Event listener untuk update realtime
+        $('#buat-biaya-container').on('input', '.biaya-input', updateTotalBayar);
+        $('#modal-buat-deposit').on('input', updateTotalBayar);
+        $('#modal-buat-waktu').on('input', updateTotalBayar);
 
         // Tambahkan event listener pada input deposit
         $('#modal-buat-deposit').on('input', function() {

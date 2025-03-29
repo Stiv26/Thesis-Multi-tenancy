@@ -1120,6 +1120,7 @@
                                                    type="text" 
                                                    value="{{ $default->nominal_deposit ?? 0 }}" 
                                                    class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <input type="hidden" id="hidden_deposit" name="deposit">
                                         </div>
                                     </div>
 
@@ -1129,9 +1130,9 @@
                                         <div class="mt-2">
                                             <input readonly 
                                                    id="pembayaran" 
-                                                   name="pembayaran" 
                                                    type="text"
                                                    class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <input type="hidden" id="hidden_pembayaran" name="pembayaran">
                                         </div>
                                     </div>
 
@@ -1203,6 +1204,7 @@
     
         // Set nilai awal deposit
         cleaveDeposit.setRawValue("{{ $default->nominal_deposit ?? 0 }}");
+        document.getElementById('hidden_pembayaran').value = cleaveDeposit.getRawValue();
     
         const kontrakDropdown = document.getElementById('kontrak');
         const kamarDropdown = document.getElementById('kamar');
@@ -1229,6 +1231,7 @@
             
             // Update total pembayaran dengan Cleave
             cleavePembayaran.setRawValue(totalHarga.toString());
+            document.getElementById('hidden_pembayaran').value = totalHarga.toString();
         };
     
         // Event listeners
@@ -1241,11 +1244,14 @@
         waktuInput.addEventListener('input', updateHarga);
         
         // Tambahkan event listener untuk deposit
-        document.getElementById('deposit').addEventListener('input', updateHarga);
+        document.getElementById('deposit').addEventListener('input', function() {
+            document.getElementById('hidden_deposit').value = cleaveDeposit.getRawValue();
+            updateHarga();
+        });
     
         updateHarga();
     });
-    </script>
+</script>
 
 {{-- SET TELP + REKENING TIDAK BOLEH NOMOR --}}
 <script>
