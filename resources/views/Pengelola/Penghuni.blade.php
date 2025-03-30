@@ -790,11 +790,12 @@
 
                             {{-- nominal deposit --}}
                             <div class="sm:col-span-1 sm:col-start-1">
-                                <label for="deposit"
-                                    class="block text-sm font-medium leading-6 text-gray-900">Nominal Deposit</label>
+                                <label for="deposit" class="block text-sm font-medium leading-6 text-gray-900">Nominal Deposit</label>
                                 <div class="mt-2">
-                                    <input id="deposit" name="deposit" type="number" value="{{ $default->nominal_deposit ?? null }}"
+                                    <input id="deposit" 
+                                        type="text" <!-- Ubah type="number" ke "text" 
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <input type="hidden" name="deposit" id="hidden_deposit"> 
                                 </div>
                             </div>
 
@@ -807,6 +808,7 @@
                                         name="pembayaran" 
                                         type="text"
                                         class="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <input type="hidden" name="pembayaran" id="hidden_pembayaran">
                                 </div>
                             </div>
 
@@ -1124,7 +1126,10 @@
             numeral: true,
             numeralThousandsGroupStyle: 'thousand',
             numeralDecimalMark: ',',
-            delimiter: '.'
+            delimiter: '.',
+            onValueChanged: function(e) {
+                document.getElementById('hidden_deposit').value = e.target.rawValue;
+            }
         });
 
         const cleavePembayaran = new Cleave('#pembayaran', {
@@ -1136,6 +1141,7 @@
 
         // Set nilai awal dari PHP
         cleaveDeposit.setRawValue("{{ $default->nominal_deposit ?? 0 }}");
+        document.getElementById('hidden_deposit').value = cleaveDeposit.getRawValue();
         
         const kontrakDropdown = document.getElementById('kontrak');
         const kamarDropdown = document.getElementById('kamar');
@@ -1156,10 +1162,9 @@
             if (selectedKontrak === 'Harian') harga = hargaHarian;
 
             // Ambil nilai waktu dan deposit
-            const waktu = Math.max(parseFloat(waktuInput.value) || 1, 1);
-            const deposit = parseFloat(cleaveDeposit.getRawValue()) || 0;
+            const deposit = parseInt(document.getElementById('hidden_deposit').value) || 0;
+            const waktu = parseInt(waktuInput.value) || 1;
 
-            // Hitung total
             const totalHarga = (harga * waktu) + deposit;
 
             // Update dengan format currency
@@ -1167,6 +1172,7 @@
             
             // Untuk kebutuhan form submission
             document.getElementById('pembayaran').dataset.rawValue = totalHarga;
+            document.getElementById('hidden_pembayaran').value = totalHarga;
         };
 
         // Event listeners
