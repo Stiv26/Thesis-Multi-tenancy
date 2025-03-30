@@ -148,7 +148,8 @@
                                             </svg>
                                         </div>
                                         <h2 class="text-lg font-medium text-gray-900 peer-checked:text-indigo-600">Data Diri</h2>
-                                        <p class="text-base peer-checked:text-indigo-600">Kelola informasi data diri penghuni kos.</p>
+                                        <p class="text-base peer-checked:text-indigo-600">Dokumen data diri penghuni saat masuk kedalam kos.</p>
+                                        <p class="text-sm peer-checked:text-indigo-800">Seperti: Asal kota, alamat, dan nomor wali</p>
                                     </div>
                                 </label>
                                 {{-- BIAYA FASILITAS --}}
@@ -162,7 +163,8 @@
                                             </svg>
                                         </div>
                                         <h2 class="text-lg font-medium text-gray-900 peer-checked:text-indigo-600">Biaya</h2>
-                                        <p class="text-base peer-checked:text-indigo-600">Atur rincian biaya kos secara detail.</p>
+                                        <p class="text-base peer-checked:text-indigo-600">Biaya tambahan lainnya yang perlu dibayarkan setiap bulan</p>
+                                        <p class="text-sm peer-checked:text-indigo-800">Seperti: Listrik, WiFi, dan Parkir</p>
                                     </div>
                                 </label>
                                 {{-- LAYANAN TAMBAHAN --}}
@@ -175,7 +177,8 @@
                                             </svg>
                                         </div>
                                         <h2 class="text-lg font-medium text-gray-900 peer-checked:text-indigo-600">Layanan Tambahan</h2>
-                                        <p class="text-base peer-checked:text-indigo-600">Penjualan barang untuk penghuni kos.</p>
+                                        <p class="text-base peer-checked:text-indigo-600">Penjualan barang atau layanan tambahan untuk penghuni kos.</p>
+                                        <p class="text-sm peer-checked:text-indigo-800">Seperti: Galon, Makanan, dan Jasa lainnya</p>
                                     </div>
                                 </label>
                                 {{-- PEMELIHARAN --}}
@@ -188,7 +191,8 @@
                                             </svg>
                                         </div>
                                         <h2 class="text-lg font-medium text-gray-900 peer-checked:text-indigo-600">Pemeliharaan</h2>
-                                        <p class="text-base peer-checked:text-indigo-600">Pantau permintaan perbaikan fasilitas.</p>
+                                        <p class="text-base peer-checked:text-indigo-600">Penghuni dapat melakukan permintaan perbaikan fasilitas.</p>
+                                        <p class="text-sm peer-checked:text-indigo-800">Seperti: Pemilian fasilitas, Penjadwalan, dan Respon permintaan</p>
                                     </div>
                                 </label>
                                 {{-- KARYAWAN --}}
@@ -201,7 +205,8 @@
                                             </svg>
                                         </div>
                                         <h2 class="text-lg font-medium text-gray-900 peer-checked:text-indigo-600">Karyawan</h2>
-                                        <p class="text-base peer-checked:text-indigo-600">Kelola karyawan yang bekerja pada kos.</p>
+                                        <p class="text-base peer-checked:text-indigo-600">Kelola karyawan kos yang dapat login dan mengakses sistem</p>
+                                        <p class="text-sm peer-checked:text-indigo-800">Seperti: Asisten Rumah Tangga</p>
                                     </div>
                                 </label>
                                 {{-- DENDA --}}
@@ -214,7 +219,8 @@
                                             </svg>
                                         </div>
                                         <h2 class="text-lg font-medium text-gray-900 peer-checked:text-indigo-600">Denda</h2>
-                                        <p class="text-base peer-checked:text-indigo-600">Kelola denda tagihan pembayaran kos.</p>
+                                        <p class="text-base peer-checked:text-indigo-600">Kelola denda tagihan dari pembayaran penghuni yang telat.</p>
+                                        <p class="text-sm peer-checked:text-indigo-800">Seperti: Denda perhari, nominal, dan persen</p>
                                     </div>
                                 </label>
                             </div>
