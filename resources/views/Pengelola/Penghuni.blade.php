@@ -1139,7 +1139,6 @@
             delimiter: '.'
         });
 
-        // Set nilai awal dari PHP
         cleaveDeposit.setRawValue("{{ $default->nominal_deposit ?? 0 }}");
         document.getElementById('hidden_deposit').value = cleaveDeposit.getRawValue();
         
