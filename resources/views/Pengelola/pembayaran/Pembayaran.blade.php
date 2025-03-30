@@ -518,9 +518,9 @@
                                                 <label for="harga" class="w-32 text-md font-medium text-gray-700">
                                                     Nominal Pembayaran:</label>
                                                 <input id="modal-revisi-total_bayar" type="text" value=""
-                                                    name="total_bayar"
-                                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                                    required>
+                                                       name="total_bayar" data-original-value=""
+                                                       class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                                                       required>
                                             </div>
 
                                             @if ($tabelDenda)
@@ -1290,6 +1290,34 @@
             });
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const nominalInput = document.getElementById('modal-revisi-total_bayar');
+    
+    // Format angka ketika input mendapatkan fokus
+    nominalInput.addEventListener('focus', function(e) {
+        // Hapus semua titik dari nilai saat ini
+        this.value = this.value.replace(/\./g, '');
+    });
+    
+    // Format angka saat user mengetik
+    nominalInput.addEventListener('input', function(e) {
+        // Hapus semua karakter kecuali angka
+        let value = this.value.replace(/\D/g, '');
+        
+        // Format dengan titik sebagai pemisah ribuan
+        if (value) {
+            this.value = Number(value).toLocaleString('id-ID').replace(/,/g, '.');
+        }
+    });
+    
+    // Pastikan saat form disubmit, nilai yang dikirim adalah angka tanpa formatting
+    if (nominalInput.form) {
+        nominalInput.form.addEventListener('submit', function() {
+            nominalInput.value = nominalInput.value.replace(/\./g, '');
+        });
+    }
+});
 </script>
 
 {{-- LIHAT PEMBAYARAN --}}
