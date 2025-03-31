@@ -43,34 +43,39 @@
                                     </svg>
                                 </button>
                             </div>
-                            
+
                             <div class="modal-body p-6 space-y-2">
                                 {{-- content --}}
                                 @if ($tabelDefault || $tabelDataDiri || $tabelBiaya)
                                     <section class="flex justify-center items-center mb-2">
                                         <div class="flex items-center justify-between px-3 py-3 rounded-lg">
-                                            <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                                                <a href="#pengaturan-kontrak" id="btnPengaturanKontrak" onclick="switchPengaturan('pengaturan-kontrak')"
+                                            <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm"
+                                                aria-label="Pagination">
+                                                <a href="#pengaturan-kontrak" id="btnPengaturanKontrak"
+                                                    onclick="switchPengaturan('pengaturan-kontrak')"
                                                     class="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20">
                                                     Kontrak</a>
                                                 @if ($tabelDefault)
-                                                    <a href="#pengaturan-denda" id="btnPengaturanDenda" onclick="switchPengaturan('pengaturan-denda')"
+                                                    <a href="#pengaturan-denda" id="btnPengaturanDenda"
+                                                        onclick="switchPengaturan('pengaturan-denda')"
                                                         class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">
                                                         Denda</a>
                                                 @endif
                                                 @if ($tabelDataDiri)
-                                                <a href="#formulir-data-diri" id="btnFormulirDataDiri" onclick="switchPengaturan('formulir-data-diri')"
-                                                    class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">
-                                                    Data Diri</a>
+                                                    <a href="#formulir-data-diri" id="btnFormulirDataDiri"
+                                                        onclick="switchPengaturan('formulir-data-diri')"
+                                                        class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">
+                                                        Data Diri</a>
                                                 @endif
                                                 @if ($tabelBiaya)
-                                                <a href="#biaya-kontrak-lainnya" id="btnBiayaKontrak" onclick="switchPengaturan('biaya-kontrak-lainnya')"
-                                                    class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">
-                                                    Biaya</a>
+                                                    <a href="#biaya-kontrak-lainnya" id="btnBiayaKontrak"
+                                                        onclick="switchPengaturan('biaya-kontrak-lainnya')"
+                                                        class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 md:inline-flex">
+                                                        Biaya</a>
                                                 @endif
                                             </nav>
                                         </div>
-                                    
+
                                         <script>
                                             function switchPengaturan(page) {
                                                 const sections = {
@@ -79,34 +84,36 @@
                                                     'formulir-data-diri': document.getElementById('formulir-data-diri'),
                                                     'biaya-kontrak-lainnya': document.getElementById('biaya-kontrak-lainnya')
                                                 };
-                                    
+
                                                 const buttons = {
                                                     'pengaturan-kontrak': document.getElementById('btnPengaturanKontrak'),
                                                     'pengaturan-denda': document.getElementById('btnPengaturanDenda'),
                                                     'formulir-data-diri': document.getElementById('btnFormulirDataDiri'),
                                                     'biaya-kontrak-lainnya': document.getElementById('btnBiayaKontrak')
                                                 };
-                                    
+
                                                 // Hide all sections
                                                 Object.values(sections).forEach(section => {
-                                                    if(section) section.classList.add('hidden');
+                                                    if (section) section.classList.add('hidden');
                                                 });
-                                    
+
                                                 // Reset all buttons
                                                 Object.values(buttons).forEach(button => {
-                                                    if(button) {
+                                                    if (button) {
                                                         button.classList.remove('bg-indigo-600', 'text-white');
-                                                        button.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                                                        button.classList.add('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300',
+                                                            'hover:bg-gray-50');
                                                     }
                                                 });
-                                    
+
                                                 // Show selected section and activate button
-                                                if(sections[page]) {
+                                                if (sections[page]) {
                                                     sections[page].classList.remove('hidden');
                                                     buttons[page].classList.add('bg-indigo-600', 'text-white');
-                                                    buttons[page].classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300', 'hover:bg-gray-50');
+                                                    buttons[page].classList.remove('text-gray-900', 'ring-1', 'ring-inset', 'ring-gray-300',
+                                                    'hover:bg-gray-50');
                                                 }
-                                    
+
                                                 // Smooth scroll to top
                                                 setTimeout(() => {
                                                     window.scrollTo({
@@ -115,7 +122,7 @@
                                                     });
                                                 }, 50);
                                             }
-                                    
+
                                             // Aktifkan halaman pertama saat load
                                             document.addEventListener('DOMContentLoaded', function() {
                                                 switchPengaturan('pengaturan-kontrak');
@@ -127,18 +134,20 @@
                                 <form action="{{ route('atur.pengaturan') }}" method="POST">
                                     @csrf
                                     <main id="pengaturan-kontrak" class="block">
-                                        
+
                                         <div class="text-center">
                                             <p class="text-gray-500 text-sm">Masukan Pengaturan Default Kontrak Kos</p>
                                         </div>
 
                                         <div class="flex items-center space-x-4 mb-2">
-                                            <label for="modal-buat-deposit" class="w-48 text-md font-medium text-gray-700">
+                                            <label for="modal-buat-deposit"
+                                                class="w-48 text-md font-medium text-gray-700">
                                                 Nominal Deposit:</label>
                                             <input id="modal-buat-deposit" type="number"
-                                                value="{{ $pengaturan->nominal_deposit ?? '' }}" name="deposit"
-                                                placeholder="Nominal Denda Kos"
+                                                value="{{ number_format($pengaturan->nominal_deposit, 0, ',', '.') ?? '' }}"
+                                                name="deposit" placeholder="Nominal Denda Kos"
                                                 class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                            <input type="hidden" name="deposit" id="hidden_deposit">
                                         </div>
 
                                         <div class="flex items-center space-x-4 mb-2">
@@ -147,8 +156,8 @@
                                                 Tanggal Tagihan Bulanan:</label>
                                             <input id="modal-buat-tagihan_perbulan" type="number"
                                                 value="{{ $pengaturan->pertanggal_tagihan_bulan ?? '' }}"
-                                                name="tagihan_perbulan" placeholder="Tanggal Tiap Tagihan" min="1"
-                                                max="31"
+                                                name="tagihan_perbulan" placeholder="Tanggal Tiap Tagihan"
+                                                min="1" max="31"
                                                 class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                         </div>
 
@@ -159,45 +168,44 @@
                                                     Tanggal Denda Bulanan:</label>
                                                 <input id="modal-buat-denda_perbulan" type="number"
                                                     value="{{ $pengaturan->pertanggal_denda_bulan ?? '' }}"
-                                                    name="denda_perbulan" placeholder="Tanggal Tiap Denda" min="1"
-                                                    max="31"
+                                                    name="denda_perbulan" placeholder="Tanggal Tiap Denda"
+                                                    min="1" max="31"
                                                     class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                             </div>
                                         @endif
 
                                         <script>
-                                            document.addEventListener("DOMContentLoaded", function () {
+                                            document.addEventListener("DOMContentLoaded", function() {
                                                 const tagihanInput = document.getElementById("modal-buat-tagihan_perbulan");
                                                 const dendaInput = document.getElementById("modal-buat-denda_perbulan");
-                                        
+
                                                 function validateDenda() {
                                                     let tagihanValue = parseInt(tagihanInput.value) || 1;
                                                     let dendaValue = parseInt(dendaInput.value) || 1;
-                                        
+
                                                     // Pastikan tagihan tidak lebih dari 31
                                                     if (tagihanValue > 31) {
                                                         tagihanInput.value = 31;
                                                     }
-                                        
+
                                                     // Pastikan denda tidak lebih dari 31
                                                     if (dendaValue > 31) {
                                                         dendaInput.value = 31;
                                                     }
-                                        
+
                                                     // Pastikan denda tidak lebih kecil dari tagihan
                                                     if (dendaValue < tagihanValue) {
                                                         alert("Tanggal Denda tidak boleh kurang dari Tanggal Tagihan!");
                                                         dendaInput.value = tagihanValue; // Set ke nilai tagihan jika salah
                                                     }
                                                 }
-                                        
+
                                                 if (tagihanInput && dendaInput) {
                                                     tagihanInput.addEventListener("input", validateDenda);
                                                     dendaInput.addEventListener("input", validateDenda);
                                                 }
                                             });
                                         </script>
-                                        
 
                                         {{-- SUBMIT --}}
                                         <div class="modal-footer border-t border-gray-200 flex">
@@ -215,14 +223,16 @@
                                         <form action="{{ route('atur.denda') }}" method="POST">
                                             @csrf
                                             <div class="text-center">
-                                                <p class="text-gray-500 text-sm">Masukan Pengaturan Denda Pembayaran</p>
+                                                <p class="text-gray-500 text-sm">Masukan Pengaturan Denda Pembayaran
+                                                </p>
                                             </div>
 
                                             <div id="daftar-denda">
                                                 <input type="hidden" name="idDenda" value="1">
 
                                                 <div class="flex items-center space-x-4 py-3">
-                                                    <label for="jenis_denda" class="w-32 text-md font-medium text-gray-700">
+                                                    <label for="jenis_denda"
+                                                        class="w-32 text-md font-medium text-gray-700">
                                                         Tipe Denda:</label>
                                                     <select id="modal-buat-jenis_denda" name="jenis_denda"
                                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
@@ -240,37 +250,44 @@
                                                 </div>
 
                                                 <div class="text-center">
-                                                    <p class="text-gray-500 text-sm">Masukan Nominal/Persen sesuai dengan
+                                                    <p class="text-gray-500 text-sm">Masukan Nominal/Persen sesuai
+                                                        dengan
                                                         rentang kontrak</p>
                                                 </div>
 
                                                 <div class="flex items-center space-x-4 mb-2">
-                                                    <label for="angka" class="w-48 text-md font-medium text-gray-700">
+                                                    <label for="angka"
+                                                        class="w-48 text-md font-medium text-gray-700">
                                                         Denda Bulan:</label>
-                                                    <input id="modal-buat-angka" type="number"
-                                                        value="{{ $pengaturanDenda->angka ?? '' }}" name="angka"
-                                                        placeholder="Nominal Rp atau %"
+                                                    <input id="modal-buat-angka" type="text"
+                                                        value="{{ number_format($pengaturanDenda->angka, 0, ',', '.') ?? '' }}"
+                                                        name="angka_display" placeholder="Nominal Rp atau %"
                                                         class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                                    <input type="hidden" name="angka" id="hidden_angka">
                                                 </div>
 
                                                 <div class="flex items-center space-x-4 mb-2">
                                                     <label for="angka_mingguan"
                                                         class="w-48 text-md font-medium text-gray-700">
                                                         Denda Mingguan:</label>
-                                                    <input id="modal-buat-angka_mingguan" type="number"
-                                                        value="{{ $pengaturanDenda->angka_mingguan ?? '' }}"
-                                                        name="angka_mingguan" placeholder="Nominal Rp atau %"
+                                                    <input id="modal-buat-angka_mingguan" type="text"
+                                                        value="{{ number_format($pengaturanDenda->angka_mingguan, 0, ',', '.') ?? '' }}"
+                                                        name="angka_mingguan_display" placeholder="Nominal Rp atau %"
                                                         class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                                    <input type="hidden" name="angka_mingguan"
+                                                        id="hidden_angka_mingguan">
                                                 </div>
 
                                                 <div class="flex items-center space-x-4 mb-3">
                                                     <label for="angka_harian"
                                                         class="w-48 text-md font-medium text-gray-700">
                                                         Denda Harian:</label>
-                                                    <input id="modal-buat-angka_harian" type="number"
-                                                        value="{{ $pengaturanDenda->angka_harian ?? '' }}"
-                                                        name="angka_harian" placeholder="Nominal Rp atau %"
+                                                    <input id="modal-buat-angka_harian" type="text"
+                                                        value="{{ number_format($pengaturanDenda->angka_harian, 0, ',', '.') ?? '' }}"
+                                                        name="angka_harian_display" placeholder="Nominal Rp atau %"
                                                         class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
+                                                    <input type="hidden" name="angka_harian"
+                                                        id="hidden_angka_harian">
                                                 </div>
 
                                                 {{-- SUBMIT --}}
@@ -297,9 +314,9 @@
                                                 <div class="flex justify-between">
                                                     <li class="btn-tindakan-dataDiri text-md py-1 px-3">
                                                         {{ $item->data_diri }}</li>
-                                                    <a href="#" 
-                                                        data-id="{{ $item->idListDataDiri }}" data-dataDiri="{{ $item->data_diri }}" 
-                                                        data-toggle="modal" data-target="#ModalTindakanDataDiri" data-dismiss="modal"
+                                                    <a href="#" data-id="{{ $item->idListDataDiri }}"
+                                                        data-dataDiri="{{ $item->data_diri }}" data-toggle="modal"
+                                                        data-target="#ModalTindakanDataDiri" data-dismiss="modal"
                                                         class="lihat-detail-aturan text-red-600 text-sm py-1 px-3">Tindakan</a>
                                                 </div>
                                             @endforeach
@@ -314,16 +331,17 @@
                                 @if ($tabelBiaya)
                                     <main id="biaya-kontrak-lainnya" class="hidden">
                                         <div class="text-center">
-                                            <p class="text-gray-500 text-sm">Masukan Pengaturan Biaya Kontrak Lainnya</p>
+                                            <p class="text-gray-500 text-sm">Masukan Pengaturan Biaya Kontrak Lainnya
+                                            </p>
                                         </div>
 
                                         <ol class="list-decimal pl-4">
                                             @foreach ($biayaList as $item)
                                                 <div class="flex justify-between">
                                                     <li class="text-md py-1 px-3">{{ $item->biaya }}</li>
-                                                    <a href="#" 
-                                                        data-id="{{ $item->idBiaya }}" data-biaya="{{ $item->biaya }}" 
-                                                        data-toggle="modal" data-target="#ModalTindakanBiaya" data-dismiss="modal"
+                                                    <a href="#" data-id="{{ $item->idBiaya }}"
+                                                        data-biaya="{{ $item->biaya }}" data-toggle="modal"
+                                                        data-target="#ModalTindakanBiaya" data-dismiss="modal"
                                                         class="lihat-detail-biaya text-red-600 text-sm py-1 px-3">Tindakan
                                                     </a>
                                                 </div>
@@ -457,15 +475,19 @@
                                 @csrf
                                 <div class="modal-header border-b border-gray-200 py-4 px-6">
                                     <h3 class="text-2xl font-semibold text-gray-800">Tambah Biaya</h3>
-                                    <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal" aria-hidden="true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    <button type="button" class="text-gray-400 hover:text-gray-600"
+                                        data-dismiss="modal" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </button>
                                 </div>
                                 <div class="modal-body p-6 space-y-2">
                                     <div class="flex items-center space-x-4">
-                                        <label for="tambah-biaya" class="w-32 text-md font-medium text-gray-700">Biaya:</label>
+                                        <label for="tambah-biaya"
+                                            class="w-32 text-md font-medium text-gray-700">Biaya:</label>
                                         <input required id="tambah-biaya" name="biaya" type="text"
                                             class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                     </div>
@@ -487,19 +509,24 @@
                             <div class="modal-content rounded-lg shadow-lg bg-white">
                                 <div class="modal-header border-b border-gray-200 py-4 px-6">
                                     <h3 class="text-2xl font-semibold text-gray-800">Formulir Biaya</h3>
-                                    <button type="button" class="text-gray-400 hover:text-gray-600" data-dismiss="modal" aria-hidden="true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    <button type="button" class="text-gray-400 hover:text-gray-600"
+                                        data-dismiss="modal" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </button>
                                 </div>
                                 <div class="modal-body p-6 space-y-2">
                                     <!-- Form Update -->
-                                    <form id="updateBiayaForm" action="{{ route('dashboard.biaya.update') }}" method="POST">
+                                    <form id="updateBiayaForm" action="{{ route('dashboard.biaya.update') }}"
+                                        method="POST">
                                         @csrf
                                         @method('PUT')
                                         <div class="flex items-center space-x-4">
-                                            <label for="modal-tindakan-biaya" class="w-32 text-md font-medium text-gray-700">
+                                            <label for="modal-tindakan-biaya"
+                                                class="w-32 text-md font-medium text-gray-700">
                                                 Biaya:
                                             </label>
                                             <input id="modal-tindakan-biaya" type="text" name="biaya"
@@ -510,7 +537,8 @@
                                     </form>
 
                                     <!-- Form Delete -->
-                                    <form id="deleteBiayaForm" action="{{ route('dashboard.biaya.destroy') }}" method="POST">
+                                    <form id="deleteBiayaForm" action="{{ route('dashboard.biaya.destroy') }}"
+                                        method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <input type="hidden" id="modal-tindakan-idBiaya-delete" name="idBiaya">
@@ -598,12 +626,15 @@
                                     </button>
                                 </div>
                                 <!-- Content -->
-                                <div class="modal-body p-6 space-y-4"> 
+                                <div class="modal-body p-6 space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-600">Daftar Kamar Kosong</label>
+                                        <label class="block text-sm font-medium text-gray-600">Daftar Kamar
+                                            Kosong</label>
                                         <div class="space-y-2 mt-2">
                                             @foreach ($kamarKosong as $item)
-                                                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100" value="Kamar {{ $item->idKamar }}" readonly>
+                                                <input type="text"
+                                                    class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                                                    value="Kamar {{ $item->idKamar }}" readonly>
                                             @endforeach
                                         </div>
                                     </div>
@@ -638,12 +669,15 @@
                                     </button>
                                 </div>
                                 <!-- Content -->
-                                <div class="modal-body p-6 space-y-4"> 
+                                <div class="modal-body p-6 space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-600">Daftar Kamar Terisi</label>
+                                        <label class="block text-sm font-medium text-gray-600">Daftar Kamar
+                                            Terisi</label>
                                         <div class="space-y-2 mt-2">
                                             @foreach ($kamarTerisi as $item)
-                                                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100" value="Kamar {{ $item->idKamar }}" readonly>
+                                                <input type="text"
+                                                    class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                                                    value="Kamar {{ $item->idKamar }}" readonly>
                                             @endforeach
                                         </div>
                                     </div>
@@ -799,5 +833,78 @@
             modal.find('#modal-tindakan-idBiaya-update').val(idBiaya);
             modal.find('#modal-tindakan-idBiaya-delete').val(idBiaya);
         });
+    });
+</script>
+
+{{-- formatting --}}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cleaveDeposit = new Cleave('#modal-buat-deposit', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.',
+            onValueChanged: function(e) {
+                document.getElementById('hidden_deposit').value = e.target.rawValue || '0';
+            }
+        });
+
+        @if (isset($pengaturan->nominal_deposit))
+            cleaveDeposit.setRawValue("{{ $pengaturan->nominal_deposit }}");
+            document.getElementById('hidden_deposit').value = "{{ $pengaturan->nominal_deposit }}";
+        @endif
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Format Denda Bulan
+        const cleaveAngka = new Cleave('#modal-buat-angka', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.',
+            onValueChanged: function(e) {
+                document.getElementById('hidden_angka').value = e.target.rawValue || '0';
+            }
+        });
+
+        // Format Denda Mingguan
+        const cleaveAngkaMingguan = new Cleave('#modal-buat-angka_mingguan', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.',
+            onValueChanged: function(e) {
+                document.getElementById('hidden_angka_mingguan').value = e.target.rawValue || '0';
+            }
+        });
+
+        // Format Denda Harian
+        const cleaveAngkaHarian = new Cleave('#modal-buat-angka_harian', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand',
+            numeralDecimalMark: ',',
+            delimiter: '.',
+            onValueChanged: function(e) {
+                document.getElementById('hidden_angka_harian').value = e.target.rawValue || '0';
+            }
+        });
+
+        // Set nilai awal jika data tersedia
+        @if (isset($pengaturanDenda->angka))
+            cleaveAngka.setRawValue("{{ $pengaturanDenda->angka }}");
+            document.getElementById('hidden_angka').value = "{{ $pengaturanDenda->angka }}";
+        @endif
+
+        @if (isset($pengaturanDenda->angka_mingguan))
+            cleaveAngkaMingguan.setRawValue("{{ $pengaturanDenda->angka_mingguan }}");
+            document.getElementById('hidden_angka_mingguan').value = "{{ $pengaturanDenda->angka_mingguan }}";
+        @endif
+
+        @if (isset($pengaturanDenda->angka_harian))
+            cleaveAngkaHarian.setRawValue("{{ $pengaturanDenda->angka_harian }}");
+            document.getElementById('hidden_angka_harian').value = "{{ $pengaturanDenda->angka_harian }}";
+        @endif
     });
 </script>
