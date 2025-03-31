@@ -144,7 +144,7 @@
                                                 class="w-48 text-md font-medium text-gray-700">
                                                 Nominal Deposit:</label>
                                             <input id="modal-buat-deposit" type="number"
-                                                value="{{ number_format($pengaturan->nominal_deposit, 0, ',', '.') ?? '' }}"
+                                                value="{{ isset($pengaturan) && $pengaturan ? number_format($pengaturan->nominal_deposit, 0, ',', '.') : '' }}"
                                                 name="deposit" placeholder="Nominal Denda Kos"
                                                 class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                             <input type="hidden" name="deposit" id="hidden_deposit">
@@ -260,7 +260,7 @@
                                                         class="w-48 text-md font-medium text-gray-700">
                                                         Denda Bulan:</label>
                                                     <input id="modal-buat-angka" type="text"
-                                                        value="{{ number_format($pengaturanDenda->angka, 0, ',', '.') ?? '' }}"
+                                                        value="{{ isset($pengaturanDenda) && $pengaturanDenda ? number_format($pengaturanDenda->angka, 0, ',', '.') : '' }}"
                                                         name="angka_display" placeholder="Nominal Rp atau %"
                                                         class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                                     <input type="hidden" name="angka" id="hidden_angka">
@@ -271,7 +271,7 @@
                                                         class="w-48 text-md font-medium text-gray-700">
                                                         Denda Mingguan:</label>
                                                     <input id="modal-buat-angka_mingguan" type="text"
-                                                        value="{{ number_format($pengaturanDenda->angka_mingguan, 0, ',', '.') ?? '' }}"
+                                                        value="{{ isset($pengaturanDenda) && $pengaturanDenda ? number_format($pengaturanDenda->angka_mingguan, 0, ',', '.') : '' }}"
                                                         name="angka_mingguan_display" placeholder="Nominal Rp atau %"
                                                         class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                                     <input type="hidden" name="angka_mingguan"
@@ -283,7 +283,7 @@
                                                         class="w-48 text-md font-medium text-gray-700">
                                                         Denda Harian:</label>
                                                     <input id="modal-buat-angka_harian" type="text"
-                                                        value="{{ number_format($pengaturanDenda->angka_harian, 0, ',', '.') ?? '' }}"
+                                                        value="{{ isset($pengaturanDenda) && $pengaturanDenda ? number_format($pengaturanDenda->angka_harian, 0, ',', '.') : '' }}"
                                                         name="angka_harian_display" placeholder="Nominal Rp atau %"
                                                         class="text-center flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                                     <input type="hidden" name="angka_harian"
