@@ -134,11 +134,10 @@
                                     </div>
 
                                     <div class="flex items-center space-x-4">
-                                        <label for="harga" class="w-32 text-md font-medium text-gray-700">
-                                            Harga:</label>
-                                        <input id="modal-harga" type="text" value="" name="harga"
-                                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
-                                            readonly>
+                                        <label for="harga" class="w-32 text-md font-medium text-gray-700">Harga:</label>
+                                        <input id="modal-harga" type="text" value="" name="harga" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0" readonly>
+                                        <!-- Tambahkan input hidden untuk menyimpan nilai asli -->
+                                        <input type="hidden" id="modal-harga-raw" name="harga_raw">
                                     </div>
 
                                     <div class="flex items-center space-x-4">
@@ -183,7 +182,7 @@
                                                 <script>
                                                     document.addEventListener('DOMContentLoaded', () => {
                                                         const tanggalInput = document.getElementById('modal-terima');
-                                                
+
                                                         const getTodayDateTime = () => {
                                                             const today = new Date();
                                                             const year = today.getFullYear();
@@ -193,21 +192,22 @@
                                                             const minutes = String(today.getMinutes()).padStart(2, '0');
                                                             return `${year}-${month}-${day}T${hours}:${minutes}`;
                                                         };
-                                                
+
                                                         // Set default value & min attribute ke hari ini + jam sekarang
                                                         const todayDateTime = getTodayDateTime();
                                                         tanggalInput.value = todayDateTime;
                                                         tanggalInput.setAttribute('min', todayDateTime);
                                                     });
                                                 </script>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
 
                                     {{-- TOTAL BAYAR --}}
                                     <div class="w-full text-center mt-2 pb-3">
-                                        <label for="bayar" class="text-sm text-center font-medium text-gray-500">Total Bayar</label>
+                                        <label for="bayar"
+                                            class="text-sm text-center font-medium text-gray-500">Total Bayar</label>
                                         <div>
                                             <input required readonly id="modal-bayar" type="text" name="total"
                                                 class="w-full text-center px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
@@ -231,7 +231,8 @@
                                     <div class="flex items-center space-x-4">
                                         <label for="bukti" class="w-32 text-md font-medium text-gray-700">
                                             Bukti:</label>
-                                        <input id="modal-bukti" type="file" value="" name="bukti" required
+                                        <input id="modal-bukti" type="file" value="" name="bukti"
+                                            required
                                             class="w-20 flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-0">
                                     </div>
 
@@ -312,92 +313,98 @@
                         </table>
 
                         {{-- MODAL DATA --}}
-                        <div class="modal fade p-4" id="ModalRevisi" tabindex="-1" role="dialog" 
-                                aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal fade p-4" id="ModalRevisi" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog max-w-4xl mx-auto mt-24">
                                 <div class="modal-content rounded-lg shadow-lg bg-white">
-                                    <form action="{{ route('revisiTransaksi.store') }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('revisiTransaksi.store') }}" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
-                                        
+
                                         <!-- Header -->
-                                        <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
+                                        <div
+                                            class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
                                             <div>
                                                 <h3 class="text-2xl font-bold text-gray-800">DETAIL PEMBAYARAN</h3>
                                             </div>
-                                            <button type="button" class="text-gray-400 hover:text-gray-600" 
-                                                    data-dismiss="modal" aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
-                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                            d="M6 18L18 6M6 6l12 12"/>
+                                            <button type="button" class="text-gray-400 hover:text-gray-600"
+                                                data-dismiss="modal" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
-                        
+
                                         <!-- Body -->
                                         <div class="modal-body p-6 space-y-4">
                                             <!-- Informasi Utama -->
                                             <div class="flex flex-col gap-4 mb-6">
                                                 <div class="flex justify-between items-center border-b pb-2">
                                                     <span class="font-medium text-gray-600">Kamar</span>
-                                                    <input id="modal-revisi-kamar" type="text" name="idKamar" 
-                                                            class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none" 
-                                                            readonly>
+                                                    <input id="modal-revisi-kamar" type="text" name="idKamar"
+                                                        class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none"
+                                                        readonly>
                                                 </div>
-                                                
+
                                                 <div class="flex justify-between items-center border-b pb-2">
                                                     <span class="font-medium text-gray-600">Pembeli</span>
-                                                    <input id="modal-revisi-pembeli" type="text" name="pembeli" 
-                                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
-                                                            readonly>
+                                                    <input id="modal-revisi-pembeli" type="text" name="pembeli"
+                                                        class="w-1/2 text-right text-gray-700 bg-transparent border-none"
+                                                        readonly>
                                                 </div>
                                             </div>
-                        
+
                                             <!-- Detail Layanan -->
                                             <div class="border rounded-lg p-4 mb-6">
                                                 <h4 class="text-lg font-bold mb-4">Pembelian Layanan Tambahan</h4>
-                                                
+
                                                 <div class="space-y-3">
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Nama Barang</span>
-                                                        <input id="modal-revisi-nama" type="text" name="item" 
-                                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                        <input id="modal-revisi-nama" type="text" name="item"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
-                        
+
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Jumlah</span>
-                                                        <input id="modal-revisi-jumlah" type="text" name="jumlah" 
-                                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                        <input id="modal-revisi-jumlah" type="text" name="jumlah"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
-                        
+
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Tanggal</span>
-                                                        <input id="modal-revisi-tanggal" type="text" name="tanggal" 
-                                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                        <input id="modal-revisi-tanggal" type="text"
+                                                            name="tanggal"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
-                        
+
                                                     <div class="flex justify-between border-t pt-3">
                                                         <span class="font-bold">Total Harga</span>
-                                                        <input id="modal-revisi-total" type="text" name="total_bayar" 
-                                                                class="w-1/3 text-right px-2 font-bold bg-transparent" readonly>
+                                                        <input id="modal-revisi-total" type="text"
+                                                            name="total_bayar"
+                                                            class="w-1/3 text-right px-2 font-bold bg-transparent"
+                                                            readonly>
                                                     </div>
                                                 </div>
                                             </div>
-                        
+
                                             <!-- Pesan dan Bukti -->
                                             <div class="border rounded-lg p-4 mb-6">
                                                 <div class="space-y-4">
                                                     <div class="flex flex-col">
                                                         <label class="font-medium text-gray-700 mb-2">Pesan:</label>
-                                                        <textarea id="modal-revisi-pesan" rows="2" name="pesan" 
-                                                                    class="w-full px-3 py-2 border rounded-md bg-gray-50" readonly></textarea>
+                                                        <textarea id="modal-revisi-pesan" rows="2" name="pesan"
+                                                            class="w-full px-3 py-2 border rounded-md bg-gray-50" readonly></textarea>
                                                     </div>
-                        
+
                                                     <div class="flex flex-col">
-                                                        <label class="font-medium text-gray-700 mb-2">Upload Bukti Baru:</label>
-                                                        <input id="modal-revisi-bukti" type="file" name="bukti" 
-                                                                class="w-full px-3 py-2 border rounded-md file:mr-4 file:py-2 file:px-4
+                                                        <label class="font-medium text-gray-700 mb-2">Upload Bukti
+                                                            Baru:</label>
+                                                        <input id="modal-revisi-bukti" type="file" name="bukti"
+                                                            class="w-full px-3 py-2 border rounded-md file:mr-4 file:py-2 file:px-4
                                                                         file:rounded-md file:border-0
                                                                         file:text-sm file:font-semibold
                                                                         file:bg-indigo-50 file:text-indigo-700
@@ -405,19 +412,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                        
+
                                             <input type="hidden" id="modal-revisi-idTransaksi" name="idTransaksi">
                                         </div>
-                        
+
                                         <!-- Footer -->
-                                        <div class="modal-footer border-t border-gray-200 py-2 px-6 flex justify-end space-x-3">
-                                            <button type="button" 
-                                                    class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
-                                                    data-dismiss="modal">
+                                        <div
+                                            class="modal-footer border-t border-gray-200 py-2 px-6 flex justify-end space-x-3">
+                                            <button type="button"
+                                                class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+                                                data-dismiss="modal">
                                                 Tutup
                                             </button>
-                                            <button type="submit" data-toggle="modal" data-target="#ModalSuksesBayar"
-                                                    class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                                            <button type="submit" data-toggle="modal"
+                                                data-target="#ModalSuksesBayar"
+                                                class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
                                                 Lakukan Pembayaran
                                             </button>
                                         </div>
@@ -425,7 +434,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </section>
             @endif
@@ -433,7 +442,8 @@
             {{-- PESANAN YANG BELUM DIANTAR --}}
             @if ($pesanan->isNotEmpty())
                 <section id="antar-pesanan" class="mb-5">
-                    <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat detail pesanan yang sudah diterima</p>
+                    <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat detail pesanan yang sudah diterima
+                    </p>
                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
                         <table class="min-w-full table-auto">
                             <thead class=" bg-gray-100">
@@ -456,7 +466,7 @@
                                         <td class="py-3 px-4">{{ $item->status_pengantaran }}</td>
                                         <td class="py-3 px-4">
                                             <a href="#" data-id="{{ $item->idTransaksi }}" data-toggle="modal"
-                                                data-target="#ModalPengantaran" 
+                                                data-target="#ModalPengantaran"
                                                 class="lihat-detail-pengantaran text-indigo-500 hover:text-indigo-700 transition">
                                                 Sudah diterima <span aria-hidden="true">→</span></a>
                                         </td>
@@ -471,25 +481,26 @@
                         </table>
 
                         {{-- MODAL DATA --}}
-                        <div class="modal fade p-4" id="ModalPengantaran" tabindex="-1" role="dialog" 
+                        <div class="modal fade p-4" id="ModalPengantaran" tabindex="-1" role="dialog"
                             aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog max-w-4xl mx-auto mt-24">
                                 <div class="modal-content rounded-lg shadow-lg bg-white">
                                     <form action="{{ route('transaksi.pesananSelesai') }}" method="POST">
                                         @csrf
                                         @method('PUT')
-                                        
+
                                         <!-- Header -->
-                                        <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
+                                        <div
+                                            class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
                                             <div>
                                                 <h3 class="text-2xl font-bold text-gray-800">DETAIL PENGANTARAN</h3>
                                             </div>
-                                            <button type="button" class="text-gray-400 hover:text-gray-600" 
-                                                    data-dismiss="modal" aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                        d="M6 18L18 6M6 6l12 12"/>
+                                            <button type="button" class="text-gray-400 hover:text-gray-600"
+                                                data-dismiss="modal" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
@@ -500,15 +511,16 @@
                                             <div class="flex flex-col gap-4 mb-6">
                                                 <div class="flex justify-between items-center border-b pb-2">
                                                     <span class="font-medium text-gray-600">Kamar</span>
-                                                    <input id="modal-pengantaran-kamar" type="text" name="idKamar" 
-                                                        class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none" 
+                                                    <input id="modal-pengantaran-kamar" type="text" name="idKamar"
+                                                        class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none"
                                                         readonly>
                                                 </div>
-                                                
+
                                                 <div class="flex justify-between items-center border-b pb-2">
                                                     <span class="font-medium text-gray-600">Pembeli</span>
-                                                    <input id="modal-pengantaran-pembeli" type="text" name="pembeli" 
-                                                        class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
+                                                    <input id="modal-pengantaran-pembeli" type="text"
+                                                        name="pembeli"
+                                                        class="w-1/2 text-right text-gray-700 bg-transparent border-none"
                                                         readonly>
                                                 </div>
                                             </div>
@@ -516,23 +528,26 @@
                                             <!-- Detail Layanan -->
                                             <div class="border rounded-lg p-4 mb-6">
                                                 <h4 class="text-lg font-bold mb-4">Pembelian Layanan Tambahan</h4>
-                                                
+
                                                 <div class="space-y-3">
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Nama Barang</span>
-                                                        <input id="modal-pengantaran-nama" type="text" name="item" 
+                                                        <input id="modal-pengantaran-nama" type="text"
+                                                            name="item"
                                                             class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
 
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Jumlah</span>
-                                                        <input id="modal-pengantaran-jumlah" type="text" name="jumlah" 
+                                                        <input id="modal-pengantaran-jumlah" type="text"
+                                                            name="jumlah"
                                                             class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
 
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Total Harga</span>
-                                                        <input id="modal-pengantaran-total" type="text" name="total_bayar" 
+                                                        <input id="modal-pengantaran-total" type="text"
+                                                            name="total_bayar"
                                                             class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
                                                 </div>
@@ -543,25 +558,29 @@
                                                 <div class="space-y-3">
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Tanggal Transaksi</span>
-                                                        <input id="modal-pengantaran-tanggal" type="text" name="tanggal" 
+                                                        <input id="modal-pengantaran-tanggal" type="text"
+                                                            name="tanggal"
                                                             class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
 
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Tanggal Terima</span>
-                                                        <input id="modal-pengantaran-tgl_terima" type="text" name="tgl_terima" 
+                                                        <input id="modal-pengantaran-tgl_terima" type="text"
+                                                            name="tgl_terima"
                                                             class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
 
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Status Pengantaran</span>
-                                                        <input id="modal-pengantaran-status_pengantaran" type="text" name="pengantaran" 
+                                                        <input id="modal-pengantaran-status_pengantaran"
+                                                            type="text" name="pengantaran"
                                                             class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
 
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Status Pesanan</span>
-                                                        <input id="modal-pengantaran-status" type="text" name="status" 
+                                                        <input id="modal-pengantaran-status" type="text"
+                                                            name="status"
                                                             class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
                                                 </div>
@@ -571,26 +590,29 @@
                                             <div class="border rounded-lg p-4 mb-6">
                                                 <div class="flex flex-col">
                                                     <label class="font-medium text-gray-700 mb-2">Pesan:</label>
-                                                    <textarea id="modal-pengantaran-pesan" rows="2" name="pesan" 
-                                                            class="w-full px-3 py-2 border rounded-md bg-gray-50" readonly></textarea>
+                                                    <textarea id="modal-pengantaran-pesan" rows="2" name="pesan"
+                                                        class="w-full px-3 py-2 border rounded-md bg-gray-50" readonly></textarea>
                                                 </div>
                                             </div>
 
                                             <!-- Hidden Inputs -->
-                                            <input type="hidden" name="idTransaksi" id="modal-pengantaran-idTransaksi">
+                                            <input type="hidden" name="idTransaksi"
+                                                id="modal-pengantaran-idTransaksi">
                                             <input type="hidden" name="idLayanan" id="modal-pengantaran-idLayanan">
                                             <input type="hidden" name="stok" id="modal-pengantaran-stok">
                                         </div>
 
                                         <!-- Footer -->
-                                        <div class="modal-footer border-t border-gray-200 py-2 px-6 flex justify-end space-x-3">
-                                            <button type="submit" data-toggle="modal" data-target="#ModalSuksesTerantar"
-                                                    class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                                        <div
+                                            class="modal-footer border-t border-gray-200 py-2 px-6 flex justify-end space-x-3">
+                                            <button type="submit" data-toggle="modal"
+                                                data-target="#ModalSuksesTerantar"
+                                                class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
                                                 Pesanan Diterima
                                             </button>
                                             <button type="button"
-                                                    class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
-                                                    data-dismiss="modal">
+                                                class="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+                                                data-dismiss="modal">
                                                 Tutup
                                             </button>
                                         </div>
@@ -606,7 +628,8 @@
             {{-- PESANAN YANG SUDAH DITERIMA --}}
             @if ($konfirmLIst->isNotEmpty())
                 <section id="antar-pesanan" class="mb-5">
-                    <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat detail pesanan yang sudah diterima</p>
+                    <p class="text-sm text-gray-500 mb-3 px-3">Click untuk melihat detail pesanan yang sudah diterima
+                    </p>
                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
                         <table class="min-w-full table-auto">
                             <thead class=" bg-gray-100">
@@ -643,123 +666,134 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        
+
                         {{-- MODAL DATA --}}
-                        <div class="modal fade p-4" id="ModalPengantaran" tabindex="-1" role="dialog" 
+                        <div class="modal fade p-4" id="ModalPengantaran" tabindex="-1" role="dialog"
                             aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog max-w-4xl mx-auto mt-24">
                                 <div class="modal-content rounded-lg shadow-lg bg-white">
                                     <form action="{{ route('transaksi.pesananSelesai') }}" method="POST">
                                         @csrf
                                         @method('PUT')
-                                        
+
                                         <!-- Header -->
-                                        <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
+                                        <div
+                                            class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
                                             <div>
                                                 <h3 class="text-2xl font-bold text-gray-800">DETAIL PENGANTARAN</h3>
                                             </div>
-                                            <button type="button" class="text-gray-400 hover:text-gray-600" 
-                                                    data-dismiss="modal" aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
-                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                            d="M6 18L18 6M6 6l12 12"/>
+                                            <button type="button" class="text-gray-400 hover:text-gray-600"
+                                                data-dismiss="modal" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
-                        
+
                                         <!-- Body -->
                                         <div class="modal-body p-6 space-y-4">
                                             <!-- Informasi Utama -->
                                             <div class="flex flex-col gap-4 mb-6">
                                                 <div class="flex justify-between items-center border-b pb-2">
                                                     <span class="font-medium text-gray-600">Kamar</span>
-                                                    <input id="modal-pengantaran-kamar" type="text" name="idKamar" 
-                                                            class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none" 
-                                                            readonly>
+                                                    <input id="modal-pengantaran-kamar" type="text" name="idKamar"
+                                                        class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none"
+                                                        readonly>
                                                 </div>
-                                                
+
                                                 <div class="flex justify-between items-center border-b pb-2">
                                                     <span class="font-medium text-gray-600">Pembeli</span>
-                                                    <input id="modal-pengantaran-pembeli" type="text" name="pembeli" 
-                                                            class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
-                                                            readonly>
+                                                    <input id="modal-pengantaran-pembeli" type="text"
+                                                        name="pembeli"
+                                                        class="w-1/2 text-right text-gray-700 bg-transparent border-none"
+                                                        readonly>
                                                 </div>
                                             </div>
-                        
+
                                             <!-- Detail Layanan -->
                                             <div class="border rounded-lg p-4 mb-6">
                                                 <h4 class="text-lg font-bold mb-4">Pembelian Layanan Tambahan</h4>
-                                                
+
                                                 <div class="space-y-3">
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Nama Barang</span>
-                                                        <input id="modal-pengantaran-nama" type="text" name="item" 
-                                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                        <input id="modal-pengantaran-nama" type="text"
+                                                            name="item"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
-                        
+
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Jumlah</span>
-                                                        <input id="modal-pengantaran-jumlah" type="text" name="jumlah" 
-                                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                        <input id="modal-pengantaran-jumlah" type="text"
+                                                            name="jumlah"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
-                        
+
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Total Harga</span>
-                                                        <input id="modal-pengantaran-total" type="text" name="total_bayar" 
-                                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                        <input id="modal-pengantaran-total" type="text"
+                                                            name="total_bayar"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
                                                 </div>
                                             </div>
-                        
+
                                             <!-- Status dan Waktu -->
                                             <div class="border rounded-lg p-4 mb-6">
                                                 <div class="space-y-3">
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Tanggal Transaksi</span>
-                                                        <input id="modal-pengantaran-tanggal" type="text" name="tanggal" 
-                                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                        <input id="modal-pengantaran-tanggal" type="text"
+                                                            name="tanggal"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
-                        
+
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Tanggal Terima</span>
-                                                        <input id="modal-pengantaran-tgl_terima" type="text" name="tgl_terima" 
-                                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                        <input id="modal-pengantaran-tgl_terima" type="text"
+                                                            name="tgl_terima"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
-                        
+
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Status Pengantaran</span>
-                                                        <input id="modal-pengantaran-status_pengantaran" type="text" name="pengantaran" 
-                                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                        <input id="modal-pengantaran-status_pengantaran"
+                                                            type="text" name="pengantaran"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
-                        
+
                                                     <div class="flex justify-between">
                                                         <span class="font-medium">Status Pesanan</span>
-                                                        <input id="modal-pengantaran-status" type="text" name="status" 
-                                                                class="w-1/3 text-right px-2 bg-transparent" readonly>
+                                                        <input id="modal-pengantaran-status" type="text"
+                                                            name="status"
+                                                            class="w-1/3 text-right px-2 bg-transparent" readonly>
                                                     </div>
                                                 </div>
                                             </div>
-                        
+
                                             <!-- Pesan -->
                                             <div class="border rounded-lg p-4">
                                                 <div class="flex flex-col">
                                                     <label class="font-medium text-gray-700 mb-2">Pesan:</label>
-                                                    <textarea id="modal-pengantaran-pesan" rows="2" name="pesan" 
-                                                                class="w-full px-3 py-2 border rounded-md bg-gray-50" readonly></textarea>
+                                                    <textarea id="modal-pengantaran-pesan" rows="2" name="pesan"
+                                                        class="w-full px-3 py-2 border rounded-md bg-gray-50" readonly></textarea>
                                                 </div>
                                             </div>
-                        
+
                                             <!-- Hidden Inputs -->
-                                            <input type="hidden" name="idTransaksi" id="modal-pengantaran-idTransaksi">
+                                            <input type="hidden" name="idTransaksi"
+                                                id="modal-pengantaran-idTransaksi">
                                             <input type="hidden" name="idLayanan" id="modal-pengantaran-idLayanan">
                                             <input type="hidden" name="stok" id="modal-pengantaran-stok">
                                         </div>
-                        
+
                                         <!-- Footer -->
                                         <div class="modal-footer border-t border-gray-200 py-2 px-6 flex justify-end">
-                                            <button type="submit" data-toggle="modal" data-target="#ModalSuksesSelesai"
-                                                    class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                                            <button type="submit" data-toggle="modal"
+                                                data-target="#ModalSuksesSelesai"
+                                                class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
                                                 Sudah diterima
                                             </button>
                                         </div>
@@ -806,136 +840,137 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="py-3 px-4 text-center text-gray-500">Belum ada pesanan yang dilakukan.</td>
+                                    <td colspan="7" class="py-3 px-4 text-center text-gray-500">Belum ada pesanan
+                                        yang dilakukan.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
-                    
+
                     {{-- MODAL DATA --}}
                     <div class="modal fade p-4" id="ModalListPesanan" tabindex="-1" role="dialog"
                         aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog max-w-4xl mx-auto mt-24">
                             <div class="modal-content rounded-lg shadow-lg bg-white">
                                 <!-- Header -->
-                                <div class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
+                                <div
+                                    class="modal-header border-b border-gray-200 py-4 px-6 flex justify-between items-start">
                                     <h3 class="text-2xl font-bold text-gray-800">DETAIL PEMBELIAN LAYANAN</h3>
-                                    <button type="button" class="text-gray-400 hover:text-gray-600" 
-                                            data-dismiss="modal" aria-hidden="true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                    d="M6 18L18 6M6 6l12 12"/>
+                                    <button type="button" class="text-gray-400 hover:text-gray-600"
+                                        data-dismiss="modal" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </button>
                                 </div>
-                    
+
                                 <!-- Body -->
                                 <div class="modal-body p-6 space-y-4">
                                     <!-- Informasi Utama -->
                                     <div class="flex flex-col gap-4 mb-6">
                                         <div class="flex justify-between items-center border-b pb-2">
                                             <span class="font-medium text-gray-600">Kamar</span>
-                                            <input id="modal-list-kamar" type="text" 
-                                                    class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none" 
-                                                    name="idKamar" readonly>
+                                            <input id="modal-list-kamar" type="text"
+                                                class="w-1/2 text-right font-medium text-gray-800 bg-transparent border-none"
+                                                name="idKamar" readonly>
                                         </div>
-                                        
+
                                         <div class="flex justify-between items-center border-b pb-2">
                                             <span class="font-medium text-gray-600">Pembeli</span>
-                                            <input id="modal-list-pembeli" type="text" 
-                                                    class="w-1/2 text-right text-gray-700 bg-transparent border-none" 
-                                                    name="pembeli" readonly>
+                                            <input id="modal-list-pembeli" type="text"
+                                                class="w-1/2 text-right text-gray-700 bg-transparent border-none"
+                                                name="pembeli" readonly>
                                         </div>
                                     </div>
-                    
+
                                     <!-- Detail Layanan -->
                                     <div class="border rounded-lg p-4 mb-6">
                                         <h4 class="text-lg font-bold mb-4">Detail Layanan Tambahan</h4>
-                                        
+
                                         <div class="space-y-3">
                                             <div class="flex justify-between">
                                                 <span class="font-medium">Nama Barang</span>
-                                                <input id="modal-list-nama" type="text" 
-                                                        class="w-1/3 text-right px-2 bg-transparent" 
-                                                        name="item" readonly>
+                                                <input id="modal-list-nama" type="text"
+                                                    class="w-1/3 text-right px-2 bg-transparent" name="item"
+                                                    readonly>
                                             </div>
-                    
+
                                             <div class="flex justify-between">
                                                 <span class="font-medium">Jumlah</span>
-                                                <input id="modal-list-jumlah" type="text" 
-                                                        class="w-1/3 text-right px-2 bg-transparent" 
-                                                        name="jumlah" readonly>
+                                                <input id="modal-list-jumlah" type="text"
+                                                    class="w-1/3 text-right px-2 bg-transparent" name="jumlah"
+                                                    readonly>
                                             </div>
-                    
+
                                             <div class="flex justify-between">
                                                 <span class="font-medium">Status Pengantaran</span>
-                                                <input id="modal-list-status_pengantaran" type="text" 
-                                                        class="w-1/3 text-right px-2 bg-transparent" 
-                                                        name="pengantaran" readonly>
+                                                <input id="modal-list-status_pengantaran" type="text"
+                                                    class="w-1/3 text-right px-2 bg-transparent" name="pengantaran"
+                                                    readonly>
                                             </div>
-                    
+
                                             <div class="flex justify-between">
                                                 <span class="font-medium">Tanggal Terima</span>
-                                                <input id="modal-list-tgl_terima" type="text" 
-                                                        class="w-1/3 text-right px-2 bg-transparent" 
-                                                        name="tgl_terima" readonly>
+                                                <input id="modal-list-tgl_terima" type="text"
+                                                    class="w-1/3 text-right px-2 bg-transparent" name="tgl_terima"
+                                                    readonly>
                                             </div>
-                    
+
                                             <div class="flex justify-between">
                                                 <span class="font-medium">Status Pembayaran</span>
-                                                <input id="modal-list-status" type="text" 
-                                                        class="w-1/3 text-right px-2 bg-transparent" 
-                                                        name="status" readonly>
+                                                <input id="modal-list-status" type="text"
+                                                    class="w-1/3 text-right px-2 bg-transparent" name="status"
+                                                    readonly>
                                             </div>
                                         </div>
                                     </div>
-                    
+
                                     <!-- Bukti Pembayaran -->
                                     <div class="border rounded-lg p-4 mb-6">
                                         <h4 class="text-lg font-bold mb-4">Bukti Pembayaran</h4>
-                                        
+
                                         <div class="space-y-3">
                                             <div class="flex flex-col items-center mb-4">
-                                                <img src="" id="modal-list-foto" alt="Bukti Pembayaran" 
-                                                        class="h-72 object-cover border border-gray-300 rounded-md">
+                                                <img src="" id="modal-list-foto" alt="Bukti Pembayaran"
+                                                    class="h-72 object-cover border border-gray-300 rounded-md">
                                             </div>
-                    
+
                                             <div class="flex justify-between">
                                                 <span class="font-medium">Total Harga</span>
-                                                <input id="modal-list-total" type="text" 
-                                                        class="w-1/3 text-right px-2 bg-transparent" 
-                                                        name="total_bayar" readonly>
+                                                <input id="modal-list-total" type="text"
+                                                    class="w-1/3 text-right px-2 bg-transparent" name="total_bayar"
+                                                    readonly>
                                             </div>
-                    
+
                                             <div class="flex justify-between">
                                                 <span class="font-medium">Tanggal Transaksi</span>
-                                                <input id="modal-list-tanggal" type="text" 
-                                                        class="w-1/3 text-right px-2 bg-transparent" 
-                                                        name="tanggal" readonly>
+                                                <input id="modal-list-tanggal" type="text"
+                                                    class="w-1/3 text-right px-2 bg-transparent" name="tanggal"
+                                                    readonly>
                                             </div>
                                         </div>
                                     </div>
-                    
+
                                     <!-- Pesan -->
                                     <div class="mb-4">
                                         <p class="font-medium text-gray-700">Pesan:</p>
-                                        <textarea id="modal-list-pesan" rows="2"
-                                                    class="w-full px-3 py-2 border rounded-md bg-gray-50" 
-                                                    name="pesan" readonly></textarea>
+                                        <textarea id="modal-list-pesan" rows="2" class="w-full px-3 py-2 border rounded-md bg-gray-50" name="pesan"
+                                            readonly></textarea>
                                     </div>
-                    
+
                                     <!-- Hidden Inputs -->
                                     <input type="hidden" name="idTransaksi" id="modal-list-idTransaksi">
                                     <input type="hidden" name="idLayanan" id="modal-list-idLayanan">
                                     <input type="hidden" name="stok" id="modal-list-stok">
                                 </div>
-                    
+
                                 <!-- Footer -->
                                 <div class="modal-footer border-t border-gray-200 py-2 px-6 flex justify-end">
                                     <button type="button"
-                                            class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-                                            data-dismiss="modal">
+                                        class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                                        data-dismiss="modal">
                                         Tutup
                                     </button>
                                 </div>
@@ -1115,11 +1150,69 @@
                 url: '/detailPembelian/' + id,
                 type: 'GET',
                 success: function(data) {
+                    $('#modal-harga').val(Number(data.harga).toLocaleString('id-ID'));
+                    $('#modal-harga-raw').val(data.harga);
+
                     $('#modal-nama').val(data.nama_item);
                     $('#modal-harga').val(data.harga);
+                    $('#modal-display-harga').val(Number(data.harga).toLocaleString('id-ID'));
                     $('#modal-stok').val(data.stok);
                     $('#modal-keterangan').val(data.keterangan);
                     $('#modal-idLayanan').val(data.idLayananTambahan);
+
+                    const jumlahInput = document.getElementById('modal-jumlah');
+                    const hargaInput = document.getElementById('modal-harga');
+                    const stokInput = document.getElementById('modal-stok');
+                    const totalBayarInput = document.getElementById('modal-bayar');
+
+                    // Inisialisasi Cleave untuk format currency
+                    const cleaveTotalBayar = new Cleave('#modal-bayar', {
+                        numeral: true,
+                        numeralThousandsGroupStyle: 'thousand',
+                        numeralDecimalMark: ',',
+                        delimiter: '.'
+                    });
+
+                    // Fungsi untuk memperbarui total bayar dengan format currency
+                     const updateTotalBayar = () => {
+                        const jumlah = parseInt(jumlahInput.value) || 0;
+                        // Ambil nilai raw dari hidden input
+                        const harga = parseFloat($('#modal-harga-raw').val()) || 0;
+                        const stok = parseInt(stokInput.value) || 0;
+
+                        if (jumlah > stok) {
+                            jumlahInput.value = stok;
+                        }
+
+                        const validJumlah = Math.min(jumlah, stok);
+                        const totalBayar = validJumlah * harga;
+
+                        // Update nilai dengan format currency
+                        cleaveTotalBayar.setRawValue(totalBayar.toString());
+                        document.getElementById('hidden-total-bayar').value = totalBayar;
+                    };
+
+                    // Event listener untuk input harga dengan format currency
+                    new Cleave('#modal-harga', {
+                        numeral: true,
+                        numeralThousandsGroupStyle: 'thousand',
+                        numeralDecimalMark: ',',
+                        delimiter: '.'
+                    });
+
+                    jumlahInput.addEventListener('input', () => {
+                        const jumlah = parseInt(jumlahInput.value) || 0;
+                        if (jumlah < 0) jumlahInput.value = 0;
+                        updateTotalBayar();
+                    });
+
+                    // Tambahkan event listener untuk input harga
+                    document.getElementById('modal-harga').addEventListener('input',
+                        updateTotalBayar);
+                    stokInput.addEventListener('input', updateTotalBayar);
+
+                    // Inisialisasi pertama kali
+                    updateTotalBayar();
                 }
             });
         });
@@ -1133,7 +1226,8 @@
                 type: 'GET',
                 success: function(data) {
                     function formatRupiah(angka) {
-                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,
+                            ".");
                     }
 
                     $('#modal-list-kamar').val('Kamar ' + data.data.idKamar);
@@ -1164,7 +1258,8 @@
                 type: 'GET',
                 success: function(data) {
                     function formatRupiah(angka) {
-                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,
+                            ".");
                     }
 
                     $('#modal-revisi-kamar').val('Kamar ' + data.idKamar);
@@ -1189,7 +1284,8 @@
                 type: 'GET',
                 success: function(data) {
                     function formatRupiah(angka) {
-                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,
+                            ".");
                     }
 
                     $('#modal-pengantaran-kamar').val('Kamar ' + data.idKamar);
@@ -1219,7 +1315,8 @@
                 type: 'GET',
                 success: function(data) {
                     function formatRupiah(angka) {
-                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g,
+                            ".");
                     }
 
                     $('#modal-detail-pembeli').val('Kamar ' + data.data.idKamar);
@@ -1241,58 +1338,6 @@
 {{-- JS TAGIHAN --}}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const jumlahInput = document.getElementById('modal-jumlah');
-        const hargaInput = document.getElementById('modal-harga');
-        const stokInput = document.getElementById('modal-stok');
-        const totalBayarInput = document.getElementById('modal-bayar');
-        
-        // Inisialisasi Cleave untuk format currency
-        const cleaveTotalBayar = new Cleave('#modal-bayar', {
-            numeral: true,
-            numeralThousandsGroupStyle: 'thousand',
-            numeralDecimalMark: ',',
-            delimiter: '.'
-        });
 
-        // Fungsi untuk memperbarui total bayar dengan format currency
-        const updateTotalBayar = () => {
-            const jumlah = parseInt(jumlahInput.value) || 0;
-            const harga = parseFloat(hargaInput.value) || 0;
-            const stok = parseInt(stokInput.value) || 0;
-
-            if (jumlah > stok) {
-                jumlahInput.value = stok;
-            }
-
-            const validJumlah = Math.min(jumlah, stok);
-            const totalBayar = validJumlah * harga;
-
-            // Update nilai dengan format currency
-            cleaveTotalBayar.setRawValue(totalBayar.toString());
-            
-            // Simpan nilai numerik di hidden input
-            document.getElementById('hidden-total-bayar').value = totalBayar;
-        };
-
-        // Event listener untuk input harga dengan format currency
-        new Cleave('#modal-harga', {
-            numeral: true,
-            numeralThousandsGroupStyle: 'thousand',
-            numeralDecimalMark: ',',
-            delimiter: '.'
-        });
-
-        jumlahInput.addEventListener('input', () => {
-            const jumlah = parseInt(jumlahInput.value) || 0;
-            if (jumlah < 0) jumlahInput.value = 0;
-            updateTotalBayar();
-        });
-
-        // Tambahkan event listener untuk input harga
-        document.getElementById('modal-harga').addEventListener('input', updateTotalBayar);
-        stokInput.addEventListener('input', updateTotalBayar);
-
-        // Inisialisasi pertama kali
-        updateTotalBayar();
     });
 </script>
