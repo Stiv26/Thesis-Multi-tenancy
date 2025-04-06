@@ -1200,6 +1200,7 @@
                         delimiter: '.'
                     });
 
+                    // last revision, thank you god
                     jumlahInput.addEventListener('input', () => {
                         const jumlah = parseInt(jumlahInput.value) || 0;
                         if (jumlah < 0) jumlahInput.value = 0;
